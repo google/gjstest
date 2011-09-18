@@ -14,6 +14,8 @@
 #ifndef BASE_CALLBACK_TYPES_H_
 #define BASE_CALLBACK_TYPES_H_
 
+#include "base/callback.h"
+
 // This file is defined for compatibility reasons.
 
 #endif  // BASE_CALLBACK_TYPES_H_
