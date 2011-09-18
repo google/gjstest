@@ -24,5 +24,5 @@ clean :
 base.o : base/*.h base/*.cc
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c base/*.cc
 
-gjstest/internal/driver/cpp/v8_utils.o : gjstest/internal/driver/cpp/v8_utils.* base/*.h $(V8_DIR)/include/*.h
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c gjstest/internal/driver/cpp/v8_utils.cc
+gjstest/internal/driver/cpp/v8_utils.o : gjstest/internal/driver/cpp/v8_utils.h gjstest/internal/driver/cpp/v8_utils.cc base/*.h $(V8_DIR)/include/*.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c gjstest/internal/driver/cpp/v8_utils.cc -o gjstest/internal/driver/cpp/v8_utils.o
