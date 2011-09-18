@@ -1,5 +1,8 @@
+# Path to the directory where v8 was built.
+V8_DIR = ../../tmp/v8-read-only
+
 # Preprocessor flags.
-CPPFLAGS += -I.
+CPPFLAGS += -I. -I$(V8_DIR)/include
 
 # Compiler flags.
 CXXFLAGS += -g -Wall -Wextra
