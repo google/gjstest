@@ -11,8 +11,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef OR_TOOLS_BASE_LOGGING_H_
-#define OR_TOOLS_BASE_LOGGING_H_
+#ifndef BASE_LOGGING_H_
+#define BASE_LOGGING_H_
 
 #include <assert.h>
 #include <stdlib.h>
@@ -58,7 +58,7 @@
 #define LOG(severity) LOG_ ## severity.stream()
 #define LG LOG_INFO.stream()
 
-namespace operations_research {
+namespace gjstest {
 class DateLogger {
  public:
   DateLogger();
@@ -66,7 +66,7 @@ class DateLogger {
  private:
   char buffer_[9];
 };
-}  // namespace operations_research
+}  // namespace gjstest
 
 class LogMessage {
  public:
@@ -78,7 +78,7 @@ class LogMessage {
   std::ostream& stream() { return std::cerr; }
 
  private:
-  operations_research::DateLogger pretty_date_;
+  gjstest::DateLogger pretty_date_;
   DISALLOW_COPY_AND_ASSIGN(LogMessage);
 };
 
@@ -94,4 +94,4 @@ class LogMessageFatal : public LogMessage {
   DISALLOW_COPY_AND_ASSIGN(LogMessageFatal);
 };
 
-#endif  // OR_TOOLS_BASE_LOGGING_H_
+#endif  // BASE_LOGGING_H_

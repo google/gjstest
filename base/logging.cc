@@ -16,7 +16,7 @@
 
 #include "base/logging.h"
 
-namespace operations_research {
+namespace gjstest {
 DateLogger::DateLogger() {
 #if defined(_MSC_VER)
   _tzset();
@@ -35,4 +35,4 @@ char* const DateLogger::HumanDate() {
 #endif
   return buffer_;
 }
-}  // namespace operations_research
+}  // namespace gjstest
