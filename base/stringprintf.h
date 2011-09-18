@@ -16,8 +16,6 @@
 
 #include <string>
 
-#include "base/stringpiece.h"
-
 std::string StringPrintf(const char* const format, ...);
 void SStringPrintf(std::string* const dst, const char* const format, ...);
 void StringAppendF(std::string* const dst, const char* const format, ...);
