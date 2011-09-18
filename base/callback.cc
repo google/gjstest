@@ -13,10 +13,10 @@
 
 #include "base/callback.h"
 
-namespace operations_research {
+namespace gjstest {
 
 void CallbackUtils_::FailIsRepeatable(const char* name) {
   LOG(FATAL) << "A " << name << " made with NewCallback() "
                                 "is not a repeatable callback!";
 }
-}  // namespace operations_research
+}  // namespace gjstest

@@ -11,16 +11,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef OR_TOOLS_BASE_STRINGPRINTF_H_
-#define OR_TOOLS_BASE_STRINGPRINTF_H_
+#ifndef BASE_STRINGPRINTF_H_
+#define BASE_STRINGPRINTF_H_
 
 #include <string>
 
 #include "base/stringpiece.h"
 
-namespace operations_research {
 std::string StringPrintf(const char* const format, ...);
 void SStringPrintf(std::string* const dst, const char* const format, ...);
 void StringAppendF(std::string* const dst, const char* const format, ...);
-}  // namespace operations_research
-#endif  // OR_TOOLS_BASE_STRINGPRINTF_H_
+
+#endif  // BASE_STRINGPRINTF_H_

@@ -11,8 +11,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef OR_TOOLS_BASE_INTEGRAL_TYPES_H_
-#define OR_TOOLS_BASE_INTEGRAL_TYPES_H_
+#ifndef BASE_INTEGRAL_TYPES_H_
+#define BASE_INTEGRAL_TYPES_H_
 
 #ifndef SWIG
 // Standard typedefs
@@ -104,4 +104,4 @@ static const  int64 kint64min  =
 static const  int64 kint64max  =
     static_cast<int64>(GG_LONGLONG(0x7FFFFFFFFFFFFFFF));
 
-#endif  // OR_TOOLS_BASE_INTEGRAL_TYPES_H_
+#endif  // BASE_INTEGRAL_TYPES_H_

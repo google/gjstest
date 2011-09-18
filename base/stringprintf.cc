@@ -18,8 +18,6 @@
 
 #include <string>
 
-namespace operations_research {
-
 void StringAppendV(std::string* const dst,
                    const char* const format,
                    va_list ap) {
@@ -98,4 +96,3 @@ void StringAppendF(std::string* const dst, const char* const format, ...) {
   StringAppendV(dst, format, ap);
   va_end(ap);
 }
-}  // namespace operations_research

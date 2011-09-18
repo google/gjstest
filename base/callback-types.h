@@ -11,9 +11,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef OR_TOOLS_BASE_CALLBACK_TYPES_H_
-#define OR_TOOLS_BASE_CALLBACK_TYPES_H_
+#ifndef BASE_CALLBACK_TYPES_H_
+#define BASE_CALLBACK_TYPES_H_
 
 // This file is defined for compatibility reasons.
 
-#endif  // OR_TOOLS_BASE_CALLBACK_TYPES_H_
+#endif  // BASE_CALLBACK_TYPES_H_
