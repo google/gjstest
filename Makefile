@@ -63,5 +63,5 @@ gjstest/internal/driver/cpp/v8_utils.o : gjstest/internal/driver/cpp/v8_utils.h 
 gjstest/internal/driver/cpp/v8_utils_test.o : gjstest/internal/driver/cpp/v8_utils_test.cc gjstest/internal/driver/cpp/v8_utils.h $(TEST_HEADERS) $(BASE_HDRS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c gjstest/internal/driver/cpp/v8_utils_test.cc -o gjstest/internal/driver/cpp/v8_utils_test.o
 
-gjstest/internal/driver/cpp/v8_utils_test : gjstest/internal/driver/cpp/v8_utils.o gjstest/internal/driver/cpp/v8_utils_test.o third_party/gmock/gmock_main.a base/base.a
+gjstest/internal/driver/cpp/v8_utils_test : gjstest/internal/driver/cpp/v8_utils.o gjstest/internal/driver/cpp/v8_utils_test.o third_party/gmock/gmock_main.a base/base.a $(V8_DIR)/libv8.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
