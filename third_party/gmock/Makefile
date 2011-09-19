@@ -1,24 +1,6 @@
-# Preprocessor flags.
-CPPFLAGS += -I../..
-
-# Compiler flags.
-CXXFLAGS += -g -Wall -Wextra
-
-######################################################
-# House-keeping
-######################################################
-
-all : gmock_main.a
-
-clean :
-	rm -f gmock.a gmock_main.a *.o
-
-######################################################
-# gmock configuration
-######################################################
-
-GTEST_DIR = ../gtest
-GMOCK_DIR = .
+GMOCK_PACKAGE = third_party/gmock
+GTEST_DIR = third_party/gtest
+GMOCK_DIR = third_party/gmock
 
 # All gtest headers.
 GTEST_HEADERS = \
@@ -35,20 +17,20 @@ GMOCK_HEADERS = \
 GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 GMOCK_SRCS_ = $(GMOCK_DIR)/src/*.cc $(GMOCK_HEADERS)
 
-gtest-all.o : $(GTEST_SRCS_)
+$(GMOCK_PACKAGE)/gtest-all.o : $(GTEST_SRCS_)
 	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) -I$(GMOCK_DIR) $(CXXFLAGS) \
-            -c $(GTEST_DIR)/src/gtest-all.cc
+            -c $(GTEST_DIR)/src/gtest-all.cc -o $@
 
-gmock-all.o : $(GMOCK_SRCS_)
+$(GMOCK_PACKAGE)/gmock-all.o : $(GMOCK_SRCS_)
 	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) -I$(GMOCK_DIR) $(CXXFLAGS) \
-            -c $(GMOCK_DIR)/src/gmock-all.cc
+            -c $(GMOCK_DIR)/src/gmock-all.cc -o $@
 
-gmock_main.o : $(GMOCK_SRCS_)
+$(GMOCK_PACKAGE)/gmock_main.o : $(GMOCK_SRCS_)
 	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) -I$(GMOCK_DIR) $(CXXFLAGS) \
-            -c $(GMOCK_DIR)/src/gmock_main.cc
+            -c $(GMOCK_DIR)/src/gmock_main.cc -o $@
 
-gmock.a : gmock-all.o gtest-all.o
+$(GMOCK_PACKAGE)/gmock.a : $(GMOCK_PACKAGE)/gmock-all.o $(GMOCK_PACKAGE)/gtest-all.o
 	$(AR) $(ARFLAGS) $@ $^
 
-gmock_main.a : gmock-all.o gtest-all.o gmock_main.o
+$(GMOCK_PACKAGE)/gmock_main.a : $(GMOCK_PACKAGE)/gmock-all.o $(GMOCK_PACKAGE)/gtest-all.o $(GMOCK_PACKAGE)/gmock_main.o
 	$(AR) $(ARFLAGS) $@ $^

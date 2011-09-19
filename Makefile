@@ -22,15 +22,13 @@ TEST_HEADERS = \
     third_party/gtest/include/gtest/*.h \
     third_party/gtest/include/gtest/internal/*.h
 
-third_party/gmock/gmock_main.a:
-	$(MAKE) -C third_party/gmock gmock_main.a
-
 ######################################################
 # Packages
 ######################################################
 
 include base/build.mk
 include gjstest/build.mk
+include third_party/gmock/Makefile
 
 ######################################################
 # House-keeping

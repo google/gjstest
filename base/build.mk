@@ -1,4 +1,4 @@
-PACKAGE = base
+BASE_PACKAGE = base
 
 ######################################################
 # Libraries
