@@ -11,18 +11,44 @@ CXXFLAGS += -g -Wall -Wextra
 # House-keeping
 ######################################################
 
+# All tests.
+TESTS =\
+    gjstest/internal/driver/cpp/v8_utils_test
+
 # TODO(jacobsa): Update this.
-all : gjstest/internal/driver/cpp/v8_utils.o
+all : $(TESTS)
 
 clean :
 	find . -name '*.o' -delete
+	rm -f $(TESTS)
+
+######################################################
+# GTest configuration
+######################################################
+
+GTEST_HEADERS = \
+    third_party/gtest/include/gtest/*.h \
+    third_party/gtest/include/gtest/internal/*.h
+
+third_party/gtest/gtest_main.a:
+	$(MAKE) -C third_party/gtest gtest_main.a
 
 ######################################################
 # Libraries
 ######################################################
 
-base.o : base/*.h base/*.cc
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c base/*.cc
+base/base.o : base/*.h base/*.cc
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c base/*.cc -o base/base.o
 
 gjstest/internal/driver/cpp/v8_utils.o : gjstest/internal/driver/cpp/v8_utils.h gjstest/internal/driver/cpp/v8_utils.cc base/*.h $(V8_DIR)/include/*.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c gjstest/internal/driver/cpp/v8_utils.cc -o gjstest/internal/driver/cpp/v8_utils.o
+
+######################################################
+# Tests
+######################################################
+
+gjstest/internal/driver/cpp/v8_utils_test.o : gjstest/internal/driver/cpp/v8_utils_test.cc gjstest/internal/driver/cpp/v8_utils.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c gjstest/internal/driver/cpp/v8_utils_test.cc -o gjstest/internal/driver/cpp/v8_utils_test.o
+
+gjstest/internal/driver/cpp/v8_utils_test : gjstest/internal/driver/cpp/v8_utils.o gjstest/internal/driver/cpp/v8_utils_test.o third_party/gtest/gtest_main.a base/base.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
