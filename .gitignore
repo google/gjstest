@@ -1,3 +1,6 @@
 # Build outputs
 *.a
 *.o
+
+# Test binaries built by make.
+*_test
