@@ -15,8 +15,8 @@ CXXFLAGS += -g -Wall -Wextra
 TESTS =\
     gjstest/internal/driver/cpp/v8_utils_test
 
-# TODO(jacobsa): Update this.
-all : $(TESTS)
+test : $(TESTS)
+	for test in $(TESTS); do $$test; done
 
 clean :
 	find . -name '*.o' -delete
