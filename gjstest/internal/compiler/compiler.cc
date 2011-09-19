@@ -24,6 +24,7 @@
 #include <vector>
 
 #include <gflags/gflags.h>
+#include <glog/logging.h>
 
 #include "base/integral_types.h"
 #include "base/logging.h"
@@ -39,6 +40,8 @@ using gjstest::NamedScript;
 using gjstest::NamedScripts;
 
 int main(int argc, char** argv) {
+  google::InitGoogleLogging(argv[0]);
+
   // Build a list of files to include, in the correct order. This tool should be
   // invoked with a command like this:
   //
