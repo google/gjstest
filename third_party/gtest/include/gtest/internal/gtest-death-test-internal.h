@@ -37,7 +37,7 @@
 #ifndef GTEST_INCLUDE_GTEST_INTERNAL_GTEST_DEATH_TEST_INTERNAL_H_
 #define GTEST_INCLUDE_GTEST_INTERNAL_GTEST_DEATH_TEST_INTERNAL_H_
 
-#include "gtest/internal/gtest-internal.h"
+#include "third_party/gtest/include/gtest/internal/gtest-internal.h"
 
 #include <stdio.h>
 

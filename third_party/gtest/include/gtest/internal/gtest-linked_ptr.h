@@ -71,7 +71,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "gtest/internal/gtest-port.h"
+#include "third_party/gtest/include/gtest/internal/gtest-port.h"
 
 namespace testing {
 namespace internal {

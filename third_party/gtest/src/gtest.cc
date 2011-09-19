@@ -31,8 +31,8 @@
 //
 // The Google C++ Testing Framework (Google Test)
 
-#include "gtest/gtest.h"
-#include "gtest/gtest-spi.h"
+#include "third_party/gtest/include/gtest/gtest.h"
+#include "third_party/gtest/include/gtest/gtest-spi.h"
 
 #include <ctype.h>
 #include <math.h>

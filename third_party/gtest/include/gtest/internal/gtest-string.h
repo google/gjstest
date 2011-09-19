@@ -47,7 +47,7 @@
 #endif
 
 #include <string.h>
-#include "gtest/internal/gtest-port.h"
+#include "third_party/gtest/include/gtest/internal/gtest-port.h"
 
 #include <string>
 
