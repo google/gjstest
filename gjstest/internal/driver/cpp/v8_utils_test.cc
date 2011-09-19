@@ -92,7 +92,7 @@ TEST_F(ConvertToStringTest, Strings) {
 
   const uint16 kUtf16Chars[] = { 0xd0c0, 0xcf54 };
   EXPECT_EQ("타코",
-            ConvertToString(String::New(kUtf16Chars, arraysize(kUtf16Chars))));
+            ConvertToString(String::New(kUtf16Chars, 2 * 2)));
 }
 
 TEST_F(ConvertToStringTest, Numbers) {
