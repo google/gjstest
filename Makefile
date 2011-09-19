@@ -7,23 +7,10 @@ CPPFLAGS += -I. -I$(V8_DIR)/include
 # Compiler flags.
 CXXFLAGS += -g -Wall -Wextra
 
-######################################################
-# House-keeping
-######################################################
+# All tests, to be filled in by packages.
+TESTS =
 
-# All tests.
-TESTS =\
-    gjstest/internal/driver/cpp/v8_utils_test
-
-test : $(TESTS)
-	for test in $(TESTS); do $$test; done
-
-clean :
-	find . -name '*.a' -delete
-	find . -name '*.o' -delete
-	rm -f $(TESTS)
-
-.PHONY: test clean
+default: test
 
 ######################################################
 # gtest and gmock configuration
@@ -39,7 +26,7 @@ third_party/gmock/gmock_main.a:
 	$(MAKE) -C third_party/gmock gmock_main.a
 
 ######################################################
-# Libraries
+# Packages
 ######################################################
 
 BASE_HDRS = base/*.h
@@ -56,15 +43,18 @@ base/stringprintf.o: base/stringprintf.cc $(BASE_HDRS)
 base/base.a: base/callback.o base/logging.o base/stringprintf.o
 	$(AR) $(ARFLAGS) $@ $^
 
-gjstest/internal/driver/cpp/v8_utils.o : gjstest/internal/driver/cpp/v8_utils.h gjstest/internal/driver/cpp/v8_utils.cc base/*.h $(V8_DIR)/include/*.h $(BASE_HDRS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c gjstest/internal/driver/cpp/v8_utils.cc -o gjstest/internal/driver/cpp/v8_utils.o
+include gjstest/internal/driver/cpp/build.mk
 
 ######################################################
-# Tests
+# House-keeping
 ######################################################
 
-gjstest/internal/driver/cpp/v8_utils_test.o : gjstest/internal/driver/cpp/v8_utils_test.cc gjstest/internal/driver/cpp/v8_utils.h $(TEST_HEADERS) $(BASE_HDRS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c gjstest/internal/driver/cpp/v8_utils_test.cc -o gjstest/internal/driver/cpp/v8_utils_test.o
+test : $(TESTS)
+	for test in $(TESTS); do $$test; done
 
-gjstest/internal/driver/cpp/v8_utils_test : gjstest/internal/driver/cpp/v8_utils.o gjstest/internal/driver/cpp/v8_utils_test.o third_party/gmock/gmock_main.a base/base.a $(V8_DIR)/libv8.a
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+clean :
+	find . -name '*.a' -delete
+	find . -name '*.o' -delete
+	rm -f $(TESTS)
+
+.PHONY: test clean
