@@ -4,3 +4,7 @@
 
 # Test binaries built by make.
 *_test
+
+# Generated proto bufer code.
+*.pb.cc
+*.pb.h
