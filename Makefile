@@ -28,7 +28,7 @@ clean :
 
 TEST_HEADERS = \
     third_party/gmock/include/gmock/*.h \
-    third_party/gmock/include/gmock/internal/*.h
+    third_party/gmock/include/gmock/internal/*.h \
     third_party/gtest/include/gtest/*.h \
     third_party/gtest/include/gtest/internal/*.h
 
