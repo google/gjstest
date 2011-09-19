@@ -23,8 +23,6 @@
 #include "base/logging.h"
 #include "base/timer.h"
 
-namespace operations_research {
-
 // Walltimer
 
 #if !defined(_MSC_VER)
@@ -159,4 +157,3 @@ int64 CycleTimer::GetInMs() const {
   const int64 kMsInUsec = 1000;
   return GetInUsec() / kMsInUsec;
 }
-}  // namespace operations_research

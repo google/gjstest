@@ -11,13 +11,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef OR_TOOLS_BASE_TIMER_H_
-#define OR_TOOLS_BASE_TIMER_H_
+#ifndef BASE_TIMER_H_
+#define BASE_TIMER_H_
 
-#include "base/basictypes.h"
+#include "base/integral_types.h"
 #include "base/macros.h"
 
-namespace operations_research {
 class WallTimer {
  public:
   WallTimer();
@@ -58,5 +57,4 @@ class CycleTimer {
   int64 time_in_us_;
   State state_;
 };
-}  // namespace operations_research
-#endif  // OR_TOOLS_BASE_TIMER_H_
+#endif  // BASE_TIMER_H_
