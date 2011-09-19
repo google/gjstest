@@ -4,5 +4,5 @@ STRINGS_PACKAGE = gjstest/internal/driver/cpp
 # Libraries
 ######################################################
 
-$(STRINGS_PACKAGE)/strutil.o : $(STRINGS_PACKAGE)/strutil.h $(STRINGS_PACKAGE)/strutil.cc
+$(STRINGS_PACKAGE)/strutil.o : $(STRINGS_PACKAGE)/strutil.h $(STRINGS_PACKAGE)/strutil.cc base/*.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(STRINGS_PACKAGE)/strutil.cc -o $(STRINGS_PACKAGE)/strutil.o
