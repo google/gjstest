@@ -13,3 +13,10 @@ $(COMPILER_PACKAGE)/compiler.pb.h $(COMPILER_PACKAGE)/compiler.pb.cc : $(COMPILE
 
 $(COMPILER_PACKAGE)/compiler.pb.o : $(COMPILER_PACKAGE)/compiler.pb.h $(COMPILER_PACKAGE)/compiler.pb.cc
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(COMPILER_PACKAGE)/compiler.pb.cc -o $(COMPILER_PACKAGE)/compiler.pb.o
+
+######################################################
+# Binaries
+######################################################
+
+$(COMPILER_PACKAGE)/compiler.o : $(COMPILER_PACKAGE)/compiler.cc $(COMPILER_PACKAGE)/compiler.pb.h base/*.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(COMPILER_PACKAGE)/compiler.cc -o $(COMPILER_PACKAGE)/compiler.o
