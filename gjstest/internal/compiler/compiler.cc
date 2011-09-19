@@ -29,6 +29,7 @@
 #include "base/logging.h"
 #include "base/stringprintf.h"
 #include "gjstest/internal/compiler/compiler.pb.h"
+#include "strings/strutil.h"
 
 DEFINE_string(js, "", "Give this flag once per JS file, topologically sorted.");
 DEFINE_string(binarypb_file, "", "Path to the .binarypb output file.");
@@ -56,7 +57,7 @@ int main(int argc, char** argv) {
   }
 
   // Now initialize flag stuff.
-  InitFlagStuffTODO(argv[0], &argc, &argv, true);
+  google::ParseCommandLineFlags(&argc, &argv, true);
 
   // Grab each script.
   NamedScripts result;
