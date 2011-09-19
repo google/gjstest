@@ -1,0 +1,10 @@
+[----------]
+[ RUN      ] ConstructorTest.constructor
+constructor_test.js:12
+Expected: true
+Actual:   false
+
+[  FAILED  ] ConstructorTest.constructor (1 ms)
+[----------]
+
+[  FAILED  ]

@@ -1,0 +1,3 @@
+This directory contains a number of *_test.js files that are read by
+integration_test.cc. Many of them have intentional errors in order to exercise
+various pieces of logic in the test runner.

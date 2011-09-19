@@ -1,0 +1,33 @@
+[----------]
+[ RUN      ] ExceptionTest.referenceError
+exception_test.js:13
+ReferenceError: equals is not defined
+
+[  FAILED  ] ExceptionTest.referenceError (1 ms)
+[ RUN      ] ExceptionTest.notAFunctionError
+exception_test.js:18
+TypeError: object is not a function
+
+[  FAILED  ] ExceptionTest.notAFunctionError (1 ms)
+[ RUN      ] ExceptionTest.errorInMatcherFactory
+exception_test.js:22
+TypeError: isNearNumber requires two number arguments
+
+[  FAILED  ] ExceptionTest.errorInMatcherFactory (1 ms)
+[ RUN      ] ExceptionTest.stackOverflow
+RangeError: Maximum call stack size exceeded
+
+[  FAILED  ] ExceptionTest.stackOverflow (1 ms)
+[ RUN      ] ExceptionTest.passingTest
+[       OK ] ExceptionTest.passingTest (1 ms)
+[----------]
+
+[----------]
+[ RUN      ] ThrowingConstructorTest.someTest
+exception_test.js:35
+Error: taco
+
+[  FAILED  ] ThrowingConstructorTest.someTest (1 ms)
+[----------]
+
+[  FAILED  ]

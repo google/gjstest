@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Google JS tests" failures="0" time="0.01">
+ <testcase name="PassingTest.someString" time="0.01"/>
+ <testcase name="PassingTest.passingTest" time="0.01"/>
+ <testcase name="PassingTest.logging" time="0.01"/>
+ <testcase name="PassingTest.numberExpectations" time="0.01"/>
+</testsuite>

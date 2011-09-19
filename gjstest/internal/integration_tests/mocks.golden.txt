@@ -1,0 +1,143 @@
+[----------]
+[ RUN      ] MocksTest.satisfiedMocks
+[       OK ] MocksTest.satisfiedMocks (1 ms)
+[ RUN      ] MocksTest.mockActions
+[       OK ] MocksTest.mockActions (1 ms)
+[ RUN      ] MocksTest.mockInstance
+[       OK ] MocksTest.mockInstance (1 ms)
+[ RUN      ] MocksTest.unexpectedFunctionCall
+Call matches no expectation.
+    Arg 0: 19
+
+Tried expectation at mocks_test.js:56, but arg 0 didn't match:
+    Arg 0: 23
+
+Tried expectation at mocks_test.js:55, but arg 0 didn't match:
+    Arg 0: 17
+
+Call to bar matches no expectation.
+    Arg 0: 29
+
+[  FAILED  ] MocksTest.unexpectedFunctionCall (1 ms)
+[ RUN      ] MocksTest.unexpectedMethodCall
+Call to MyClass.doSomething matches no expectation.
+    Arg 0: 17
+
+[  FAILED  ] MocksTest.unexpectedMethodCall (1 ms)
+[ RUN      ] MocksTest.unsatisfiedExpectations
+Unsatisfied expectation at mocks_test.js:79:
+    Arg 0: 19
+
+Expected 1 call; called 0 times.
+
+Unsatisfied expectation at mocks_test.js:82:
+    Arg 0: 23
+
+Expected 2 calls; called 1 time.
+
+Unsatisfied expectation at mocks_test.js:87:
+    Arg 0: 29
+
+Expected 3 calls; called 4 times.
+
+[  FAILED  ] MocksTest.unsatisfiedExpectations (1 ms)
+[ RUN      ] MocksTest.anotherTest
+[       OK ] MocksTest.anotherTest (1 ms)
+[ RUN      ] MocksTest.unsatisfiedExpectationsWithReferences
+Unsatisfied expectation at mocks_test.js:118:
+    Arg 0: is a reference to: { name: 'obj_1' }
+
+Expected 1 call; called 0 times.
+
+Unsatisfied expectation at mocks_test.js:121:
+    Arg 0: is a reference to: { name: 'obj_2' }
+
+Expected 2 calls; called 1 time.
+
+Unsatisfied expectation at mocks_test.js:126:
+    Arg 0: is a reference to: { name: 'obj_3' }
+
+Expected 3 calls; called 4 times.
+
+[  FAILED  ] MocksTest.unsatisfiedExpectationsWithReferences (1 ms)
+[ RUN      ] MocksTest.precedingExpectThat
+Call matches no expectation.
+    Arg 0: 23
+
+Tried expectation at mocks_test.js:144, but arg 0 didn't match:
+    Arg 0: 19
+
+Unsatisfied expectation at mocks_test.js:144:
+    Arg 0: 19
+
+Expected 1 call; called 0 times.
+
+[  FAILED  ] MocksTest.precedingExpectThat (1 ms)
+[ RUN      ] MocksTest.expectCallWithNonMockFunction
+mocks_test.js:150
+TypeError: Supplied function is not a mock.
+
+[  FAILED  ] MocksTest.expectCallWithNonMockFunction (1 ms)
+[ RUN      ] MocksTest.missingArguments
+Call matches no expectation.
+    (No arguments.)
+
+Tried expectation at mocks_test.js:157, but number of arguments didn't match:
+    Arg 0: is anything
+
+[  FAILED  ] MocksTest.missingArguments (1 ms)
+[ RUN      ] MocksTest.tooManyArguments
+Call matches no expectation.
+    Arg 0: undefined
+    Arg 1: 17
+
+Tried expectation at mocks_test.js:171, but number of arguments didn't match:
+    Arg 0: is anything
+
+Call matches no expectation.
+    Arg 0: undefined
+    Arg 1: undefined
+
+Tried expectation at mocks_test.js:171, but number of arguments didn't match:
+    Arg 0: is anything
+
+[  FAILED  ] MocksTest.tooManyArguments (1 ms)
+[ RUN      ] MocksTest.optionalArgument
+[       OK ] MocksTest.optionalArgument (1 ms)
+[ RUN      ] MocksTest.optionalOrExactValueArgument
+Call matches no expectation.
+    Arg 0: undefined
+    Arg 1: undefined
+
+Tried expectation at mocks_test.js:199, but arg 1 didn't match:
+    Arg 0: is anything
+    Arg 1: is not present or 23
+
+Call matches no expectation.
+    Arg 0: undefined
+    Arg 1: 24
+
+Tried expectation at mocks_test.js:199, but arg 1 didn't match:
+    Arg 0: is anything
+    Arg 1: is not present or 23
+
+Call matches no expectation.
+    Arg 0: undefined
+    Arg 1: 'taco'
+
+Tried expectation at mocks_test.js:199, but arg 1 didn't match:
+    Arg 0: is anything
+    Arg 1: is not present or 23
+
+[  FAILED  ] MocksTest.optionalOrExactValueArgument (1 ms)
+[ RUN      ] MocksTest.sentinelMatcher
+Call matches no expectation.
+    (No arguments.)
+
+Tried expectation at mocks_test.js:217, but number of arguments didn't match:
+    Arg 0: is the missing arg sentinel
+
+[  FAILED  ] MocksTest.sentinelMatcher (1 ms)
+[----------]
+
+[  FAILED  ]

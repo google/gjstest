@@ -1,0 +1,13 @@
+[----------]
+[ RUN      ] PassingTest.someString
+[       OK ] PassingTest.someString (1 ms)
+[ RUN      ] PassingTest.passingTest
+[       OK ] PassingTest.passingTest (1 ms)
+[ RUN      ] PassingTest.logging
+foo bar
+[       OK ] PassingTest.logging (1 ms)
+[ RUN      ] PassingTest.numberExpectations
+[       OK ] PassingTest.numberExpectations (1 ms)
+[----------]
+
+[  PASSED  ]

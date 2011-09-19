@@ -1,0 +1,69 @@
+[----------]
+[ RUN      ] FailingTest.passingTest1
+[       OK ] FailingTest.passingTest1 (1 ms)
+[ RUN      ] FailingTest.failingTest1
+failing_test.js:15
+Expected: evaluates to false
+Actual:   'a'
+
+[  FAILED  ] FailingTest.failingTest1 (1 ms)
+[ RUN      ] FailingTest.failingTest2
+failing_test.js:19
+Expected: evaluates to false
+Actual:   2
+
+failing_test.js:20
+Expected: is an array or Arguments object of length 3 with elements matching: [ 1, 2, 3 ]
+Actual:   [ 1, 2 ], which has length 2
+
+[  FAILED  ] FailingTest.failingTest2 (1 ms)
+[ RUN      ] FailingTest.failureWithLogOutput
+failing_test.js:24
+Expected: evaluates to false
+Actual:   2
+
+foo bar
+failing_test.js:26
+Expected: evaluates to false
+Actual:   3
+
+[  FAILED  ] FailingTest.failureWithLogOutput (1 ms)
+[ RUN      ] FailingTest.passingTest2
+[       OK ] FailingTest.passingTest2 (1 ms)
+[ RUN      ] FailingTest.numberExpectations
+failing_test.js:34
+Expected: is less than 0
+Actual:   1
+
+failing_test.js:35
+Expected: is less than 1
+Actual:   1
+
+failing_test.js:37
+Expected: is less than or equal to -1
+Actual:   1
+
+failing_test.js:38
+Expected: is less than or equal to 0
+Actual:   1
+
+failing_test.js:40
+Expected: is greater than 7
+Actual:   7
+
+failing_test.js:41
+Expected: is greater than 9
+Actual:   7
+
+failing_test.js:43
+Expected: is greater than or equal to 8
+Actual:   7
+
+failing_test.js:44
+Expected: is greater than or equal to 9
+Actual:   7
+
+[  FAILED  ] FailingTest.numberExpectations (1 ms)
+[----------]
+
+[  FAILED  ]
