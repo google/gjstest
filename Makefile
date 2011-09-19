@@ -7,6 +7,9 @@ CPPFLAGS += -I. -I$(V8_DIR)/include
 # Compiler flags.
 CXXFLAGS += -g -Wall -Wextra
 
+# Protocol buffer compiler.
+PROTOC = protoc
+
 # All tests, to be filled in by packages.
 TESTS =
 
@@ -40,6 +43,8 @@ test : $(TESTS)
 clean :
 	find . -name '*.a' -delete
 	find . -name '*.o' -delete
+	find . -name '*.pb.h' -delete
+	find . -name '*.pb.cc' -delete
 	rm -f $(TESTS)
 
 .PHONY: test clean
