@@ -22,7 +22,7 @@
 #include "base/logging.h"
 #include "base/macros.h"
 #include "third_party/gtest/include/gtest/gmock.h"
-#include "third_party/gtest/include/gtest/gunit.h"
+#include "third_party/gtest/include/gtest/gtest.h"
 
 using testing::ElementsAre;
 using testing::HasSubstr;
