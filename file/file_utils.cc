@@ -39,8 +39,8 @@ string ReadFileOrDie(const string& path) {
   }
 
   // Make sure we stopped because of EOF, not an error.
-  QCHECK_EQ(ferror(file), 0) << "Error reading file: " << path;
-  QCHECK_NE(feof(file), 0) << "Expected eof.";
+  CHECK_EQ(ferror(file), 0) << "Error reading file: " << path;
+  CHECK_NE(feof(file), 0) << "Expected eof.";
 
   CHECK_ERR(fclose(file));
   return result;
@@ -59,8 +59,8 @@ void WriteStringToFileOrDie(const string& s, const string& path) {
         fwrite(base, 1, size - total_bytes_written, file);
 
     if (!bytes_written) {
-      QCHECK_EQ(ferror(file), 0) << "Error writing file: " << path;
-      QCHECK_NE(feof(file), 0) << "Expected eof.";
+      CHECK_EQ(ferror(file), 0) << "Error writing file: " << path;
+      CHECK_NE(feof(file), 0) << "Expected eof.";
       break;
     }
 
@@ -78,12 +78,12 @@ string Basename(const string& path) {
 
 void FindFiles(const string& directory, vector<string>* files) {
   DIR* dir = opendir(directory.c_str());
-  QCHECK(dir) << "Couldn't open directory: " << directory;
+  CHECK(dir) << "Couldn't open directory: " << directory;
 
   while (1) {
     struct dirent dir_struct;
     struct dirent* result;
-    QCHECK_EQ(readdir_r(dir, &dir_struct, &result), 0)
+    CHECK_EQ(readdir_r(dir, &dir_struct, &result), 0)
         << "Error reading directory: " << directory;
 
     // Are we done?
@@ -93,7 +93,7 @@ void FindFiles(const string& directory, vector<string>* files) {
     const string path = directory + "/" + name;
 
     struct stat stat_buf;
-    QCHECK_EQ(stat(path.c_str(), &stat_buf), 0) << "Couldn't stat: " << path;
+    CHECK_EQ(stat(path.c_str(), &stat_buf), 0) << "Couldn't stat: " << path;
 
     // Avoid recursing forever.
     if (name == "." || name == "..") continue;
