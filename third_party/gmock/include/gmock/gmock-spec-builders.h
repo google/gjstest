@@ -66,12 +66,12 @@
 #include <string>
 #include <vector>
 
-#include "gmock/gmock-actions.h"
-#include "gmock/gmock-cardinalities.h"
-#include "gmock/gmock-matchers.h"
-#include "gmock/internal/gmock-internal-utils.h"
-#include "gmock/internal/gmock-port.h"
-#include "gtest/gtest.h"
+#include "third_party/gmock/include/gmock/gmock-actions.h"
+#include "third_party/gmock/include/gmock/gmock-cardinalities.h"
+#include "third_party/gmock/include/gmock/gmock-matchers.h"
+#include "third_party/gmock/include/gmock/internal/gmock-internal-utils.h"
+#include "third_party/gmock/include/gmock/internal/gmock-port.h"
+#include "third_party/gtest/include/gtest/gtest.h"
 
 namespace testing {
 

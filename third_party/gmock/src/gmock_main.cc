@@ -30,8 +30,8 @@
 // Author: wan@google.com (Zhanyong Wan)
 
 #include <iostream>
-#include "gmock/gmock.h"
-#include "gtest/gtest.h"
+#include "third_party/gmock/include/gmock/gmock.h"
+#include "third_party/gtest/include/gtest/gtest.h"
 
 // MS C++ compiler/linker has a bug on Windows (not on Windows CE), which
 // causes a link error when _tmain is defined in a static library and UNICODE

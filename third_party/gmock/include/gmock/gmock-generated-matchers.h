@@ -41,7 +41,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "gmock/gmock-matchers.h"
+#include "third_party/gmock/include/gmock/gmock-matchers.h"
 
 namespace testing {
 namespace internal {
