@@ -21,7 +21,7 @@
 #include "base/integral_types.h"
 #include "base/logging.h"
 #include "base/macros.h"
-#include "third_party/gtest/include/gtest/gmock.h"
+#include "third_party/gmock/include/gmock/gmock.h"
 #include "third_party/gtest/include/gtest/gtest.h"
 
 using testing::ElementsAre;
