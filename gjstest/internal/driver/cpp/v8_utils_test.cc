@@ -109,7 +109,9 @@ TEST_F(ConvertToStringTest, Numbers) {
 
 typedef V8UtilsTest ExecuteJsTest;
 
-static string GetResultAsString(const string& js, string filename = "") {
+static std::string GetResultAsString(
+    const std::string& js,
+    std::string filename = "") {
   return ConvertToString(ExecuteJs(js, filename));
 }
 
@@ -134,7 +136,7 @@ TEST_F(ConvertToStringTest, SingleValue) {
 TEST_F(ConvertToStringTest, FunctionReturnValue) {
   HandleScope handle_owner;
 
-  const string js =
+  const std::string js =
       "var addTwo = function(a, b) { return a + b; };\n"
       "addTwo(2, 3)";
 
@@ -144,7 +146,7 @@ TEST_F(ConvertToStringTest, FunctionReturnValue) {
 TEST_F(ConvertToStringTest, StackWithFilename) {
   HandleScope handle_owner;
 
-  const string js =
+  const std::string js =
       "2+2\n"
       "new Error().stack";
 
@@ -154,7 +156,7 @@ TEST_F(ConvertToStringTest, StackWithFilename) {
 TEST_F(ConvertToStringTest, StackWithoutFilename) {
   HandleScope handle_owner;
 
-  const string js =
+  const std::string js =
       "2+2\n"
       "new Error().stack";
 
@@ -177,7 +179,7 @@ TEST_F(DescribeErrorTest, NoError) {
 TEST_F(DescribeErrorTest, NoMessage) {
   HandleScope handle_owner;
 
-  const string js = "throw new Error();";
+  const std::string js = "throw new Error();";
 
   TryCatch try_catch;
   ASSERT_TRUE(ExecuteJs(js, "taco.js").IsEmpty());
@@ -188,7 +190,7 @@ TEST_F(DescribeErrorTest, NoMessage) {
 TEST_F(DescribeErrorTest, WithMessage) {
   HandleScope handle_owner;
 
-  const string js = "throw new Error('foo');";
+  const std::string js = "throw new Error('foo');";
 
   TryCatch try_catch;
   ASSERT_TRUE(ExecuteJs(js, "taco.js").IsEmpty());
@@ -200,7 +202,7 @@ TEST_F(DescribeErrorTest, NoLineNumber) {
   HandleScope handle_owner;
 
   // Missing end curly brace.
-  const string js = "var foo = {\n  'taco': 1\n";
+  const std::string js = "var foo = {\n  'taco': 1\n";
 
   TryCatch try_catch;
   ASSERT_TRUE(ExecuteJs(js, "taco.js").IsEmpty());
@@ -215,15 +217,16 @@ TEST_F(DescribeErrorTest, NoLineNumber) {
 
 typedef V8UtilsTest ConvertToStringVectorTest;
 
-static vector<string> ConvertToStringVector(const string& js) {
-  vector<string> result;
+static std::vector<std::string> ConvertToStringVector(
+    const std::string& js) {
+  std::vector<std::string> result;
   ConvertToStringVector(ExecuteJs(js, ""), &result);
   return result;
 }
 
 TEST_F(ConvertToStringVectorTest, EmptyValue) {
   HandleScope handle_owner;
-  vector<string> result;
+  std::vector<std::string> result;
 
   EXPECT_DEATH(ConvertToStringVector(Local<Value>(), &result), "non-empty");
 }
@@ -301,7 +304,7 @@ TEST(RegisterFunctionTest, CallsAppropriateCallback) {
   Context::Scope context_scope(context);
 
   // Add different amounts to the two counters.
-  const string js = "addToCounter1(3); addToCounter2(7)";
+  const std::string js = "addToCounter1(3); addToCounter2(7)";
   ExecuteJs(js, "");
 
   EXPECT_EQ(3, counter_1);
