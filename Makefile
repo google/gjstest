@@ -29,20 +29,7 @@ third_party/gmock/gmock_main.a:
 # Packages
 ######################################################
 
-BASE_HDRS = base/*.h
-
-base/callback.o: base/callback.cc $(BASE_HDRS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c base/callback.cc -o $@
-
-base/logging.o: base/logging.cc $(BASE_HDRS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c base/logging.cc -o $@
-
-base/stringprintf.o: base/stringprintf.cc $(BASE_HDRS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c base/stringprintf.cc -o $@
-
-base/base.a: base/callback.o base/logging.o base/stringprintf.o
-	$(AR) $(ARFLAGS) $@ $^
-
+include base/build.mk
 include gjstest/build.mk
 
 ######################################################
