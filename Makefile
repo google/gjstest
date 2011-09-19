@@ -39,18 +39,29 @@ third_party/gmock/gmock_main.a:
 # Libraries
 ######################################################
 
-base/base.o : base/*.h base/*.cc
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c base/*.cc -o base/base.o
+BASE_HDRS = base/*.h
 
-gjstest/internal/driver/cpp/v8_utils.o : gjstest/internal/driver/cpp/v8_utils.h gjstest/internal/driver/cpp/v8_utils.cc base/*.h $(V8_DIR)/include/*.h
+base/callback.o: base/callback.cc $(BASE_HDRS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c base/callback.cc -o $@
+
+base/logging.o: base/logging.cc $(BASE_HDRS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c base/logging.cc -o $@
+
+base/stringprintf.o: base/stringprintf.cc $(BASE_HDRS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c base/stringprintf.cc -o $@
+
+base/base.a: base/callback.o base/logging.o base/stringprintf.o
+	$(AR) $(ARFLAGS) $@ $^
+
+gjstest/internal/driver/cpp/v8_utils.o : gjstest/internal/driver/cpp/v8_utils.h gjstest/internal/driver/cpp/v8_utils.cc base/*.h $(V8_DIR)/include/*.h $(BASE_HDRS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c gjstest/internal/driver/cpp/v8_utils.cc -o gjstest/internal/driver/cpp/v8_utils.o
 
 ######################################################
 # Tests
 ######################################################
 
-gjstest/internal/driver/cpp/v8_utils_test.o : gjstest/internal/driver/cpp/v8_utils_test.cc gjstest/internal/driver/cpp/v8_utils.h $(TEST_HEADERS)
+gjstest/internal/driver/cpp/v8_utils_test.o : gjstest/internal/driver/cpp/v8_utils_test.cc gjstest/internal/driver/cpp/v8_utils.h $(TEST_HEADERS) $(BASE_HDRS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c gjstest/internal/driver/cpp/v8_utils_test.cc -o gjstest/internal/driver/cpp/v8_utils_test.o
 
-gjstest/internal/driver/cpp/v8_utils_test : gjstest/internal/driver/cpp/v8_utils.o gjstest/internal/driver/cpp/v8_utils_test.o third_party/gmock/gmock_main.a base/base.o
+gjstest/internal/driver/cpp/v8_utils_test : gjstest/internal/driver/cpp/v8_utils.o gjstest/internal/driver/cpp/v8_utils_test.o third_party/gmock/gmock_main.a base/base.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
