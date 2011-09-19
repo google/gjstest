@@ -19,6 +19,7 @@ test : $(TESTS)
 	for test in $(TESTS); do $$test; done
 
 clean :
+	find . -name '*.a' -delete
 	find . -name '*.o' -delete
 	rm -f $(TESTS)
 
