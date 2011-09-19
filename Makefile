@@ -46,5 +46,6 @@ clean :
 	find . -name '*.pb.h' -delete
 	find . -name '*.pb.cc' -delete
 	rm -f $(TESTS)
+	rm -f gjstest/internal/compiler/compiler
 
 .PHONY: test clean
