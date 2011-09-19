@@ -38,6 +38,7 @@
 #include <iterator>
 
 #include "base/logging.h"
+#include "base/scoped_ptr.h"
 #include "strings/strutil.h"
 
 #ifdef _WIN32
@@ -55,6 +56,7 @@
 #endif
 
 using std::back_insert_iterator;
+using std::numeric_limits;
 
 inline bool IsNaN(double value) {
   // NaN is never equal to anything, even itself.
@@ -1012,7 +1014,7 @@ char* DoubleToBuffer(double value, char* buffer) {
   // platforms these days.  Just in case some system exists where DBL_DIG
   // is significantly larger -- and risks overflowing our buffer -- we have
   // this assert.
-  GOOGLE_COMPILE_ASSERT(DBL_DIG < 20, DBL_DIG_is_too_big);
+  assert(DBL_DIG < 20);
 
   if (value == numeric_limits<double>::infinity()) {
     strcpy(buffer, "inf");
@@ -1067,7 +1069,7 @@ char* FloatToBuffer(float value, char* buffer) {
   // platforms these days.  Just in case some system exists where FLT_DIG
   // is significantly larger -- and risks overflowing our buffer -- we have
   // this assert.
-  GOOGLE_COMPILE_ASSERT(FLT_DIG < 10, FLT_DIG_is_too_big);
+  assert(FLT_DIG < 10);
 
   if (value == numeric_limits<double>::infinity()) {
     strcpy(buffer, "inf");
