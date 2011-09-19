@@ -18,5 +18,5 @@ $(COMPILER_PACKAGE)/compiler.pb.o : $(COMPILER_PACKAGE)/compiler.pb.h $(COMPILER
 # Binaries
 ######################################################
 
-$(COMPILER_PACKAGE)/compiler.o : $(COMPILER_PACKAGE)/compiler.cc $(COMPILER_PACKAGE)/compiler.pb.h base/*.h strings/strutil.h
+$(COMPILER_PACKAGE)/compiler.o : $(COMPILER_PACKAGE)/compiler.cc $(COMPILER_PACKAGE)/compiler.pb.h base/*.h strings/strutil.h file/file_utils.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(COMPILER_PACKAGE)/compiler.cc -o $(COMPILER_PACKAGE)/compiler.o

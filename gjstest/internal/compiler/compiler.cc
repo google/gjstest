@@ -28,6 +28,7 @@
 #include "base/integral_types.h"
 #include "base/logging.h"
 #include "base/stringprintf.h"
+#include "file/file_utils.h"
 #include "gjstest/internal/compiler/compiler.pb.h"
 #include "strings/strutil.h"
 
