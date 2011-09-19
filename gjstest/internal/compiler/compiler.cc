@@ -29,7 +29,6 @@
 #include "base/logging.h"
 #include "base/stringprintf.h"
 #include "gjstest/internal/compiler/compiler.pb.h"
-#include "TODO/file_utils.h"
 
 DEFINE_string(js, "", "Give this flag once per JS file, topologically sorted.");
 DEFINE_string(binarypb_file, "", "Path to the .binarypb output file.");
@@ -49,7 +48,7 @@ int main(int argc, char** argv) {
   // The C++ flags package doesn't support repeated flags, so we iterate through
   // the arguments here before calling the flags package.
   std::vector<std::string> script_paths;
-  for (uint32 i = 1; i < argc; ++i) {
+  for (uint32 i = 1; i < static_cast<uint32>(argc); ++i) {
     const std::string arg = argv[i];
     if (HasPrefixString(arg, "--js=")) {
       script_paths.push_back(StripPrefixString(arg, "--js="));
