@@ -23,6 +23,8 @@ clean :
 	find . -name '*.o' -delete
 	rm -f $(TESTS)
 
+.PHONY: test clean
+
 ######################################################
 # gtest and gmock configuration
 ######################################################
