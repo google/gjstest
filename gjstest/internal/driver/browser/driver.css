@@ -1,0 +1,94 @@
+/* Reset */
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
+pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small,
+strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label,
+legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas,
+details, figcaption, figure, footer, header, hgroup, menu, nav, section,
+summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 1em;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+/* Base text styling */
+body {
+  color: #444;
+  font-size: 13px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* Styling for the inital heading */
+header.title {
+  margin: 12px;
+  border-bottom: 1px solid #444;
+}
+
+header.title h1 {
+  font-size: 1.8em;
+}
+
+/* Test suite */
+.test-suite {
+  margin: 12px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid #d5dcf1;
+  background: #e6ecf9;
+}
+
+.test-suite h1 {
+  font-size: 1.2em;
+}
+
+/* Test case */
+.test-case {
+  margin-left: 18px;
+  margin-top: 4px;
+}
+
+.test-case h1 {
+  font-size: 1em;
+  color: #a8aebf;
+}
+
+.test-case ol {
+  padding: 2px 2px 2px 12px;
+  background-color: #fff;
+  border: 1px solid #d5dcf1;
+  list-style: none;
+  margin-left: 6px;
+}
+
+/* Expander classes */
+.expanded, .collapsed {
+  cursor: pointer;
+}
+
+.expanded:before {
+  content: '\25BD';
+  margin-right: 0.4em;
+  opacity: 0.5;
+}
+
+.collapsed:before {
+  content: '\25B7';
+  margin-right: 0.4em;
+  opacity: 0.5;
+}
+
+.expanded:hover:before, .collapsed:hover:before {
+  opacity: 1.0;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Base colours for statuses */
+.pass { color: #298206 !important; }
+.fail { color: #802626 !important; }
+.running { color: #425280 !important; }
