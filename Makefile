@@ -43,7 +43,7 @@ base/stringprintf.o: base/stringprintf.cc $(BASE_HDRS)
 base/base.a: base/callback.o base/logging.o base/stringprintf.o
 	$(AR) $(ARFLAGS) $@ $^
 
-include gjstest/internal/driver/cpp/build.mk
+include gjstest/build.mk
 
 ######################################################
 # House-keeping
