@@ -13,10 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "base/commandlineflags.h"
 #include "base/logging.h"
-#include "testing/base/public/googletest.h"
-#include "testing/base/public/gunit.h"
+#include "third_party/gtest/include/gtest/gtest.h"
 #include "webutil/xml/xml_writer.h"
 
 namespace {
