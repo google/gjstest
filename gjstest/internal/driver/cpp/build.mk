@@ -28,7 +28,7 @@ $(CPP_PKG)/v8_utils_test.bin : $(CPP_PKG)/v8_utils.o $(CPP_PKG)/v8_utils_test.o 
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@ -lglog
 
 $(CPP_PKG)/v8_utils_test : $(CPP_PKG)/v8_utils_test.bin
-	$(CPP_PKG)/v8_utils_test
+	$(CPP_PKG)/v8_utils_test.bin
 
 ######################################################
 # Binaries
