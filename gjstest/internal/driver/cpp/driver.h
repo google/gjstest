@@ -18,7 +18,7 @@
 #ifndef GJSTEST_INTERNAL_DRIVER_CPP_DRIVER_H_
 #define GJSTEST_INTERNAL_DRIVER_CPP_DRIVER_H_
 
-#include <string>
+#include "base/stl_decl.h"
 
 namespace gjstest {
 

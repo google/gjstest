@@ -15,7 +15,6 @@
 
 #include "gjstest/internal/driver/cpp/driver.h"
 
-#include <hash_map>
 #include <string>
 #include <vector>
 
@@ -25,11 +24,13 @@
 #include "base/integral_types.h"
 #include "base/logging.h"
 #include "base/macros.h"
+#include "base/stl_decl.h"
 #include "base/stringprintf.h"
 #include "base/timer.h"
 #include "gjstest/internal/compiler/compiler.pb.h"
 #include "gjstest/internal/driver/cpp/test_case.h"
 #include "gjstest/internal/driver/cpp/v8_utils.h"
+#include "util/hash/hash.h"
 #include "webutil/xml/xml_writer.h"
 
 using v8::Array;
