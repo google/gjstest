@@ -36,6 +36,7 @@ TEST_HEADERS = \
 
 include base/build.mk
 include gjstest/build.mk
+include strings/build.mk
 include third_party/cityhash/build.mk
 include third_party/gmock/build.mk
 include webutil/xml/build.mk
