@@ -3,8 +3,7 @@
 *.o
 
 # Test binaries built by make.
-*_test
-*-test
+*test.bin
 
 # Generated proto bufer code.
 *.pb.cc
