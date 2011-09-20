@@ -81,7 +81,6 @@ include webutil/xml/build.mk
 ######################################################
 
 test : $(CPP_TESTS)
-	for test in $(CPP_TESTS); do $$test; done
 
 js_tests : $(JS_TESTS)
 
