@@ -10,6 +10,9 @@ CXXFLAGS += -g -Wall -Wextra
 # Protocol buffer compiler.
 PROTOC = protoc
 
+# Path to the libxml2 includes directory.
+LIBXML2_INCLUDES_DIR := /usr/include/libxml2
+
 # All tests, to be filled in by packages.
 TESTS =
 

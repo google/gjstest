@@ -31,20 +31,18 @@
 
 #include <string.h>
 
-#include <hash_map>
-#include <hash_set>
 #include <limits>
 #include <stack>
 #include <vector>
 
-#include "util/hash/hash.h"
+#include <libxml/xmlwriter.h>
 
 #include "webutil/xml/xml_writer.h"
 
 #include "base/scoped_ptr.h"
+#include "base/stl_decl.h"
+#include "base/stringprintf.h"
 #include "base/logging.h"
-#include "strings/stringprintf.h"
-#include "third_party/libxml/xmlwriter.h"
 
 namespace webutil_xml {
 
