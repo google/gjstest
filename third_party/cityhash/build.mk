@@ -5,7 +5,7 @@ CITY_PKG := third_party/cityhash
 ######################################################
 
 $(CITY_PKG)/cityhash.o : $(CITY_PKG)/city.h $(CITY_PKG)/city.cc
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(CITY_PKG)/city.cc -o $(CITY_PKG)/city.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(CITY_PKG)/city.cc -o $(CITY_PKG)/cityhash.o
 
 ######################################################
 # Tests

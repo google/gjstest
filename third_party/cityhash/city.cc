@@ -27,11 +27,10 @@
 // possible hash functions, by using SIMD instructions, or by
 // compromising on hash quality.
 
-#include "config.h"
-#include <city.h>
-
 #include <algorithm>
 #include <string.h>  // for memcpy and memset
+
+#include "third_party/cityhash/city.h"
 
 using namespace std;
 
