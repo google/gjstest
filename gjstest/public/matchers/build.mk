@@ -11,5 +11,9 @@ $(MATCHERS_PKG)/$(1) : $(MATCHERS_PKG)/$(1).js $(JS_TEST_DEPS) gjstest/internal/
 JS_TESTS += $(MATCHERS_PKG)/$(1)
 endef
 
-
 $(eval $(call add_js_test,array_matchers_test))
+$(eval $(call add_js_test,boolean_matchers_test))
+$(eval $(call add_js_test,equality_matchers_test))
+$(eval $(call add_js_test,function_matchers_test))
+$(eval $(call add_js_test,number_matchers_test))
+$(eval $(call add_js_test,string_matchers_test))
