@@ -48,28 +48,47 @@ DEFINE_string(filter, "", "Regular expression for test names to run.");
 
 namespace gjstest {
 
+// Attempt to read in all of the specified user scripts.
+static bool GetScripts(
+    NamedScripts* scripts,
+    string* error) {
+  vector<string> paths;
+  SplitStringUsing(FLAGS_js_files, ",", &paths);
+
+  for (uint32 i = 0; i < paths.size(); ++i) {
+    const string& path = paths[i];
+
+    NamedScript* script = scripts->add_script();
+    script->set_name(Basename(path));
+    script->set_source(ReadFileOrDie(path));
+  }
+
+  return true;
+}
+
 static bool Run() {
-  // Find the file containing the scripts to be run, and load its contents.
-  const string scripts_path =
-      FindSingleFileWithSuffix(
-          google::StringFromEnv("TEST_SRCDIR", ""),
-          "-gjstest-scripts.binarypb");
-
+  // Attempt to load the appropriate scripts.
   NamedScripts scripts;
-  CHECK(scripts.ParseFromString(ReadFileOrDie(scripts_path)))
-      << "Couldn't parse NamedScripts proto.";
+  string error;
+  if (!GetScripts(&scripts, &error)) {
+    LOG(ERROR) << "Failed to load scripts: " << error;
+    return false;
+  }
 
-  // Run the tests.
+  // Run any tests registered.
   string output;
   string xml;
   const bool success = RunTests(scripts, FLAGS_filter, &output, &xml);
 
   // Log the output.
+  //
+  // TODO(jacobsa): Use a different severity?
   LOG(ERROR) << output;
 
   // Write out the XML file to the appropriate place.
-  const string xml_path = google::StringFromEnv("XML_OUTPUT_FILE", "");
-  WriteStringToFileOrDie(xml, xml_path);
+  if (!FLAGS_xml_output_file.empty()) {
+    WriteStringToFileOrDie(xml, FLAGS_xml_output_file);
+  }
 
   return success;
 }
