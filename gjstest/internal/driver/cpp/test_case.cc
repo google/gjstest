@@ -70,7 +70,7 @@ TestCase::TestCase(
 }
 
 void TestCase::Run() {
-  SimpleCycleTimer timer;
+  CycleTimer timer;
 
   // Assume we succeeded by default.
   succeeded = true;

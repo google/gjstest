@@ -24,6 +24,7 @@
 
 #include "base/integral_types.h"
 #include "base/macros.h"
+#include "base/stl_decl.h"
 
 namespace gjstest {
 
