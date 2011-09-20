@@ -46,6 +46,13 @@ JS_TEST_DEPS = \
     gjstest/public/matchers/string_matchers.js \
     gjstest/internal/use_global_namespace.js
 
+define add_js_test
+$(1) : $(1).js $(JS_TEST_DEPS) gjstest/internal/driver/cpp/driver
+	gjstest/internal/driver/cpp/driver --js_files=`echo "$(JS_TEST_DEPS) $(1).js" | perl -i -pe 's: :,:g'`
+
+JS_TESTS += $(1)
+endef
+
 default: test
 
 ######################################################
