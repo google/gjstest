@@ -4,7 +4,7 @@ PKG := webutil/xml
 # Libraries
 ######################################################
 
-$(PKG)/xml_writer.o : $(PKG)/xml_writer.h $(PKG)/xml_writer.cc base/*.h
+$(PKG)/xml_writer.o : $(PKG)/xml_writer.h $(PKG)/xml_writer.cc base/*.h util/hash/hash.h third_party/cityhash/*.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(PKG)/xml_writer.cc -o $(PKG)/xml_writer.o -I$(LIBXML2_INCLUDES_DIR)
 
 ######################################################

@@ -43,6 +43,7 @@
 #include "base/stl_decl.h"
 #include "base/stringprintf.h"
 #include "base/logging.h"
+#include "util/hash/hash.h"
 
 namespace webutil_xml {
 
@@ -84,8 +85,8 @@ class XmlWriter::PrefixMapper {
   size_t stack_depth() const { return uri_stack_->size(); }
 
  private:
-  typedef hash_map<string, string, GoodFastHash<string> > StringStringMap;
-  typedef hash_set<string, GoodFastHash<string> > StringSet;
+  typedef hash_map<string, string> StringStringMap;
+  typedef hash_set<string> StringSet;
   typedef vector<string> StringVector;
   typedef stack<StringVector *> StringVectorStack;
 
