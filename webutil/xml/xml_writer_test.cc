@@ -13,9 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <limits>
+
 #include "base/logging.h"
 #include "third_party/gtest/include/gtest/gtest.h"
 #include "webutil/xml/xml_writer.h"
+
+using std::numeric_limits;
 
 namespace {
 
@@ -484,7 +488,7 @@ TEST_F(XmlWriterTest, SmokeTest) {
   w_->DataElement("child33", kNsUri1, true);
   w_->EndElement();
 
-  ASSERT_EQ_M(9, w_->ElementDepth(), "XML element stack depth incorrect");
+  ASSERT_EQ(9, w_->ElementDepth()) << "XML element stack depth incorrect";
 
   ASSERT_STREQ(kSmokeTestContentStart.c_str(), w_->GetContent());
 
