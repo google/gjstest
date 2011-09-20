@@ -13,12 +13,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// A driver for Google JS Test test. Looks for a file named
-// "*-gjstest-scripts.binarypb" in the directory identified by TEST_SRCDIR, and
-// runs its scripts and then any tests that its scripts registered.
+// A driver for Google JS Test. Executes each JS file it's given, in order,
+// then runs any tests that were registered in the process.
 //
-// TODO(jacobsa): These should probably be changed into flags that the user
-// gives explicitly. Maybe this should be combined with the compiler tool too.
+// Input files should be topologically sorted. That is, if you have
+// foo_test.js, which tests foo.js, which depends on bar.js and baz.js, the
+// input should look like this:
+//
+//     --js_files=\
+//         bar.js,\
+//         baz.js,\
+//         foo.js,\
+//         foo_test.js
+//
+// (The relative order of bar.js and baz.js does not matter in this example.
 
 #include <string>
 #include <vector>
@@ -32,35 +40,13 @@
 #include "gjstest/internal/driver/cpp/driver.h"
 #include "strings/strutil.h"
 
+DEFINE_string(js_files, "",
+              "The list of JS files to execute, comma separated.");
+
+DEFINE_string(xml_output_file, "", "An XML file to write results to.");
 DEFINE_string(filter, "", "Regular expression for test names to run.");
 
 namespace gjstest {
-
-// Look for a file with the given suffix in the supplied directory, crashing if
-// there is not exactly one such file. Return the path to the single file.
-static string FindSingleFileWithSuffix(
-    const string& directory,
-    const string& suffix) {
-  vector<string> files;
-  FindFiles(directory, &files);
-
-  string result;
-  for (uint32 i = 0; i < files.size(); ++i) {
-    const string& path = files[i];
-    if (HasSuffixString(path, suffix)) {
-      CHECK(result.empty())
-          << "Duplicate match for suffix: " << suffix << "\n"
-          << "1st match: " << result << "\n"
-          << "2nd match: " << path << "\n";
-
-      result = path;
-    }
-  }
-
-  CHECK(!result.empty()) << "Couldn't find file with suffix: " << suffix;
-
-  return result;
-}
 
 static bool Run() {
   // Find the file containing the scripts to be run, and load its contents.
