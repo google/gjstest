@@ -80,7 +80,7 @@ include webutil/xml/build.mk
 # House-keeping
 ######################################################
 
-test : $(CPP_TESTS)
+test : $(CPP_TESTS) js_tests
 
 js_tests : $(JS_TESTS)
 
