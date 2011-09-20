@@ -66,7 +66,7 @@ static bool Run() {
   // Find the file containing the scripts to be run, and load its contents.
   const string scripts_path =
       FindSingleFileWithSuffix(
-          StringFromEnv("TEST_SRCDIR", ""),
+          google::StringFromEnv("TEST_SRCDIR", ""),
           "-gjstest-scripts.binarypb");
 
   NamedScripts scripts;
@@ -82,7 +82,7 @@ static bool Run() {
   LOG(ERROR) << output;
 
   // Write out the XML file to the appropriate place.
-  const string xml_path = StringFromEnv("XML_OUTPUT_FILE", "");
+  const string xml_path = google::StringFromEnv("XML_OUTPUT_FILE", "");
   WriteStringToFileOrDie(xml, xml_path);
 
   return success;
