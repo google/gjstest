@@ -17,6 +17,34 @@ LIBXML2_INCLUDES_DIR := /usr/include/libxml2
 
 # All tests, to be filled in by packages.
 CPP_TESTS =
+JS_TESTS =
+
+# Nasty, hard-coded list of dependencies inherited by every JS test.
+JS_TEST_DEPS = \
+    gjstest/internal/namespace.js \
+    gjstest/internal/driver/error_utils.js \
+    gjstest/internal/driver/stack_utils.js \
+    gjstest/internal/driver/test_environment.js \
+    gjstest/public/matcher_types.js \
+    gjstest/public/matchers/number_matchers.js \
+    gjstest/internal/driver/browser/html_builder.js \
+    gjstest/internal/assertions/expect_that.js \
+    gjstest/public/matchers/boolean_matchers.js \
+    gjstest/public/matchers/equality_matchers.js \
+    gjstest/internal/mocking/call_expectation.js \
+    gjstest/internal/mocking/mock_function.js \
+    gjstest/internal/mocking/mock_instance.js \
+    gjstest/public/stringify.js \
+    gjstest/public/assertions.js \
+    gjstest/public/mocking.js \
+    gjstest/public/register.js \
+    gjstest/internal/driver/run_test.js \
+    gjstest/internal/driver/browser/driver.js \
+    gjstest/public/logging.js \
+    gjstest/public/matchers/array_matchers.js \
+    gjstest/public/matchers/function_matchers.js \
+    gjstest/public/matchers/string_matchers.js \
+    gjstest/internal/use_global_namespace.js
 
 default: test
 
