@@ -39,6 +39,7 @@
 
 #include "base/logging.h"
 #include "base/scoped_ptr.h"
+#include "strings/ascii_ctype.h"
 #include "strings/strutil.h"
 
 #ifdef _WIN32
@@ -1164,4 +1165,32 @@ double NoLocaleStrtod(const char* text, char** original_endptr) {
   }
 
   return result;
+}
+
+void StripWhiteSpace(string* str) {
+  int str_length = str->length();
+
+  // Strip off leading whitespace.
+  int first = 0;
+  while (first < str_length && ascii_isspace(str->at(first))) {
+    ++first;
+  }
+  // If entire string is white space.
+  if (first == str_length) {
+    str->clear();
+    return;
+  }
+  if (first > 0) {
+    str->erase(0, first);
+    str_length -= first;
+  }
+
+  // Strip off trailing whitespace.
+  int last = str_length - 1;
+  while (last >= 0 && ascii_isspace(str->at(last))) {
+    --last;
+  }
+  if (last != (str_length - 1) && last >= 0) {
+    str->erase(last + 1, string::npos);
+  }
 }
