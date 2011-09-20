@@ -26,7 +26,10 @@
 //         foo.js,\
 //         foo_test.js
 //
-// (The relative order of bar.js and baz.js does not matter in this example.
+// (The relative order of bar.js and baz.js does not matter in this example.)
+//
+// Note in particular that the appropriate gjstest dependencies must be added as
+// well.
 
 #include <string>
 #include <vector>
