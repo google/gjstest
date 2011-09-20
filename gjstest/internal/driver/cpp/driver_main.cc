@@ -31,6 +31,7 @@
 // Note in particular that the appropriate gjstest dependencies must be added as
 // well.
 
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -86,7 +87,7 @@ static bool Run() {
   // Log the output.
   //
   // TODO(jacobsa): Use a different severity?
-  LOG(ERROR) << output;
+  std::cout << output;
 
   // Write out the XML file to the appropriate place.
   if (!FLAGS_xml_output_file.empty()) {
