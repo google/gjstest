@@ -31,4 +31,6 @@ struct hash<string> {
   }
 };
 
+}  // namespace HASH_NAMESPACE
+
 #endif  // UTIL_HASH_HASH_H_
