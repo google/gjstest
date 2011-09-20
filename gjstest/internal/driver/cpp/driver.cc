@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 
+#include <re2/re2.h>
 #include <v8.h>
 
 #include "base/basictypes.h"
