@@ -57,7 +57,7 @@ namespace gjstest {
 // in the order of execution, a map from test names to durations, and a map from
 // failed test names to failure messages.
 static string MakeXml(
-    double duration,
+    uint32 duration_ms,
     const vector<string>& tests_run,
     const hash_map<string, double>& test_durations,
     const hash_map<string, string>& test_failure_messages) {
@@ -67,7 +67,7 @@ static string MakeXml(
   xml_writer.StartElement("testsuite");
   xml_writer.AddAttribute("name", "Google JS tests");
   xml_writer.AddAttribute("failures", SimpleItoa(test_failure_messages.size()));
-  xml_writer.AddAttribute("time", SimpleDtoa(duration));
+  xml_writer.AddAttribute("time", SimpleDtoa(duration_ms / 1000.0));
 
   for (uint32 i = 0; i < tests_run.size(); ++i) {
     const string& name = tests_run[i];
@@ -220,7 +220,7 @@ bool RunTests(
 
   // Keep track of how long the whole process takes, and whether there are any
   // failures.
-  SimpleCycleTimer overall_timer;
+  CycleTimer overall_timer;
   overall_timer.Start();
   bool success = true;
 
@@ -272,7 +272,7 @@ bool RunTests(
   // Create an XML document describing the execution.
   *xml =
       MakeXml(
-          overall_timer.Get(),
+          overall_timer.GetInMs(),
           tests_run,
           test_durations,
           test_failure_messages);
