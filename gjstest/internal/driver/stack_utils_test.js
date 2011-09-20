@@ -35,12 +35,12 @@ GetCurrentStackTest.prototype.goldenTest = function() {
   frame = frames[0];
   expectEq('fooBar', frame.functionName);
   expectEq('stack_utils_test.js', frame.fileName);
-  expectEq(16, frame.lineNumber);
+  expectEq(28, frame.lineNumber);
 
   frame = frames[1];
   expectEq('GetCurrentStackTest.goldenTest', frame.functionName);
   expectEq('stack_utils_test.js', frame.fileName);
-  expectEq(20, frame.lineNumber);
+  expectEq(32, frame.lineNumber);
 
   frame = frames[2];
   expectEq(null, frame.functionName);
