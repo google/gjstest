@@ -30,6 +30,7 @@
 #include "gjstest/internal/compiler/compiler.pb.h"
 #include "gjstest/internal/driver/cpp/test_case.h"
 #include "gjstest/internal/driver/cpp/v8_utils.h"
+#include "strings/strutil.h"
 #include "util/hash/hash.h"
 #include "webutil/xml/xml_writer.h"
 

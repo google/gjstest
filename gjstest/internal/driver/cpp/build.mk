@@ -5,7 +5,7 @@ COMPILER_PKG := gjstest/internal/compiler
 # Libraries
 ######################################################
 
-$(CPP_PKG)/driver.o : $(CPP_PKG)/driver.h $(CPP_PKG)/driver.cc base/*.h $(V8_DIR)/include/*.h $(COMPILER_PKG)/compiler.pb.h $(CPP_PKG)/test_case.h $(CPP_PKG)/v8_utils.h webutil/xml/xml_writer.h util/hash/hash.h third_party/cityhash/*.h
+$(CPP_PKG)/driver.o : $(CPP_PKG)/driver.h $(CPP_PKG)/driver.cc base/*.h $(V8_DIR)/include/*.h $(COMPILER_PKG)/compiler.pb.h $(CPP_PKG)/test_case.h $(CPP_PKG)/v8_utils.h webutil/xml/xml_writer.h util/hash/hash.h third_party/cityhash/*.h strings/strutil.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(CPP_PKG)/driver.cc -o $(CPP_PKG)/driver.o
 
 $(CPP_PKG)/v8_utils.o : $(CPP_PKG)/v8_utils.h $(CPP_PKG)/v8_utils.cc base/*.h $(V8_DIR)/include/*.h
