@@ -2,7 +2,9 @@
 V8_DIR = ../../tmp/v8-read-only
 
 # Preprocessor flags.
-CPPFLAGS += -I. -I$(V8_DIR)/include
+#
+# TODO(jacobsa): Let autoconf deal with HASH_NAMESPACE
+CPPFLAGS += -I. -I$(V8_DIR)/include -DHASH_NAMESPACE=__gnu_cxx
 
 # Compiler flags.
 CXXFLAGS += -g -Wall -Wextra
