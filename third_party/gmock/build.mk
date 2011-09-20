@@ -30,7 +30,9 @@ $(GMOCK_PACKAGE)/gmock_main.o : $(GMOCK_SRCS_)
             -c $(GMOCK_DIR)/src/gmock_main.cc -o $@
 
 $(GMOCK_PACKAGE)/gmock.a : $(GMOCK_PACKAGE)/gmock-all.o $(GMOCK_PACKAGE)/gtest-all.o
+	rm -f $@
 	$(AR) $(ARFLAGS) $@ $^
 
 $(GMOCK_PACKAGE)/gmock_main.a : $(GMOCK_PACKAGE)/gmock-all.o $(GMOCK_PACKAGE)/gtest-all.o $(GMOCK_PACKAGE)/gmock_main.o
+	rm -f $@
 	$(AR) $(ARFLAGS) $@ $^

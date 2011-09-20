@@ -15,4 +15,5 @@ base/timer.o: base/timer.cc base/*.h
 
 
 base/base.a: base/callback.o base/stringprintf.o base/timer.o
+	rm -f $@
 	$(AR) $(ARFLAGS) $@ $^
