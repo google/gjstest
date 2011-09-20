@@ -71,6 +71,7 @@ TestCase::TestCase(
 
 void TestCase::Run() {
   CycleTimer timer;
+  timer.Start();
 
   // Assume we succeeded by default.
   succeeded = true;
@@ -113,6 +114,7 @@ void TestCase::Run() {
   }
 
   // Record the test time.
+  timer.Stop();
   duration_ms = timer.GetInMs();
 }
 
