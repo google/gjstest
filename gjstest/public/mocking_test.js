@@ -73,7 +73,7 @@ ExpectCallTest.prototype.setsStackFrame = function() {
   var stackFrame = expectation.stackFrame;
 
   expectEq('mocking_test.js', stackFrame.fileName);
-  expectEq(59, stackFrame.lineNumber);
+  expectEq(70, stackFrame.lineNumber);
 };
 
 ExpectCallTest.prototype.nonMatcherValues = function() {
