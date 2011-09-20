@@ -102,8 +102,5 @@ int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   google::ParseCommandLineFlags(&argc, &argv, true);
 
-  // Turn off timestamp and file number junk in the output of LOG().
-  FLAGS_log_prefix = false;
-
   return gjstest::Run() ? 0 : 1;
 }
