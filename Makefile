@@ -32,6 +32,7 @@ TEST_HEADERS = \
 include base/build.mk
 include gjstest/build.mk
 include third_party/gmock/build.mk
+include webutil/xml/build.mk
 
 ######################################################
 # House-keeping
