@@ -11,9 +11,9 @@ $(1) : $(1).js $(JS_TEST_DEPS) gjstest/internal/driver/cpp/driver
 JS_TESTS += $(1)
 endef
 
-$(eval $(call add_js_test,gjstest/public/matchers/array_matchers_test))
-$(eval $(call add_js_test,gjstest/public/matchers/boolean_matchers_test))
-$(eval $(call add_js_test,gjstest/public/matchers/equality_matchers_test))
-$(eval $(call add_js_test,gjstest/public/matchers/function_matchers_test))
-$(eval $(call add_js_test,gjstest/public/matchers/number_matchers_test))
-$(eval $(call add_js_test,gjstest/public/matchers/string_matchers_test))
+$(eval $(call add_js_test,$(MATCHERS_PKG)/array_matchers_test))
+$(eval $(call add_js_test,$(MATCHERS_PKG)/boolean_matchers_test))
+$(eval $(call add_js_test,$(MATCHERS_PKG)/equality_matchers_test))
+$(eval $(call add_js_test,$(MATCHERS_PKG)/function_matchers_test))
+$(eval $(call add_js_test,$(MATCHERS_PKG)/number_matchers_test))
+$(eval $(call add_js_test,$(MATCHERS_PKG)/string_matchers_test))
