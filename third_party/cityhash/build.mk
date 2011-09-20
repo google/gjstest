@@ -11,7 +11,7 @@ $(CITY_PKG)/cityhash.o : $(CITY_PKG)/city.h $(CITY_PKG)/city.cc
 # Tests
 ######################################################
 
-TESTS +=\
+CPP_TESTS +=\
     $(CITY_PKG)/city-test
 
 $(CITY_PKG)/city-test.o : $(CITY_PKG)/city-test.cc $(CITY_PKG)/city.h $(CITY_PKG)/citycrc.h

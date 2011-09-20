@@ -11,7 +11,7 @@ $(PKG)/xml_writer.o : $(PKG)/xml_writer.h $(PKG)/xml_writer.cc base/*.h util/has
 # Tests
 ######################################################
 
-TESTS +=\
+CPP_TESTS +=\
     $(PKG)/xml_writer_test
 
 $(PKG)/xml_writer_test.o : $(PKG)/xml_writer_test.cc $(PKG)/xml_writer.h $(TEST_HEADERS) base/*.h

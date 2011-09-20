@@ -16,7 +16,7 @@ PROTOC = protoc
 LIBXML2_INCLUDES_DIR := /usr/include/libxml2
 
 # All tests, to be filled in by packages.
-TESTS =
+CPP_TESTS =
 
 default: test
 
@@ -45,15 +45,15 @@ include webutil/xml/build.mk
 # House-keeping
 ######################################################
 
-test : $(TESTS)
-	for test in $(TESTS); do $$test; done
+test : $(CPP_TESTS)
+	for test in $(CPP_TESTS); do $$test; done
 
 clean :
 	find . -name '*.a' -delete
 	find . -name '*.o' -delete
 	find . -name '*.pb.h' -delete
 	find . -name '*.pb.cc' -delete
-	rm -f $(TESTS)
+	rm -f $(CPP_TESTS)
 	rm -f gjstest/internal/compiler/compiler
 
 .PHONY: test clean

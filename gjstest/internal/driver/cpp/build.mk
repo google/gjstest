@@ -18,7 +18,7 @@ $(CPP_PKG)/v8_utils.o : $(CPP_PKG)/v8_utils.h $(CPP_PKG)/v8_utils.cc base/*.h $(
 # Tests
 ######################################################
 
-TESTS +=\
+CPP_TESTS +=\
     $(CPP_PKG)/v8_utils_test
 
 $(CPP_PKG)/v8_utils_test.o : $(CPP_PKG)/v8_utils_test.cc $(CPP_PKG)/v8_utils.h $(TEST_HEADERS) base/*.h $(V8_DIR)/include/*.h
