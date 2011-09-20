@@ -23,19 +23,16 @@
 #include <string>
 #include <vector>
 
-#include "base/commandlineflags.h"
+#include <gflags/gflags.h>
+
 #include "base/integral_types.h"
 #include "base/logging.h"
 #include "file/file_utils.h"
 #include "gjstest/internal/compiler/compiler.pb.h"
 #include "gjstest/internal/driver/cpp/driver.h"
-#include "strings/util.h"
+#include "strings/strutil.h"
 
 DEFINE_string(filter, "", "Regular expression for test names to run.");
-
-using maps_api::FindFiles;
-using maps_api::ReadFileOrDie;
-using maps_api::WriteStringToFileOrDie;
 
 namespace gjstest {
 
@@ -51,7 +48,7 @@ static string FindSingleFileWithSuffix(
   for (uint32 i = 0; i < files.size(); ++i) {
     const string& path = files[i];
     if (HasSuffixString(path, suffix)) {
-      QCHECK(result.empty())
+      CHECK(result.empty())
           << "Duplicate match for suffix: " << suffix << "\n"
           << "1st match: " << result << "\n"
           << "2nd match: " << path << "\n";
@@ -60,7 +57,7 @@ static string FindSingleFileWithSuffix(
     }
   }
 
-  QCHECK(!result.empty()) << "Couldn't find file with suffix: " << suffix;
+  CHECK(!result.empty()) << "Couldn't find file with suffix: " << suffix;
 
   return result;
 }
@@ -73,7 +70,7 @@ static bool Run() {
           "-gjstest-scripts.binarypb");
 
   NamedScripts scripts;
-  QCHECK(scripts.ParseFromString(ReadFileOrDie(scripts_path)))
+  CHECK(scripts.ParseFromString(ReadFileOrDie(scripts_path)))
       << "Couldn't parse NamedScripts proto.";
 
   // Run the tests.
