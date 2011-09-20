@@ -4,8 +4,12 @@ MATCHERS_PKG := gjstest/public/matchers
 # Tests
 ######################################################
 
-JS_TESTS +=\
-    $(MATCHERS_PKG)/array_matchers_test
+define add_js_test
+$(MATCHERS_PKG)/$(1) : $(MATCHERS_PKG)/$(1).js $(JS_TEST_DEPS) gjstest/internal/driver/cpp/driver
+	gjstest/internal/driver/cpp/driver --js_files=`echo "$(JS_TEST_DEPS) $(MATCHERS_PKG)/$(1).js" | perl -i -pe 's: :,:g'`
 
-$(MATCHERS_PKG)/array_matchers_test : $(MATCHERS_PKG)/array_matchers_test.js $(JS_TEST_DEPS) gjstest/internal/driver/cpp/driver
-	gjstest/internal/driver/cpp/driver --js_files=`echo "$(JS_TEST_DEPS) $(MATCHERS_PKG)/array_matchers_test.js" | perl -i -pe 's: :,:g'`
+JS_TESTS += $(MATCHERS_PKG)/$(1)
+endef
+
+
+$(eval $(call add_js_test,array_matchers_test))
