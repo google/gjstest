@@ -50,6 +50,7 @@
 #include <string>
 
 #include "base/basictypes.h"
+#include "base/macros.h"
 
 // some forward declaration trickery to prevent us from having to
 // include libxml2's xmlwriter.h in our header.
