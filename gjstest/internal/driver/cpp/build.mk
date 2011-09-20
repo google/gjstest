@@ -31,5 +31,5 @@ $(CPP_PKG)/v8_utils_test : $(CPP_PKG)/v8_utils.o $(CPP_PKG)/v8_utils_test.o thir
 $(CPP_PKG)/driver_main.o : $(CPP_PKG)/driver_main.cc $(CPP_PKG)/driver.h base/*.h file/file_utils.h gjstest/internal/compiler/compiler.pb.h strings/strutil.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(CPP_PKG)/driver_main.cc -o $(CPP_PKG)/driver_main.o
 
-$(CPP_PKG)/driver : $(CPP_PKG)/v8_utils.o $(CPP_PKG)/driver_main.o $(CPP_PKG)/driver.o
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@ -lglog
+$(CPP_PKG)/driver : $(CPP_PKG)/v8_utils.o $(CPP_PKG)/driver_main.o $(CPP_PKG)/driver.o base/base.a file/file_utils.o gjstest/internal/compiler/compiler.pb.o third_party/cityhash/cityhash.o $(CPP_PKG)/driver.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@ -lglog -lv8 -lgflags -lprotobuf -lre2

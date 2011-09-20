@@ -7,7 +7,7 @@ V8_DIR = ../../tmp/v8-read-only
 CPPFLAGS += -I. -I$(V8_DIR)/include -DHASH_NAMESPACE=__gnu_cxx
 
 # Compiler flags.
-CXXFLAGS += -g -Wall -Wextra
+CXXFLAGS += -g -Wall -Wextra -L$(V8_DIR)
 
 # Protocol buffer compiler.
 PROTOC = protoc
