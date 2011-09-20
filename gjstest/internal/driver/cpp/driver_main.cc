@@ -91,7 +91,8 @@ static bool Run() {
 }  // namespace gjstest
 
 int main(int argc, char** argv) {
-  // TODO(jacobsa): Initialize flags and logging.
+  google::InitGoogleLogging(argv[0]);
+  google::ParseCommandLineFlags(&argc, &argv, true);
 
   // Turn off timestamp and file number junk in the output of LOG().
   FLAGS_log_prefix = false;
