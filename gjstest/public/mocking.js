@@ -211,8 +211,8 @@ gjstest.internal.makeMockFunctionStub_ = function(expectations) {
 };
 
 /**
- * A list of mock expectations that have been created, for use by the driver in
- * verifying whether or not all expectations were fulfilled.
+ * A list of mock expectations that have been created, for use by the test
+ * runner in verifying whether or not all expectations were fulfilled.
  *
  * @type {!Array.<!gjstest.internal.CallExpectation>}
  */

@@ -15,7 +15,7 @@
 
 // Copy every public member of the gjstest namespace to the global one. This is
 // used to make symbols globally-accessible for tests that are run by the
-// gjstest driver program.
+// gjstest runner program.
 (function() {
   var globalContext = this;
   for (var property in gjstest) {

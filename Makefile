@@ -56,8 +56,8 @@ base/base.a :
 file/file.a :
 	$(MAKE) -C file file.a
 
-gjstest/internal/cpp/driver_main.a : gjstest/internal/proto/named_scripts.pb.h
-	$(MAKE) -C gjstest/internal/cpp driver_main.a
+gjstest/internal/cpp/gjstest_main.a : gjstest/internal/proto/named_scripts.pb.h
+	$(MAKE) -C gjstest/internal/cpp gjstest_main.a
 
 gjstest/internal/proto/named_scripts.pb.h :
 	$(MAKE) -C gjstest/internal/proto named_scripts.pb.h
@@ -84,7 +84,7 @@ webutil/xml/xml.a :
 bin/gjstest: \
     base/base.a \
     file/file.a \
-    gjstest/internal/cpp/driver_main.a \
+    gjstest/internal/cpp/gjstest_main.a \
     gjstest/internal/proto/proto.a \
     strings/strings.a \
     third_party/cityhash/cityhash.a \

@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "gjstest/internal/cpp/driver.h"
+#include "gjstest/internal/cpp/run_tests.h"
 
 #include <string>
 #include <vector>

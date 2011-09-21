@@ -14,7 +14,7 @@
 // limitations under the License.
 
 // An interface for dependencies on the outside world (e.g. the C++ test
-// driver), used by test running functions.
+// runner), used by test running functions.
 
 /**
  * An object that encapsulates the mutable environment associated with a running
@@ -59,7 +59,7 @@ gjstest.internal.TestEnvironment = function(log, reportFailure) {
 gjstest.internal.TestEnvironment.prototype.log = function(message) {};
 
 /**
- * Report a test failure message to the driver.
+ * Report a test failure message to the test runner.
  *
  * @param {string} message
  */

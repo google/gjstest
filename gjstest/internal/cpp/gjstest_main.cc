@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// A driver for Google JS Test. Executes each JS file it's given, in order,
+// The main Google JS Test tool. Executes each JS file it's given, in order,
 // then runs any tests that were registered in the process.
 //
 // Input files should be topologically sorted. That is, if you have
@@ -40,7 +40,7 @@
 #include "base/integral_types.h"
 #include "base/logging.h"
 #include "file/file_utils.h"
-#include "gjstest/internal/cpp/driver.h"
+#include "gjstest/internal/cpp/run_tests.h"
 #include "gjstest/internal/proto/named_scripts.pb.h"
 #include "strings/strutil.h"
 
