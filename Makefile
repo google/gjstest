@@ -35,6 +35,13 @@ depend :
 	    $(MAKE) -C $$subdir depend || exit 1; \
 	done
 
+test : driver third_party/gmock/gmock_main.a
+	for subdir in $(SUBDIRS); \
+	do \
+	    echo "Making test in $$subdir"; \
+	    $(MAKE) -C $$subdir test || exit 1; \
+	done
+
 ######################################################
 # Sub-packages
 ######################################################
