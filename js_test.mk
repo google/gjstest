@@ -7,7 +7,7 @@ JS_TEST_DEPS := \
     $(PROJECT_ROOT)/gjstest/public/matcher_types.js \
     $(PROJECT_ROOT)/gjstest/public/matchers/number_matchers.js \
     $(PROJECT_ROOT)/gjstest/internal/driver/browser/html_builder.js \
-    $(PROJECT_ROOT)/gjstest/internal/assertions/expect_that.js \
+    $(PROJECT_ROOT)/gjstest/internal/js/expect_that.js \
     $(PROJECT_ROOT)/gjstest/public/matchers/boolean_matchers.js \
     $(PROJECT_ROOT)/gjstest/public/matchers/equality_matchers.js \
     $(PROJECT_ROOT)/gjstest/internal/mocking/call_expectation.js \

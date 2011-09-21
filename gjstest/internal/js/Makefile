@@ -1,5 +1,5 @@
 PROJECT_ROOT := ../../..
-PACKAGE := gjstest/internal/assertions
+PACKAGE := gjstest/internal/js
 default: test
 
 # Tools and flags.

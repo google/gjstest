@@ -11,10 +11,10 @@ include $(PROJECT_ROOT)/tools.mk
 SUBDIRS := \
     base \
     file \
-    gjstest/internal/assertions \
     gjstest/internal/compiler \
     gjstest/internal/driver \
     gjstest/internal/driver/cpp \
+    gjstest/internal/js \
     gjstest/internal/mocking \
     gjstest/public \
     gjstest/public/matchers \
