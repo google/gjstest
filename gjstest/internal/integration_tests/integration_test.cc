@@ -20,8 +20,8 @@
 
 #include "base/logging.h"
 #include "file/file_utils.h"
-#include "gjstest/internal/compiler/compiler.pb.h"
-#include "gjstest/internal/driver/cpp/driver.h"
+#include "gjstest/internal/cpp/run_tests.h"
+#include "gjstest/internal/proto/named_scripts.pb.h"
 #include "third_party/gmock/include/gmock/gmock.h"
 #include "third_party/gtest/include/gtest/gtest.h"
 

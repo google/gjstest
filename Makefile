@@ -12,6 +12,7 @@ SUBDIRS := \
     base \
     file \
     gjstest/internal/cpp \
+    gjstest/internal/integration_tests \
     gjstest/internal/js \
     gjstest/internal/proto \
     gjstest/public \
