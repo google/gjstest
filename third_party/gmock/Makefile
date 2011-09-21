@@ -13,9 +13,14 @@ CPPFLAGS += -I. -I../gtest
 ######################################################
 
 # Objects to include in the library.
-LIB_OBJS = src/gmock-all.o ../gtest/src/gtest-all.o src/gmock_main.o
+LIB_OBJS = src/gmock-all.o ../gtest/src/gtest-all.o
+MAIN_OBJS = $(LIB_OBJS) src/gmock_main.o
 
-gmock_main.a : $(LIB_OBJS)
+gmock.a : $(LIB_OBJS)
+	rm -f $@
+	$(AR) $(ARFLAGS) $@ $^
+
+gmock_main.a : $(MAIN_OBJS)
 	rm -f $@
 	$(AR) $(ARFLAGS) $@ $^
 
@@ -35,7 +40,7 @@ test :
 ######################################################
 
 # depend target
-OBJS = $(LIB_OBJS) $(TEST_OBJS)
+OBJS = $(MAIN_OBJS) $(TEST_OBJS)
 include $(PROJECT_ROOT)/depend_target.mk
 
 clean :

@@ -43,9 +43,10 @@ depend :
 
 test : \
     bin/gjstest \
-    third_party/gmock/gmock_main.a \
+    gjstest/internal/cpp/cpp.a \
     share \
-    gjstest/internal/cpp/cpp.a
+    third_party/gmock/gmock.a \
+    third_party/gmock/gmock_main.a
 	for subdir in $(SUBDIRS); \
 	do \
 	    echo "Making test in $$subdir"; \
@@ -79,6 +80,9 @@ strings/strings.a :
 
 third_party/cityhash/cityhash.a :
 	$(MAKE) -C third_party/cityhash cityhash.a
+
+third_party/gmock/gmock.a :
+	$(MAKE) -C third_party/gmock gmock.a
 
 third_party/gmock/gmock_main.a :
 	$(MAKE) -C third_party/gmock gmock_main.a

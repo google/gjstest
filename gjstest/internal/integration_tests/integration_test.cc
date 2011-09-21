@@ -44,9 +44,13 @@ static string PathToDataFile(const string& file_name) {
 class IntegrationTest : public ::testing::Test {
  protected:
   bool RunBundleNamed(const string& name, string test_filter = "") {
+    const string path = PathToDataFile(name + "_test.js");
+    const string js = ReadFileOrDie(path);
+
     NamedScripts scripts;
-    const string path = PathToDataFile(name + ".binarypb");
-    CHECK(scripts.ParseFromString(ReadFileOrDie(path)));
+    NamedScript* script = scripts.add_script();
+    script->set_name(path);
+    script->set_source(js);
 
     return RunTests(scripts, test_filter, &txt_, &xml_);
   }
@@ -77,37 +81,37 @@ class IntegrationTest : public ::testing::Test {
 };
 
 TEST_F(IntegrationTest, Passing) {
-  EXPECT_TRUE(RunBundleNamed("passing"));
+  EXPECT_TRUE(RunBundleNamed("passing")) << txt_;
   EXPECT_TRUE(CheckGoldenFile("passing.golden.txt", txt_));
   EXPECT_TRUE(CheckGoldenFile("passing.golden.xml", xml_));
 }
 
 TEST_F(IntegrationTest, Failing) {
-  EXPECT_FALSE(RunBundleNamed("failing"));
+  EXPECT_FALSE(RunBundleNamed("failing")) << txt_;
   EXPECT_TRUE(CheckGoldenFile("failing.golden.txt", txt_));
   EXPECT_TRUE(CheckGoldenFile("failing.golden.xml", xml_));
 }
 
 TEST_F(IntegrationTest, Mocks) {
-  EXPECT_FALSE(RunBundleNamed("mocks"));
+  EXPECT_FALSE(RunBundleNamed("mocks")) << txt_;
   EXPECT_TRUE(CheckGoldenFile("mocks.golden.txt", txt_));
   EXPECT_TRUE(CheckGoldenFile("mocks.golden.xml", xml_));
 }
 
 TEST_F(IntegrationTest, SyntaxError) {
-  EXPECT_FALSE(RunBundleNamed("syntax_error"));
+  EXPECT_FALSE(RunBundleNamed("syntax_error")) << txt_;
   EXPECT_TRUE(CheckGoldenFile("syntax_error.golden.txt", txt_));
   EXPECT_TRUE(CheckGoldenFile("syntax_error.golden.xml", xml_));
 }
 
 TEST_F(IntegrationTest, ExceptionDuringTest) {
-  EXPECT_FALSE(RunBundleNamed("exception"));
+  EXPECT_FALSE(RunBundleNamed("exception")) << txt_;
   EXPECT_TRUE(CheckGoldenFile("exception.golden.txt", txt_));
   EXPECT_TRUE(CheckGoldenFile("exception.golden.xml", xml_));
 }
 
 TEST_F(IntegrationTest, TestCaseCalledConstructor) {
-  EXPECT_FALSE(RunBundleNamed("constructor"));
+  EXPECT_FALSE(RunBundleNamed("constructor")) << txt_;
   EXPECT_TRUE(CheckGoldenFile("constructor.golden.txt", txt_));
   EXPECT_TRUE(CheckGoldenFile("constructor.golden.xml", xml_));
 }
@@ -127,3 +131,10 @@ TEST_F(IntegrationTest, NoMatchingTests) {
 }
 
 }  // namespace gjstest
+
+int main(int argc, char **argv) {
+  ::google::ParseCommandLineFlags(&argc, &argv, true);
+  ::testing::InitGoogleTest(&argc, argv);
+
+  return RUN_ALL_TESTS();
+}
