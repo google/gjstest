@@ -11,7 +11,7 @@ include $(PROJECT_ROOT)/tools.mk
 SUBDIRS := \
     base \
     file \
-    gjstest/internal/driver/cpp \
+    gjstest/internal/cpp \
     gjstest/internal/js \
     gjstest/internal/proto \
     gjstest/public \
@@ -56,11 +56,14 @@ base/base.a :
 file/file.a :
 	$(MAKE) -C file file.a
 
+gjstest/internal/cpp/driver_main.a : gjstest/internal/proto/named_scripts.pb.h
+	$(MAKE) -C gjstest/internal/cpp driver_main.a
+
+gjstest/internal/proto/named_scripts.pb.h :
+	$(MAKE) -C gjstest/internal/proto named_scripts.pb.h
+
 gjstest/internal/proto/proto.a :
 	$(MAKE) -C gjstest/internal/proto proto.a
-
-gjstest/internal/driver/cpp/driver_main.a : gjstest/internal/proto/named_scripts.pb.h
-	$(MAKE) -C gjstest/internal/driver/cpp driver_main.a
 
 strings/strings.a :
 	$(MAKE) -C strings strings.a
@@ -81,8 +84,8 @@ webutil/xml/xml.a :
 bin/gjstest: \
     base/base.a \
     file/file.a \
+    gjstest/internal/cpp/driver_main.a \
     gjstest/internal/proto/proto.a \
-    gjstest/internal/driver/cpp/driver_main.a \
     strings/strings.a \
     third_party/cityhash/cityhash.a \
     webutil/xml/xml.a

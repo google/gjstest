@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "gjstest/internal/driver/cpp/driver.h"
+#include "gjstest/internal/cpp/driver.h"
 
 #include <string>
 #include <vector>
@@ -28,8 +28,8 @@
 #include "base/stl_decl.h"
 #include "base/stringprintf.h"
 #include "base/timer.h"
-#include "gjstest/internal/driver/cpp/test_case.h"
-#include "gjstest/internal/driver/cpp/v8_utils.h"
+#include "gjstest/internal/cpp/test_case.h"
+#include "gjstest/internal/cpp/v8_utils.h"
 #include "gjstest/internal/proto/named_scripts.pb.h"
 #include "strings/strutil.h"
 #include "util/gtl/map-util.h"

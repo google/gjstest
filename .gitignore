@@ -4,7 +4,6 @@
 
 # Binaries built by make.
 *test.bin
-gjstest/internal/driver/cpp/driver
 bin/
 
 # Generated proto bufer code.

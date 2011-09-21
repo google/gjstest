@@ -15,7 +15,7 @@
 
 #include <v8.h>
 
-#include "gjstest/internal/driver/cpp/v8_utils.h"
+#include "gjstest/internal/cpp/v8_utils.h"
 
 #include "base/callback.h"
 #include "base/integral_types.h"

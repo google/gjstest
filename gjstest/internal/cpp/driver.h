@@ -15,8 +15,8 @@
 
 // Utility function for driving the whole test runner process.
 
-#ifndef GJSTEST_INTERNAL_DRIVER_CPP_DRIVER_H_
-#define GJSTEST_INTERNAL_DRIVER_CPP_DRIVER_H_
+#ifndef GJSTEST_INTERNAL_CPP_DRIVER_H_
+#define GJSTEST_INTERNAL_CPP_DRIVER_H_
 
 #include "base/stl_decl.h"
 
@@ -40,4 +40,4 @@ bool RunTests(
 
 }  // namespace gjstest
 
-#endif  // GJSTEST_INTERNAL_DRIVER_CPP_DRIVER_H_
+#endif  // GJSTEST_INTERNAL_CPP_DRIVER_H_

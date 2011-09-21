@@ -17,8 +17,8 @@
 // functions assumes that they are called with an existing context and handle
 // scope configured.
 
-#ifndef GJSTEST_INTERNAL_DRIVER_CPP_V8_UTILS_H_
-#define GJSTEST_INTERNAL_DRIVER_CPP_V8_UTILS_H_
+#ifndef GJSTEST_INTERNAL_CPP_V8_UTILS_H_
+#define GJSTEST_INTERNAL_CPP_V8_UTILS_H_
 
 #include <string>
 #include <vector>
@@ -73,4 +73,4 @@ v8::Local<v8::Function> MakeFunction(
 
 }  // namespace gjstest
 
-#endif  // GJSTEST_INTERNAL_DRIVER_CPP_V8_UTILS_H_
+#endif  // GJSTEST_INTERNAL_CPP_V8_UTILS_H_

@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "gjstest/internal/driver/cpp/v8_utils.h"
+#include "gjstest/internal/cpp/v8_utils.h"
 
 #include "base/integral_types.h"
 #include "base/logging.h"

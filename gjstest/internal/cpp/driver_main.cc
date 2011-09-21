@@ -40,7 +40,7 @@
 #include "base/integral_types.h"
 #include "base/logging.h"
 #include "file/file_utils.h"
-#include "gjstest/internal/driver/cpp/driver.h"
+#include "gjstest/internal/cpp/driver.h"
 #include "gjstest/internal/proto/named_scripts.pb.h"
 #include "strings/strutil.h"
 

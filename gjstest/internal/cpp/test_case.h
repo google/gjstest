@@ -15,8 +15,8 @@
 
 // A class that encapsulates the behavior needed to run a single test case.
 
-#ifndef GJSTEST_INTERNAL_DRIVER_CPP_TEST_CASE_H_
-#define GJSTEST_INTERNAL_DRIVER_CPP_TEST_CASE_H_
+#ifndef GJSTEST_INTERNAL_CPP_TEST_CASE_H_
+#define GJSTEST_INTERNAL_CPP_TEST_CASE_H_
 
 #include <string>
 
@@ -61,4 +61,4 @@ class TestCase {
 
 }  // namespace gjstest
 
-#endif  // GJSTEST_INTERNAL_DRIVER_CPP_TEST_CASE_H_
+#endif  // GJSTEST_INTERNAL_CPP_TEST_CASE_H_

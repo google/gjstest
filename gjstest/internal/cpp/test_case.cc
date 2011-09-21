@@ -13,13 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "gjstest/internal/driver/cpp/test_case.h"
+#include "gjstest/internal/cpp/test_case.h"
 
 #include "base/callback.h"
 #include "base/logging.h"
 #include "base/stringprintf.h"
 #include "base/timer.h"
-#include "gjstest/internal/driver/cpp/v8_utils.h"
+#include "gjstest/internal/cpp/v8_utils.h"
 
 using v8::Arguments;
 using v8::Context;
