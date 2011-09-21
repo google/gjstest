@@ -15,13 +15,12 @@
 
 /**
  * Run all registered tests, assuming a browser environment.
+ *
+ * @param {string} pageTitle
+ *      A string to use as a header for the page.
  */
-gjstest.internal.runTestsInBrowser = function() {
-  // Extract the test's build run name from the page URL.
-  var buildRe = /TODO/;
-  var matches = buildRe.exec(window.location.href);
-  var buildName = '//' + matches[1] + ':' + matches[2];
-  document.title = matches[2];  // Just the test name.
+gjstest.internal.runTestsInBrowser = function(pageTitle) {
+  document.title = pageTitle;
 
   // Iterate through the registered test suites to construct browser-specific
   // test suite and case objects.
@@ -48,7 +47,7 @@ gjstest.internal.runTestsInBrowser = function() {
   }
 
   // Build the page's HTML.
-  gjstest.internal.browser.constructPage(buildName, testSuites);
+  gjstest.internal.browser.constructPage(pageTitle, testSuites);
 
   // Run each of the tests.
   var testsRun = 0;

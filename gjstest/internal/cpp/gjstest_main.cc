@@ -56,6 +56,8 @@ DEFINE_string(filter, "", "Regular expression for test names to run.");
 DEFINE_string(html_output_file, "",
               "An HTML file to generate for running the test in a browser.");
 
+DEFINE_string(html_title, "", "The title to use on the output HTML page.");
+
 DEFINE_string(html_script_path_prefix, "",
               "A string to prepend to scripts referenced by the generated HTML "
               "file, useful if you're doing funny things with paths.");
@@ -129,8 +131,12 @@ static bool GenerateHtml() {
           GetBuiltinCssPath().c_str());
 
   // Add an onload handler and a footer.
-  html += "</head>\n<body onLoad=\"gjstest.internal.runTestsInBrowser();\">\n"
-          "</body>\n</html>";
+  html +=
+      StringPrintf(
+          "</head>\n<body onLoad=\""
+              "gjstest.internal.runTestsInBrowser('%s');\">\n"
+              "</body>\n</html>",
+          FLAGS_html_title.c_str());
 
   // Write out the file.
   WriteStringToFileOrDie(html, FLAGS_html_output_file);
