@@ -41,7 +41,7 @@
 #include "base/logging.h"
 #include "base/stringprintf.h"
 #include "file/file_utils.h"
-#include "gjstest/internal/cpp/get_builtin_scripts.h"
+#include "gjstest/internal/cpp/builtin_data.h"
 #include "gjstest/internal/cpp/run_tests.h"
 #include "gjstest/internal/proto/named_scripts.pb.h"
 #include "strings/strutil.h"

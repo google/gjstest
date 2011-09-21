@@ -13,8 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef GJSTEST_INTERNAL_CPP_GET_BUILTIN_SCRIPTS_H_
-#define GJSTEST_INTERNAL_CPP_GET_BUILTIN_SCRIPTS_H_
+#ifndef GJSTEST_INTERNAL_CPP_BUILTIN_DATA_H_
+#define GJSTEST_INTERNAL_CPP_BUILTIN_DATA_H_
 
 #include "base/stl_decl.h"
 
@@ -32,4 +32,4 @@ bool GetBuiltinScripts(
 
 }  // namespace gjstest
 
-#endif  // GJSTEST_INTERNAL_CPP_GET_BUILTIN_SCRIPTS_H_
+#endif  // GJSTEST_INTERNAL_CPP_BUILTIN_DATA_H_
