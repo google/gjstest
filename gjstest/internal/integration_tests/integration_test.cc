@@ -15,7 +15,7 @@
 
 #include <string>
 
-#include <gflag/gflag.h>
+#include <gflags/gflags.h>
 #include <re2/re2.h>
 
 #include "base/logging.h"
@@ -25,13 +25,12 @@
 #include "third_party/gmock/include/gmock/gmock.h"
 #include "third_party/gtest/include/gtest/gtest.h"
 
+DEFINE_string(test_srcdir, "", "Path to directory containing test files.");
+
 DEFINE_bool(dump_new, false,
             "If true, new golden files will be written out whenever an existing"
             "one doesn't match. In order for this to work, you must run the"
             "test locally. If you use g4, you must g4 edit the files first.");
-
-using maps_api::ReadFileOrDie;
-using maps_api::WriteStringToFileOrDie;
 
 using testing::HasSubstr;
 using testing::Not;

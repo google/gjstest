@@ -17,6 +17,10 @@ CPPFLAGS += -DDEFAULT_DATA_DIR=$(DEFAULT_DATA_DIR)
 LIB_OBJS = run_tests.o test_case.o v8_utils.o
 MAIN_OBJS = $(LIB_OBJS) gjstest_main.o
 
+cpp.a : $(LIB_OBJS)
+	rm -f $@
+	$(AR) $(ARFLAGS) $@ $^
+
 gjstest_main.a : $(MAIN_OBJS)
 	rm -f $@
 	$(AR) $(ARFLAGS) $@ $^

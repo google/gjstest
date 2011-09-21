@@ -22,11 +22,14 @@ TEST_DEPS = \
     $(GMOCK_PATH)/gmock_main.a \
     $(PROJECT_ROOT)/third_party/cityhash/cityhash.a \
     $(PROJECT_ROOT)/base/base.a \
+    $(PROJECT_ROOT)/file/file.a \
+    $(PROJECT_ROOT)/gjstest/internal/cpp/cpp.a \
+    $(PROJECT_ROOT)/gjstest/internal/proto/proto.a \
     $(PROJECT_ROOT)/strings/strings.a \
     $(PROJECT_ROOT)/webutil/xml/xml.a \
 
 integration_test.bin : $(LIB_OBJS) $(TEST_OBJS) $(TEST_DEPS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lglog -lxml2 -lre2 -lprotobuf -lv8 -gflags
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lglog -lxml2 -lre2 -lprotobuf -lv8 -lgflags
 
 test : integration_test.bin
 	./integration_test.bin

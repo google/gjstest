@@ -41,7 +41,11 @@ depend :
 	    $(MAKE) -C $$subdir depend || exit 1; \
 	done
 
-test : bin/gjstest third_party/gmock/gmock_main.a share
+test : \
+    bin/gjstest \
+    third_party/gmock/gmock_main.a \
+    share \
+    gjstest/internal/cpp/cpp.a
 	for subdir in $(SUBDIRS); \
 	do \
 	    echo "Making test in $$subdir"; \
@@ -57,6 +61,9 @@ base/base.a :
 
 file/file.a :
 	$(MAKE) -C file file.a
+
+gjstest/internal/cpp/cpp.a : gjstest/internal/proto/named_scripts.pb.h
+	$(MAKE) -C gjstest/internal/cpp cpp.a
 
 gjstest/internal/cpp/gjstest_main.a : gjstest/internal/proto/named_scripts.pb.h
 	$(MAKE) -C gjstest/internal/cpp gjstest_main.a
