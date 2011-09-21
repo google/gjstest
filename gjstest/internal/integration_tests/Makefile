@@ -50,8 +50,9 @@ clean :
 integration_test.o: integration_test.cc ../../../base/logging.h \
   ../../../file/file_utils.h ../../../base/basictypes.h \
   ../../../base/integral_types.h \
-  ../../../gjstest/internal/cpp/run_tests.h ../../../base/stl_decl.h \
-  ../../../base/stl_decl_osx.h \
+  ../../../gjstest/internal/cpp/get_builtin_scripts.h \
+  ../../../base/stl_decl.h ../../../base/stl_decl_osx.h \
+  ../../../gjstest/internal/cpp/run_tests.h \
   ../../../gjstest/internal/proto/named_scripts.pb.h \
   ../../../third_party/gmock/include/gmock/gmock.h \
   ../../../third_party/gmock/include/gmock/gmock-actions.h \
