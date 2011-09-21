@@ -20,6 +20,7 @@
 
 #include "base/logging.h"
 #include "file/file_utils.h"
+#include "gjstest/internal/cpp/get_builtin_scripts.h"
 #include "gjstest/internal/cpp/run_tests.h"
 #include "gjstest/internal/proto/named_scripts.pb.h"
 #include "third_party/gmock/include/gmock/gmock.h"
@@ -44,14 +45,32 @@ static string PathToDataFile(const string& file_name) {
 class IntegrationTest : public ::testing::Test {
  protected:
   bool RunBundleNamed(const string& name, string test_filter = "") {
-    const string path = PathToDataFile(name + "_test.js");
-    const string js = ReadFileOrDie(path);
-
+    // Load the built-in scripts first.
     NamedScripts scripts;
-    NamedScript* script = scripts.add_script();
-    script->set_name(path);
-    script->set_source(js);
+    string error;
+    CHECK(GetBuiltinScripts(&scripts, &error)) << error;
 
+    // Get a list of user scripts to load. Special case: the test
+    // 'syntax_error' is meant to simulate a syntax error in a dependency.
+    vector<string> paths;
+
+    if (name == "syntax_error") {
+      paths.push_back(PathToDataFile("syntax_error.js"));
+      paths.push_back(PathToDataFile("passing_test.js"));
+    } else {
+      paths.push_back(PathToDataFile(name + "_test.js"));
+    }
+
+    // Load each script.
+    for (uint32 i = 0; i < paths.size(); ++i) {
+      const string& path = paths[i];
+
+      NamedScript* script = scripts.add_script();
+      script->set_name(path);
+      script->set_source(ReadFileOrDie(path));
+    }
+
+    // Run the scripts.
     return RunTests(scripts, test_filter, &txt_, &xml_);
   }
 
