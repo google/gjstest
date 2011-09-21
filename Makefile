@@ -124,6 +124,7 @@ bin/gjstest: \
 ######################################################
 
 SHARE_DATA = \
+    internal/js/browser/browser.css \
     internal/js/browser/html_builder.js \
     internal/js/browser/run_tests.js \
     internal/js/call_expectation.js \
