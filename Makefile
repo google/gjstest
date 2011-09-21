@@ -1,23 +1,25 @@
-# Path to the directory where v8 was built.
-V8_DIR = ../../tmp/v8-read-only
+PROJECT_ROOT = .
+default: driver
 
-# Preprocessor flags.
-#
-# TODO(jacobsa): Let autoconf deal with HASH_NAMESPACE
-CPPFLAGS += -I. -I$(V8_DIR)/include -DHASH_NAMESPACE=__gnu_cxx
+# Tools and flags.
+include $(PROJECT_ROOT)/tools.mk
 
-# Compiler flags.
-CXXFLAGS += -g -Wall -Wextra -L$(V8_DIR)
+SUBDIRS := \
+    base \
+    file \
+    gjstest/internal/compiler \
+    gjstest/internal/driver/cpp \
+    strings \
+    third_party/cityhash \
+    third_party/gmock \
+    webutil/xml
 
-# Protocol buffer compiler.
-PROTOC = protoc
+depend :
+	@for subdir in $(SUBDIRS); \
+	do \
+	    make -C $$subdir depend; \
+	done
 
-# Path to the libxml2 includes directory.
-LIBXML2_INCLUDES_DIR := /usr/include/libxml2
-
-# All tests, to be filled in by packages.
-CPP_TESTS =
-JS_TESTS =
 
 # Nasty, hard-coded list of dependencies inherited by every JS test.
 JS_TEST_DEPS = \
