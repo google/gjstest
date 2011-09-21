@@ -1,5 +1,5 @@
 PROJECT_ROOT = .
-default: bin/gjstest
+default: bin/gjstest share
 
 # Tools and flags.
 include $(PROJECT_ROOT)/tools.mk
@@ -23,6 +23,7 @@ SUBDIRS := \
 
 clean :
 	rm -f bin/gjstest
+	rm -rf share/
 	for subdir in $(SUBDIRS); \
 	do \
 	    echo "Cleaning in $$subdir"; \
@@ -39,7 +40,7 @@ depend :
 	    $(MAKE) -C $$subdir depend || exit 1; \
 	done
 
-test : bin/gjstest third_party/gmock/gmock_main.a
+test : bin/gjstest third_party/gmock/gmock_main.a share
 	for subdir in $(SUBDIRS); \
 	do \
 	    echo "Making test in $$subdir"; \
@@ -102,3 +103,44 @@ bin/gjstest: \
     webutil/xml/xml.a
 	mkdir -p bin/
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lglog -lv8 -lgflags -lprotobuf -lre2 -lxml2
+
+######################################################
+# Data
+######################################################
+
+SHARE_DATA = \
+    internal/js/browser/html_builder.js \
+    internal/js/browser/run_tests.js \
+    internal/js/call_expectation.js \
+    internal/js/error_utils.js \
+    internal/js/expect_that.js \
+    internal/js/mock_function.js \
+    internal/js/mock_instance.js \
+    internal/js/namespace.js \
+    internal/js/run_test.js \
+    internal/js/stack_utils.js \
+    internal/js/test_environment.js \
+    internal/js/use_global_namespace.js \
+    public/assertions.js \
+    public/logging.js \
+    public/matcher_types.js \
+    public/matchers/array_matchers.js \
+    public/matchers/boolean_matchers.js \
+    public/matchers/equality_matchers.js \
+    public/matchers/function_matchers.js \
+    public/matchers/number_matchers.js \
+    public/matchers/string_matchers.js \
+    public/mocking.js \
+    public/register.js \
+    public/stringify.js \
+
+share :
+	mkdir -p share
+	for f in $(SHARE_DATA); \
+	do \
+	    DIR=`dirname $$f`; \
+	    mkdir -p share/$$DIR; \
+	    cp gjstest/$$f share/$$DIR || exit 1; \
+	done
+
+.PHONY : share
