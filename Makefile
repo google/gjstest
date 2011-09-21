@@ -11,9 +11,9 @@ include $(PROJECT_ROOT)/tools.mk
 SUBDIRS := \
     base \
     file \
-    gjstest/internal/compiler \
     gjstest/internal/driver/cpp \
     gjstest/internal/js \
+    gjstest/internal/proto \
     gjstest/public \
     gjstest/public/matchers \
     strings \
@@ -31,7 +31,7 @@ clean :
 
 depend :
 	# Make sure proto buffer generated headers exist.
-	$(MAKE) -C gjstest/internal/compiler compiler.pb.h
+	$(MAKE) -C gjstest/internal/proto named_scripts.pb.h
 
 	for subdir in $(SUBDIRS); \
 	do \
@@ -56,10 +56,10 @@ base/base.a :
 file/file.a :
 	$(MAKE) -C file file.a
 
-gjstest/internal/compiler/compiler.pb.a :
-	$(MAKE) -C gjstest/internal/compiler compiler.pb.a
+gjstest/internal/proto/proto.a :
+	$(MAKE) -C gjstest/internal/proto proto.a
 
-gjstest/internal/driver/cpp/driver_main.a : gjstest/internal/compiler/compiler.pb.a
+gjstest/internal/driver/cpp/driver_main.a : gjstest/internal/proto/named_scripts.pb.h
 	$(MAKE) -C gjstest/internal/driver/cpp driver_main.a
 
 strings/strings.a :
@@ -81,7 +81,7 @@ webutil/xml/xml.a :
 bin/gjstest: \
     base/base.a \
     file/file.a \
-    gjstest/internal/compiler/compiler.pb.a \
+    gjstest/internal/proto/proto.a \
     gjstest/internal/driver/cpp/driver_main.a \
     strings/strings.a \
     third_party/cityhash/cityhash.a \

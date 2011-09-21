@@ -1,5 +1,5 @@
 PROJECT_ROOT = ../../..
-default: compiler.pb.a
+default: proto.a
 
 # Tools and flags.
 include $(PROJECT_ROOT)/tools.mk
@@ -9,14 +9,14 @@ include $(PROJECT_ROOT)/tools.mk
 ######################################################
 
 # Objects to include in the library.
-LIB_OBJS = compiler.pb.o
+LIB_OBJS = named_scripts.pb.o
 
-compiler.pb.a : $(LIB_OBJS)
+proto.a : $(LIB_OBJS)
 	rm -f $@
 	$(AR) $(ARFLAGS) $@ $^
 
-compiler.pb.h compiler.pb.cc : compiler.proto
-	cd $(PROJECT_ROOT) && protoc --proto_path=. --cpp_out=. gjstest/internal/compiler/compiler.proto
+named_scripts.pb.h named_scripts.pb.cc : named_scripts.proto
+	cd $(PROJECT_ROOT) && protoc --proto_path=. --cpp_out=. gjstest/internal/proto/named_scripts.proto
 
 ######################################################
 # Tests

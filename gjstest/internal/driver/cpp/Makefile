@@ -57,15 +57,15 @@ driver.o: driver.cc ../../../../gjstest/internal/driver/cpp/driver.h \
   ../../../../base/template_util.h ../../../../base/stl_decl.h \
   ../../../../base/stringprintf.h ../../../../base/timer.h \
   ../../../../base/macros.h \
-  ../../../../gjstest/internal/compiler/compiler.pb.h \
   ../../../../gjstest/internal/driver/cpp/test_case.h \
   ../../../../base/integral_types.h ../../../../base/macros.h \
   ../../../../gjstest/internal/driver/cpp/v8_utils.h \
   ../../../../base/callback-types.h ../../../../base/callback.h \
-  ../../../../base/logging.h ../../../../strings/strutil.h \
-  ../../../../base/basictypes.h ../../../../util/gtl/map-util.h \
-  ../../../../util/hash/hash.h ../../../../base/stl_decl.h \
-  ../../../../third_party/cityhash/city.h \
+  ../../../../base/logging.h \
+  ../../../../gjstest/internal/proto/named_scripts.pb.h \
+  ../../../../strings/strutil.h ../../../../base/basictypes.h \
+  ../../../../util/gtl/map-util.h ../../../../util/hash/hash.h \
+  ../../../../base/stl_decl.h ../../../../third_party/cityhash/city.h \
   ../../../../webutil/xml/xml_writer.h ../../../../base/basictypes.h \
   ../../../../base/macros.h
 test_case.o: test_case.cc \
@@ -87,9 +87,9 @@ v8_utils.o: v8_utils.cc \
 driver_main.o: driver_main.cc ../../../../base/integral_types.h \
   ../../../../base/logging.h ../../../../file/file_utils.h \
   ../../../../base/basictypes.h ../../../../base/integral_types.h \
-  ../../../../gjstest/internal/compiler/compiler.pb.h \
   ../../../../gjstest/internal/driver/cpp/driver.h \
   ../../../../base/stl_decl.h ../../../../base/stl_decl_osx.h \
+  ../../../../gjstest/internal/proto/named_scripts.pb.h \
   ../../../../strings/strutil.h ../../../../base/basictypes.h
 v8_utils_test.o: v8_utils_test.cc \
   ../../../../gjstest/internal/driver/cpp/v8_utils.h \
