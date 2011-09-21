@@ -4,17 +4,15 @@ default: driver
 # Tools and flags.
 include $(PROJECT_ROOT)/tools.mk
 
-# Sub-directories, topologically sorted.
 SUBDIRS := \
     base \
-    strings \
     file \
-    third_party/cityhash \
-    util/hash \
-    third_party/gmock \
-    webutil/xml \
     gjstest/internal/compiler \
     gjstest/internal/driver/cpp \
+    strings \
+    third_party/cityhash \
+    third_party/gmock \
+    webutil/xml \
 
 clean :
 	for subdir in $(SUBDIRS); \
@@ -24,6 +22,9 @@ clean :
 	done
 
 depend :
+	# Make sure proto buffer generated headers exist.
+	make -C gjstest/internal/compiler compiler.pb.h
+
 	for subdir in $(SUBDIRS); \
 	do \
 	    echo "Making depend in $$subdir"; \
