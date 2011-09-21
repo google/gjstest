@@ -56,6 +56,10 @@ DEFINE_string(filter, "", "Regular expression for test names to run.");
 DEFINE_string(html_output_file, "",
               "An HTML file to generate for running the test in a browser.");
 
+DEFINE_string(html_script_path_prefix, "",
+              "A string to prepend to scripts referenced by the generated HTML "
+              "file, useful if you're doing funny things with paths.");
+
 namespace gjstest {
 
 // Attempt to read in all of the built-in and user-specified scripts.
@@ -93,15 +97,20 @@ static bool GenerateHtml() {
                 "<head>\n"
                 "  <meta charset=\"utf-8\">\n";
 
-  // TODO(jacobsa): Append script tags.
-  // for (uint32 i = 0; i < script_paths.size(); ++i) {
-  //   const string& path = script_paths[i];
-  //   html +=
-  //       StringPrintf(
-  //           "  <script src=\"%s%s\"></script>\n",
-  //           path_prefix.c_str(),
-  //           path.c_str());
-  // }
+  // TODO(jacobsa): Pull in built-in scripts.
+
+  // Add a script tag for each user script.
+  vector<string> user_paths;
+  SplitStringUsing(FLAGS_js_files, ",", &user_paths);
+
+  for (uint32 i = 0; i < user_paths.size(); ++i) {
+    const string& path = user_paths[i];
+    html +=
+        StringPrintf(
+            "  <script src=\"%s%s\"></script>\n",
+            FLAGS_html_script_path_prefix.c_str(),
+            path.c_str());
+  }
 
   // Pull in the CSS file.
   //
