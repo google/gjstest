@@ -10,9 +10,9 @@ JS_TEST_DEPS := \
     $(PROJECT_ROOT)/gjstest/internal/js/expect_that.js \
     $(PROJECT_ROOT)/gjstest/public/matchers/boolean_matchers.js \
     $(PROJECT_ROOT)/gjstest/public/matchers/equality_matchers.js \
-    $(PROJECT_ROOT)/gjstest/internal/mocking/call_expectation.js \
-    $(PROJECT_ROOT)/gjstest/internal/mocking/mock_function.js \
-    $(PROJECT_ROOT)/gjstest/internal/mocking/mock_instance.js \
+    $(PROJECT_ROOT)/gjstest/internal/js/call_expectation.js \
+    $(PROJECT_ROOT)/gjstest/internal/js/mock_function.js \
+    $(PROJECT_ROOT)/gjstest/internal/js/mock_instance.js \
     $(PROJECT_ROOT)/gjstest/public/stringify.js \
     $(PROJECT_ROOT)/gjstest/public/assertions.js \
     $(PROJECT_ROOT)/gjstest/public/mocking.js \

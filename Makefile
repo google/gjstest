@@ -15,7 +15,6 @@ SUBDIRS := \
     gjstest/internal/driver \
     gjstest/internal/driver/cpp \
     gjstest/internal/js \
-    gjstest/internal/mocking \
     gjstest/public \
     gjstest/public/matchers \
     strings \
