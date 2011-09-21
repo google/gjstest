@@ -13,6 +13,7 @@ SUBDIRS := \
     file \
     gjstest/internal/compiler \
     gjstest/internal/driver/cpp \
+    gjstest/public/matchers \
     strings \
     third_party/cityhash \
     third_party/gmock \
