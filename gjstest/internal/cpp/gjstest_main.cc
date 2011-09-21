@@ -28,8 +28,8 @@
 //
 // (The relative order of bar.js and baz.js does not matter in this example.)
 //
-// Note in particular that the appropriate gjstest dependencies must be added as
-// well.
+// Dependencies common to all gjstest tests (e.g. built-in matchers and the
+// mocking framework) are added automatically, and should not be specified.
 
 #include <iostream>
 #include <string>
@@ -47,17 +47,63 @@
 DEFINE_string(js_files, "",
               "The list of JS files to execute, comma separated.");
 
+// The default data directory, which must be set at compilation time.
+#ifndef DEFAULT_DATA_DIR
+#error "You must specify DEFAULT_DATA_DIR when compiling."
+#endif
+
+#define DOUBLE_STRINGIFY(x) STRINGIFY(x)
+#define STRINGIFY(x) #x
+
+DEFINE_string(gjstest_data_dir, DOUBLE_STRINGIFY(DEFAULT_DATA_DIR),
+              "A path containing built-in test dependencies.");
+
 DEFINE_string(xml_output_file, "", "An XML file to write results to.");
 DEFINE_string(filter, "", "Regular expression for test names to run.");
 
 namespace gjstest {
+
+static string GetBuiltIn(
+    const string& relative_path) {
+  return FLAGS_gjstest_data_dir + "/" + relative_path;
+}
 
 // Attempt to read in all of the specified user scripts.
 static bool GetScripts(
     NamedScripts* scripts,
     string* error) {
   vector<string> paths;
-  SplitStringUsing(FLAGS_js_files, ",", &paths);
+
+  // Add built-in dependencies, in topologically sorted order.
+  paths.push_back(GetBuiltIn("internal/js/namespace.js"));
+  paths.push_back(GetBuiltIn("internal/js/error_utils.js"));
+  paths.push_back(GetBuiltIn("internal/js/stack_utils.js"));
+  paths.push_back(GetBuiltIn("internal/js/test_environment.js"));
+  paths.push_back(GetBuiltIn("public/matcher_types.js"));
+  paths.push_back(GetBuiltIn("public/matchers/number_matchers.js"));
+  paths.push_back(GetBuiltIn("internal/js/browser/html_builder.js"));
+  paths.push_back(GetBuiltIn("internal/js/expect_that.js"));
+  paths.push_back(GetBuiltIn("public/matchers/boolean_matchers.js"));
+  paths.push_back(GetBuiltIn("public/matchers/equality_matchers.js"));
+  paths.push_back(GetBuiltIn("internal/js/call_expectation.js"));
+  paths.push_back(GetBuiltIn("internal/js/mock_function.js"));
+  paths.push_back(GetBuiltIn("internal/js/mock_instance.js"));
+  paths.push_back(GetBuiltIn("public/stringify.js"));
+  paths.push_back(GetBuiltIn("public/assertions.js"));
+  paths.push_back(GetBuiltIn("public/mocking.js"));
+  paths.push_back(GetBuiltIn("public/register.js"));
+  paths.push_back(GetBuiltIn("internal/js/run_test.js"));
+  paths.push_back(GetBuiltIn("internal/js/browser/run_tests.js"));
+  paths.push_back(GetBuiltIn("public/logging.js"));
+  paths.push_back(GetBuiltIn("public/matchers/array_matchers.js"));
+  paths.push_back(GetBuiltIn("public/matchers/function_matchers.js"));
+  paths.push_back(GetBuiltIn("public/matchers/string_matchers.js"));
+  paths.push_back(GetBuiltIn("internal/js/use_global_namespace.js"));
+
+  // Add paths specified by the user.
+  vector<string> user_paths;
+  SplitStringUsing(FLAGS_js_files, ",", &user_paths);
+  paths.insert(paths.end(), user_paths.begin(), user_paths.end());
 
   for (uint32 i = 0; i < paths.size(); ++i) {
     const string& path = paths[i];

@@ -4,6 +4,7 @@ default: gjstest_main.a
 
 # Tools and flags.
 include $(PROJECT_ROOT)/tools.mk
+CPPFLAGS += -DDEFAULT_DATA_DIR=/usr/local/share/TODO
 
 ######################################################
 # Libraries

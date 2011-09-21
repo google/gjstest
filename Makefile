@@ -77,6 +77,17 @@ third_party/gmock/gmock_main.a :
 webutil/xml/xml.a :
 	$(MAKE) -C webutil/xml xml.a
 
+.PHONY: \
+    base/base.a \
+    file/file.a \
+    gjstest/internal/cpp/gjstest_main.a \
+    gjstest/internal/proto/named_scripts.pb.h \
+    gjstest/internal/proto/proto.a \
+    strings/strings.a \
+    third_party/cityhash/cityhash.a \
+    third_party/gmock/gmock_main.a \
+    webutil/xml/xml.a
+
 ######################################################
 # Binaries
 ######################################################
