@@ -4,6 +4,10 @@ default: driver
 # Tools and flags.
 include $(PROJECT_ROOT)/tools.mk
 
+######################################################
+# House-keeping
+######################################################
+
 SUBDIRS := \
     base \
     file \
@@ -31,6 +35,10 @@ depend :
 	    $(MAKE) -C $$subdir depend || exit 1; \
 	done
 
+######################################################
+# Sub-packages
+######################################################
+
 base/base.a :
 	$(MAKE) -C base base.a
 
@@ -54,6 +62,10 @@ third_party/gmock/gmock_main.a :
 
 webutil/xml/xml.a :
 	$(MAKE) -C webutil/xml xml.a
+
+######################################################
+# Binaries
+######################################################
 
 driver: \
     base/base.a \
