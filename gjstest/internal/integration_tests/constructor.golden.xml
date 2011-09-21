@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuite name="Google JS tests" failures="1" time="0.01">
  <testcase name="ConstructorTest.constructor" time="0.01">
-  <failure><![CDATA[constructor_test.js:12
+  <failure><![CDATA[constructor_test.js:24
 Expected: true
 Actual:   false]]></failure>
  </testcase>

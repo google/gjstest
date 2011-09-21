@@ -9,10 +9,10 @@
 Call matches no expectation.
     Arg 0: 19
 
-Tried expectation at mocks_test.js:56, but arg 0 didn't match:
+Tried expectation at mocks_test.js:68, but arg 0 didn't match:
     Arg 0: 23
 
-Tried expectation at mocks_test.js:55, but arg 0 didn't match:
+Tried expectation at mocks_test.js:67, but arg 0 didn't match:
     Arg 0: 17
 
 Call to bar matches no expectation.
@@ -25,17 +25,17 @@ Call to MyClass.doSomething matches no expectation.
 
 [  FAILED  ] MocksTest.unexpectedMethodCall (1 ms)
 [ RUN      ] MocksTest.unsatisfiedExpectations
-Unsatisfied expectation at mocks_test.js:79:
+Unsatisfied expectation at mocks_test.js:91:
     Arg 0: 19
 
 Expected 1 call; called 0 times.
 
-Unsatisfied expectation at mocks_test.js:82:
+Unsatisfied expectation at mocks_test.js:94:
     Arg 0: 23
 
 Expected 2 calls; called 1 time.
 
-Unsatisfied expectation at mocks_test.js:87:
+Unsatisfied expectation at mocks_test.js:99:
     Arg 0: 29
 
 Expected 3 calls; called 4 times.
@@ -44,17 +44,17 @@ Expected 3 calls; called 4 times.
 [ RUN      ] MocksTest.anotherTest
 [       OK ] MocksTest.anotherTest (1 ms)
 [ RUN      ] MocksTest.unsatisfiedExpectationsWithReferences
-Unsatisfied expectation at mocks_test.js:118:
+Unsatisfied expectation at mocks_test.js:130:
     Arg 0: is a reference to: { name: 'obj_1' }
 
 Expected 1 call; called 0 times.
 
-Unsatisfied expectation at mocks_test.js:121:
+Unsatisfied expectation at mocks_test.js:133:
     Arg 0: is a reference to: { name: 'obj_2' }
 
 Expected 2 calls; called 1 time.
 
-Unsatisfied expectation at mocks_test.js:126:
+Unsatisfied expectation at mocks_test.js:138:
     Arg 0: is a reference to: { name: 'obj_3' }
 
 Expected 3 calls; called 4 times.
@@ -64,17 +64,17 @@ Expected 3 calls; called 4 times.
 Call matches no expectation.
     Arg 0: 23
 
-Tried expectation at mocks_test.js:144, but arg 0 didn't match:
+Tried expectation at mocks_test.js:156, but arg 0 didn't match:
     Arg 0: 19
 
-Unsatisfied expectation at mocks_test.js:144:
+Unsatisfied expectation at mocks_test.js:156:
     Arg 0: 19
 
 Expected 1 call; called 0 times.
 
 [  FAILED  ] MocksTest.precedingExpectThat (1 ms)
 [ RUN      ] MocksTest.expectCallWithNonMockFunction
-mocks_test.js:150
+mocks_test.js:162
 TypeError: Supplied function is not a mock.
 
 [  FAILED  ] MocksTest.expectCallWithNonMockFunction (1 ms)
@@ -82,7 +82,7 @@ TypeError: Supplied function is not a mock.
 Call matches no expectation.
     (No arguments.)
 
-Tried expectation at mocks_test.js:157, but number of arguments didn't match:
+Tried expectation at mocks_test.js:169, but number of arguments didn't match:
     Arg 0: is anything
 
 [  FAILED  ] MocksTest.missingArguments (1 ms)
@@ -91,14 +91,14 @@ Call matches no expectation.
     Arg 0: undefined
     Arg 1: 17
 
-Tried expectation at mocks_test.js:171, but number of arguments didn't match:
+Tried expectation at mocks_test.js:183, but number of arguments didn't match:
     Arg 0: is anything
 
 Call matches no expectation.
     Arg 0: undefined
     Arg 1: undefined
 
-Tried expectation at mocks_test.js:171, but number of arguments didn't match:
+Tried expectation at mocks_test.js:183, but number of arguments didn't match:
     Arg 0: is anything
 
 [  FAILED  ] MocksTest.tooManyArguments (1 ms)
@@ -109,7 +109,7 @@ Call matches no expectation.
     Arg 0: undefined
     Arg 1: undefined
 
-Tried expectation at mocks_test.js:199, but arg 1 didn't match:
+Tried expectation at mocks_test.js:211, but arg 1 didn't match:
     Arg 0: is anything
     Arg 1: is not present or 23
 
@@ -117,7 +117,7 @@ Call matches no expectation.
     Arg 0: undefined
     Arg 1: 24
 
-Tried expectation at mocks_test.js:199, but arg 1 didn't match:
+Tried expectation at mocks_test.js:211, but arg 1 didn't match:
     Arg 0: is anything
     Arg 1: is not present or 23
 
@@ -125,7 +125,7 @@ Call matches no expectation.
     Arg 0: undefined
     Arg 1: 'taco'
 
-Tried expectation at mocks_test.js:199, but arg 1 didn't match:
+Tried expectation at mocks_test.js:211, but arg 1 didn't match:
     Arg 0: is anything
     Arg 1: is not present or 23
 
@@ -134,7 +134,7 @@ Tried expectation at mocks_test.js:199, but arg 1 didn't match:
 Call matches no expectation.
     (No arguments.)
 
-Tried expectation at mocks_test.js:217, but number of arguments didn't match:
+Tried expectation at mocks_test.js:229, but number of arguments didn't match:
     Arg 0: is the missing arg sentinel
 
 [  FAILED  ] MocksTest.sentinelMatcher (1 ms)

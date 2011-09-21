@@ -20,9 +20,7 @@ function ExceptionTest() {}
 gjstest.registerTestSuite(ExceptionTest);
 
 ExceptionTest.prototype.referenceError = function() {
-  // This test is not configured to put gjstest functions in the global
-  // namespace, so the following should throw a reference error.
-  equals(2);
+  fooBar(2);
 };
 
 ExceptionTest.prototype.notAFunctionError = function() {

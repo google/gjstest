@@ -66,7 +66,7 @@ class IntegrationTest : public ::testing::Test {
       const string& path = paths[i];
 
       NamedScript* script = scripts.add_script();
-      script->set_name(path);
+      script->set_name(Basename(path));
       script->set_source(ReadFileOrDie(path));
     }
 

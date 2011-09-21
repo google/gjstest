@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuite name="Google JS tests" failures="5" time="0.01">
  <testcase name="ExceptionTest.referenceError" time="0.01">
-  <failure><![CDATA[exception_test.js:13
-ReferenceError: equals is not defined]]></failure>
+  <failure><![CDATA[exception_test.js:23
+ReferenceError: fooBar is not defined]]></failure>
  </testcase>
  <testcase name="ExceptionTest.notAFunctionError" time="0.01">
-  <failure><![CDATA[exception_test.js:18
+  <failure><![CDATA[exception_test.js:28
 TypeError: object is not a function]]></failure>
  </testcase>
  <testcase name="ExceptionTest.errorInMatcherFactory" time="0.01">
-  <failure><![CDATA[exception_test.js:22
+  <failure><![CDATA[exception_test.js:32
 TypeError: isNearNumber requires two number arguments]]></failure>
  </testcase>
  <testcase name="ExceptionTest.stackOverflow" time="0.01">
@@ -17,7 +17,7 @@ TypeError: isNearNumber requires two number arguments]]></failure>
  </testcase>
  <testcase name="ExceptionTest.passingTest" time="0.01"/>
  <testcase name="ThrowingConstructorTest.someTest" time="0.01">
-  <failure><![CDATA[exception_test.js:35
+  <failure><![CDATA[exception_test.js:45
 Error: taco]]></failure>
  </testcase>
 </testsuite>

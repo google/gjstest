@@ -2,59 +2,59 @@
 <testsuite name="Google JS tests" failures="4" time="0.01">
  <testcase name="FailingTest.passingTest1" time="0.01"/>
  <testcase name="FailingTest.failingTest1" time="0.01">
-  <failure><![CDATA[failing_test.js:15
+  <failure><![CDATA[failing_test.js:27
 Expected: evaluates to false
 Actual:   'a']]></failure>
  </testcase>
  <testcase name="FailingTest.failingTest2" time="0.01">
-  <failure><![CDATA[failing_test.js:19
+  <failure><![CDATA[failing_test.js:31
 Expected: evaluates to false
 Actual:   2
 
-failing_test.js:20
+failing_test.js:32
 Expected: is an array or Arguments object of length 3 with elements matching: [ 1, 2, 3 ]
 Actual:   [ 1, 2 ], which has length 2]]></failure>
  </testcase>
  <testcase name="FailingTest.failureWithLogOutput" time="0.01">
-  <failure><![CDATA[failing_test.js:24
+  <failure><![CDATA[failing_test.js:36
 Expected: evaluates to false
 Actual:   2
 
-failing_test.js:26
+failing_test.js:38
 Expected: evaluates to false
 Actual:   3]]></failure>
  </testcase>
  <testcase name="FailingTest.passingTest2" time="0.01"/>
  <testcase name="FailingTest.numberExpectations" time="0.01">
-  <failure><![CDATA[failing_test.js:34
+  <failure><![CDATA[failing_test.js:46
 Expected: is less than 0
 Actual:   1
 
-failing_test.js:35
+failing_test.js:47
 Expected: is less than 1
 Actual:   1
 
-failing_test.js:37
+failing_test.js:49
 Expected: is less than or equal to -1
 Actual:   1
 
-failing_test.js:38
+failing_test.js:50
 Expected: is less than or equal to 0
 Actual:   1
 
-failing_test.js:40
+failing_test.js:52
 Expected: is greater than 7
 Actual:   7
 
-failing_test.js:41
+failing_test.js:53
 Expected: is greater than 9
 Actual:   7
 
-failing_test.js:43
+failing_test.js:55
 Expected: is greater than or equal to 8
 Actual:   7
 
-failing_test.js:44
+failing_test.js:56
 Expected: is greater than or equal to 9
 Actual:   7]]></failure>
  </testcase>

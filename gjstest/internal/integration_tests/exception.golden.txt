@@ -1,16 +1,16 @@
 [----------]
 [ RUN      ] ExceptionTest.referenceError
-exception_test.js:13
-ReferenceError: equals is not defined
+exception_test.js:23
+ReferenceError: fooBar is not defined
 
 [  FAILED  ] ExceptionTest.referenceError (1 ms)
 [ RUN      ] ExceptionTest.notAFunctionError
-exception_test.js:18
+exception_test.js:28
 TypeError: object is not a function
 
 [  FAILED  ] ExceptionTest.notAFunctionError (1 ms)
 [ RUN      ] ExceptionTest.errorInMatcherFactory
-exception_test.js:22
+exception_test.js:32
 TypeError: isNearNumber requires two number arguments
 
 [  FAILED  ] ExceptionTest.errorInMatcherFactory (1 ms)
@@ -24,7 +24,7 @@ RangeError: Maximum call stack size exceeded
 
 [----------]
 [ RUN      ] ThrowingConstructorTest.someTest
-exception_test.js:35
+exception_test.js:45
 Error: taco
 
 [  FAILED  ] ThrowingConstructorTest.someTest (1 ms)
