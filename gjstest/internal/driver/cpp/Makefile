@@ -1,17 +1,47 @@
 PROJECT_ROOT = ../../../..
+GMOCK_PATH = $(PROJECT_ROOT)/third_party/gmock
 default: driver_main.a
 
 # Tools and flags.
 include $(PROJECT_ROOT)/tools.mk
 
-# Objects to include in the library.
-OBJS = driver.o test_case.o v8_utils.o driver_main.o
+######################################################
+# Libraries
+######################################################
 
-driver_main.a : $(OBJS)
+# Objects to include in the library.
+LIB_OBJS = driver.o test_case.o v8_utils.o
+MAIN_OBJS = $(LIB_OBJS) driver_main.a
+
+driver_main.a : $(MAIN_OBJS)
 	rm -f $@
 	$(AR) $(ARFLAGS) $@ $^
 
+######################################################
+# Tests
+######################################################
+
+# Additional objects to include in the test.
+TEST_OBJS = v8_utils_test.o
+TEST_DEPS = \
+    $(GMOCK_PATH)/gmock_main.a \
+    $(PROJECT_ROOT)/third_party/cityhash/cityhash.a \
+    $(PROJECT_ROOT)/base/base.a \
+    $(PROJECT_ROOT)/strings/strings.a \
+    $(PROJECT_ROOT)/webutil/xml/xml.a \
+
+v8_utils_test.bin : $(LIB_OBJS) $(TEST_OBJS) $(TEST_DEPS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lglog -lxml2 -lre2 -lprotobuf -lv8 -gflags
+
+test : v8_utils_test.bin
+	./v8_utils_test.bin
+
+######################################################
+# House-keeping
+######################################################
+
 # depend target
+OBJS = $(MAIN_OBJS) $(TEST_OBJS)
 include $(PROJECT_ROOT)/depend_target.mk
 
 clean :

@@ -23,7 +23,10 @@ xml.a : $(LIB_OBJS)
 
 # Additional objects to include in the test.
 TEST_OBJS = xml_writer_test.o
-TEST_DEPS = $(GMOCK_PATH)/gmock_main.a $(PROJECT_ROOT)/third_party/cityhash/cityhash.a
+TEST_DEPS = \
+    $(GMOCK_PATH)/gmock_main.a \
+    $(PROJECT_ROOT)/third_party/cityhash/cityhash.a \
+    $(PROJECT_ROOT)/base/base.a \
 
 xml_writer_test.bin : $(LIB_OBJS) $(TEST_OBJS) $(TEST_DEPS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lglog -lxml2
@@ -36,6 +39,7 @@ test : xml_writer_test.bin
 ######################################################
 
 # depend target
+OBJS = $(LIB_OBJS) $(TEST_OBJS)
 include $(PROJECT_ROOT)/depend_target.mk
 
 clean :
