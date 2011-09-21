@@ -18,3 +18,6 @@ clean :
 	rm -f *.pb.*
 	rm -f *.o
 	rm -f *.a
+
+# We can't do auto dependency analysis for a .proto file. (We don't need to, either.)
+depend:
