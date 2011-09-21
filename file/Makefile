@@ -4,14 +4,34 @@ default: file.a
 # Tools and flags.
 include $(PROJECT_ROOT)/tools.mk
 
-# Objects to include in the library.
-OBJS = file_utils.o
+######################################################
+# Libraries
+######################################################
 
-file.a : $(OBJS)
+# Objects to include in the library.
+LIB_OBJS = file_utils.o
+
+file.a : $(LIB_OBJS)
 	rm -f $@
 	$(AR) $(ARFLAGS) $@ $^
 
+######################################################
+# Tests
+######################################################
+
+# Additional objects to include in the test.
+TEST_OBJS =
+TEST_DEPS =
+
+test :
+	@echo "No tests."
+
+######################################################
+# House-keeping
+######################################################
+
 # depend target
+OBJS = $(LIB_OBJS) $(TEST_OBJS)
 include $(PROJECT_ROOT)/depend_target.mk
 
 clean :

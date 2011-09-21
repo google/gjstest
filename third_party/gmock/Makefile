@@ -8,12 +8,31 @@ default: gmock_main.a
 include $(PROJECT_ROOT)/tools.mk
 CPPFLAGS += -I. -I../gtest
 
-# Objects to include in the library.
-OBJS = src/gmock-all.o ../gtest/src/gtest-all.o src/gmock_main.o
+######################################################
+# Libraries
+######################################################
 
-gmock_main.a : $(OBJS)
+# Objects to include in the library.
+LIB_OBJS = src/gmock-all.o ../gtest/src/gtest-all.o src/gmock_main.o
+
+gmock_main.a : $(LIB_OBJS)
 	rm -f $@
 	$(AR) $(ARFLAGS) $@ $^
+
+######################################################
+# Tests
+######################################################
+
+# Additional objects to include in the test.
+TEST_OBJS =
+TEST_DEPS =
+
+test :
+	@echo "No tests."
+
+######################################################
+# House-keeping
+######################################################
 
 # depend target
 include $(PROJECT_ROOT)/depend_target.mk
