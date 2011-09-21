@@ -2,9 +2,10 @@
 *.a
 *.o
 
-# Binaries built by make.
+# Things built by make.
 *test.bin
 bin/
+share/
 
 # Generated proto bufer code.
 *.pb.cc
