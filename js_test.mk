@@ -6,7 +6,7 @@ JS_TEST_DEPS := \
     $(PROJECT_ROOT)/gjstest/internal/js/test_environment.js \
     $(PROJECT_ROOT)/gjstest/public/matcher_types.js \
     $(PROJECT_ROOT)/gjstest/public/matchers/number_matchers.js \
-    $(PROJECT_ROOT)/gjstest/internal/driver/browser/html_builder.js \
+    $(PROJECT_ROOT)/gjstest/internal/js/browser/html_builder.js \
     $(PROJECT_ROOT)/gjstest/internal/js/expect_that.js \
     $(PROJECT_ROOT)/gjstest/public/matchers/boolean_matchers.js \
     $(PROJECT_ROOT)/gjstest/public/matchers/equality_matchers.js \
@@ -18,7 +18,7 @@ JS_TEST_DEPS := \
     $(PROJECT_ROOT)/gjstest/public/mocking.js \
     $(PROJECT_ROOT)/gjstest/public/register.js \
     $(PROJECT_ROOT)/gjstest/internal/js/run_test.js \
-    $(PROJECT_ROOT)/gjstest/internal/driver/browser/driver.js \
+    $(PROJECT_ROOT)/gjstest/internal/js/browser/driver.js \
     $(PROJECT_ROOT)/gjstest/public/logging.js \
     $(PROJECT_ROOT)/gjstest/public/matchers/array_matchers.js \
     $(PROJECT_ROOT)/gjstest/public/matchers/function_matchers.js \

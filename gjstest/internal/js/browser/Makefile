@@ -1,5 +1,5 @@
 PROJECT_ROOT := ../../../..
-PACKAGE := gjstest/internal/driver/browser
+PACKAGE := gjstest/internal/js/browser
 default: test
 
 # Tools and flags.
