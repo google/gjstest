@@ -97,7 +97,17 @@ static bool GenerateHtml() {
                 "<head>\n"
                 "  <meta charset=\"utf-8\">\n";
 
-  // TODO(jacobsa): Pull in built-in scripts.
+  // Pull in built-in scripts.
+  vector<string> builtin_paths;
+  GetBuiltinScriptPaths(&builtin_paths);
+
+  for (uint32 i = 0; i < builtin_paths.size(); ++i) {
+    const string& path = builtin_paths[i];
+    html +=
+        StringPrintf(
+            "  <script src=\"%s\"></script>\n",
+            path.c_str());
+  }
 
   // Add a script tag for each user script.
   vector<string> user_paths;
@@ -113,12 +123,10 @@ static bool GenerateHtml() {
   }
 
   // Pull in the CSS file.
-  //
-  // TODO(jacobsa): Find the CSS file correctly.
   html +=
       StringPrintf(
           "  <link rel=\"stylesheet\" href=\"%s\">\n",
-          "/usr/local/share/gjstest/internal/js/browser/browser.css");
+          GetBuiltinCssPath().c_str());
 
   // Add an onload handler and a footer.
   html += "</head>\n<body onLoad=\"gjstest.internal.runTestsInBrowser();\">\n"
