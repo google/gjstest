@@ -14,7 +14,7 @@ CPPFLAGS += -DDEFAULT_DATA_DIR=$(DEFAULT_DATA_DIR)
 ######################################################
 
 # Objects to include in the library.
-LIB_OBJS = run_tests.o test_case.o v8_utils.o
+LIB_OBJS = run_tests.o test_case.o v8_utils.o get_builtin_scripts.o
 MAIN_OBJS = $(LIB_OBJS) gjstest_main.o
 
 cpp.a : $(LIB_OBJS)
