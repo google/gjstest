@@ -17,6 +17,7 @@
 
 #include "base/logging.h"
 #include "file/file_utils.h"
+#include "gjstest/internal/cpp/builtin_data.h"
 #include "gjstest/internal/proto/named_scripts.pb.h"
 
 // The default data directory, which must be set at compilation time.
@@ -37,37 +38,13 @@ static string GetPath(
   return FLAGS_gjstest_data_dir + "/" + relative_path;
 }
 
-// Attempt to read in all of the specified user scripts.
 bool GetBuiltinScripts(
     NamedScripts* scripts,
     string* error) {
   vector<string> paths;
 
   // Build a list of paths.
-  paths.push_back(GetPath("internal/js/namespace.js"));
-  paths.push_back(GetPath("internal/js/error_utils.js"));
-  paths.push_back(GetPath("internal/js/stack_utils.js"));
-  paths.push_back(GetPath("internal/js/test_environment.js"));
-  paths.push_back(GetPath("public/matcher_types.js"));
-  paths.push_back(GetPath("public/matchers/number_matchers.js"));
-  paths.push_back(GetPath("internal/js/browser/html_builder.js"));
-  paths.push_back(GetPath("internal/js/expect_that.js"));
-  paths.push_back(GetPath("public/matchers/boolean_matchers.js"));
-  paths.push_back(GetPath("public/matchers/equality_matchers.js"));
-  paths.push_back(GetPath("internal/js/call_expectation.js"));
-  paths.push_back(GetPath("internal/js/mock_function.js"));
-  paths.push_back(GetPath("internal/js/mock_instance.js"));
-  paths.push_back(GetPath("public/stringify.js"));
-  paths.push_back(GetPath("public/assertions.js"));
-  paths.push_back(GetPath("public/mocking.js"));
-  paths.push_back(GetPath("public/register.js"));
-  paths.push_back(GetPath("internal/js/run_test.js"));
-  paths.push_back(GetPath("internal/js/browser/run_tests.js"));
-  paths.push_back(GetPath("public/logging.js"));
-  paths.push_back(GetPath("public/matchers/array_matchers.js"));
-  paths.push_back(GetPath("public/matchers/function_matchers.js"));
-  paths.push_back(GetPath("public/matchers/string_matchers.js"));
-  paths.push_back(GetPath("internal/js/use_global_namespace.js"));
+  GetBuiltinScriptPaths(&paths);
 
   // Read in each path.
   for (uint32 i = 0; i < paths.size(); ++i) {
@@ -79,6 +56,38 @@ bool GetBuiltinScripts(
   }
 
   return true;
+}
+
+void GetBuiltinScriptPaths(
+    vector<string>* paths) {
+  paths->push_back(GetPath("internal/js/namespace.js"));
+  paths->push_back(GetPath("internal/js/error_utils.js"));
+  paths->push_back(GetPath("internal/js/stack_utils.js"));
+  paths->push_back(GetPath("internal/js/test_environment.js"));
+  paths->push_back(GetPath("public/matcher_types.js"));
+  paths->push_back(GetPath("public/matchers/number_matchers.js"));
+  paths->push_back(GetPath("internal/js/browser/html_builder.js"));
+  paths->push_back(GetPath("internal/js/expect_that.js"));
+  paths->push_back(GetPath("public/matchers/boolean_matchers.js"));
+  paths->push_back(GetPath("public/matchers/equality_matchers.js"));
+  paths->push_back(GetPath("internal/js/call_expectation.js"));
+  paths->push_back(GetPath("internal/js/mock_function.js"));
+  paths->push_back(GetPath("internal/js/mock_instance.js"));
+  paths->push_back(GetPath("public/stringify.js"));
+  paths->push_back(GetPath("public/assertions.js"));
+  paths->push_back(GetPath("public/mocking.js"));
+  paths->push_back(GetPath("public/register.js"));
+  paths->push_back(GetPath("internal/js/run_test.js"));
+  paths->push_back(GetPath("internal/js/browser/run_tests.js"));
+  paths->push_back(GetPath("public/logging.js"));
+  paths->push_back(GetPath("public/matchers/array_matchers.js"));
+  paths->push_back(GetPath("public/matchers/function_matchers.js"));
+  paths->push_back(GetPath("public/matchers/string_matchers.js"));
+  paths->push_back(GetPath("internal/js/use_global_namespace.js"));
+}
+
+string GetBuiltinCssPath() {
+  return GetPath("internal/js/browser/browser.css");
 }
 
 }  // namespace gjstest

@@ -30,6 +30,13 @@ bool GetBuiltinScripts(
     NamedScripts* scripts,
     string* error);
 
+// Get full paths for the built-in scripts.
+void GetBuiltinScriptPaths(
+    vector<string>* paths);
+
+// Get the path for the built-in CSS file.
+string GetBuiltinCssPath();
+
 }  // namespace gjstest
 
 #endif  // GJSTEST_INTERNAL_CPP_BUILTIN_DATA_H_
