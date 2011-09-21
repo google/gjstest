@@ -35,6 +35,7 @@ test :
 ######################################################
 
 # depend target
+OBJS = $(LIB_OBJS) $(TEST_OBJS)
 include $(PROJECT_ROOT)/depend_target.mk
 
 clean :
