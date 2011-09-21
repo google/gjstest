@@ -12,7 +12,6 @@ SUBDIRS := \
     base \
     file \
     gjstest/internal/compiler \
-    gjstest/internal/driver \
     gjstest/internal/driver/cpp \
     gjstest/internal/js \
     gjstest/public \
