@@ -8,7 +8,7 @@ include $(PROJECT_ROOT)/tools.mk
 OBJS = callback.o stringpiece.o stringprintf.o timer.o
 
 base.a : $(OBJS)
-	rm -f base.a
+	rm -f $@
 	$(AR) $(ARFLAGS) $@ $^
 
 # depend target
