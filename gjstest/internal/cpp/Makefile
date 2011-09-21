@@ -51,7 +51,7 @@ test : v8_utils_test.bin
 ######################################################
 
 # depend target
-OBJS = $(MAIN_OBJS) $(TEST_OBJS)
+OBJS = $(MAIN_OBJS) $(TEST_OBJS) $(LIB_OBJS)
 include $(PROJECT_ROOT)/depend_target.mk
 
 clean :
@@ -149,3 +149,37 @@ v8_utils_test.o: v8_utils_test.cc \
   ../../../third_party/gmock/include/gmock/gmock-more-actions.h \
   ../../../third_party/gmock/include/gmock/gmock-generated-nice-strict.h \
   ../../../third_party/gtest/include/gtest/gtest.h
+run_tests.o: run_tests.cc ../../../gjstest/internal/cpp/run_tests.h \
+  ../../../base/stl_decl.h ../../../base/stl_decl_osx.h \
+  ../../../base/basictypes.h ../../../base/integral_types.h \
+  ../../../base/integral_types.h ../../../base/logging.h \
+  ../../../base/macros.h ../../../base/type_traits.h \
+  ../../../base/template_util.h ../../../base/stl_decl.h \
+  ../../../base/stringprintf.h ../../../base/timer.h \
+  ../../../base/macros.h ../../../gjstest/internal/cpp/test_case.h \
+  ../../../base/integral_types.h ../../../base/macros.h \
+  ../../../gjstest/internal/cpp/v8_utils.h ../../../base/callback-types.h \
+  ../../../base/callback.h ../../../base/logging.h \
+  ../../../gjstest/internal/proto/named_scripts.pb.h \
+  ../../../strings/strutil.h ../../../base/basictypes.h \
+  ../../../util/gtl/map-util.h ../../../util/hash/hash.h \
+  ../../../base/stl_decl.h ../../../third_party/cityhash/city.h \
+  ../../../webutil/xml/xml_writer.h ../../../base/basictypes.h \
+  ../../../base/macros.h
+test_case.o: test_case.cc ../../../gjstest/internal/cpp/test_case.h \
+  ../../../base/integral_types.h ../../../base/macros.h \
+  ../../../base/type_traits.h ../../../base/template_util.h \
+  ../../../base/stl_decl.h ../../../base/stl_decl_osx.h \
+  ../../../base/callback.h ../../../base/logging.h \
+  ../../../base/logging.h ../../../base/stringprintf.h \
+  ../../../base/timer.h ../../../base/integral_types.h \
+  ../../../base/macros.h ../../../gjstest/internal/cpp/v8_utils.h \
+  ../../../base/callback-types.h ../../../base/callback.h
+v8_utils.o: v8_utils.cc ../../../gjstest/internal/cpp/v8_utils.h \
+  ../../../base/callback-types.h ../../../base/callback.h \
+  ../../../base/logging.h ../../../base/integral_types.h \
+  ../../../base/logging.h ../../../base/stringprintf.h
+builtin_data.o: builtin_data.cc ../../../base/logging.h \
+  ../../../file/file_utils.h ../../../base/basictypes.h \
+  ../../../base/integral_types.h \
+  ../../../gjstest/internal/proto/named_scripts.pb.h
