@@ -18,18 +18,49 @@ clean :
 	for subdir in $(SUBDIRS); \
 	do \
 	    echo "Cleaning in $$subdir"; \
-	    make -C $$subdir clean || exit 1; \
+	    $(MAKE) -C $$subdir clean || exit 1; \
 	done
 
 depend :
 	# Make sure proto buffer generated headers exist.
-	make -C gjstest/internal/compiler compiler.pb.h
+	$(MAKE) -C gjstest/internal/compiler compiler.pb.h
 
 	for subdir in $(SUBDIRS); \
 	do \
 	    echo "Making depend in $$subdir"; \
-	    make -C $$subdir depend || exit 1; \
+	    $(MAKE) -C $$subdir depend || exit 1; \
 	done
 
-base/base.a:
-	make -C base base.a
+base/base.a :
+	$(MAKE) -C base base.a
+
+file/file.a :
+	$(MAKE) -C file file.a
+
+gjstest/internal/compiler/compiler.pb.a :
+	$(MAKE) -C gjstest/internal/compiler compiler.pb.a
+
+gjstest/internal/driver/cpp/driver_main.a : gjstest/internal/compiler/compiler.pb.a
+	$(MAKE) -C gjstest/internal/driver/cpp driver_main.a
+
+strings/strings.a :
+	$(MAKE) -C strings strings.a
+
+third_party/cityhash/cityhash.a :
+	$(MAKE) -C third_party/cityhash cityhash.a
+
+third_party/gmock/gmock_main.a :
+	$(MAKE) -C third_party/gmock gmock_main.a
+
+webutil/xml/xml.a :
+	$(MAKE) -C webutil/xml xml.a
+
+driver: \
+    base/base.a \
+    file/file.a \
+    gjstest/internal/compiler/compiler.pb.a \
+    gjstest/internal/driver/cpp/driver_main.a \
+    strings/strings.a \
+    third_party/cityhash/cityhash.a \
+    webutil/xml/xml.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lglog -lv8 -lgflags -lprotobuf -lre2 -lxml2
