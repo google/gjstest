@@ -26,8 +26,8 @@ JS_TEST_DEPS := \
     $(PROJECT_ROOT)/gjstest/internal/use_global_namespace.js
 
 define add_js_test
-$(1) : $(PROJECT_ROOT)/$(PACKAGE)/$(1).js $(JS_TEST_DEPS) $(PROJECT_ROOT)/driver
-	$(PROJECT_ROOT)/driver --js_files=`echo "$(JS_TEST_DEPS) $(PROJECT_ROOT)/$(PACKAGE)/$(1).js" | perl -i -pe 's: :,:g'`
+$(1) : $(PROJECT_ROOT)/$(PACKAGE)/$(1).js $(JS_TEST_DEPS) $(PROJECT_ROOT)/bin/gjstest
+	$(PROJECT_ROOT)/bin/gjstest --js_files=`echo "$(JS_TEST_DEPS) $(PROJECT_ROOT)/$(PACKAGE)/$(1).js" | perl -i -pe 's: :,:g'`
 
 JS_TESTS += $(1)
 endef

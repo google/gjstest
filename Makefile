@@ -1,5 +1,5 @@
 PROJECT_ROOT = .
-default: driver
+default: bin/gjstest
 
 # Tools and flags.
 include $(PROJECT_ROOT)/tools.mk
@@ -24,6 +24,7 @@ SUBDIRS := \
     webutil/xml \
 
 clean :
+	rm -f bin/gjstest
 	for subdir in $(SUBDIRS); \
 	do \
 	    echo "Cleaning in $$subdir"; \
@@ -40,7 +41,7 @@ depend :
 	    $(MAKE) -C $$subdir depend || exit 1; \
 	done
 
-test : driver third_party/gmock/gmock_main.a
+test : bin/gjstest third_party/gmock/gmock_main.a
 	for subdir in $(SUBDIRS); \
 	do \
 	    echo "Making test in $$subdir"; \
@@ -79,7 +80,7 @@ webutil/xml/xml.a :
 # Binaries
 ######################################################
 
-driver: \
+bin/gjstest: \
     base/base.a \
     file/file.a \
     gjstest/internal/compiler/compiler.pb.a \
@@ -87,4 +88,5 @@ driver: \
     strings/strings.a \
     third_party/cityhash/cityhash.a \
     webutil/xml/xml.a
+	mkdir -p bin/
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lglog -lv8 -lgflags -lprotobuf -lre2 -lxml2
