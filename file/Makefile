@@ -5,9 +5,9 @@ default: file.a
 include $(PROJECT_ROOT)/tools.mk
 
 # Objects to include in the library.
-OBJS = file_utils.cc
+OBJS = file_utils.o
 
-strings.a : $(OBJS)
+file.a : $(OBJS)
 	rm -f $@
 	$(AR) $(ARFLAGS) $@ $^
 
