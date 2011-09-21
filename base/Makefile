@@ -4,14 +4,34 @@ default: base.a
 # Tools and flags.
 include $(PROJECT_ROOT)/tools.mk
 
-# Objects to include in the library.
-OBJS = callback.o stringpiece.o stringprintf.o timer.o
+######################################################
+# Libraries
+######################################################
 
-base.a : $(OBJS)
+# Objects to include in the library.
+LIB_OBJS = callback.o stringpiece.o stringprintf.o timer.o
+
+base.a : $(LIB_OBJS)
 	rm -f $@
 	$(AR) $(ARFLAGS) $@ $^
 
+######################################################
+# Tests
+######################################################
+
+# Additional objects to include in the test.
+TEST_OBJS =
+TEST_DEPS =
+
+test :
+	@echo "No tests."
+
+######################################################
+# House-keeping
+######################################################
+
 # depend target
+OBJS = $(LIB_OBJS) $(TEST_OBJS)
 include $(PROJECT_ROOT)/depend_target.mk
 
 clean :
