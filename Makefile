@@ -4,6 +4,9 @@ default: bin/gjstest share
 # Tools and flags.
 include $(PROJECT_ROOT)/tools.mk
 
+# The prefix into which the user wants to install.
+export PREFIX = /usr/local
+
 ######################################################
 # House-keeping
 ######################################################
@@ -147,12 +150,26 @@ SHARE_DATA = \
     public/stringify.js \
 
 share :
-	mkdir -p share
 	for f in $(SHARE_DATA); \
 	do \
 	    DIR=`dirname $$f`; \
-	    mkdir -p share/$$DIR; \
-	    cp gjstest/$$f share/$$DIR || exit 1; \
+	    mkdir -p share/gjstest/$$DIR; \
+	    cp gjstest/$$f share/gjstest/$$DIR || exit 1; \
 	done
 
 .PHONY : share
+
+######################################################
+# Installation
+######################################################
+
+install : bin/gjstest share
+	$(INSTALL) -m 0755 -d $(PREFIX)/bin
+	$(INSTALL) -m 0755 -d $(PREFIX)/share
+	$(INSTALL) -m 0755 bin/gjstest $(PREFIX)/bin/gjstest
+	for f in $$(find share -type f); \
+	do \
+	    DIR=`dirname $$f`; \
+	    install -m 0755 -d $(PREFIX)/$$DIR; \
+	    install -m 0644 $$f $(PREFIX)/$$f; \
+	done

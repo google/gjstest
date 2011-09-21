@@ -3,7 +3,7 @@ GMOCK_PATH = $(PROJECT_ROOT)/third_party/gmock
 default: gjstest_main.a
 
 # The directory compiled in to the tool as the default for built-in data files.
-DEFAULT_DATA_DIR = /usr/local/share/gjstest
+DEFAULT_DATA_DIR = $(PREFIX)/share/gjstest
 
 # Tools and flags.
 include $(PROJECT_ROOT)/tools.mk
