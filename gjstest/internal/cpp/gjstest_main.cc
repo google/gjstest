@@ -39,6 +39,7 @@
 
 #include "base/integral_types.h"
 #include "base/logging.h"
+#include "base/stringprintf.h"
 #include "file/file_utils.h"
 #include "gjstest/internal/cpp/get_builtin_scripts.h"
 #include "gjstest/internal/cpp/run_tests.h"
@@ -50,6 +51,10 @@ DEFINE_string(js_files, "",
 
 DEFINE_string(xml_output_file, "", "An XML file to write results to.");
 DEFINE_string(filter, "", "Regular expression for test names to run.");
+
+// Browser support
+DEFINE_string(html_output_file, "",
+              "An HTML file to generate for running the test in a browser.");
 
 namespace gjstest {
 
@@ -75,6 +80,43 @@ static bool GetScripts(
   }
 
   return true;
+}
+
+static bool GenerateHtml() {
+  // If no HTML file was requested, we're done.
+  if (FLAGS_html_output_file.empty()) {
+    return true;
+  }
+
+  string html = "<!doctype html>\n"
+                "<html lang=\"en\">\n"
+                "<head>\n"
+                "  <meta charset=\"utf-8\">\n";
+
+  // TODO(jacobsa): Append script tags.
+  // for (uint32 i = 0; i < script_paths.size(); ++i) {
+  //   const string& path = script_paths[i];
+  //   html +=
+  //       StringPrintf(
+  //           "  <script src=\"%s%s\"></script>\n",
+  //           path_prefix.c_str(),
+  //           path.c_str());
+  // }
+
+  // Pull in the CSS file.
+  //
+  // TODO(jacobsa): Find the CSS file correctly.
+  html +=
+      StringPrintf(
+          "  <link rel=\"stylesheet\" href=\"%s\">\n",
+          "/usr/local/share/gjstest/internal/js/browser/browser.css");
+
+  // Add an onload handler and a footer.
+  html += "</head>\n<body onLoad=\"gjstest.internal.runTestsInBrowser();\">\n"
+          "</body>\n</html>";
+
+  // Write out the file.
+  WriteStringToFileOrDie(html, FLAGS_html_output_file);
 }
 
 static bool Run() {
@@ -110,5 +152,11 @@ int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   google::ParseCommandLineFlags(&argc, &argv, true);
 
+  // Generate an HTML file if requested.
+  if (!gjstest::GenerateHtml()) {
+    return 1;
+  }
+
+  // Run the specified tests.
   return gjstest::Run() ? 0 : 1;
 }
