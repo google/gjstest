@@ -1,16 +1,39 @@
 PROJECT_ROOT = ../..
+GMOCK_PATH = $(PROJECT_ROOT)/third_party/gmock
 default: xml.a
 
 # Tools and flags.
 include $(PROJECT_ROOT)/tools.mk
 CPPFLAGS += -I/usr/include/libxml2
 
-# Objects to include in the library.
-OBJS = xml_writer.o
+######################################################
+# Libraries
+######################################################
 
-xml.a : $(OBJS)
+# Objects to include in the library.
+LIB_OBJS = xml_writer.o
+
+xml.a : $(LIB_OBJS)
 	rm -f $@
 	$(AR) $(ARFLAGS) $@ $^
+
+######################################################
+# Tests
+######################################################
+
+# Additional objects to include in the test.
+TEST_OBJS = xml_writer_test.o
+TEST_DEPS = $(GMOCK_PATH)/gmock_main.a $(PROJECT_ROOT)/third_party/cityhash/cityhash.a
+
+xml_writer_test.bin : $(LIB_OBJS) $(TEST_OBJS) $(TEST_DEPS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lglog -lxml2
+
+test : xml_writer_test.bin
+	./xml_writer_test.bin
+
+######################################################
+# House-keeping
+######################################################
 
 # depend target
 include $(PROJECT_ROOT)/depend_target.mk
