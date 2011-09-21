@@ -19,9 +19,6 @@
 #include "file/file_utils.h"
 #include "gjstest/internal/proto/named_scripts.pb.h"
 
-DEFINE_string(js_files, "",
-              "The list of JS files to execute, comma separated.");
-
 // The default data directory, which must be set at compilation time.
 #ifndef DEFAULT_DATA_DIR
 #error "You must specify DEFAULT_DATA_DIR when compiling."
