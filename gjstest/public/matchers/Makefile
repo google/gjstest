@@ -15,12 +15,12 @@ include $(PROJECT_ROOT)/tools.mk
 
 include $(PROJECT_ROOT)/js_test.mk
 
-$(eval $(call add_js_test,$(PACKAGE)/array_matchers_test))
-$(eval $(call add_js_test,$(PACKAGE)/boolean_matchers_test))
-$(eval $(call add_js_test,$(PACKAGE)/equality_matchers_test))
-$(eval $(call add_js_test,$(PACKAGE)/function_matchers_test))
-$(eval $(call add_js_test,$(PACKAGE)/number_matchers_test))
-$(eval $(call add_js_test,$(PACKAGE)/string_matchers_test))
+$(eval $(call add_js_test,array_matchers_test))
+$(eval $(call add_js_test,boolean_matchers_test))
+$(eval $(call add_js_test,equality_matchers_test))
+$(eval $(call add_js_test,function_matchers_test))
+$(eval $(call add_js_test,number_matchers_test))
+$(eval $(call add_js_test,string_matchers_test))
 
 test : $(JS_TESTS)
 
