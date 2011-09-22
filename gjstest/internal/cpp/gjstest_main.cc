@@ -87,7 +87,6 @@ static bool GetScripts(
 }
 
 static bool GenerateHtml() {
-  // If no HTML file was requested, we're done.
   string html = "<!doctype html>\n"
                 "<html lang=\"en\">\n"
                 "<head>\n"
@@ -139,7 +138,7 @@ static bool GenerateHtml() {
 }
 
 static bool Run() {
-  // If HTML output was requested, generate it and quite.
+  // If HTML output was requested, generate it and quit.
   if (!FLAGS_html_output_file.empty()) {
     return GenerateHtml();
   }
