@@ -20,11 +20,7 @@
 // foo_test.js, which tests foo.js, which depends on bar.js and baz.js, the
 // input should look like this:
 //
-//     --js_files=\
-//         bar.js,\
-//         baz.js,\
-//         foo.js,\
-//         foo_test.js
+//     --js_files=bar.js,baz.js,foo.js,foo_test.js
 //
 // (The relative order of bar.js and baz.js does not matter in this example.)
 //
@@ -138,6 +134,8 @@ static bool GenerateHtml() {
 
   // Write out the file.
   WriteStringToFileOrDie(html, FLAGS_html_output_file);
+
+  return true;
 }
 
 static bool Run() {
