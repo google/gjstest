@@ -92,6 +92,7 @@ static bool RunTool(
     const string& gjstest_binary,
     const string& gjstest_data_dir,
     const vector<string>& js_files,
+    const string& filter,
     bool* success,
     string* output,
     string* xml) {
@@ -105,11 +106,13 @@ static bool RunTool(
           "%s"
               " --js_files=\"%s\""
               " --xml_output_file=\"%s\""
-              " --gjstest_data_dir=\"%s\"",
+              " --gjstest_data_dir=\"%s\""
+              " --filter=\"%s\"",
           gjstest_binary.c_str(),
           JoinStrings(js_files, ",").c_str(),
           xml_file.c_str(),
-          gjstest_data_dir.c_str());
+          gjstest_data_dir.c_str(),
+          filter.c_str());
 
   // Call the command.
   int exit_code;
@@ -151,6 +154,7 @@ class IntegrationTest : public ::testing::Test {
             FLAGS_gjstest_binary,
             FLAGS_gjstest_data_dir,
             js_files,
+            test_filter,
             &success,
             &txt_,
             &xml_))
