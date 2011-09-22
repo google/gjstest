@@ -13,6 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <stdio.h>
+#include <unistd.h>
+
 #include <string>
 
 #include <gflags/gflags.h>
@@ -23,7 +26,11 @@
 #include "third_party/gmock/include/gmock/gmock.h"
 #include "third_party/gtest/include/gtest/gtest.h"
 
+DEFINE_string(gjstest_binary, "", "Path to the gjstest binary.");
 DEFINE_string(test_srcdir, "", "Path to directory containing test files.");
+
+DEFINE_string(gjstest_data_dir, "",
+              "Directory to give to the gjstest binary as its data dir.");
 
 DEFINE_bool(dump_new, false,
             "If true, new golden files will be written out whenever an existing"
@@ -34,6 +41,64 @@ using testing::Not;
 
 namespace gjstest {
 
+static bool RunTool(
+    const string& gjstest_binary,
+    const string& gjstest_data_dir,
+    const vector<string>& js_files,
+    bool* success,
+    string* output,
+    string* xml) {
+  // Create a pipe to use for the tool's output.
+  int stdout_pipe[2];
+  PCHECK_EQ(pipe(stdout_pipe), 0);
+
+  // Fork a child process.
+  const int child_pid = fork();
+  PCHECK_GE(child_pid, 0);
+
+  if (child_pid == 0) {
+    // This is the child process. Replace stdout with the write end of the pipe.
+    PCHECK_NE(dup2(stdout_pipe[1], stdout), -1);
+
+    // Write something to the pipe and exit.
+    printf("FOO");
+    exit(123);
+  }
+
+  // This is the parent process. Consume output from the child process until the
+  // pipe is closed.
+  while (1) {
+    char buf[1024];
+    const ssize_t bytes_read = read(stdout_pipe[0], buf, arraysize(buf));
+    PCHECK_NE(bytes_read, -1);
+
+    // Has the pipe been closed?
+    if (bytes_read == 0) {
+      break;
+    }
+
+    // Append the bytes to the output string.
+    *output += string(buf, bytes_read);
+  }
+
+  // Wait for the process to exit.
+  int child_status;
+  PCHECK_EQ(waitpid(child_pid, &child_status, 0), child_pid);
+
+  // Make sure it exited normally.
+  if (!WIFEXITED(child_status)) {
+    CHECK(WIFSIGNALED(child_status));
+    LOG(ERROR) << "Child killed with signal " << WTERMSIG(child_status);
+    return false;
+  }
+
+  // The test passed iff the exit code was zero.
+  *success = (WEXITSTATUS(child_status) == 0);
+
+  // TODO(jacobsa): Xml.
+  return true;
+}
+
 static string PathToDataFile(const string& file_name) {
   return FLAGS_test_srcdir + "/" + file_name;
 }
@@ -41,33 +106,30 @@ static string PathToDataFile(const string& file_name) {
 class IntegrationTest : public ::testing::Test {
  protected:
   bool RunBundleNamed(const string& name, string test_filter = "") {
-    // Load the built-in scripts first.
-    NamedScripts scripts;
-    string error;
-    CHECK(GetBuiltinScripts(&scripts, &error)) << error;
-
     // Get a list of user scripts to load. Special case: the test
     // 'syntax_error' is meant to simulate a syntax error in a dependency.
-    vector<string> paths;
+    vector<string> js_files;
 
     if (name == "syntax_error") {
-      paths.push_back(PathToDataFile("syntax_error.js"));
-      paths.push_back(PathToDataFile("passing_test.js"));
+      js_files.push_back(PathToDataFile("syntax_error.js"));
+      js_files.push_back(PathToDataFile("passing_test.js"));
     } else {
-      paths.push_back(PathToDataFile(name + "_test.js"));
+      js_files.push_back(PathToDataFile(name + "_test.js"));
     }
 
-    // Load each script.
-    for (uint32 i = 0; i < paths.size(); ++i) {
-      const string& path = paths[i];
+    // Run the tool.
+    bool success = false;
+    CHECK(
+        RunTool(
+            FLAGS_gjstest_binary,
+            FLAGS_gjstest_data_dir,
+            js_files,
+            &success,
+            &txt_,
+            &xml_))
+        << "Could not run the gjstest binary.";
 
-      NamedScript* script = scripts.add_script();
-      script->set_name(Basename(path));
-      script->set_source(ReadFileOrDie(path));
-    }
-
-    // Run the scripts.
-    return RunTests(scripts, test_filter, &txt_, &xml_);
+    return success;
   }
 
   bool CheckGoldenFile(const string& file_name, const string& actual) {
