@@ -54,7 +54,9 @@ DEFINE_string(filter, "", "Regular expression for test names to run.");
 
 // Browser support
 DEFINE_string(html_output_file, "",
-              "An HTML file to generate for running the test in a browser.");
+              "An HTML file to generate for running the test in a browser. "
+              "If this is non-empty, the HTML will be produced and the tool "
+              "will exit without running any tests.");
 
 DEFINE_string(html_title, "", "The title to use on the output HTML page.");
 
@@ -90,10 +92,6 @@ static bool GetScripts(
 
 static bool GenerateHtml() {
   // If no HTML file was requested, we're done.
-  if (FLAGS_html_output_file.empty()) {
-    return true;
-  }
-
   string html = "<!doctype html>\n"
                 "<html lang=\"en\">\n"
                 "<head>\n"
@@ -143,6 +141,11 @@ static bool GenerateHtml() {
 }
 
 static bool Run() {
+  // If HTML output was requested, generate it and quite.
+  if (!FLAGS_html_output_file.empty()) {
+    return GenerateHtml();
+  }
+
   // Attempt to load the appropriate scripts.
   NamedScripts scripts;
   string error;
@@ -157,8 +160,6 @@ static bool Run() {
   const bool success = RunTests(scripts, FLAGS_filter, &output, &xml);
 
   // Log the output.
-  //
-  // TODO(jacobsa): Use a different severity?
   std::cout << output;
 
   // Write out the XML file to the appropriate place.
@@ -175,11 +176,5 @@ int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   google::ParseCommandLineFlags(&argc, &argv, true);
 
-  // Generate an HTML file if requested.
-  if (!gjstest::GenerateHtml()) {
-    return 1;
-  }
-
-  // Run the specified tests.
   return gjstest::Run() ? 0 : 1;
 }
