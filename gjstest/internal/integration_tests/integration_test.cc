@@ -22,6 +22,7 @@
 #include <re2/re2.h>
 
 #include "base/logging.h"
+#include "base/macros.h"
 #include "file/file_utils.h"
 #include "third_party/gmock/include/gmock/gmock.h"
 #include "third_party/gtest/include/gtest/gtest.h"
@@ -50,15 +51,15 @@ static bool RunTool(
     string* xml) {
   // Create a pipe to use for the tool's output.
   int stdout_pipe[2];
-  PCHECK_EQ(pipe(stdout_pipe), 0);
+  PCHECK(pipe(stdout_pipe) == 0);
 
   // Fork a child process.
   const int child_pid = fork();
-  PCHECK_GE(child_pid, 0);
+  PCHECK(child_pid >= 0);
 
   if (child_pid == 0) {
     // This is the child process. Replace stdout with the write end of the pipe.
-    PCHECK_NE(dup2(stdout_pipe[1], stdout), -1);
+    PCHECK(dup2(stdout_pipe[1], 1) != -1);
 
     // Write something to the pipe and exit.
     printf("FOO");
@@ -70,7 +71,7 @@ static bool RunTool(
   while (1) {
     char buf[1024];
     const ssize_t bytes_read = read(stdout_pipe[0], buf, arraysize(buf));
-    PCHECK_NE(bytes_read, -1);
+    PCHECK(bytes_read != -1);
 
     // Has the pipe been closed?
     if (bytes_read == 0) {
@@ -83,7 +84,7 @@ static bool RunTool(
 
   // Wait for the process to exit.
   int child_status;
-  PCHECK_EQ(waitpid(child_pid, &child_status, 0), child_pid);
+  PCHECK(waitpid(child_pid, &child_status, 0) == child_pid);
 
   // Make sure it exited normally.
   if (!WIFEXITED(child_status)) {
