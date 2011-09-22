@@ -95,14 +95,20 @@ static bool RunTool(
     bool* success,
     string* output,
     string* xml) {
+  // Create a file to write XML into.
+  const string xml_file = tmpnam(NULL);
+  PCHECK(!xml_file.empty());
+
   // Create a command to give to the shell.
   const string command =
       StringPrintf(
           "%s"
               " --js_files=\"%s\""
+              " --xml_output_file=\"%s\""
               " --gjstest_data_dir=\"%s\"",
           gjstest_binary.c_str(),
           JoinStrings(js_files, ",").c_str(),
+          xml_file.c_str(),
           gjstest_data_dir.c_str());
 
   // Call the command.
@@ -114,7 +120,9 @@ static bool RunTool(
   // The test passed iff the exit code was zero.
   *success = (exit_code == 0);
 
-  // TODO(jacobsa): Xml.
+  // Slurp in the XML output.
+  *xml = ReadFileOrDie(xml_file);
+
   return true;
 }
 
