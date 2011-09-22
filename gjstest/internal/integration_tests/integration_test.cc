@@ -23,7 +23,9 @@
 
 #include "base/logging.h"
 #include "base/macros.h"
+#include "base/stringprintf.h"
 #include "file/file_utils.h"
+#include "strings/strutil.h"
 #include "third_party/gmock/include/gmock/gmock.h"
 #include "third_party/gtest/include/gtest/gtest.h"
 
@@ -49,42 +51,37 @@ static bool RunTool(
     bool* success,
     string* output,
     string* xml) {
-  // Create a pipe to use for the tool's output.
-  int stdout_pipe[2];
-  PCHECK(pipe(stdout_pipe) == 0);
+  // Create a command to give to the shell.
+  const string command =
+      StringPrintf(
+          "%s"
+              " --js_files=\"%s\""
+              " --gjstest_data_dir=\"%s\"",
+          gjstest_binary.c_str(),
+          JoinStrings(js_files, ",").c_str(),
+          gjstest_data_dir.c_str());
 
-  // Fork a child process.
-  const int child_pid = fork();
-  PCHECK(child_pid >= 0);
+  FILE* child_output = popen(command.c_str(), "r");
+  PCHECK(child_output);
 
-  if (child_pid == 0) {
-    // This is the child process. Replace stdout with the write end of the pipe.
-    PCHECK(dup2(stdout_pipe[1], 1) != -1);
-
-    // Write something to the pipe and exit.
-    printf("FOO");
-    exit(123);
-  }
-
-  // This is the parent process. Consume output from the child process until the
-  // pipe is closed.
+  // Consume output from the child process until its done writing.
   while (1) {
     char buf[1024];
-    const ssize_t bytes_read = read(stdout_pipe[0], buf, arraysize(buf));
-    PCHECK(bytes_read != -1);
-
-    // Has the pipe been closed?
-    if (bytes_read == 0) {
-      break;
-    }
+    const ssize_t bytes_read = fread(buf, 1, arraysize(buf), child_output);
+    CHECK_EQ(ferror(child_output), 0);
 
     // Append the bytes to the output string.
     *output += string(buf, bytes_read);
+
+    // Are we done reading?
+    if (feof(child_output)) {
+      break;
+    }
   }
 
   // Wait for the process to exit.
-  int child_status;
-  PCHECK(waitpid(child_pid, &child_status, 0) == child_pid);
+  const int child_status = pclose(child_output);
+  PCHECK(child_status >= 0) << "Child status: " << child_status;
 
   // Make sure it exited normally.
   if (!WIFEXITED(child_status)) {
