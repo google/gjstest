@@ -44,31 +44,25 @@ using testing::Not;
 
 namespace gjstest {
 
-static bool RunTool(
-    const string& gjstest_binary,
-    const string& gjstest_data_dir,
-    const vector<string>& js_files,
-    bool* success,
-    string* output,
-    string* xml) {
-  // Create a command to give to the shell.
-  const string command =
-      StringPrintf(
-          "%s"
-              " --js_files=\"%s\""
-              " --gjstest_data_dir=\"%s\"",
-          gjstest_binary.c_str(),
-          JoinStrings(js_files, ",").c_str(),
-          gjstest_data_dir.c_str());
-
+static bool RunShellCommand(
+    const string& command,
+    int* exit_code,
+    string* output) {
   FILE* child_output = popen(command.c_str(), "r");
-  PCHECK(child_output);
+  if (!child_output) {
+    LOG(ERROR) << "Error from popen.";
+    return false;
+  }
 
   // Consume output from the child process until its done writing.
   while (1) {
     char buf[1024];
     const ssize_t bytes_read = fread(buf, 1, arraysize(buf), child_output);
-    CHECK_EQ(ferror(child_output), 0);
+
+    if (ferror(child_output)) {
+      LOG(ERROR) << "Error from fread.";
+      return false;
+    }
 
     // Append the bytes to the output string.
     *output += string(buf, bytes_read);
@@ -90,8 +84,35 @@ static bool RunTool(
     return false;
   }
 
+  *exit_code = WEXITSTATUS(child_status);
+  return true;
+}
+
+static bool RunTool(
+    const string& gjstest_binary,
+    const string& gjstest_data_dir,
+    const vector<string>& js_files,
+    bool* success,
+    string* output,
+    string* xml) {
+  // Create a command to give to the shell.
+  const string command =
+      StringPrintf(
+          "%s"
+              " --js_files=\"%s\""
+              " --gjstest_data_dir=\"%s\"",
+          gjstest_binary.c_str(),
+          JoinStrings(js_files, ",").c_str(),
+          gjstest_data_dir.c_str());
+
+  // Call the command.
+  int exit_code;
+  if (!RunShellCommand(command, &exit_code, output)) {
+    return false;
+  }
+
   // The test passed iff the exit code was zero.
-  *success = (WEXITSTATUS(child_status) == 0);
+  *success = (exit_code == 0);
 
   // TODO(jacobsa): Xml.
   return true;
