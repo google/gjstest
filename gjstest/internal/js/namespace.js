@@ -13,6 +13,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Make sure the gjstest namespace doesn't already exist. This is to help catch
+// errors with dependency funniness -- for example, accidentally including this
+// file twice. The second inclusion would otherwise silently overwrite the
+// namespace, causing inscrutable errors from other code.
+var globalContext = this;
+if (!!globalContext['gjstest']) {
+  throw new Error(
+      'The gjstest namespace is already defined! ' +
+          'Did you include namespace.js twice?');
+}
+
 /** @type Object */
 var gjstest = {};
 
