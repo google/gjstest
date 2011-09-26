@@ -240,11 +240,11 @@ ContainsTest.prototype.RawValuesInsteadOfMatcher = function() {
 ContainsTest.prototype.DescriptionWithMatcher = function() {
   var matcher = contains(containsRegExp(/t/));
 
-  expectEq('is an array or Arguments object containing an element that' +
+  expectEq('is an array or Arguments object containing an element that ' +
                'partially matches regex: /t/',
            matcher.description);
 
-  expectEq('is not an array or Arguments object containing an element that' +
+  expectEq('is not an array or Arguments object containing an element that ' +
                'partially matches regex: /t/',
            matcher.negativeDescription);
 };
@@ -256,5 +256,5 @@ ContainsTest.prototype.DescriptionWithRawValue = function() {
            matcher.description);
 
   expectEq('is not an array or Arguments object containing \'taco\'',
-           matcher.description);
+           matcher.negativeDescription);
 };
