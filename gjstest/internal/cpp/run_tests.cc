@@ -265,7 +265,7 @@ bool RunTests(
   // Make sure that at least one test ran. This catches common errors with
   // mis-registering tests and so on.
   if (test_durations.empty()) {
-    *output = "No tests found.";
+    *output = "No tests found.\n";
     return false;
   }
 
