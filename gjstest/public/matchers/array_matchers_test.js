@@ -194,12 +194,25 @@ ContainsTest.prototype.CallsPredicateForArgs = function() {
 };
 
 ContainsTest.prototype.PredicateSaysNo = function() {
+  expectCall(this.wrappedPred_)(_)
+      .willOnce(returnWith(false));
+
+  expectFalse(this.predicate_([17]));
 };
 
 ContainsTest.prototype.PredicateReturnsString = function() {
+  expectCall(this.wrappedPred_)(_)
+      .willOnce(returnWith('that is foo'));
+
+  expectFalse(this.predicate_([17]));
 };
 
 ContainsTest.prototype.PredicateSaysYesForOneElement = function() {
+  expectCall(this.wrappedPred_)(_)
+      .willOnce(returnWith(false))
+      .willOnce(returnWith(true));
+
+  expectTrue(this.predicate_([17, 19, 23]));
 };
 
 ContainsTest.prototype.RawValueInsteadOfMatcher = function() {
