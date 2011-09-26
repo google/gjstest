@@ -103,3 +103,25 @@ gjstest.elementsAre = function(matchers) {
       }
   );
 };
+
+/**
+ * Match arrays and Arguments objects that contain an element matching the
+ * supplied argument.
+ *
+ * For example:
+ *
+ *     var foo = createMockFunction();
+ *     expectCall(foo)('bar', contains(lessOrEqual(2)));
+ *
+ *     foo('bar', [null, 2]);   // Matches
+ *     foo('bar', [null, 3]);   // Doesn't match
+ *
+ * @param {!Object} x
+ *     A matcher that an element of the array must satisfy. If this is not a
+ *     gjstest.Matcher, it is treated as the matcher equals(x).
+ *
+ * @return {!gjstest.Matcher}
+ */
+gjstest.contains = function(x) {
+  throw new Error('Not implemented!');
+};

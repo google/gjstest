@@ -13,6 +13,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//////////////////////////////////////////////////////
+// ElementsAre
+//////////////////////////////////////////////////////
+
 function ElementsAreTest() {}
 registerTestSuite(ElementsAreTest);
 
@@ -129,3 +133,7 @@ ElementsAreTest.prototype.description = function() {
                '[ \'taco\', partially matches regex: /t/ ]',
            matcher.negativeDescription);
 };
+
+//////////////////////////////////////////////////////
+// Contains
+//////////////////////////////////////////////////////
