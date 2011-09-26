@@ -123,5 +123,5 @@ gjstest.elementsAre = function(matchers) {
  * @return {!gjstest.Matcher}
  */
 gjstest.contains = function(x) {
-  throw new Error('Not implemented!');
+  return new gjstest.Matcher('', '', function() { return false; });
 };

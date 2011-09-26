@@ -146,11 +146,12 @@ function ContainsTest() {
   this.wrappedPred_ = createMockFunction();
   this.wrapped_ = new gjstest.Matcher('', '', this.wrappedPred_);
   this.matcher_ = contains(this.wrapped_);
+  this.predicate_ = this.matcher_.predicate;
 }
 registerTestSuite(ContainsTest);
 
 ContainsTest.prototype.NonArrayCandidates = function() {
-  var pred = this.matcher_.predicate;
+  var pred = this.predicate_;
 
   expectEq('which isn\'t an array or Arguments object', pred(undefined));
   expectEq('which isn\'t an array or Arguments object', pred(null));
@@ -161,15 +162,11 @@ ContainsTest.prototype.NonArrayCandidates = function() {
 };
 
 ContainsTest.prototype.EmptyArray = function() {
-  var pred = this.matcher_.predicate;
-
-  expectEq('which is empty', pred([]));
+  expectEq('which is empty', this.predicate_([]));
 };
 
 ContainsTest.prototype.EmptyArgs = function() {
-  var pred = contains(17).predicate;
-
-  expectEq('which is empty', pred(returnArgs()));
+  expectEq('which is empty', this.predicate_(returnArgs()));
 };
 
 ContainsTest.prototype.CallsPredicateForArray = function() {
@@ -181,10 +178,19 @@ ContainsTest.prototype.CallsPredicateForArray = function() {
   expectCall(this.wrappedPred_)('taco')
       .willOnce(returnWith(false));
 
-  pred(candidate);
+  this.predicate_(candidate);
 };
 
 ContainsTest.prototype.CallsPredicateForArgs = function() {
+  var candidate = returnArgs(1, 'taco');
+
+  expectCall(this.wrappedPred_)(1)
+      .willOnce(returnWith(false));
+
+  expectCall(this.wrappedPred_)('taco')
+      .willOnce(returnWith(false));
+
+  this.predicate_(candidate);
 };
 
 ContainsTest.prototype.PredicateSaysNo = function() {
