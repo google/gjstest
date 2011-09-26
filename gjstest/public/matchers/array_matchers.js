@@ -138,6 +138,19 @@ gjstest.contains = function(x) {
       'is an array or Arguments object containing ' + nounPhrase,
       'is not an array or Arguments object containing ' + nounPhrase,
       function(candidate) {
+        if (!candidate ||
+            !(candidate instanceof Array ||
+              candidate.toString() == '[object Arguments]')) {
+          return "which isn't an array or Arguments object";
+        }
+
+        var predicate = matcher.predicate;
+        for (var i = 0; i < candidate.length; ++i) {
+          if (predicate(candidate[i]) === true) {
+            return true;
+          }
+        }
+
         return false;
       });
 };

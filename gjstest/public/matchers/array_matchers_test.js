@@ -162,11 +162,11 @@ ContainsTest.prototype.NonArrayCandidates = function() {
 };
 
 ContainsTest.prototype.EmptyArray = function() {
-  expectEq('which is empty', this.predicate_([]));
+  expectFalse(this.predicate_([]));
 };
 
 ContainsTest.prototype.EmptyArgs = function() {
-  expectEq('which is empty', this.predicate_(returnArgs()));
+  expectFalse(this.predicate_(returnArgs()));
 };
 
 ContainsTest.prototype.CallsPredicateForArray = function() {
