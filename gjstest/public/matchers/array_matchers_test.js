@@ -142,6 +142,14 @@ function ContainsTest() {}
 registerTestSuite(ContainsTest);
 
 ContainsTest.prototype.NonArrayCandidates = function() {
+  var pred = contains(17).predicate;
+
+  expectEq('which isn\'t an array or Arguments object', pred(undefined));
+  expectEq('which isn\'t an array or Arguments object', pred(null));
+  expectEq('which isn\'t an array or Arguments object', pred(''));
+  expectEq('which isn\'t an array or Arguments object', pred({}));
+  expectEq('which isn\'t an array or Arguments object', pred(2));
+  expectEq('which isn\'t an array or Arguments object', pred(equals(2)));
 };
 
 ContainsTest.prototype.EmptyArray = function() {
