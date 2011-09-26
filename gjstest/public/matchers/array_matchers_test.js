@@ -14,6 +14,13 @@
 // limitations under the License.
 
 //////////////////////////////////////////////////////
+// Helpers
+//////////////////////////////////////////////////////
+
+// Helper function for getting ahold of an Arguments object.
+function returnArgs() { return arguments; }
+
+//////////////////////////////////////////////////////
 // ElementsAre
 //////////////////////////////////////////////////////
 
@@ -93,15 +100,12 @@ ElementsAreTest.prototype.argumentsObject = function() {
   var obj = {};
   var pred = elementsAre([obj, containsRegExp(/t.+o/)]).predicate;
 
-  // Helper function for getting ahold of an Arguments object.
-  function grabArgs() { return arguments; }
-
   // Everything equal.
-  expectTrue(pred(grabArgs(obj, 'taco')));
+  expectTrue(pred(returnArgs(obj, 'taco')));
 
   // Some non-equal.
-  expectEq('whose element 0 doesn\'t match', pred(grabArgs({}, 'taco')));
-  expectEq('whose element 1 doesn\'t match', pred(grabArgs(obj, 'burrito')));
+  expectEq('whose element 0 doesn\'t match', pred(returnArgs({}, 'taco')));
+  expectEq('whose element 1 doesn\'t match', pred(returnArgs(obj, 'burrito')));
 };
 
 ElementsAreTest.prototype.emptyArrays = function() {
@@ -153,9 +157,15 @@ ContainsTest.prototype.NonArrayCandidates = function() {
 };
 
 ContainsTest.prototype.EmptyArray = function() {
+  var pred = contains(17).predicate;
+
+  expectEq('which is empty', pred([]));
 };
 
 ContainsTest.prototype.EmptyArgs = function() {
+  var pred = contains(17).predicate;
+
+  expectEq('which is empty', pred(returnArgs()));
 };
 
 ContainsTest.prototype.CallsMatcherForArray = function() {
