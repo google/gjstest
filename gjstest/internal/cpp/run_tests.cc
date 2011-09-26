@@ -203,7 +203,7 @@ bool RunTests(
     TryCatch try_catch;
     const Local<Value> result = ExecuteJs(script.source(), script.name());
     if (result.IsEmpty()) {
-      *output += DescribeError(try_catch);
+      *output += DescribeError(try_catch) + "\n";
       return false;
     }
   }
