@@ -216,6 +216,10 @@ ContainsTest.prototype.PredicateSaysYesForOneElement = function() {
 };
 
 ContainsTest.prototype.RawValueInsteadOfMatcher = function() {
+  var pred = contains('taco').predicate;
+
+  expectFalse(pred([1, 'taco_stuff', 2]));
+  expectTrue(pred([1, 'taco', 2]));
 };
 
 ContainsTest.prototype.DescriptionWithMatcher = function() {
