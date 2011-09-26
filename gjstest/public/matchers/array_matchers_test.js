@@ -137,3 +137,39 @@ ElementsAreTest.prototype.description = function() {
 //////////////////////////////////////////////////////
 // Contains
 //////////////////////////////////////////////////////
+
+function ContainsTest() {}
+registerTestSuite(ContainsTest);
+
+ContainsTest.prototype.NonArrayCandidates = function() {
+};
+
+ContainsTest.prototype.EmptyArray = function() {
+};
+
+ContainsTest.prototype.EmptyArgs = function() {
+};
+
+ContainsTest.prototype.CallsMatcherForArray = function() {
+};
+
+ContainsTest.prototype.CallsMatcherForArgs = function() {
+};
+
+ContainsTest.prototype.MatcherSaysNo = function() {
+};
+
+ContainsTest.prototype.MatcherReturnsString = function() {
+};
+
+ContainsTest.prototype.MatcherSaysYesForOneElement = function() {
+};
+
+ContainsTest.prototype.RawValueInsteadOfMatcher = function() {
+};
+
+ContainsTest.prototype.DescriptionWithMatcher = function() {
+};
+
+ContainsTest.prototype.DescriptionWithRawValue = function() {
+};
