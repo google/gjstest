@@ -107,7 +107,7 @@ MaybePresentTest.prototype.matchesEverything = function() {
 };
 
 MaybePresentTest.prototype.description = function() {
-  expectEq('is anything or is not present', maybePresent.description);
+  expectEq('is anything, or is not present', maybePresent.description);
 };
 
 /////////////////////

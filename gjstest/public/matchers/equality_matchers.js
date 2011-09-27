@@ -31,7 +31,7 @@ gjstest._ = new gjstest.Matcher(
  *
  *     // The second argument must be 23 if it's present, but it's okay for it
  *     // to not be present.
- *     expectCall(foo)(_, or(notPresent, 23));
+ *     expectCall(foo)(_, anyOf([notPresent, 23]));
  *
  * @type {!gjstest.Matcher}
  */
@@ -59,7 +59,7 @@ gjstest.notPresent.understandsMissingArgs = true;
  *
  * @type {!gjstest.Matcher}
  */
-gjstest.maybePresent = gjstest.or(gjstest._, gjstest.notPresent);
+gjstest.maybePresent = gjstest.anyOf([gjstest._, gjstest.notPresent]);
 
 /**
  * Match objects that have the same type as and are equal to rhs.

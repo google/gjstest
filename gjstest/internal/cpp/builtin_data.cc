@@ -69,6 +69,7 @@ void GetBuiltinScriptPaths(
   paths->push_back(GetPath("internal/js/browser/html_builder.js"));
   paths->push_back(GetPath("internal/js/expect_that.js"));
   paths->push_back(GetPath("public/matchers/boolean_matchers.js"));
+  paths->push_back(GetPath("public/matchers/combining_matchers.js"));
   paths->push_back(GetPath("public/matchers/equality_matchers.js"));
   paths->push_back(GetPath("internal/js/call_expectation.js"));
   paths->push_back(GetPath("internal/js/mock_function.js"));
@@ -83,7 +84,6 @@ void GetBuiltinScriptPaths(
   paths->push_back(GetPath("public/matchers/array_matchers.js"));
   paths->push_back(GetPath("public/matchers/function_matchers.js"));
   paths->push_back(GetPath("public/matchers/string_matchers.js"));
-  paths->push_back(GetPath("public/matchers/combining_matchers.js"));
   paths->push_back(GetPath("internal/js/use_global_namespace.js"));
 }
 

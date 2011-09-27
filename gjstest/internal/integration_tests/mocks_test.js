@@ -208,7 +208,7 @@ MocksTest.prototype.optionalOrExactValueArgument = function() {
   var foo = createMockFunction();
 
   // First arg must be present, second can be 23 or not present.
-  expectCall(foo)(_, or(notPresent, equals(23)))
+  expectCall(foo)(_, anyOf([notPresent, equals(23)]))
     .willRepeatedly(returnWith(17));
 
   expectEq(17, foo('taco'));

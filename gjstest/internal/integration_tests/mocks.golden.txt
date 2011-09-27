@@ -111,7 +111,7 @@ Call matches no expectation.
 
 Tried expectation at mocks_test.js:211, but arg 1 didn't match:
     Arg 0: is anything
-    Arg 1: is not present or 23
+    Arg 1: is not present, or 23
 
 Call matches no expectation.
     Arg 0: undefined
@@ -119,7 +119,7 @@ Call matches no expectation.
 
 Tried expectation at mocks_test.js:211, but arg 1 didn't match:
     Arg 0: is anything
-    Arg 1: is not present or 23
+    Arg 1: is not present, or 23
 
 Call matches no expectation.
     Arg 0: undefined
@@ -127,7 +127,7 @@ Call matches no expectation.
 
 Tried expectation at mocks_test.js:211, but arg 1 didn't match:
     Arg 0: is anything
-    Arg 1: is not present or 23
+    Arg 1: is not present, or 23
 
 [  FAILED  ] MocksTest.optionalOrExactValueArgument (1 ms)
 [ RUN      ] MocksTest.sentinelMatcher
