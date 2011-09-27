@@ -46,10 +46,22 @@ AllOfTest.prototype.SingleMatcherArray = function() {
 
   expectFalse(matcher.predicate(null));
   expectFalse(matcher.predicate(17));
+  expectFalse(matcher.predicate('burrito'));
+
   expectTrue(matcher.predicate('taco'));
 };
 
 AllOfTest.prototype.SingleValueArray = function() {
+  var matcher = allOf(['taco']);
+
+  expectEq('\'taco\'', matcher.description);
+  expectEq('not equal to \'taco\'', matcher.negativeDescription);
+
+  expectFalse(matcher.predicate(null));
+  expectFalse(matcher.predicate(17));
+  expectFalse(matcher.predicate('burrito'));
+
+  expectTrue(matcher.predicate('taco'));
 };
 
 AllOfTest.prototype.MultipleElementArray = function() {
