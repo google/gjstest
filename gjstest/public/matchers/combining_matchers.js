@@ -114,15 +114,19 @@ gjstest.anyOf = function(matchers) {
 };
 
 /**
- * Invert the meaning of a matcher.
+ * Invert the meaning of a matcher. If the argument is not a gjstest.Matcher, it
+ * will be treated as the matcher equals(x).
  *
- * @param {!gjstest.Matcher} matcher
+ * @param {Object} x
+ *     A matcher, or an object to be treated as the matcher equals(x).
+ *
  * @return {!gjstest.Matcher}
  */
-gjstest.not = function(matcher) {
+gjstest.not = function(x) {
+  // Wrap the value if it's not a matcher.
+  var matcher = x;
   if (!(matcher instanceof gjstest.Matcher)) {
-    gjstest.internal.currentTestEnvironment.recordUserStack(1);
-    throw new TypeError('not() requires a matcher');
+    matcher = gjstest.equals(x);
   }
 
   return new gjstest.Matcher(

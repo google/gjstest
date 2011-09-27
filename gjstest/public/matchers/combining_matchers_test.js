@@ -181,9 +181,18 @@ AnyOfTest.prototype.MultipleElementArray = function() {
 function NotTest() {}
 registerTestSuite(NotTest);
 
-NotTest.prototype.NotAMatcher = function() {
-  expectThat(function() { not(17); },
-             throwsError(/TypeError.*not\(\).*matcher/));
+NotTest.prototype.NonMatcher = function() {
+  var matcher = not(17);
+
+  expectEq('does not equal: 17', matcher.description);
+  expectEq('17', matcher.negativeDescription);
+
+  expectTrue(matcher.predicate(null));
+  expectTrue(matcher.predicate(undefined));
+  expectTrue(matcher.predicate(16));
+  expectTrue(matcher.predicate('taco'));
+
+  expectFalse(matcher.predicate(17));
 };
 
 NotTest.prototype.PredicateReturnsBoolean = function() {
