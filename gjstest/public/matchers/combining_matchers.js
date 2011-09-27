@@ -38,6 +38,19 @@ gjstest.allOf = function(matchers) {
     throw new TypeError('allOf requires an array.');
   }
 
+  // Convert each non-matcher in the array.
+  var convertedMatchers = [];
+  for (var i = 0; i < matchers.length; ++i) {
+    var matcher = matchers[i];
+    if (!(matcher instanceof gjstest.Matcher)) {
+      matcher = gjstest.equals(matcher);
+    }
+
+    convertedMatchers[i] = matcher;
+  }
+
+  matchers = convertedMatchers;
+
   // Special case: an empty array should match anything. (The statement "for
   // each matcher M in S, M matches x" is true for any x when S is empty.)
   if (matchers.length == 0) {
@@ -45,13 +58,8 @@ gjstest.allOf = function(matchers) {
   }
 
   // Special case: if there is a single matcher in the array, just use that.
-  if (matchers.length == 1 && matchers[0] instanceof gjstest.Matcher) {
-    return matchers[0];
-  }
-
-  // Special case: if there is a single value x in the array, just use equal(x).
   if (matchers.length == 1) {
-    return gjstest.equals(matchers[0]);
+    return matchers[0];
   }
 
   // Otherwise, build an appropriate description. Also keep track of whether

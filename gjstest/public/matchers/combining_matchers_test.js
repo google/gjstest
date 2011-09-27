@@ -97,7 +97,7 @@ AllOfTest.prototype.MultipleMatcherArray = function() {
 AllOfTest.prototype.ValueInMultipleElementArray = function() {
   var matcher = allOf([greaterThan(2), 3]);
 
-  expectEq('is greater than 2, and is 3', matcher.description);
+  expectEq('is greater than 2, and 3', matcher.description);
   expectEq('is less than or equal to 2, or does not equal: 3',
            matcher.negativeDescription);
 
