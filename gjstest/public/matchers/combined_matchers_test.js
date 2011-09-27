@@ -20,7 +20,7 @@
 function AllOfTest() {}
 registerTestSuite(AllOfTest);
 
-ElementsAreTest.prototype.DoesFoo = function() {
+AllOfTest.prototype.DoesFoo = function() {
 };
 
 //////////////////////////////////////////////////////
