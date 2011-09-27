@@ -54,16 +54,21 @@ gjstest.allOf = function(matchers) {
     return gjstest.equals(matchers[0]);
   }
 
-  // Otherwise, build an appropriate description.
+  // Otherwise, build an appropriate description. Also keep track of whether
+  // every matcher supports missing args, since we should support them only if
+  // every sub-matcher does.
   var descriptions = [];
   var negativeDescriptions = [];
+  var understandsMissingArgs = true;
 
   for (var i = 0; i < matchers.length; ++i) {
     descriptions[i] = matchers[i].description;
     negativeDescriptions[i] = matchers[i].negativeDescription;
+    understandsMissingArgs =
+        understandsMissingArgs && matchers[i].understandsMissingArgs;
   }
 
-  return new gjstest.Matcher(
+  var result = new gjstest.Matcher(
       descriptions.join(', and '),
       negativeDescriptions.join(', or '),
       function(candidate) {
@@ -76,6 +81,10 @@ gjstest.allOf = function(matchers) {
 
         return true;
       });
+
+  result.understandsMissingArgs = understandsMissingArgs;
+
+  return result;
 };
 
 /**

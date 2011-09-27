@@ -39,6 +39,8 @@ AllOfTest.prototype.EmptyArray = function() {
   expectTrue(matcher.predicate(''));
   expectTrue(matcher.predicate('taco'));
   expectTrue(matcher.predicate(false));
+
+  expectFalse(matcher.understandsMissingArgs);
 };
 
 AllOfTest.prototype.SingleMatcherArray = function() {
@@ -93,9 +95,9 @@ AllOfTest.prototype.MultipleElementArray = function() {
 };
 
 AllOfTest.prototype.OneSubMatcherDoesntUnderstandMissingArgs = function() {
-  var matcherA = new hoon.Matcher('', '', createMockFunction('predicate A'));
-  var matcherB = new hoon.Matcher('', '', createMockFunction('predicate B'));
-  var matcherC = new hoon.Matcher('', '', createMockFunction('predicate C'));
+  var matcherA = new gjstest.Matcher('', '', createMockFunction('predicate A'));
+  var matcherB = new gjstest.Matcher('', '', createMockFunction('predicate B'));
+  var matcherC = new gjstest.Matcher('', '', createMockFunction('predicate C'));
 
   matcherA.understandsMissingArgs = true;
   matcherB.understandsMissingArgs = false;
@@ -107,9 +109,9 @@ AllOfTest.prototype.OneSubMatcherDoesntUnderstandMissingArgs = function() {
 };
 
 AllOfTest.prototype.SubMatchersAllUnderstandMissingArgs = function() {
-  var matcherA = new hoon.Matcher('', '', createMockFunction('predicate A'));
-  var matcherB = new hoon.Matcher('', '', createMockFunction('predicate B'));
-  var matcherC = new hoon.Matcher('', '', createMockFunction('predicate C'));
+  var matcherA = new gjstest.Matcher('', '', createMockFunction('predicate A'));
+  var matcherB = new gjstest.Matcher('', '', createMockFunction('predicate B'));
+  var matcherC = new gjstest.Matcher('', '', createMockFunction('predicate C'));
 
   matcherA.understandsMissingArgs = true;
   matcherB.understandsMissingArgs = true;
@@ -119,22 +121,22 @@ AllOfTest.prototype.SubMatchersAllUnderstandMissingArgs = function() {
   expectTrue(matcher.understandsMissingArgs);
 
   // One says no.
-  expectCall(matcherA.predicate)(gjstest.missingArgSentinel)
+  expectCall(matcherA.predicate)(isMissingArgSentinel)
       .willOnce(returnWith(true));
 
-  expectCall(matcherB.predicate)(gjstest.missingArgSentinel)
+  expectCall(matcherB.predicate)(isMissingArgSentinel)
       .willOnce(returnWith('is not a taco'));
 
   expectEq('is not a taco', matcher.predicate(gjstest.missingArgSentinel));
 
   // All say yes.
-  expectCall(matcherA.predicate)(gjstest.missingArgSentinel)
+  expectCall(matcherA.predicate)(isMissingArgSentinel)
       .willOnce(returnWith(true));
 
-  expectCall(matcherB.predicate)(gjstest.missingArgSentinel)
+  expectCall(matcherB.predicate)(isMissingArgSentinel)
       .willOnce(returnWith(true));
 
-  expectCall(matcherC.predicate)(gjstest.missingArgSentinel)
+  expectCall(matcherC.predicate)(isMissingArgSentinel)
       .willOnce(returnWith(true));
 
   expectTrue(matcher.predicate(gjstest.missingArgSentinel));
@@ -167,6 +169,8 @@ AnyOfTest.prototype.EmptyArray = function() {
   expectFalse(matcher.predicate(''));
   expectFalse(matcher.predicate('taco'));
   expectFalse(matcher.predicate(false));
+
+  expectFalse(matcher.understandsMissingArgs);
 };
 
 AnyOfTest.prototype.SingleMatcherArray = function() {
@@ -223,9 +227,9 @@ AnyOfTest.prototype.MultipleElementArray = function() {
 };
 
 AnyOfTest.prototype.MissingArgs = function() {
-  var matcherA = new hoon.Matcher('', '', createMockFunction('predicate A'));
-  var matcherB = new hoon.Matcher('', '', createMockFunction('predicate B'));
-  var matcherC = new hoon.Matcher('', '', createMockFunction('predicate C'));
+  var matcherA = new gjstest.Matcher('', '', createMockFunction('predicate A'));
+  var matcherB = new gjstest.Matcher('', '', createMockFunction('predicate B'));
+  var matcherC = new gjstest.Matcher('', '', createMockFunction('predicate C'));
 
   // The second matcher shouldn't be consulted for missing args.
   matcherA.understandsMissingArgs = true;
@@ -236,16 +240,16 @@ AnyOfTest.prototype.MissingArgs = function() {
   expectTrue(matcher.understandsMissingArgs);
 
   // One says yes.
-  expectCall(matcherA.predicate)(gjstest.missingArgSentinel)
+  expectCall(matcherA.predicate)(isMissingArgSentinel)
       .willOnce(returnWith(true));
 
   expectTrue(matcher.understandsMissingArgs);
 
   // Both say no.
-  expectCall(matcherA.predicate)(gjstest.missingArgSentinel)
+  expectCall(matcherA.predicate)(isMissingArgSentinel)
       .willOnce(returnWith(false));
 
-  expectCall(matcherB.predicate)(gjstest.missingArgSentinel)
+  expectCall(matcherB.predicate)(isMissingArgSentinel)
       .willOnce(returnWith(false));
 
   expectFalse(matcher.understandsMissingArgs);
