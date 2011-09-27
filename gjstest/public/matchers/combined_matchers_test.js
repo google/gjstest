@@ -21,6 +21,15 @@ function AllOfTest() {}
 registerTestSuite(AllOfTest);
 
 AllOfTest.prototype.EmptyArray = function() {
+  var matcher = allOf([]);
+
+  expectEq('is anything', matcher.description);
+  expectTrue(matcher.predicate(null));
+  expectTrue(matcher.predicate(undefined));
+  expectTrue(matcher.predicate(17));
+  expectTrue(matcher.predicate(''));
+  expectTrue(matcher.predicate('taco'));
+  expectTrue(matcher.predicate(false));
 };
 
 AllOfTest.prototype.SingleMatcherArray = function() {
