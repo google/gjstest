@@ -243,16 +243,16 @@ AnyOfTest.prototype.MissingArgs = function() {
   expectCall(matcherA.predicate)(isMissingArgSentinel)
       .willOnce(returnWith(true));
 
-  expectTrue(matcher.understandsMissingArgs);
+  expectTrue(matcher.predicate(gjstest.missingArgSentinel));
 
   // Both say no.
   expectCall(matcherA.predicate)(isMissingArgSentinel)
       .willOnce(returnWith(false));
 
-  expectCall(matcherB.predicate)(isMissingArgSentinel)
+  expectCall(matcherC.predicate)(isMissingArgSentinel)
       .willOnce(returnWith(false));
 
-  expectFalse(matcher.understandsMissingArgs);
+  expectFalse(matcher.predicate(gjstest.missingArgSentinel));
 };
 
 ///////////////////////////////

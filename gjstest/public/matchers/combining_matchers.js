@@ -139,11 +139,18 @@ gjstest.anyOf = function(matchers) {
     negativeDescriptions[i] = matchers[i].negativeDescription;
   }
 
-  return new gjstest.Matcher(
+  var result = new gjstest.Matcher(
       descriptions.join(', or '),
       negativeDescriptions.join(', and '),
       function(candidate) {
         for (var i = 0; i < matchers.length; ++i) {
+          // Special case: don't pass on the missing arg sentinel if the matcher
+          // doesn't support it.
+          if (candidate == gjstest.missingArgSentinel &&
+              !matchers[i].understandsMissingArgs) {
+            continue;
+          }
+
           var result = matchers[i].predicate(candidate);
           if (result == true) {
             return true;
@@ -152,6 +159,10 @@ gjstest.anyOf = function(matchers) {
 
         return false;
       });
+
+  result.understandsMissingArgs = true;
+
+  return result;
 };
 
 /**
