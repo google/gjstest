@@ -142,6 +142,7 @@ SHARE_DATA = \
     public/matcher_types.js \
     public/matchers/array_matchers.js \
     public/matchers/boolean_matchers.js \
+    public/matchers/combined_matchers.js \
     public/matchers/equality_matchers.js \
     public/matchers/function_matchers.js \
     public/matchers/number_matchers.js \
