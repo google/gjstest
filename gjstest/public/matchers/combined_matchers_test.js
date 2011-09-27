@@ -65,6 +65,22 @@ AllOfTest.prototype.SingleValueArray = function() {
 };
 
 AllOfTest.prototype.MultipleElementArray = function() {
+  var matcher = allOf([greaterThan(2), lessThan(10), not(isNull)]);
+
+  expectEq('TODO', matcher.description);
+  expectEq('TODO', matcher.negativeDescription);
+
+  expectFalse(matcher.predicate(null));
+  expectFalse(matcher.predicate('taco'));
+
+  expectFalse(matcher.predicate(2));
+  expectTrue(matcher.predicate(3));
+  expectTrue(matcher.predicate(9));
+  expectFalse(matcher.predicate(10));
+};
+
+AllOfTest.prototype.MatcherReturnsAString = function() {
+  expectFalse('TODO');
 };
 
 //////////////////////////////////////////////////////
