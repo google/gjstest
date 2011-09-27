@@ -33,7 +33,49 @@
  * @return {!gjstest.Matcher}
  */
 gjstest.allOf = function(matchers) {
-  return null;
+  if (!(matchers instanceof Array)) {
+    gjstest.internal.currentTestEnvironment.recordUserStack(1);
+    throw new TypeError('allOf requires an array.');
+  }
+
+  // Special case: an empty array should match anything. (The statement "for
+  // each matcher M in S, x matches M" is true for any x when S is empty.)
+  if (matchers.length == 0) {
+    return gjstest._;
+  }
+
+  // Special case: if there is a single matcher in the array, just use that.
+  if (matchers.length == 1 && matchers[0] instanceof gjstest.Matcher) {
+    return matchers[0];
+  }
+
+  // Special case: if there is a single value x in the array, just use equal(x).
+  if (matchers.length == 1) {
+    return gjstest.equals(matchers[0]);
+  }
+
+  // Otherwise, build an appropriate description.
+  var descriptions = [];
+  var negativeDescriptions = [];
+
+  for (var i = 0; i < matchers.length; ++i) {
+    descriptions[i] = matchers[i].description;
+    negativeDescriptions[i] = matchers[i].negativeDescription;
+  }
+
+  return new gjstest.Matcher(
+      descriptions.join(', and '),
+      negativeDescriptions.join(', or '),
+      function(candidate) {
+        for (var i = 0; i < matchers.length; ++i) {
+          var result = matchers[i].predicate(candidate);
+          if (result == false || typeof(result) == 'string') {
+            return result;
+          }
+        }
+
+        return true;
+      });
 };
 
 /**
