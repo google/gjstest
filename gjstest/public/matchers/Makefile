@@ -17,7 +17,7 @@ include $(PROJECT_ROOT)/js_test.mk
 
 $(eval $(call add_js_test,array_matchers_test))
 $(eval $(call add_js_test,boolean_matchers_test))
-$(eval $(call add_js_test,combined_matchers_test))
+$(eval $(call add_js_test,combining_matchers_test))
 $(eval $(call add_js_test,equality_matchers_test))
 $(eval $(call add_js_test,function_matchers_test))
 $(eval $(call add_js_test,number_matchers_test))

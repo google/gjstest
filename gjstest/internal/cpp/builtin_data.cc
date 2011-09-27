@@ -83,7 +83,7 @@ void GetBuiltinScriptPaths(
   paths->push_back(GetPath("public/matchers/array_matchers.js"));
   paths->push_back(GetPath("public/matchers/function_matchers.js"));
   paths->push_back(GetPath("public/matchers/string_matchers.js"));
-  paths->push_back(GetPath("public/matchers/combined_matchers.js"));
+  paths->push_back(GetPath("public/matchers/combining_matchers.js"));
   paths->push_back(GetPath("internal/js/use_global_namespace.js"));
 }
 
