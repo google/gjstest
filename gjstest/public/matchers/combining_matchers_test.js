@@ -92,6 +92,41 @@ AllOfTest.prototype.MultipleElementArray = function() {
   expectFalse(matcher.predicate(10));
 };
 
+AllOfTest.prototype.OneSubMatcherDoesntUnderstandMissingArgs = function() {
+  var matcherA = new hoon.Matcher('', '', createMockFunction('predicate A'));
+  var matcherB = new hoon.Matcher('', '', createMockFunction('predicate B'));
+  var matcherC = new hoon.Matcher('', '', createMockFunction('predicate C'));
+
+  matcherA.understandsMissingArgs = true;
+  matcherB.understandsMissingArgs = false;
+  matcherC.understandsMissingArgs = true;
+
+  var matcher = allOf([matcherA, matcherB, matcherC]);
+
+  expectFalse(matcher.understandsMissingArgs);
+};
+
+AllOfTest.prototype.SubMatchersAllUnderstandMissingArgs = function() {
+  var matcherA = new hoon.Matcher('', '', createMockFunction('predicate A'));
+  var matcherB = new hoon.Matcher('', '', createMockFunction('predicate B'));
+  var matcherC = new hoon.Matcher('', '', createMockFunction('predicate C'));
+
+  matcherA.understandsMissingArgs = true;
+  matcherB.understandsMissingArgs = true;
+  matcherC.understandsMissingArgs = true;
+
+  var matcher = allOf([matcherA, matcherB, matcherC]);
+
+  // One says no.
+  expectCall(matcherA.predicate)(gjstest.missingArgSentinel)
+      .willOnce(returnWith(true));
+
+  expectCall(matcherB.predicate)(gjstest.missingArgSentinel)
+      .willOnce(returnWith('is not a taco'));
+
+  expectEq('is not a taco', matcher.predicate(gjstest.missingArgSentinel));
+};
+
 //////////////////////////////////////////////////////
 // anyOf
 //////////////////////////////////////////////////////
