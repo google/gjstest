@@ -20,7 +20,16 @@
 function AllOfTest() {}
 registerTestSuite(AllOfTest);
 
-AllOfTest.prototype.DoesFoo = function() {
+AllOfTest.prototype.EmptyArray = function() {
+};
+
+AllOfTest.prototype.SingleMatcherArray = function() {
+};
+
+AllOfTest.prototype.SingleValueArray = function() {
+};
+
+AllOfTest.prototype.MultipleElementArray = function() {
 };
 
 //////////////////////////////////////////////////////
@@ -30,5 +39,14 @@ AllOfTest.prototype.DoesFoo = function() {
 function AnyOfTest() {}
 registerTestSuite(AnyOfTest);
 
-AnyOfTest.prototype.DoesFoo = function() {
+AnyOfTest.prototype.EmptyArray = function() {
+};
+
+AnyOfTest.prototype.SingleMatcherArray = function() {
+};
+
+AnyOfTest.prototype.SingleValueArray = function() {
+};
+
+AnyOfTest.prototype.MultipleElementArray = function() {
 };
