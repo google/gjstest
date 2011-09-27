@@ -173,3 +173,37 @@ AnyOfTest.prototype.MultipleElementArray = function() {
   expectFalse(matcher.predicate(20));
   expectTrue(matcher.predicate(21));
 };
+
+///////////////////////////////
+// not
+///////////////////////////////
+
+function NotTest() {}
+registerTestSuite(NotTest);
+
+NotTest.prototype.NotAMatcher = function() {
+  expectThat(function() { not(17); },
+             throwsError(/TypeError.*not\(\).*matcher/));
+};
+
+NotTest.prototype.PredicateReturnsBoolean = function() {
+  var yesMatcher = new gjstest.Matcher('', '', function() { return true; });
+  var noMatcher = new gjstest.Matcher('', '', function() { return false; });
+
+  expectFalse(not(yesMatcher).predicate(undefined));
+  expectTrue(not(noMatcher).predicate(undefined));
+};
+
+NotTest.prototype.PredicateReturnsString = function() {
+  var innerMatcher = new gjstest.Matcher('', '', function() { return 'blah'; });
+  expectTrue(not(innerMatcher).predicate(undefined));
+};
+
+NotTest.prototype.Description = function() {
+  var innerMatcher =
+    new gjstest.Matcher('taco', 'burrito', function() { return true; });
+
+  var matcher = not(innerMatcher);
+  expectEq('burrito', matcher.description);
+  expectEq('taco', matcher.negativeDescription);
+};

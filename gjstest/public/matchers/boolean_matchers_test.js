@@ -86,40 +86,6 @@ EvalsToTrueFalseTest.prototype.descriptions = function() {
 };
 
 ///////////////////////////////
-// not
-///////////////////////////////
-
-function NotTest() {}
-registerTestSuite(NotTest);
-
-NotTest.prototype.notAMatcher = function() {
-  expectThat(function() { not(17); },
-             throwsError(/TypeError.*not\(\).*matcher/));
-};
-
-NotTest.prototype.predicateReturnsBoolean = function() {
-  var yesMatcher = new gjstest.Matcher('', '', function() { return true; });
-  var noMatcher = new gjstest.Matcher('', '', function() { return false; });
-
-  expectFalse(not(yesMatcher).predicate(undefined));
-  expectTrue(not(noMatcher).predicate(undefined));
-};
-
-NotTest.prototype.predicateReturnsString = function() {
-  var innerMatcher = new gjstest.Matcher('', '', function() { return 'blah'; });
-  expectTrue(not(innerMatcher).predicate(undefined));
-};
-
-NotTest.prototype.description = function() {
-  var innerMatcher =
-    new gjstest.Matcher('taco', 'burrito', function() { return true; });
-
-  var matcher = not(innerMatcher);
-  expectEq('burrito', matcher.description);
-  expectEq('taco', matcher.negativeDescription);
-};
-
-///////////////////////////////
 // or
 ///////////////////////////////
 

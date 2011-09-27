@@ -36,35 +36,6 @@ gjstest.evalsToFalse = new gjstest.Matcher(
 );
 
 /**
- * Invert the meaning of a matcher.
- *
- * @param {!gjstest.Matcher} matcher
- * @return {!gjstest.Matcher}
- */
-gjstest.not = function(matcher) {
-  if (!(matcher instanceof gjstest.Matcher)) {
-    gjstest.internal.currentTestEnvironment.recordUserStack(1);
-    throw new TypeError('not() requires a matcher');
-  }
-
-  return new gjstest.Matcher(
-      matcher.negativeDescription,
-      matcher.description,
-      function(obj) {
-        // Ask the inner matcher.
-        var innerResult = matcher.predicate(obj);
-
-        // Regard an error string as equivalent to false.
-        if (typeof(innerResult) == 'string') {
-          innerResult = false;
-        }
-
-        // Invert the result.
-        return !innerResult;
-      });
-};
-
-/**
  * Match objects matched by either one of the matchers supplied.
  *
  * @param {!gjstest.Matcher} matcherA
