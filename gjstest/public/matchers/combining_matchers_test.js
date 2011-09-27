@@ -116,6 +116,7 @@ AllOfTest.prototype.SubMatchersAllUnderstandMissingArgs = function() {
   matcherC.understandsMissingArgs = true;
 
   var matcher = allOf([matcherA, matcherB, matcherC]);
+  expectTrue(matcher.understandsMissingArgs);
 
   // One says no.
   expectCall(matcherA.predicate)(gjstest.missingArgSentinel)
@@ -125,6 +126,18 @@ AllOfTest.prototype.SubMatchersAllUnderstandMissingArgs = function() {
       .willOnce(returnWith('is not a taco'));
 
   expectEq('is not a taco', matcher.predicate(gjstest.missingArgSentinel));
+
+  // All say yes.
+  expectCall(matcherA.predicate)(gjstest.missingArgSentinel)
+      .willOnce(returnWith(true));
+
+  expectCall(matcherB.predicate)(gjstest.missingArgSentinel)
+      .willOnce(returnWith(true));
+
+  expectCall(matcherC.predicate)(gjstest.missingArgSentinel)
+      .willOnce(returnWith(true));
+
+  expectTrue(matcher.predicate(gjstest.missingArgSentinel));
 };
 
 //////////////////////////////////////////////////////
@@ -207,6 +220,35 @@ AnyOfTest.prototype.MultipleElementArray = function() {
   expectFalse(matcher.predicate(10));
   expectFalse(matcher.predicate(20));
   expectTrue(matcher.predicate(21));
+};
+
+AnyOfTest.prototype.MissingArgs = function() {
+  var matcherA = new hoon.Matcher('', '', createMockFunction('predicate A'));
+  var matcherB = new hoon.Matcher('', '', createMockFunction('predicate B'));
+  var matcherC = new hoon.Matcher('', '', createMockFunction('predicate C'));
+
+  // The second matcher shouldn't be consulted for missing args.
+  matcherA.understandsMissingArgs = true;
+  matcherB.understandsMissingArgs = false;
+  matcherC.understandsMissingArgs = true;
+
+  var matcher = anyOf([matcherA, matcherB, matcherC]);
+  expectTrue(matcher.understandsMissingArgs);
+
+  // One says yes.
+  expectCall(matcherA.predicate)(gjstest.missingArgSentinel)
+      .willOnce(returnWith(true));
+
+  expectTrue(matcher.understandsMissingArgs);
+
+  // Both say no.
+  expectCall(matcherA.predicate)(gjstest.missingArgSentinel)
+      .willOnce(returnWith(false));
+
+  expectCall(matcherB.predicate)(gjstest.missingArgSentinel)
+      .willOnce(returnWith(false));
+
+  expectFalse(matcher.understandsMissingArgs);
 };
 
 ///////////////////////////////
