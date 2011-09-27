@@ -75,7 +75,7 @@ AllOfTest.prototype.SingleValueArray = function() {
   expectTrue(matcher.predicate('taco'));
 };
 
-AllOfTest.prototype.MultipleElementArray = function() {
+AllOfTest.prototype.MultipleMatcherArray = function() {
   var matcher = allOf([greaterThan(2), lessThan(10), not(isNull)]);
 
   expectEq('is greater than 2, and is less than 10, and is not null',
@@ -92,6 +92,21 @@ AllOfTest.prototype.MultipleElementArray = function() {
   expectTrue(matcher.predicate(3));
   expectTrue(matcher.predicate(9));
   expectFalse(matcher.predicate(10));
+};
+
+AllOfTest.prototype.ValueInMultipleElementArray = function() {
+  var matcher = allOf([greaterThan(2), 3]);
+
+  expectEq('is greater than 2, and is 3', matcher.description);
+  expectEq('is less than or equal to 2, or does not equal: 3',
+           matcher.negativeDescription);
+
+  expectEq('which is not a number', matcher.predicate(null));
+  expectEq('which is not a number', matcher.predicate('taco'));
+
+  expectFalse(matcher.predicate(2));
+  expectTrue(matcher.predicate(3));
+  expectFalse(matcher.predicate(4));
 };
 
 AllOfTest.prototype.OneSubMatcherDoesntUnderstandMissingArgs = function() {
@@ -205,7 +220,7 @@ AnyOfTest.prototype.SingleValueArray = function() {
   expectTrue(matcher.predicate('taco'));
 };
 
-AnyOfTest.prototype.MultipleElementArray = function() {
+AnyOfTest.prototype.MultipleMatcherArray = function() {
   var matcher = anyOf([greaterThan(20), lessThan(10), isNull]);
 
   expectEq('is greater than 20, or is less than 10, or is null',
@@ -224,6 +239,25 @@ AnyOfTest.prototype.MultipleElementArray = function() {
   expectFalse(matcher.predicate(10));
   expectFalse(matcher.predicate(20));
   expectTrue(matcher.predicate(21));
+};
+
+AnyOfTest.prototype.ValueInMultipleElementArray = function() {
+  var matcher = anyOf([greaterThan(20), 'taco']);
+
+  expectEq('is greater than 20, or \'taco\'', matcher.description);
+
+  expectEq('is less than or equal to 20, and does not equal: \'taco\'',
+           matcher.negativeDescription);
+
+  expectFalse(matcher.predicate(undefined));
+
+  expectFalse(matcher.predicate(9));
+  expectFalse(matcher.predicate(20));
+  expectTrue(matcher.predicate(21));
+  expectTrue(matcher.predicate(22));
+
+  expectFalse(matcher.predicate('burrito'));
+  expectTrue(matcher.predicate('taco'));
 };
 
 AnyOfTest.prototype.MissingArgs = function() {
