@@ -32,6 +32,7 @@ AllOfTest.prototype.EmptyArray = function() {
   var matcher = allOf([]);
 
   expectEq('is anything', matcher.description);
+
   expectTrue(matcher.predicate(null));
   expectTrue(matcher.predicate(undefined));
   expectTrue(matcher.predicate(17));
@@ -98,14 +99,77 @@ AllOfTest.prototype.MultipleElementArray = function() {
 function AnyOfTest() {}
 registerTestSuite(AnyOfTest);
 
+AnyOfTest.prototype.NonArrayArguments = function() {
+  expectThat(function() { anyOf(null) },
+             throwsError(/TypeError.*anyOf.*requires an array/));
+
+  expectThat(function() { anyOf(17) },
+             throwsError(/TypeError.*anyOf.*requires an array/));
+};
+
 AnyOfTest.prototype.EmptyArray = function() {
+  var matcher = anyOf([]);
+
+  expectEq('is a unicorn', matcher.description);
+  expectEq('is anything', matcher.negativeDescription);
+
+  expectFalse(matcher.predicate(null));
+  expectFalse(matcher.predicate(undefined));
+  expectFalse(matcher.predicate(17));
+  expectFalse(matcher.predicate(''));
+  expectFalse(matcher.predicate('taco'));
+  expectFalse(matcher.predicate(false));
 };
 
 AnyOfTest.prototype.SingleMatcherArray = function() {
+  var wrapped =
+      new gjstest.Matcher(
+          'is a taco',
+          'is not a taco',
+          function(candidate) { return candidate == 'taco'; });
+
+  var matcher = anyOf([wrapped]);
+
+  expectEq('is a taco', matcher.description);
+  expectEq('is not a taco', matcher.negativeDescription);
+
+  expectFalse(matcher.predicate(null));
+  expectFalse(matcher.predicate(17));
+  expectFalse(matcher.predicate('burrito'));
+
+  expectTrue(matcher.predicate('taco'));
 };
 
 AnyOfTest.prototype.SingleValueArray = function() {
+  var matcher = anyOf(['taco']);
+
+  expectEq('\'taco\'', matcher.description);
+  expectEq('does not equal: \'taco\'', matcher.negativeDescription);
+
+  expectFalse(matcher.predicate(null));
+  expectFalse(matcher.predicate(17));
+  expectFalse(matcher.predicate('burrito'));
+
+  expectTrue(matcher.predicate('taco'));
 };
 
 AnyOfTest.prototype.MultipleElementArray = function() {
+  var matcher = anyOf([greaterThan(20), lessThan(10), isNull]);
+
+  expectEq('is greater than 20, or is less than 10, or is null',
+           matcher.description);
+
+  expectEq('is less than or equal to 20, and is greater than or equal to 10, ' +
+               'and is not null',
+           matcher.negativeDescription);
+
+  expectFalse(matcher.predicate(undefined));
+  expectFalse(matcher.predicate('taco'));
+
+  expectTrue(matcher.predicate(null));
+
+  expectTrue(matcher.predicate(9));
+  expectFalse(matcher.predicate(10));
+  expectFalse(matcher.predicate(20));
+  expectTrue(matcher.predicate(21));
 };
