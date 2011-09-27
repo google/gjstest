@@ -33,6 +33,20 @@ AllOfTest.prototype.EmptyArray = function() {
 };
 
 AllOfTest.prototype.SingleMatcherArray = function() {
+  var wrapped =
+      new gjstest.Matcher(
+          'is a taco',
+          'is not a taco',
+          function(candidate) { return candidate == 'taco'; });
+
+  var matcher = allOf([wrapped]);
+
+  expectEq('is a taco', matcher.description);
+  expectEq('is not a taco', matcher.negativeDescription);
+
+  expectFalse(matcher.predicate(null));
+  expectFalse(matcher.predicate(17));
+  expectTrue(matcher.predicate('taco'));
 };
 
 AllOfTest.prototype.SingleValueArray = function() {
