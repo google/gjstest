@@ -145,6 +145,7 @@ SHARE_DATA = \
     public/matchers/combining_matchers.js \
     public/matchers/equality_matchers.js \
     public/matchers/function_matchers.js \
+    public/matchers/missing_arg_matchers.js \
     public/matchers/number_matchers.js \
     public/matchers/string_matchers.js \
     public/mocking.js \

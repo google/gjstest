@@ -20,6 +20,7 @@ $(eval $(call add_js_test,boolean_matchers_test))
 $(eval $(call add_js_test,combining_matchers_test))
 $(eval $(call add_js_test,equality_matchers_test))
 $(eval $(call add_js_test,function_matchers_test))
+$(eval $(call add_js_test,missing_arg_matchers_test))
 $(eval $(call add_js_test,number_matchers_test))
 $(eval $(call add_js_test,string_matchers_test))
 

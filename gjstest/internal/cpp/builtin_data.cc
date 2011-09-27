@@ -71,6 +71,7 @@ void GetBuiltinScriptPaths(
   paths->push_back(GetPath("public/matchers/boolean_matchers.js"));
   paths->push_back(GetPath("public/matchers/combining_matchers.js"));
   paths->push_back(GetPath("public/matchers/equality_matchers.js"));
+  paths->push_back(GetPath("public/matchers/missing_arg_matchers.js"));
   paths->push_back(GetPath("internal/js/call_expectation.js"));
   paths->push_back(GetPath("internal/js/mock_function.js"));
   paths->push_back(GetPath("internal/js/mock_instance.js"));
