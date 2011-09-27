@@ -99,5 +99,16 @@ gjstest.allOf = function(matchers) {
  * @return {!gjstest.Matcher}
  */
 gjstest.anyOf = function(matchers) {
-  return null;
+  if (!(matchers instanceof Array)) {
+    gjstest.internal.currentTestEnvironment.recordUserStack(1);
+    throw new TypeError('anyOf requires an array.');
+  }
+
+  // Use the power of De Morgan's law.
+  var negatedMatchers = [];
+  for (var i = 0; i < matchers.length; ++i) {
+    negatedMatchers[i] = gjstest.not(matchers[i]);
+  }
+
+  return gjstest.not(gjstest.allOf(negatedMatchers));
 };
