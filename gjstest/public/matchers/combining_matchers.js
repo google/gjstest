@@ -39,7 +39,7 @@ gjstest.allOf = function(matchers) {
   }
 
   // Special case: an empty array should match anything. (The statement "for
-  // each matcher M in S, x matches M" is true for any x when S is empty.)
+  // each matcher M in S, M matches x" is true for any x when S is empty.)
   if (matchers.length == 0) {
     return gjstest._;
   }
@@ -104,13 +104,45 @@ gjstest.anyOf = function(matchers) {
     throw new TypeError('anyOf requires an array.');
   }
 
-  // Use the power of De Morgan's law.
-  var negatedMatchers = [];
-  for (var i = 0; i < matchers.length; ++i) {
-    negatedMatchers[i] = gjstest.not(matchers[i]);
+  // Special case: an empty array should match nothing. (The statement "there
+  // exists a matcher M in S such that M matches x" is false for any x when S is
+  // empty.
+  if (matchers.length == 0) {
+    return gjstest.not(gjstest._);
   }
 
-  return gjstest.not(gjstest.allOf(negatedMatchers));
+  // Special case: if there is a single matcher in the array, just use that.
+  if (matchers.length == 1 && matchers[0] instanceof gjstest.Matcher) {
+    return matchers[0];
+  }
+
+  // Special case: if there is a single value x in the array, just use equal(x).
+  if (matchers.length == 1) {
+    return gjstest.equals(matchers[0]);
+  }
+
+  // Otherwise, build an appropriate description.
+  var descriptions = [];
+  var negativeDescriptions = [];
+
+  for (var i = 0; i < matchers.length; ++i) {
+    descriptions[i] = matchers[i].description;
+    negativeDescriptions[i] = matchers[i].negativeDescription;
+  }
+
+  return new gjstest.Matcher(
+      descriptions.join(', or '),
+      negativeDescriptions.join(', and '),
+      function(candidate) {
+        for (var i = 0; i < matchers.length; ++i) {
+          var result = matchers[i].predicate(candidate);
+          if (result == true) {
+            return true;
+          }
+        }
+
+        return false;
+      });
 };
 
 /**
