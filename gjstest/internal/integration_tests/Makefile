@@ -6,7 +6,7 @@ default: test
 include $(PROJECT_ROOT)/tools.mk
 
 # Extra flags to give to the integration test, for example --dump_new.
-INT_TEST_FLAGS =
+INT_TEST_ARGS =
 
 ######################################################
 # Libraries
@@ -31,7 +31,7 @@ integration_test.bin : $(LIB_OBJS) $(TEST_OBJS) $(TEST_DEPS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lglog -lxml2 -lre2 -lprotobuf -lv8 -lgflags
 
 test : integration_test.bin
-	./integration_test.bin --test_srcdir=. --gjstest_data_dir=$(PROJECT_ROOT)/share/gjstest --gjstest_binary=$(PROJECT_ROOT)/bin/gjstest $(INT_TEST_FLAGS)
+	./integration_test.bin --test_srcdir=. --gjstest_data_dir=$(PROJECT_ROOT)/share/gjstest --gjstest_binary=$(PROJECT_ROOT)/bin/gjstest $(INT_TEST_ARGS)
 
 ######################################################
 # House-keeping
