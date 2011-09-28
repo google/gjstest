@@ -112,9 +112,9 @@ webutil/xml/xml.a :
 ######################################################
 
 bin/gjstest: \
+    gjstest/internal/cpp/gjstest_main.a \
     base/base.a \
     file/file.a \
-    gjstest/internal/cpp/gjstest_main.a \
     gjstest/internal/proto/proto.a \
     strings/strings.a \
     third_party/cityhash/cityhash.a \
