@@ -10,3 +10,6 @@ share/
 # Generated proto bufer code.
 *.pb.cc
 *.pb.h
+
+# vim noise
+.*.swp
