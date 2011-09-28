@@ -33,6 +33,9 @@ clean :
 	    echo "Cleaning in $$subdir"; \
 	    $(MAKE) -C $$subdir clean || exit 1; \
 	done
+	find . -name '*.a' -delete
+	find . -name '*.o' -delete
+	find . -name '*test.bin' -delete
 
 depend :
 	# Make sure proto buffer generated headers exist.
