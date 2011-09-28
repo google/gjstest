@@ -25,8 +25,11 @@
 #elif defined(__APPLE__) /* gcc with a twist */
 #include "base/stl_decl_osx.h"
 
-#elif !defined(__GNUC__)
-#error "Unknown C++ compiler"
+#elif defined(__linux__)
+#include "base/stl_decl_linux.h"
+
+#else
+#error "Unsupported OS."
 #endif
 
 #endif  // BASE_STL_DECL_H_
