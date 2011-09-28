@@ -300,7 +300,7 @@ void XmlWriter::DeclareNamespaceURI(const char *ns_uri) {
   // child. Don't die in prod (even though the XML will not contain
   // the expected contents) but log an error, so we're sure to catch
   // the problem.
-  LOG_IF(DFATAL, !attribute_adding_still_ok_)
+  LOG_IF(FATAL, !attribute_adding_still_ok_)
     << "Attempting to declare a namespace after "
     << "adding a child element doesn't work!";
 
@@ -342,7 +342,7 @@ void XmlWriter::AddAttribute(const char *name,
   // child. Don't die in prod (even though the XML will not contain
   // the expected contents) but log an error, so we're sure to catch
   // the problem.
-  LOG_IF(DFATAL, !attribute_adding_still_ok_)
+  LOG_IF(FATAL, !attribute_adding_still_ok_)
     << "Attempting to add an attribute after "
     << "adding a child element doesn't work!";
 
