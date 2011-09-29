@@ -299,15 +299,30 @@ WhenSortedTest.prototype.CallsWrappedPredicateWithNumbers = function() {
   var wrapped = new gjstest.Matcher('', '', createMockFunction('pred'));
   var matcher = whenSorted(matcher);
 
-  expectCall(wrapped.predicate)(elementsAre([17, 19, 23]));
+  expectCall(wrapped.predicate)(elementsAre([17, 19, 23]))
+      .willOnce(returnWith(false));
 
   matcher.predicate([23, 17, 19]);
 };
 
 WhenSortedTest.prototype.CallsWrappedPredicateWithStrings = function() {
+  var wrapped = new gjstest.Matcher('', '', createMockFunction('pred'));
+  var matcher = whenSorted(matcher);
+
+  expectCall(wrapped.predicate)(elementsAre(['burrito', 'enchilada', 'taco']))
+      .willOnce(returnWith(false));
+
+  matcher.predicate(['enchilada', 'taco', 'burrito']);
 };
 
 WhenSortedTest.prototype.DoesntModifyCandidate = function() {
+  var wrapped = new gjstest.Matcher('', '', function() { return false; });
+  var matcher = whenSorted(matcher);
+
+  var candidate = [17, 23, 19];
+  matcher.predicate(candidate);
+
+  expectThat(candidate, elementsAre([17, 23, 19]));
 };
 
 WhenSortedTest.prototype.WrappedPredicateReturnsString = function() {
