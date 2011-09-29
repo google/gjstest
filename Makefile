@@ -7,6 +7,13 @@ include $(PROJECT_ROOT)/tools.mk
 # The prefix into which the user wants to install.
 export PREFIX = /usr/local
 
+UNAME := $(shell uname)
+
+ifeq ($(UNAME), Linux)
+# For clock_gettime in timer.cc.
+CXXFLAGS += -lrt
+endif
+
 ######################################################
 # House-keeping
 ######################################################
