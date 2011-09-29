@@ -21,13 +21,13 @@
 function returnArgs() { return arguments; }
 
 //////////////////////////////////////////////////////
-// ElementsAre
+// elementsAre
 //////////////////////////////////////////////////////
 
 function ElementsAreTest() {}
 registerTestSuite(ElementsAreTest);
 
-ElementsAreTest.prototype.nonArrayArgument = function() {
+ElementsAreTest.prototype.NonArrayArgument = function() {
   var error;
 
   expectThat(function() { elementsAre(null) },
@@ -40,7 +40,7 @@ ElementsAreTest.prototype.nonArrayArgument = function() {
              throwsError(/TypeError.*elementsAre.*array or Arguments/));
 };
 
-ElementsAreTest.prototype.nonArrayCandidates = function() {
+ElementsAreTest.prototype.NonArrayCandidates = function() {
   var pred = elementsAre([]).predicate;
 
   expectEq('which isn\'t an array or Arguments object', pred(undefined));
@@ -51,7 +51,7 @@ ElementsAreTest.prototype.nonArrayCandidates = function() {
   expectEq('which isn\'t an array or Arguments object', pred(equals(2)));
 };
 
-ElementsAreTest.prototype.wrongLength = function() {
+ElementsAreTest.prototype.WrongLength = function() {
   var pred = elementsAre([_, _]).predicate;
 
   expectEq('which has length 0', pred([]));
@@ -59,7 +59,7 @@ ElementsAreTest.prototype.wrongLength = function() {
   expectEq('which has length 3', pred([0, 1, 2]));
 };
 
-ElementsAreTest.prototype.nonMatchingMatchers = function() {
+ElementsAreTest.prototype.NonMatchingMatchers = function() {
   var pred =
     elementsAre([equals(0), containsRegExp(/^t.*o$/)]).predicate;
 
@@ -67,7 +67,7 @@ ElementsAreTest.prototype.nonMatchingMatchers = function() {
   expectEq('whose element 1 doesn\'t match', pred([0, 'taco filling']));
 };
 
-ElementsAreTest.prototype.allMatch = function() {
+ElementsAreTest.prototype.AllMatch = function() {
   var pred =
     elementsAre([equals(17), containsRegExp(/^t.*o$/)]).predicate;
 
@@ -75,14 +75,14 @@ ElementsAreTest.prototype.allMatch = function() {
   expectTrue(pred([17, 'taco and burrito']));
 };
 
-ElementsAreTest.prototype.matcherReturnsString = function() {
+ElementsAreTest.prototype.MatcherReturnsString = function() {
   var innerMatcher = new gjstest.Matcher('', '', function() { return 'taco'; });
   var pred = elementsAre([innerMatcher]).predicate;
 
   expectEq('whose element 0 doesn\'t match', pred([undefined]));
 };
 
-ElementsAreTest.prototype.rawValues = function() {
+ElementsAreTest.prototype.RawValues = function() {
   var obj = {};
   var pred = elementsAre([null, 0, 'taco', obj]).predicate;
 
@@ -96,7 +96,7 @@ ElementsAreTest.prototype.rawValues = function() {
   expectEq('whose element 3 doesn\'t match', pred([null, 0, 'taco', {}]));
 };
 
-ElementsAreTest.prototype.argumentsObject = function() {
+ElementsAreTest.prototype.ArgumentsObject = function() {
   var obj = {};
   var pred = elementsAre([obj, containsRegExp(/t.+o/)]).predicate;
 
@@ -108,14 +108,14 @@ ElementsAreTest.prototype.argumentsObject = function() {
   expectEq('whose element 1 doesn\'t match', pred(returnArgs(obj, 'burrito')));
 };
 
-ElementsAreTest.prototype.emptyArrays = function() {
+ElementsAreTest.prototype.EmptyArrays = function() {
   var pred = elementsAre([]).predicate;
 
   expectTrue(pred([]));
   expectEq('which has length 1', pred([0]));
 };
 
-ElementsAreTest.prototype.description = function() {
+ElementsAreTest.prototype.Description = function() {
   var matcher;
 
   // Empty
@@ -139,7 +139,7 @@ ElementsAreTest.prototype.description = function() {
 };
 
 //////////////////////////////////////////////////////
-// Contains
+// contains
 //////////////////////////////////////////////////////
 
 function ContainsTest() {
@@ -257,4 +257,15 @@ ContainsTest.prototype.DescriptionWithRawValue = function() {
 
   expectEq('is not an array or Arguments object containing \'taco\'',
            matcher.negativeDescription);
+};
+
+//////////////////////////////////////////////////////
+// whenSorted
+//////////////////////////////////////////////////////
+
+function WhenSortedTest() {
+}
+registerTestSuite(WhenSortedTest);
+
+ContainsTest.prototype.Doesfoo = function() {
 };
