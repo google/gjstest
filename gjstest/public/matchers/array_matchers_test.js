@@ -268,7 +268,7 @@ registerTestSuite(WhenSortedTest);
 
 WhenSortedTest.prototype.ArgIsNotMatcher = function() {
   expectThat(function() { whenSorted('taco'); },
-             throwsError(/argument.*whenSorted.*matcher/));
+             throwsError(/TypeError.*argument.*whenSorted.*matcher/));
 };
 
 WhenSortedTest.prototype.Description = function() {
@@ -287,7 +287,7 @@ WhenSortedTest.prototype.Description = function() {
 
 WhenSortedTest.prototype.NonArrayCandidate = function() {
   var wrapped = new gjstest.Matcher('', '', createMockFunction('pred'));
-  var matcher = whenSorted(matcher);
+  var matcher = whenSorted(wrapped);
 
   expectEq('which isn\'t an array', matcher.predicate(null));
   expectEq('which isn\'t an array', matcher.predicate(undefined));
@@ -297,7 +297,7 @@ WhenSortedTest.prototype.NonArrayCandidate = function() {
 
 WhenSortedTest.prototype.CallsWrappedPredicateWithNumbers = function() {
   var wrapped = new gjstest.Matcher('', '', createMockFunction('pred'));
-  var matcher = whenSorted(matcher);
+  var matcher = whenSorted(wrapped);
 
   expectCall(wrapped.predicate)(elementsAre([17, 19, 23]))
       .willOnce(returnWith(false));
@@ -307,7 +307,7 @@ WhenSortedTest.prototype.CallsWrappedPredicateWithNumbers = function() {
 
 WhenSortedTest.prototype.CallsWrappedPredicateWithStrings = function() {
   var wrapped = new gjstest.Matcher('', '', createMockFunction('pred'));
-  var matcher = whenSorted(matcher);
+  var matcher = whenSorted(wrapped);
 
   expectCall(wrapped.predicate)(elementsAre(['burrito', 'enchilada', 'taco']))
       .willOnce(returnWith(false));
@@ -317,7 +317,7 @@ WhenSortedTest.prototype.CallsWrappedPredicateWithStrings = function() {
 
 WhenSortedTest.prototype.DoesntModifyCandidate = function() {
   var wrapped = new gjstest.Matcher('', '', function() { return false; });
-  var matcher = whenSorted(matcher);
+  var matcher = whenSorted(wrapped);
 
   var candidate = [17, 23, 19];
   matcher.predicate(candidate);
@@ -327,7 +327,7 @@ WhenSortedTest.prototype.DoesntModifyCandidate = function() {
 
 WhenSortedTest.prototype.WrappedPredicateReturnsString = function() {
   var wrapped = new gjstest.Matcher('', '', createMockFunction('pred'));
-  var matcher = whenSorted(matcher);
+  var matcher = whenSorted(wrapped);
 
   expectCall(wrapped.predicate)(_)
       .willOnce(returnWith('which isn\'t a taco'));
@@ -337,7 +337,7 @@ WhenSortedTest.prototype.WrappedPredicateReturnsString = function() {
 
 WhenSortedTest.prototype.WrappedPredicateReturnsFalse = function() {
   var wrapped = new gjstest.Matcher('', '', createMockFunction('pred'));
-  var matcher = whenSorted(matcher);
+  var matcher = whenSorted(wrapped);
 
   expectCall(wrapped.predicate)(_)
       .willOnce(returnWith(false));
@@ -347,7 +347,7 @@ WhenSortedTest.prototype.WrappedPredicateReturnsFalse = function() {
 
 WhenSortedTest.prototype.WrappedPredicateReturnsTrue = function() {
   var wrapped = new gjstest.Matcher('', '', createMockFunction('pred'));
-  var matcher = whenSorted(matcher);
+  var matcher = whenSorted(wrapped);
 
   expectCall(wrapped.predicate)(_)
       .willOnce(returnWith(true));

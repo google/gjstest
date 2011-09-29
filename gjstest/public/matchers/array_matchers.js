@@ -171,5 +171,26 @@ gjstest.contains = function(x) {
  * @return {!gjstest.Matcher}
  */
 gjstest.whenSorted = function(matcher) {
-  throw new Error('Not implemented!');
+  if (!(matcher instanceof gjstest.Matcher)) {
+    throw new TypeError('The argument to whenSorted must be a matcher.');
+  }
+
+  return new gjstest.Matcher(
+      'when sorted, ' + matcher.description,
+      'when sorted, ' + matcher.negativeDescription,
+      function(candidate) {
+        if (!(candidate instanceof Array)) {
+          return 'which isn\'t an array';
+        }
+
+        // Avoid modifying the candidate by making a copy.
+        var sorted = candidate.concat([]);
+        sorted.sort();
+
+        if (matcher.predicate(sorted) == true) {
+          return true;
+        }
+
+        return false;
+      });
 };
