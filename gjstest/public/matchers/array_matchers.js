@@ -154,3 +154,21 @@ gjstest.contains = function(x) {
         return false;
       });
 };
+
+/**
+ * Match arrays that match a wrapped matcher when their values are sorted using
+ * Array.sort.
+ *
+ * For example:
+ *
+ *     // Passes
+ *     expectThat([19, 17, 23], whenSorted(elementsAre([17, 19, 23])));
+ *
+ * @param {!gjstest.Matcher} matcher
+ *     A matcher whose predicate will be passed the sorted value.
+ *
+ * @return {!gjstest.Matcher}
+ */
+gjstest.whenSorted = function(matcher) {
+  throw new Error('Not implemented!');
+};
