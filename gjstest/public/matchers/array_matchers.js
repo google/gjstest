@@ -157,7 +157,8 @@ gjstest.contains = function(x) {
 
 /**
  * Match arrays that match a wrapped matcher when their values are sorted using
- * Array.sort.
+ * Array.sort. This is useful for asserting expectations about the contents of
+ * an array whose order is undefined.
  *
  * For example:
  *

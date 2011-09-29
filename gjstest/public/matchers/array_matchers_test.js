@@ -326,10 +326,31 @@ WhenSortedTest.prototype.DoesntModifyCandidate = function() {
 };
 
 WhenSortedTest.prototype.WrappedPredicateReturnsString = function() {
+  var wrapped = new gjstest.Matcher('', '', createMockFunction('pred'));
+  var matcher = whenSorted(matcher);
+
+  expectCall(wrapped.predicate)(_)
+      .willOnce(returnWith('which isn\'t a taco'));
+
+  expectFalse(matcher.predicate([]));
 };
 
 WhenSortedTest.prototype.WrappedPredicateReturnsFalse = function() {
+  var wrapped = new gjstest.Matcher('', '', createMockFunction('pred'));
+  var matcher = whenSorted(matcher);
+
+  expectCall(wrapped.predicate)(_)
+      .willOnce(returnWith(false));
+
+  expectFalse(matcher.predicate([]));
 };
 
 WhenSortedTest.prototype.WrappedPredicateReturnsTrue = function() {
+  var wrapped = new gjstest.Matcher('', '', createMockFunction('pred'));
+  var matcher = whenSorted(matcher);
+
+  expectCall(wrapped.predicate)(_)
+      .willOnce(returnWith(true));
+
+  expectTrue(matcher.predicate([]));
 };
