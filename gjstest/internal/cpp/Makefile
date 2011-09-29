@@ -9,6 +9,13 @@ DEFAULT_DATA_DIR = $(PREFIX)/share/gjstest
 include $(PROJECT_ROOT)/tools.mk
 CPPFLAGS += -DDEFAULT_DATA_DIR=$(DEFAULT_DATA_DIR)
 
+UNAME := $(shell uname)
+
+ifeq ($(UNAME), Linux)
+# For clock_gettime in timer.cc.
+CXXFLAGS += -lrt
+endif
+
 ######################################################
 # Libraries
 ######################################################
