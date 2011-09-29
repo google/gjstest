@@ -267,5 +267,5 @@ function WhenSortedTest() {
 }
 registerTestSuite(WhenSortedTest);
 
-ContainsTest.prototype.Doesfoo = function() {
+WhenSortedTest.prototype.Doesfoo = function() {
 };
