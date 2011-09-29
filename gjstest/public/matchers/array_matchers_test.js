@@ -267,5 +267,23 @@ function WhenSortedTest() {
 }
 registerTestSuite(WhenSortedTest);
 
-WhenSortedTest.prototype.Doesfoo = function() {
+WhenSortedTest.prototype.ArgIsNotMatcher = function() {
+};
+
+WhenSortedTest.prototype.NonArrayCandidate = function() {
+};
+
+WhenSortedTest.prototype.CallsWrappedPredicate = function() {
+};
+
+WhenSortedTest.prototype.DoesntModifyCandidate = function() {
+};
+
+WhenSortedTest.prototype.WrappedPredicateReturnsString = function() {
+};
+
+WhenSortedTest.prototype.WrappedPredicateReturnsFalse = function() {
+};
+
+WhenSortedTest.prototype.WrappedPredicateReturnsTrue = function() {
 };
