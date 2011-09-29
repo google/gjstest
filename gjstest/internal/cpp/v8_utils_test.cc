@@ -413,6 +413,10 @@ TEST_F(MakeFunctionTest, GarbageCollectsCallback) {
   //
   while (!v8::V8::IdleNotification());
 
+  // On Linux, it seems we also need to send a low-memory notification to make
+  // sure the garbage collection run happens.
+  v8::V8::LowMemoryNotification();
+
   // The callback should have been deleted when the function was garbage
   // collected.
   EXPECT_TRUE(callback_deleted);
