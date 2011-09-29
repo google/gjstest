@@ -123,16 +123,16 @@ gjstest.elementsAre = function(matchers) {
  * @return {!gjstest.Matcher}
  */
 gjstest.contains = function(x) {
-    // Is this actually a matcher?
-    var matcher;
-    var nounPhrase;
-    if (x && x instanceof gjstest.Matcher) {
-      matcher = x;
-      nounPhrase = 'an element that ' + matcher.description;
-    } else {
-      matcher = gjstest.equals(x);
-      nounPhrase = gjstest.stringify(x);
-    }
+  // Is this actually a matcher?
+  var matcher;
+  var nounPhrase;
+  if (x && x instanceof gjstest.Matcher) {
+    matcher = x;
+    nounPhrase = 'an element that ' + matcher.description;
+  } else {
+    matcher = gjstest.equals(x);
+    nounPhrase = gjstest.stringify(x);
+  }
 
   return new gjstest.Matcher(
       'is an array or Arguments object containing ' + nounPhrase,
