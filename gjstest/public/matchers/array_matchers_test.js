@@ -263,17 +263,48 @@ ContainsTest.prototype.DescriptionWithRawValue = function() {
 // whenSorted
 //////////////////////////////////////////////////////
 
-function WhenSortedTest() {
-}
+function WhenSortedTest() {}
 registerTestSuite(WhenSortedTest);
 
 WhenSortedTest.prototype.ArgIsNotMatcher = function() {
+  expectThat(function() { whenSorted('taco'); },
+             throwsError(/argument.*whenSorted.*matcher/));
+};
+
+WhenSortedTest.prototype.Description = function() {
+  var wrapped =
+      new gjstest.Matcher(
+          'has elements [1, 2]',
+          'does not have elements [1, 2]',
+          function() { return true; });
+
+  var matcher = whenSorted(wrapped);
+
+  expectEq('when sorted, has elements [1, 2]', matcher.description);
+  expectEq('when sorted, does not have elements [1, 2]',
+           matcher.negativeDescription);
 };
 
 WhenSortedTest.prototype.NonArrayCandidate = function() {
+  var wrapped = new gjstest.Matcher('', '', createMockFunction('pred'));
+  var matcher = whenSorted(matcher);
+
+  expectEq('which isn\'t an array', matcher.predicate(null));
+  expectEq('which isn\'t an array', matcher.predicate(undefined));
+  expectEq('which isn\'t an array', matcher.predicate(17));
+  expectEq('which isn\'t an array', matcher.predicate({}));
 };
 
-WhenSortedTest.prototype.CallsWrappedPredicate = function() {
+WhenSortedTest.prototype.CallsWrappedPredicateWithNumbers = function() {
+  var wrapped = new gjstest.Matcher('', '', createMockFunction('pred'));
+  var matcher = whenSorted(matcher);
+
+  expectCall(wrapped.predicate)(elementsAre([17, 19, 23]));
+
+  matcher.predicate([23, 17, 19]);
+};
+
+WhenSortedTest.prototype.CallsWrappedPredicateWithStrings = function() {
 };
 
 WhenSortedTest.prototype.DoesntModifyCandidate = function() {
