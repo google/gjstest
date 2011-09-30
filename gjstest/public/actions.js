@@ -42,7 +42,7 @@ gjstest.doAll = function(actions) {
   return function() {
     var retVal;
     for (var i = 0; i < actions.length; ++i) {
-      retVal = actions[i].apply(null, arguments);
+      retVal = actions[i].apply(this, arguments);
     }
 
     return retVal;
