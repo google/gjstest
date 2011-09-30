@@ -192,7 +192,7 @@ bool RunTests(
   HandleScope handle_owner;
 
   // Create a context in which to run scripts and ensure that it's used whenever
-  // a context is needed below. Export the global functions configured above.
+  // a context is needed below.
   Persistent<Context> context = Context::New();
   Context::Scope context_scope(context);
 
