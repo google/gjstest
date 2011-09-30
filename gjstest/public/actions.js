@@ -22,3 +22,12 @@
 gjstest.returnWith = function(retVal) {
   return function() { return retVal; };
 };
+
+/**
+ * A mock action that invokes a list of other mock actions, serially, in order.
+ *
+ * @param {!Array.<function>} actions
+ * @return {function}
+ */
+gjstest.doAll = function(actions) {
+};

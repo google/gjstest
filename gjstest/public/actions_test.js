@@ -25,3 +25,13 @@ ReturnWithTest.prototype.ReturnsArg = function() {
   expectEq(2, returnWith(2)());
   expectEq(null, returnWith(null)());
 };
+
+////////////////////////
+// doAll
+////////////////////////
+
+function DoAllTest() {}
+registerTestSuite(DoAllTest);
+
+DoAllTest.prototype.DoesFoo = function() {
+};
