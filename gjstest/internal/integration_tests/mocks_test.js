@@ -36,7 +36,7 @@ MocksTest.prototype.mockActions = function() {
 
   expectCall(foo)(17)
     .willOnce(returnWith(11))
-    .willOnce(returnWith(12));
+    .willOnce(doAll([returnWith(12)]));
 
   expectCall(foo)(19)
     .willOnce(returnWith(21))
