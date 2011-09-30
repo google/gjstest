@@ -58,10 +58,6 @@ gjstest.createMockInstance = function(ctor) {
  * accepts the argument matchers for the call. To be used in the following
  * manner:
  *
- *     var atLeast = gjstest.atLeast;
- *     var expectCall = gjstest.expectCall;
- *     var returnWith = gjstest.returnWith;
- *
  *     var foo = [some mock function];
  *
  *     [...]
@@ -98,16 +94,6 @@ gjstest.expectCall = function(mockFunc) {
 
   gjstest.internal.currentTestEnvironment.clearUserStack();
   return result;
-};
-
-/**
- * A mock action that simply returns retVal.
- *
- * @param {*} retVal
- * @return {!Function}
- */
-gjstest.returnWith = function(retVal) {
-  return function() { return retVal; };
 };
 
 ///////////////////////////

@@ -217,16 +217,3 @@ ExpectCallTest.prototype.timesCalledAfterWillRepeatedly = function() {
       },
       throwsError(/times\(\) called after willRepeatedly\(\)/));
 };
-
-////////////////////////
-// returnWith
-////////////////////////
-
-function ReturnWithTest() {}
-registerTestSuite(ReturnWithTest);
-
-ReturnWithTest.prototype.returnsArg = function() {
-  expectEq('taco', returnWith('taco')());
-  expectEq(2, returnWith(2)());
-  expectEq(null, returnWith(null)());
-};

@@ -77,6 +77,7 @@ void GetBuiltinScriptPaths(
   paths->push_back(GetPath("internal/js/mock_instance.js"));
   paths->push_back(GetPath("public/stringify.js"));
   paths->push_back(GetPath("public/assertions.js"));
+  paths->push_back(GetPath("public/actions.js"));
   paths->push_back(GetPath("public/mocking.js"));
   paths->push_back(GetPath("public/register.js"));
   paths->push_back(GetPath("internal/js/run_test.js"));

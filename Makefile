@@ -158,6 +158,7 @@ SHARE_DATA = \
     public/matchers/missing_arg_matchers.js \
     public/matchers/number_matchers.js \
     public/matchers/string_matchers.js \
+    public/actions.js \
     public/mocking.js \
     public/register.js \
     public/stringify.js \
