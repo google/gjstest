@@ -33,10 +33,26 @@ ReturnWithTest.prototype.ReturnsArg = function() {
 function DoAllTest() {}
 registerTestSuite(DoAllTest);
 
+DoAllTest.prototype.ArgNotArray = function() {
+  expectThat(function() { doAll(17); }, throwsError(/doAll.*array/));
+};
+
 DoAllTest.prototype.NoActions = function() {
+  expectThat(function() { doAll([]); }, throwsError(/doAll.*non-empty/));
 };
 
 DoAllTest.prototype.CallsActionsWithCorrectArgs = function() {
+  var wrapped1 = createMockFunction('wrapped1');
+  var wrapped2 = createMockFunction('wrapped2');
+  var wrapped3 = createMockFunction('wrapped3');
+
+  var action = doAll([wrapped1, wrapped2, wrapped3]);
+
+  expectCall(wrapped1)('taco', 17, undefined);
+  expectCall(wrapped2)('taco', 17, undefined);
+  expectCall(wrapped3)('taco', 17, undefined);
+
+  action('taco', 17, undefined);
 };
 
 DoAllTest.prototype.ReturnsLastReturnValue = function() {
