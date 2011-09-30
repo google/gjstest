@@ -62,5 +62,13 @@ DoAllTest.prototype.ReturnsLastReturnValue = function() {
 };
 
 DoAllTest.prototype.SetsAppropriateThis = function() {
-  expectEq(17, 'TODO');
+  var suppliedThis = undefined;
+  function recordThis() { suppliedThis = this; }
+
+  var action = doAll([recordThis]);
+
+  var expectedThis = {};
+  action.apply(expectedThis);
+
+  expectEq(expectedThis, suppliedThis);
 };
