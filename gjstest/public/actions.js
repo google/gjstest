@@ -31,4 +31,20 @@ gjstest.returnWith = function(retVal) {
  * @return {function}
  */
 gjstest.doAll = function(actions) {
+  if (!(actions instanceof Array)) {
+    throw new TypeError('doAll requires an array argument.');
+  }
+
+  if (actions.length == 0) {
+    throw new Error('doAll requires a non-empty array.');
+  }
+
+  return function() {
+    var retVal;
+    for (var i = 0; i < actions.length; ++i) {
+      retVal = actions[i].apply(null, arguments);
+    }
+
+    return retVal;
+  }
 };

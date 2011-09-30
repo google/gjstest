@@ -34,7 +34,7 @@ function DoAllTest() {}
 registerTestSuite(DoAllTest);
 
 DoAllTest.prototype.ArgNotArray = function() {
-  expectThat(function() { doAll(17); }, throwsError(/doAll.*array/));
+  expectThat(function() { doAll(17); }, throwsError(/TypeError.*doAll.*array/));
 };
 
 DoAllTest.prototype.NoActions = function() {
@@ -59,4 +59,8 @@ DoAllTest.prototype.ReturnsLastReturnValue = function() {
   var action = doAll([returnWith(17), returnWith(19), returnWith(23)]);
 
   expectEq(23, action());
+};
+
+DoAllTest.prototype.SetsAppropriateThis = function() {
+  expectEq(17, 'TODO');
 };
