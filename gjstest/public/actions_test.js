@@ -56,4 +56,7 @@ DoAllTest.prototype.CallsActionsWithCorrectArgs = function() {
 };
 
 DoAllTest.prototype.ReturnsLastReturnValue = function() {
+  var action = doAll([returnWith(17), returnWith(19), returnWith(23)]);
+
+  expectEq(23, action());
 };
