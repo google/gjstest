@@ -33,5 +33,11 @@ ReturnWithTest.prototype.ReturnsArg = function() {
 function DoAllTest() {}
 registerTestSuite(DoAllTest);
 
-DoAllTest.prototype.DoesFoo = function() {
+DoAllTest.prototype.NoActions = function() {
+};
+
+DoAllTest.prototype.CallsActionsWithCorrectArgs = function() {
+};
+
+DoAllTest.prototype.ReturnsLastReturnValue = function() {
 };
