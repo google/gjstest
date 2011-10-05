@@ -13,6 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
 #include <v8.h>
 
 #include "gjstest/internal/cpp/v8_utils.h"
@@ -21,8 +23,6 @@
 #include "base/integral_types.h"
 #include "base/logging.h"
 #include "base/macros.h"
-#include "third_party/gmock/include/gmock/gmock.h"
-#include "third_party/gtest/include/gtest/gtest.h"
 
 using testing::ElementsAre;
 using testing::HasSubstr;

@@ -1,5 +1,4 @@
 PROJECT_ROOT = ../..
-GMOCK_PATH = $(PROJECT_ROOT)/third_party/gmock
 default: xml.a
 
 # Tools and flags.
@@ -24,12 +23,11 @@ xml.a : $(LIB_OBJS)
 # Additional objects to include in the test.
 TEST_OBJS = xml_writer_test.o
 TEST_DEPS = \
-    $(GMOCK_PATH)/gmock_main.a \
-    $(PROJECT_ROOT)/third_party/cityhash/cityhash.a \
     $(PROJECT_ROOT)/base/base.a \
+    $(PROJECT_ROOT)/third_party/cityhash/cityhash.a
 
 xml_writer_test.bin : $(LIB_OBJS) $(TEST_OBJS) $(TEST_DEPS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lglog -lxml2
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lglog -lxml2 -lgtest -lgmock -lgmock_main
 
 test : xml_writer_test.bin
 	./xml_writer_test.bin
@@ -71,32 +69,9 @@ xml_writer.o: xml_writer.cc /usr/include/libxml2/libxml/xmlwriter.h \
   ../../base/scoped_ptr.h ../../base/basictypes.h ../../base/macros.h \
   ../../base/stl_decl.h ../../base/stl_decl_osx.h \
   ../../base/stringprintf.h ../../base/logging.h ../../util/hash/hash.h \
-  ../../base/stl_decl.h ../../third_party/cityhash/city.h
+  ../../base/stl_decl.h ../../third_party/cityhash/city.h \
+  ../../base/integral_types.h
 xml_writer_test.o: xml_writer_test.cc ../../base/logging.h \
-  ../../third_party/gtest/include/gtest/gtest.h \
-  ../../third_party/gtest/include/gtest/internal/gtest-internal.h \
-  ../../third_party/gtest/include/gtest/internal/gtest-port.h \
-  ../../third_party/gtest/include/gtest/internal/gtest-string.h \
-  ../../third_party/gtest/include/gtest/internal/gtest-filepath.h \
-  ../../third_party/gtest/include/gtest/internal/gtest-type-util.h \
-  ../../third_party/gtest/include/gtest/internal/gtest-string.h \
-  ../../third_party/gtest/include/gtest/gtest-death-test.h \
-  ../../third_party/gtest/include/gtest/internal/gtest-death-test-internal.h \
-  ../../third_party/gtest/include/gtest/internal/gtest-internal.h \
-  ../../third_party/gtest/include/gtest/gtest-message.h \
-  ../../third_party/gtest/include/gtest/gtest-param-test.h \
-  ../../third_party/gtest/include/gtest/internal/gtest-port.h \
-  ../../third_party/gtest/include/gtest/internal/gtest-param-util.h \
-  ../../third_party/gtest/include/gtest/internal/gtest-linked_ptr.h \
-  ../../third_party/gtest/include/gtest/gtest-printers.h \
-  ../../third_party/gtest/include/gtest/internal/gtest-param-util-generated.h \
-  ../../third_party/gtest/include/gtest/internal/gtest-param-util.h \
-  ../../third_party/gtest/include/gtest/gtest-printers.h \
-  ../../third_party/gtest/include/gtest/gtest_prod.h \
-  ../../third_party/gtest/include/gtest/gtest-test-part.h \
-  ../../third_party/gtest/include/gtest/gtest-typed-test.h \
-  ../../third_party/gtest/include/gtest/internal/gtest-type-util.h \
-  ../../third_party/gtest/include/gtest/gtest_pred_impl.h \
   ../../webutil/xml/xml_writer.h ../../base/basictypes.h \
   ../../base/integral_types.h ../../base/macros.h \
   ../../base/type_traits.h ../../base/template_util.h

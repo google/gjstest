@@ -1,5 +1,4 @@
 PROJECT_ROOT = ../../..
-GMOCK_PATH = $(PROJECT_ROOT)/third_party/gmock
 default: test
 
 # Tools and flags.
@@ -22,13 +21,12 @@ LIB_OBJS =
 # Additional objects to include in the test.
 TEST_OBJS = integration_test.o
 TEST_DEPS = \
-    $(GMOCK_PATH)/gmock_main.a \
     $(PROJECT_ROOT)/base/base.a \
     $(PROJECT_ROOT)/file/file.a \
     $(PROJECT_ROOT)/strings/strings.a \
 
 integration_test.bin : $(LIB_OBJS) $(TEST_OBJS) $(TEST_DEPS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lglog -lxml2 -lre2 -lprotobuf -lv8 -lgflags
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lglog -lxml2 -lre2 -lprotobuf -lv8 -lgflags -lgtest -lgmock -lgmock_main
 
 test : integration_test.bin
 	./integration_test.bin --test_srcdir=. --gjstest_data_dir=$(PROJECT_ROOT)/share/gjstest --gjstest_binary=$(PROJECT_ROOT)/bin/gjstest $(INT_TEST_ARGS)
@@ -51,46 +49,4 @@ integration_test.o: integration_test.cc ../../../base/logging.h \
   ../../../base/template_util.h ../../../base/stringprintf.h \
   ../../../file/file_utils.h ../../../base/basictypes.h \
   ../../../base/integral_types.h ../../../strings/strutil.h \
-  ../../../base/basictypes.h \
-  ../../../third_party/gmock/include/gmock/gmock.h \
-  ../../../third_party/gmock/include/gmock/gmock-actions.h \
-  ../../../third_party/gmock/include/gmock/internal/gmock-internal-utils.h \
-  ../../../third_party/gmock/include/gmock/internal/gmock-generated-internal-utils.h \
-  ../../../third_party/gmock/include/gmock/internal/gmock-port.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-linked_ptr.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-port.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-port.h \
-  ../../../third_party/gtest/include/gtest/gtest.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-internal.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-string.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-filepath.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-type-util.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-string.h \
-  ../../../third_party/gtest/include/gtest/gtest-death-test.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-death-test-internal.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-internal.h \
-  ../../../third_party/gtest/include/gtest/gtest-message.h \
-  ../../../third_party/gtest/include/gtest/gtest-param-test.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-port.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-param-util.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-linked_ptr.h \
-  ../../../third_party/gtest/include/gtest/gtest-printers.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-param-util-generated.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-param-util.h \
-  ../../../third_party/gtest/include/gtest/gtest-printers.h \
-  ../../../third_party/gtest/include/gtest/gtest_prod.h \
-  ../../../third_party/gtest/include/gtest/gtest-test-part.h \
-  ../../../third_party/gtest/include/gtest/gtest-typed-test.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-type-util.h \
-  ../../../third_party/gtest/include/gtest/gtest_pred_impl.h \
-  ../../../third_party/gmock/include/gmock/internal/gmock-port.h \
-  ../../../third_party/gmock/include/gmock/gmock-cardinalities.h \
-  ../../../third_party/gtest/include/gtest/gtest.h \
-  ../../../third_party/gmock/include/gmock/gmock-generated-actions.h \
-  ../../../third_party/gmock/include/gmock/gmock-generated-function-mockers.h \
-  ../../../third_party/gmock/include/gmock/gmock-spec-builders.h \
-  ../../../third_party/gmock/include/gmock/gmock-matchers.h \
-  ../../../third_party/gmock/include/gmock/gmock-generated-matchers.h \
-  ../../../third_party/gmock/include/gmock/gmock-more-actions.h \
-  ../../../third_party/gmock/include/gmock/gmock-generated-nice-strict.h \
-  ../../../third_party/gtest/include/gtest/gtest.h
+  ../../../base/basictypes.h

@@ -29,7 +29,6 @@ SUBDIRS := \
     gjstest/public/matchers \
     strings \
     third_party/cityhash \
-    third_party/gmock \
     webutil/xml \
 
 clean :
@@ -57,9 +56,7 @@ depend :
 test : \
     bin/gjstest \
     gjstest/internal/cpp/cpp.a \
-    share \
-    third_party/gmock/gmock.a \
-    third_party/gmock/gmock_main.a
+    share
 	for subdir in $(SUBDIRS); \
 	do \
 	    echo "Making test in $$subdir"; \
@@ -94,12 +91,6 @@ strings/strings.a :
 third_party/cityhash/cityhash.a :
 	$(MAKE) -C third_party/cityhash cityhash.a
 
-third_party/gmock/gmock.a :
-	$(MAKE) -C third_party/gmock gmock.a
-
-third_party/gmock/gmock_main.a :
-	$(MAKE) -C third_party/gmock gmock_main.a
-
 webutil/xml/xml.a :
 	$(MAKE) -C webutil/xml xml.a
 
@@ -111,7 +102,6 @@ webutil/xml/xml.a :
     gjstest/internal/proto/proto.a \
     strings/strings.a \
     third_party/cityhash/cityhash.a \
-    third_party/gmock/gmock_main.a \
     webutil/xml/xml.a
 
 ######################################################

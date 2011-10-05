@@ -15,8 +15,9 @@
 
 #include <limits>
 
+#include <gtest/gtest.h>
+
 #include "base/logging.h"
-#include "third_party/gtest/include/gtest/gtest.h"
 #include "webutil/xml/xml_writer.h"
 
 using std::numeric_limits;

@@ -1,5 +1,4 @@
 PROJECT_ROOT = ../../..
-GMOCK_PATH = $(PROJECT_ROOT)/third_party/gmock
 default: gjstest_main.a
 
 # The directory compiled in to the tool as the default for built-in data files.
@@ -39,7 +38,6 @@ gjstest_main.a : $(MAIN_OBJS)
 # Additional objects to include in the test.
 TEST_OBJS = v8_utils_test.o
 TEST_DEPS = \
-    $(GMOCK_PATH)/gmock_main.a \
     $(PROJECT_ROOT)/third_party/cityhash/cityhash.a \
     $(PROJECT_ROOT)/base/base.a \
     $(PROJECT_ROOT)/file/file.a \
@@ -48,7 +46,7 @@ TEST_DEPS = \
     $(PROJECT_ROOT)/webutil/xml/xml.a \
 
 v8_utils_test.bin : $(LIB_OBJS) $(TEST_OBJS) $(TEST_DEPS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lglog -lxml2 -lre2 -lprotobuf -lv8 -lgflags
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lglog -lxml2 -lre2 -lprotobuf -lv8 -lgflags -lgmock -lgmock_main -lgtest
 
 test : v8_utils_test.bin
 	./v8_utils_test.bin
@@ -81,8 +79,8 @@ run_tests.o: run_tests.cc ../../../gjstest/internal/cpp/run_tests.h \
   ../../../strings/strutil.h ../../../base/basictypes.h \
   ../../../util/gtl/map-util.h ../../../util/hash/hash.h \
   ../../../base/stl_decl.h ../../../third_party/cityhash/city.h \
-  ../../../webutil/xml/xml_writer.h ../../../base/basictypes.h \
-  ../../../base/macros.h
+  ../../../base/integral_types.h ../../../webutil/xml/xml_writer.h \
+  ../../../base/basictypes.h ../../../base/macros.h
 test_case.o: test_case.cc ../../../gjstest/internal/cpp/test_case.h \
   ../../../base/integral_types.h ../../../base/macros.h \
   ../../../base/type_traits.h ../../../base/template_util.h \
@@ -115,49 +113,7 @@ v8_utils_test.o: v8_utils_test.cc \
   ../../../base/callback.h ../../../base/logging.h \
   ../../../base/callback.h ../../../base/integral_types.h \
   ../../../base/logging.h ../../../base/macros.h \
-  ../../../base/type_traits.h ../../../base/template_util.h \
-  ../../../third_party/gmock/include/gmock/gmock.h \
-  ../../../third_party/gmock/include/gmock/gmock-actions.h \
-  ../../../third_party/gmock/include/gmock/internal/gmock-internal-utils.h \
-  ../../../third_party/gmock/include/gmock/internal/gmock-generated-internal-utils.h \
-  ../../../third_party/gmock/include/gmock/internal/gmock-port.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-linked_ptr.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-port.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-port.h \
-  ../../../third_party/gtest/include/gtest/gtest.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-internal.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-string.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-filepath.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-type-util.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-string.h \
-  ../../../third_party/gtest/include/gtest/gtest-death-test.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-death-test-internal.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-internal.h \
-  ../../../third_party/gtest/include/gtest/gtest-message.h \
-  ../../../third_party/gtest/include/gtest/gtest-param-test.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-port.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-param-util.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-linked_ptr.h \
-  ../../../third_party/gtest/include/gtest/gtest-printers.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-param-util-generated.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-param-util.h \
-  ../../../third_party/gtest/include/gtest/gtest-printers.h \
-  ../../../third_party/gtest/include/gtest/gtest_prod.h \
-  ../../../third_party/gtest/include/gtest/gtest-test-part.h \
-  ../../../third_party/gtest/include/gtest/gtest-typed-test.h \
-  ../../../third_party/gtest/include/gtest/internal/gtest-type-util.h \
-  ../../../third_party/gtest/include/gtest/gtest_pred_impl.h \
-  ../../../third_party/gmock/include/gmock/internal/gmock-port.h \
-  ../../../third_party/gmock/include/gmock/gmock-cardinalities.h \
-  ../../../third_party/gtest/include/gtest/gtest.h \
-  ../../../third_party/gmock/include/gmock/gmock-generated-actions.h \
-  ../../../third_party/gmock/include/gmock/gmock-generated-function-mockers.h \
-  ../../../third_party/gmock/include/gmock/gmock-spec-builders.h \
-  ../../../third_party/gmock/include/gmock/gmock-matchers.h \
-  ../../../third_party/gmock/include/gmock/gmock-generated-matchers.h \
-  ../../../third_party/gmock/include/gmock/gmock-more-actions.h \
-  ../../../third_party/gmock/include/gmock/gmock-generated-nice-strict.h \
-  ../../../third_party/gtest/include/gtest/gtest.h
+  ../../../base/type_traits.h ../../../base/template_util.h
 run_tests.o: run_tests.cc ../../../gjstest/internal/cpp/run_tests.h \
   ../../../base/stl_decl.h ../../../base/stl_decl_osx.h \
   ../../../base/basictypes.h ../../../base/integral_types.h \
@@ -173,8 +129,8 @@ run_tests.o: run_tests.cc ../../../gjstest/internal/cpp/run_tests.h \
   ../../../strings/strutil.h ../../../base/basictypes.h \
   ../../../util/gtl/map-util.h ../../../util/hash/hash.h \
   ../../../base/stl_decl.h ../../../third_party/cityhash/city.h \
-  ../../../webutil/xml/xml_writer.h ../../../base/basictypes.h \
-  ../../../base/macros.h
+  ../../../base/integral_types.h ../../../webutil/xml/xml_writer.h \
+  ../../../base/basictypes.h ../../../base/macros.h
 test_case.o: test_case.cc ../../../gjstest/internal/cpp/test_case.h \
   ../../../base/integral_types.h ../../../base/macros.h \
   ../../../base/type_traits.h ../../../base/template_util.h \

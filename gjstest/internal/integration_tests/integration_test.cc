@@ -19,6 +19,8 @@
 #include <string>
 
 #include <gflags/gflags.h>
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
 #include <re2/re2.h>
 
 #include "base/logging.h"
@@ -26,8 +28,6 @@
 #include "base/stringprintf.h"
 #include "file/file_utils.h"
 #include "strings/strutil.h"
-#include "third_party/gmock/include/gmock/gmock.h"
-#include "third_party/gtest/include/gtest/gtest.h"
 
 DEFINE_string(gjstest_binary, "", "Path to the gjstest binary.");
 DEFINE_string(test_srcdir, "", "Path to directory containing test files.");
