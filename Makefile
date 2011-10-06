@@ -103,14 +103,15 @@ install : gjstest/internal/cpp/gjstest.bin share
 ######################################################
 
 clean :
+	find . -name '*.bin' -delete
 	find . -name '*.compile' -delete
 	find . -name '*.deps' -delete
 	find . -name '*.generated.cc' -delete
 	find . -name '*.header_deps' -delete
-	find . -name '*.object_deps' -delete
-	find . -name '*.pb.h' -delete
-	find . -name '*.pb.cc' -delete
-	find . -name '*test.out' -delete
 	find . -name '*.o' -delete
+	find . -name '*.object_deps' -delete
+	find . -name '*.pb.cc' -delete
+	find . -name '*.pb.h' -delete
+	find . -name '*test.out' -delete
 	rm -f $(CC_BINARIES)
 	rm -rf share/
