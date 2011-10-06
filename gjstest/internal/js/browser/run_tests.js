@@ -229,7 +229,10 @@ gjstest.internal.browser.TestCase.prototype.run = function() {
   };
 
   var testEnvironment =
-      new gjstest.internal.TestEnvironment(log, reportFailure);
+      new gjstest.internal.TestEnvironment(
+          log,
+          reportFailure,
+          gjstest.internal.getCurrentStack);
 
   // Run the test.
   try {

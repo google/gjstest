@@ -76,8 +76,13 @@ void TestCase::Run() {
   // Assume we succeeded by default.
   succeeded = true;
 
-  // Grab references to runTest and the TestEnvironment constructor.
+  // Grab references to runTest, getCurrentStack, and the TestEnvironment
+  // constructor.
   const Local<Function> run_test = GetFunctionNamed("gjstest.internal.runTest");
+
+  const Local<Function> get_current_stack =
+      GetFunctionNamed("gjstest.internal.getCurrentStack");
+
   const Local<Function> test_env_constructor =
       GetFunctionNamed("gjstest.internal.TestEnvironment");
 
@@ -91,7 +96,7 @@ void TestCase::Run() {
           NewPermanentCallback(&RecordFailure, this));
 
   // Create a test environment.
-  Handle<Value> test_env_args[] = { log, report_failure };
+  Handle<Value> test_env_args[] = { log, report_failure, get_current_stack };
   const Local<Object> test_env =
       test_env_constructor->NewInstance(
           arraysize(test_env_args),

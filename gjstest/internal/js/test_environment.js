@@ -29,11 +29,31 @@
  *     A function that knows how to report a test failure message to the outside
  *     world.
  *
+ * @param {function(): !Array.<!gjstest.internal.StackFrame>} getCurrentStack
+ *     A function that knows how to return the current stack.
+ *
  * @constructor
  */
-gjstest.internal.TestEnvironment = function(log, reportFailure) {
+gjstest.internal.TestEnvironment =
+    function(log, reportFailure, getCurrentStack) {
   this.log = log;
   this.userStack = [];
+
+  // Make sure the arguments are okay.
+  if (typeof(log) != 'function') {
+    throw new TypeError('log must be a function.');
+  }
+
+  if (typeof(reportFailure) != 'function') {
+    throw new TypeError('reportFailure must be a function.');
+  }
+
+  if (typeof(getCurrentStack) != 'function') {
+    throw new TypeError('getCurrentStack must be a function.');
+  }
+
+  /** @type {function(): !Array.<!gjstest.internal.StackFrame>} **/
+  this.getCurrentStack_ = getCurrentStack;
 
   // Wrap the supplied failure reporting function in a version that adds nice
   // line number output if available.
@@ -79,7 +99,7 @@ gjstest.internal.TestEnvironment.prototype.recordUserStack =
     function(excludedTopSize) {
   // Get the current stack and remove the number of frames requested, plus one
   // more for this function itself.
-  this.userStack = gjstest.internal.getCurrentStack();
+  this.userStack = this.getCurrentStack_();
   this.userStack.splice(0, excludedTopSize + 1);
 };
 

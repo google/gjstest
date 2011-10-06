@@ -16,11 +16,32 @@
 function TestEnvironmentTest() {
   this.log_ = createMockFunction();
   this.reportFailure_ = createMockFunction();
+  this.getCurrentStack_ = createMockFunction();
 
   this.testEnv_ =
-      new gjstest.internal.TestEnvironment(this.log_, this.reportFailure_);
+      new gjstest.internal.TestEnvironment(
+          this.log_,
+          this.reportFailure_,
+          this.getCurrentStack_);
 }
 registerTestSuite(TestEnvironmentTest);
+
+TestEnvironmentTest.prototype.missingFunctions = function() {
+  var TE = gjstest.internal.TestEnvironment;
+  var me = this;
+
+  expectThat(
+      function() { new TE(null, me.reportFailure_, me.getCurrentStack_) },
+      throwsError(/TypeError.*log.*function/));
+
+  expectThat(
+      function() { new TE(me.log_, null, me.getCurrentStack_) },
+      throwsError(/TypeError.*reportFailure.*function/));
+
+  expectThat(
+      function() { new TE(me.log_, me.reportFailure_, null) },
+      throwsError(/TypeError.*getCurrentStack.*function/));
+};
 
 TestEnvironmentTest.prototype.log = function() {
   expectCall(this.log_)('taco');
@@ -41,19 +62,19 @@ TestEnvironmentTest.prototype.reportFailureWithUserStack = function() {
 };
 
 TestEnvironmentTest.prototype.recordAndClearUserStack = function() {
-  // Get the current stack and make sure it has at least three frames.
-  var goldenStack = gjstest.internal.getCurrentStack();
-  expectGe(goldenStack.length, 3);
+  // Return four stack frames.
+  var frame0 = new gjstest.internal.StackFrame;
+  var frame1 = new gjstest.internal.StackFrame;
+  var frame2 = new gjstest.internal.StackFrame;
+  var frame3 = new gjstest.internal.StackFrame;
 
-  // Record the current user stack, skipping the top frame. The result should be
-  // equal to the remaining frames of the stack recorded above.
+  expectCall(this.getCurrentStack_)()
+      .willOnce(returnWith([frame0, frame1, frame2, frame3]));
+
+  // Ask the test environment to record the stack, skipping the first frame. It
+  // should skip the top two frames (skipping recordUserStack itself).
   this.testEnv_.recordUserStack(1);
-  var recordedStack = this.testEnv_.userStack;
-
-  expectEq(goldenStack.length - 1, recordedStack.length);
-  for (var i = 0; i < recordedStack.length; ++i) {
-    expectThat(recordedStack[i], recursivelyEquals(goldenStack[i + 1]));
-  }
+  expectThat(this.testEnv_.userStack, elementsAre([frame2, frame3]));
 
   // Now clear the recorded stack.
   this.testEnv_.clearUserStack();
@@ -62,7 +83,10 @@ TestEnvironmentTest.prototype.recordAndClearUserStack = function() {
 
 TestEnvironmentTest.prototype.userStacksAreNotShared = function() {
   var otherEnv =
-      new gjstest.internal.TestEnvironment(this.log_, this.reportFailure_);
+      new gjstest.internal.TestEnvironment(
+          this.log_,
+          this.reportFailure_,
+          this.getCurrentStack_);
 
   expectNe(this.testEnv_.userStack, otherEnv.userStack);
 };

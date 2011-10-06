@@ -11,6 +11,7 @@ $(eval $(call compiled_js_library, \
 $(eval $(call compiled_js_library, \
     gjstest/internal/js/error_utils, \
         gjstest/internal/js/namespace \
+        gjstest/internal/js/stack_frame \
 ))
 
 $(eval $(call compiled_js_library, \
@@ -47,21 +48,28 @@ $(eval $(call compiled_js_library, \
 ))
 
 $(eval $(call compiled_js_library, \
+    gjstest/internal/js/stack_frame, \
+        gjstest/internal/js/namespace \
+))
+
+$(eval $(call compiled_js_library, \
     gjstest/internal/js/stack_utils, \
         gjstest/internal/js/error_utils \
         gjstest/internal/js/namespace \
+        gjstest/internal/js/stack_frame \
 ))
 
 $(eval $(call compiled_js_library, \
     gjstest/internal/js/test_environment, \
         gjstest/internal/js/namespace \
-        gjstest/internal/js/stack_utils \
+        gjstest/internal/js/stack_frame \
 ))
 
 # A target that pulls everything needed by tests into the global namespace.
 $(eval $(call compiled_js_library, \
     gjstest/internal/js/use_global_namespace, \
         gjstest/internal/js/run_test \
+        gjstest/internal/js/stack_utils \
         gjstest/internal/js/browser/run_tests \
         gjstest/public/actions \
         gjstest/public/assertions \
