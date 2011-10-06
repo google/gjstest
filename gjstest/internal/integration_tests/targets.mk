@@ -9,8 +9,8 @@ $(eval $(call cc_binary, \
         base/stringprintf \
         file/file_utils \
         strings/strutil \
-	, \
-	-lgtest -lgflags -lglog -lre2 -lgmock \
+        , \
+        -lgtest -lgflags -lglog -lre2 -lgmock \
 ))
 
 ######################################################
