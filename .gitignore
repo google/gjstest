@@ -3,6 +3,7 @@
 *.bin
 *.compile
 *.deps
+*.generated.cc
 *.header_deps
 *.o
 *.object_deps

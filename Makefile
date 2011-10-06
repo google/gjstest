@@ -58,8 +58,16 @@ include webutil/xml/targets.mk
 # A directory containing a file called builtin_scripts.deps with one relative
 # path per line, and the files defined by those relative paths. These are all
 # of the JS files needed at runtime.
-share : gjstest/internal/js/use_global_namespace.deps scripts/build_share_dir.sh
-	./scripts/build_share_dir.sh gjstest/internal/js/use_global_namespace.deps
+share : gjstest/internal/js/use_global_namespace.deps
+	# Built-in JS files.
+	for js_file in `cat gjstest/internal/js/use_global_namespace.deps`; do \
+		mkdir -p share/`dirname $$js_file` || exit 1; \
+		cp $$js_file share/$$js_file || exit 1; \
+	done
+
+	# Browser CSS.
+	mkdir -p gjstest/internal/js/browser
+	cp gjstest/internal/js/browser/browser.css share/gjstest/internal/js/browser/browser.css
 
 ######################################################
 # Collections
@@ -97,6 +105,7 @@ install : gjstest/internal/cpp/gjstest.bin share
 clean :
 	find . -name '*.compile' -delete
 	find . -name '*.deps' -delete
+	find . -name '*.generated.cc' -delete
 	find . -name '*.header_deps' -delete
 	find . -name '*.object_deps' -delete
 	find . -name '*.pb.h' -delete

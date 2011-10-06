@@ -75,3 +75,12 @@ $(eval $(call cc_binary, \
         , \
         -lprotobuf -lglog -lgflags -lxml2 -lre2 \
 ))
+
+######################################################
+# Generated code
+######################################################
+
+gjstest/internal/cpp/builtin_paths.generated.cc : gjstest/internal/js/use_global_namespace.deps scripts/echo_builtin_paths.sh
+	./scripts/echo_builtin_paths.sh gjstest/internal/js/use_global_namespace.deps > $@
+
+gjstest/internal/cpp/builtin_data.o : gjstest/internal/cpp/builtin_paths.generated.cc

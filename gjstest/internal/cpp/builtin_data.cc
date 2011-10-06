@@ -63,18 +63,8 @@ bool GetBuiltinScripts(
 bool GetBuiltinScriptPaths(
     vector<string>* paths,
     string* error) {
-  // Load the built-in scripts deps file.
-  const string deps_file_contents =
-      ReadFileOrDie(GetPath("builtin_scripts.deps"));
-
-  // Split its contents by newlines.
-  vector<string> relative_paths;
-  SplitStringUsing(deps_file_contents, "\n", &relative_paths);
-
-  // Make absolute paths.
-  for (uint32 i = 0; i < relative_paths.size(); ++i) {
-    paths->push_back(GetPath(relative_paths[i]));
-  }
+  // A topological sort of built-in script files.
+#include "gjstest/internal/cpp/builtin_paths.generated.cc"
 
   return true;
 }
