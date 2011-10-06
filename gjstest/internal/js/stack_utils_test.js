@@ -130,3 +130,39 @@ GetErrorStackTest.prototype.stackOverflow = function() {
 
   expectThat(frames, elementsAre([]));
 };
+
+GetErrorStackTest.prototype.unknownPropertyOnSingleLineFunction = function() {
+  function foo() {}
+  try {
+    foo.load(17);
+  } catch (e) {
+    frames = gjstest.internal.getErrorStack(e);
+  }
+
+  var frame;
+
+  frame = frames[0];
+  expectEq('GetErrorStackTest.unknownPropertyOnSingleLineFunction',
+           frame.functionName);
+  expectEq('stack_utils_test.js', frame.fileName);
+};
+
+GetErrorStackTest.prototype.unknownPropertyOnMultiLineFunction = function() {
+  function foo() {
+    // ASDF
+    return 'bar';
+  }
+
+  try {
+    foo.bar();
+  } catch (e) {
+    frames = gjstest.internal.getErrorStack(e);
+  }
+
+  var frame;
+
+  frame = frames[0];
+  expectEq('GetErrorStackTest.unknownPropertyOnMultiLineFunction',
+           frame.functionName);
+  expectEq('stack_utils_test.js', frame.fileName);
+};

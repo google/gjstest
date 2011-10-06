@@ -22,15 +22,49 @@
  * @return {!Array.<!gjstest.internal.StackFrame>}
  */
 gjstest.internal.getErrorStack = function(error) {
+  var stackFrames = [];
+
   // Some errors, e.g. RangeErrors for stack overflows, have no stacks attached.
   if (!error.stack) return [];
 
-  var stackFrames = [];
-
-  // Grab the string stack trace from the error. In v8, it looks something like
-  // this:
+  // Despite its name, the 'stack' property of errors returned by v8 also
+  // contains a description of the error. Even more annoyingly, the description
+  // is arbitrarily long and may contain multiple lines.
   //
-  //     Error
+  // For example, it may look like this:
+  //
+  //     TypeError: Object function foo() {
+  //         // ASDF
+  //         return 'bar';
+  //       } has no method 'bar'
+  //         at GetErrorStackTest.someTest (stack_utils_test.js:157:9)
+  //         at gjstest/public/register.js:78:28
+  //         at runTest (gjstest/internal/js/run_test.js:30:5)
+  //
+  // Luckily, the 'message' property contains most of the junk at the top. For
+  // example:
+  //
+  //     Object function foo() {
+  //         // ASDF
+  //         return 'bar';
+  //       } has no method 'bar'
+  //
+  // Deal with this by first removing the name of the error, then removing the
+  // message followed by a newline.
+  var expectedPrefix = error.name;
+  if (error.message.length) {
+    expectedPrefix += ': ' + error.message;
+  }
+
+  if (error.stack.substr(0, expectedPrefix.length) != expectedPrefix) {
+    gjstest.internal.getErrorStack.printUnparseableError_(error);
+    return [];
+  }
+
+  var stackTraceStr = error.stack.substr(expectedPrefix.length);
+
+  // At this point we should have something that looks like this:
+  //
   //         at stack_utils.js:12:15
   //         at fooBar (stack_utils_test.js:33:12)
   //         at GetCurrentStackTest.basicStack (stack_utils_test.js:36:21)
@@ -38,7 +72,8 @@ gjstest.internal.getErrorStack = function(error) {
   //         at Object.runTest (run_test.js:45:3)
   //         at unknown source
   //
-  var traceLines = error.stack.split('\n');
+  // Split it into an array of lines.
+  var traceLines = stackTraceStr.split('\n');
 
   // Skip the first line, which contains the name of the error.
   traceLines.splice(0, 1);
@@ -107,4 +142,23 @@ gjstest.internal.getErrorStack = function(error) {
   }
 
   return stackFrames;
+};
+
+/**
+ * Print a debugging message about an error object whose properties  cannot be
+ * parsed.
+ *
+ * @param {!Error} error
+ */
+gjstest.internal.getErrorStack.printUnparseableError_ = function(error) {
+  gjstest.log(
+      'gjstest encountered an Error object it could not parse.\n' +
+      'Please file a bug with the following output.\n' +
+      '---------------------------------------------------------\n' +
+      'error.stack:\n' +
+      error.stack + '\n' +
+      '---------------------------------------------------------\n' +
+      'error.message:\n' +
+      error.message + '\n' +
+      '---------------------------------------------------------');
 };

@@ -12,6 +12,7 @@ $(eval $(call compiled_js_library, \
     gjstest/internal/js/error_utils, \
         gjstest/internal/js/namespace \
         gjstest/internal/js/stack_frame \
+        gjstest/public/logging \
 ))
 
 $(eval $(call compiled_js_library, \

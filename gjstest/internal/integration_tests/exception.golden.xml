@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Google JS tests" failures="5" time="0.01">
+<testsuite name="Google JS tests" failures="6" time="0.01">
  <testcase name="ExceptionTest.referenceError" time="0.01">
   <failure><![CDATA[exception_test.js:23
 ReferenceError: fooBar is not defined]]></failure>
@@ -15,9 +15,15 @@ TypeError: isNearNumber requires two number arguments]]></failure>
  <testcase name="ExceptionTest.stackOverflow" time="0.01">
   <failure><![CDATA[RangeError: Maximum call stack size exceeded]]></failure>
  </testcase>
+ <testcase name="ExceptionTest.unknownPropertyOnLongFuinction" time="0.01">
+  <failure><![CDATA[exception_test.js:45
+TypeError: Object function foo() {
+    return 'asd';
+  } has no method 'bar']]></failure>
+ </testcase>
  <testcase name="ExceptionTest.passingTest" time="0.01"/>
  <testcase name="ThrowingConstructorTest.someTest" time="0.01">
-  <failure><![CDATA[exception_test.js:45
+  <failure><![CDATA[exception_test.js:53
 Error: taco]]></failure>
  </testcase>
 </testsuite>
