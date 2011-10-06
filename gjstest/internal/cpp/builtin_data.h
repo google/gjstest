@@ -31,8 +31,9 @@ bool GetBuiltinScripts(
     string* error);
 
 // Get full paths for the built-in scripts.
-void GetBuiltinScriptPaths(
-    vector<string>* paths);
+bool GetBuiltinScriptPaths(
+    vector<string>* paths,
+    string* error);
 
 // Get the path for the built-in CSS file.
 string GetBuiltinCssPath();

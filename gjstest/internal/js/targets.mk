@@ -58,6 +58,25 @@ $(eval $(call compiled_js_library, \
         gjstest/internal/js/stack_utils \
 ))
 
+# A target that pulls everything needed by tests into the global namespace.
+$(eval $(call compiled_js_library, \
+    gjstest/internal/js/use_global_namespace, \
+        gjstest/internal/js/run_test \
+        gjstest/internal/js/browser/run_tests \
+        gjstest/public/actions \
+        gjstest/public/assertions \
+        gjstest/public/logging \
+        gjstest/public/mocking \
+        gjstest/public/matchers/array_matchers \
+        gjstest/public/matchers/boolean_matchers \
+        gjstest/public/matchers/combining_matchers \
+        gjstest/public/matchers/equality_matchers \
+        gjstest/public/matchers/function_matchers \
+        gjstest/public/matchers/missing_arg_matchers \
+        gjstest/public/matchers/number_matchers \
+        gjstest/public/matchers/string_matchers \
+))
+
 ######################################################
 # Tests
 ######################################################

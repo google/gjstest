@@ -41,52 +41,32 @@ static string GetPath(
 bool GetBuiltinScripts(
     NamedScripts* scripts,
     string* error) {
-  vector<string> paths;
+  // Load the serialized NamedScripts proto from our data directory.
+  const string path = GetPath("builtin_scripts.binarypb");
+  const string file_contents = ReadFileOrDie(path);
 
-  // Build a list of paths.
-  GetBuiltinScriptPaths(&paths);
-
-  // Read in each path.
-  for (uint32 i = 0; i < paths.size(); ++i) {
-    const string& path = paths[i];
-
-    NamedScript* script = scripts->add_script();
-    script->set_name(Basename(path));
-    script->set_source(ReadFileOrDie(path));
+  // Attempt to deserialized its contents.
+  if (!scripts->ParseFromString(file_contents)) {
+    *error = "Invalid data in file: " + path;
+    return false;
   }
 
   return true;
 }
 
-void GetBuiltinScriptPaths(
-    vector<string>* paths) {
-  paths->push_back(GetPath("internal/js/namespace.js"));
-  paths->push_back(GetPath("internal/js/error_utils.js"));
-  paths->push_back(GetPath("internal/js/stack_utils.js"));
-  paths->push_back(GetPath("internal/js/test_environment.js"));
-  paths->push_back(GetPath("public/matcher_types.js"));
-  paths->push_back(GetPath("public/matchers/number_matchers.js"));
-  paths->push_back(GetPath("internal/js/browser/html_builder.js"));
-  paths->push_back(GetPath("internal/js/expect_that.js"));
-  paths->push_back(GetPath("public/matchers/boolean_matchers.js"));
-  paths->push_back(GetPath("public/matchers/combining_matchers.js"));
-  paths->push_back(GetPath("public/matchers/equality_matchers.js"));
-  paths->push_back(GetPath("public/matchers/missing_arg_matchers.js"));
-  paths->push_back(GetPath("internal/js/call_expectation.js"));
-  paths->push_back(GetPath("internal/js/mock_function.js"));
-  paths->push_back(GetPath("internal/js/mock_instance.js"));
-  paths->push_back(GetPath("public/stringify.js"));
-  paths->push_back(GetPath("public/assertions.js"));
-  paths->push_back(GetPath("public/actions.js"));
-  paths->push_back(GetPath("public/mocking.js"));
-  paths->push_back(GetPath("public/register.js"));
-  paths->push_back(GetPath("internal/js/run_test.js"));
-  paths->push_back(GetPath("internal/js/browser/run_tests.js"));
-  paths->push_back(GetPath("public/logging.js"));
-  paths->push_back(GetPath("public/matchers/array_matchers.js"));
-  paths->push_back(GetPath("public/matchers/function_matchers.js"));
-  paths->push_back(GetPath("public/matchers/string_matchers.js"));
-  paths->push_back(GetPath("internal/js/use_global_namespace.js"));
+bool GetBuiltinScriptPaths(
+    vector<string>* paths,
+    string* error) {
+  NamedScripts scripts;
+  if (!GetBuiltinScripts(&scripts, error)) {
+    return false;
+  }
+
+  for (uint32 i = 0; i < scripts.script_size(); ++i) {
+    paths->push_back(GetPath(scripts.script(i).name()));
+  }
+
+  return true;
 }
 
 string GetBuiltinCssPath() {

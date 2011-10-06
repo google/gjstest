@@ -44,12 +44,12 @@ GetCurrentStackTest.prototype.goldenTest = function() {
 
   frame = frames[2];
   expectEq(null, frame.functionName);
-  expectEq('register.js', frame.fileName);
+  expectEq('gjstest/public/register.js', frame.fileName);
   expectNe(null, frame.lineNumber);
 
   frame = frames[3];
   expectEq('runTest', frame.functionName);
-  expectEq('run_test.js', frame.fileName);
+  expectEq('gjstest/internal/js/run_test.js', frame.fileName);
   expectNe(null, frame.lineNumber);
 };
 

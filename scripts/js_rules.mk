@@ -66,9 +66,10 @@ define js_test
 # Create a library target for the test.
 $(eval $(call js_library,$(1)_test,$(1)))
 
-# Create a target for the test itself. Make sure to depend on the share target,
-# because the shell script tests for existence there.
-$(1)_test.out : $(1)_test.deps scripts/js_test_run.sh share gjstest/internal/cpp/gjstest.bin
+# Create a target for the test itself. Make sure to depend on the
+# use_global_namespace deps target, because the shell script tests it for
+# duplicates.
+$(1)_test.out : $(1)_test.deps scripts/js_test_run.sh gjstest/internal/js/use_global_namespace.deps gjstest/internal/cpp/gjstest.bin share/builtin_scripts.binarypb
 	./scripts/js_test_run.sh $(1)_test
 
 JS_TESTS += $(1)_test.out

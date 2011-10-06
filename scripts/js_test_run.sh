@@ -24,7 +24,7 @@ JS_FILES=
 for js_file in `cat $DEPS_FILE`; do
   # Skip files that are built in to gjstest; otherwise we would, for example,
   # define the gjstest namespace twice.
-  if [ -r "share/$js_file" ]; then
+  if [ `grep "$js_file" gjstest/internal/js/use_global_namespace.deps` ]; then
     continue
   fi
 
@@ -35,7 +35,7 @@ JOINED_JS_FILES=$(printf ",%s" "${JS_FILES[@]}")
 JOINED_JS_FILES=${JOINED_JS_FILES:1}
 
 set -x
-gjstest/internal/cpp/gjstest.bin --gjstest_data_dir=share/gjstest "--js_files=$JOINED_JS_FILES" || exit 1
+gjstest/internal/cpp/gjstest.bin --gjstest_data_dir=share "--js_files=$JOINED_JS_FILES" || exit 1
 set +x
 
 echo "ok" > $OUTPUT_FILE

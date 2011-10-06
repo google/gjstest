@@ -94,7 +94,11 @@ static bool GenerateHtml() {
 
   // Pull in built-in scripts.
   vector<string> builtin_paths;
-  GetBuiltinScriptPaths(&builtin_paths);
+  string error;
+  if (!GetBuiltinScriptPaths(&builtin_paths, &error)) {
+    LOG(ERROR) << error;
+    return false;
+  }
 
   for (uint32 i = 0; i < builtin_paths.size(); ++i) {
     const string& path = builtin_paths[i];

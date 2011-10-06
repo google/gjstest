@@ -1,4 +1,4 @@
-default: gjstest/internal/cpp/gjstest.bin share
+default: gjstest/internal/cpp/gjstest.bin share/builtin_scripts.binarypb
 
 ######################################################
 # Flags
@@ -40,61 +40,26 @@ include base/targets.mk
 include file/targets.mk
 include gjstest/internal/cpp/targets.mk
 include gjstest/internal/integration_tests/targets.mk
+include gjstest/internal/js/browser/targets.mk
 include gjstest/internal/js/targets.mk
 include gjstest/internal/proto/targets.mk
-include gjstest/public/targets.mk
 include gjstest/public/matchers/targets.mk
+include gjstest/public/targets.mk
 include strings/targets.mk
 include third_party/cityhash/targets.mk
+include tools/targets.mk
 include util/gtl/targets.mk
 include util/hash/targets.mk
 include webutil/xml/targets.mk
 
 ######################################################
 # Data
-#
-# TODO(jacobsa): Make this a .binarypb target. See issue 9.
 ######################################################
 
-SHARE_DATA = \
-    internal/js/browser/browser.css \
-    internal/js/browser/html_builder.js \
-    internal/js/browser/run_tests.js \
-    internal/js/call_expectation.js \
-    internal/js/error_utils.js \
-    internal/js/expect_that.js \
-    internal/js/mock_function.js \
-    internal/js/mock_instance.js \
-    internal/js/namespace.js \
-    internal/js/run_test.js \
-    internal/js/stack_utils.js \
-    internal/js/test_environment.js \
-    internal/js/use_global_namespace.js \
-    public/assertions.js \
-    public/logging.js \
-    public/matcher_types.js \
-    public/matchers/array_matchers.js \
-    public/matchers/boolean_matchers.js \
-    public/matchers/combining_matchers.js \
-    public/matchers/equality_matchers.js \
-    public/matchers/function_matchers.js \
-    public/matchers/missing_arg_matchers.js \
-    public/matchers/number_matchers.js \
-    public/matchers/string_matchers.js \
-    public/actions.js \
-    public/mocking.js \
-    public/register.js \
-    public/stringify.js \
-
-share :
-	for f in $(SHARE_DATA); \
-	do \
-	    DIR=`dirname $$f`; \
-	    mkdir -p share/gjstest/$$DIR; \
-	    cp gjstest/$$f share/gjstest/$$DIR || exit 1; \
-	done
-
-.PHONY : share
+$(eval $(call js_scripts_binarypb, \
+    share/builtin_scripts.binarypb, \
+        gjstest/internal/js/use_global_namespace \
+))
 
 ######################################################
 # Collections
@@ -112,16 +77,11 @@ test : js_tests cc_tests
 # Installation
 ######################################################
 
-install : gjstest/internal/cpp/gjstest.bin share
+install : gjstest/internal/cpp/gjstest.bin share/builtin_scripts.binarypb
 	$(INSTALL) -m 0755 -d $(PREFIX)/bin
 	$(INSTALL) -m 0755 -d $(PREFIX)/share
 	$(INSTALL) -m 0755 gjstest/internal/cpp/gjstest.bin $(PREFIX)/bin/gjstest
-	for f in $$(find share -type f); \
-	do \
-	    DIR=`dirname $$f`; \
-	    install -m 0755 -d $(PREFIX)/$$DIR; \
-	    install -m 0644 $$f $(PREFIX)/$$f; \
-	done
+	$(INSTALL) -m 0755 share/builtin_scripts.binarypb $(PREFIX)/share/builtin_scripts.binarypb
 
 ######################################################
 # House-keeping
