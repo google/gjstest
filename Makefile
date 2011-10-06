@@ -81,7 +81,7 @@ install : gjstest/internal/cpp/gjstest.bin share/builtin_scripts.binarypb
 	$(INSTALL) -m 0755 -d $(PREFIX)/bin
 	$(INSTALL) -m 0755 -d $(PREFIX)/share
 	$(INSTALL) -m 0755 gjstest/internal/cpp/gjstest.bin $(PREFIX)/bin/gjstest
-	$(INSTALL) -m 0755 share/builtin_scripts.binarypb $(PREFIX)/share/builtin_scripts.binarypb
+	$(INSTALL) -m 0755 share/builtin_scripts.binarypb $(PREFIX)/share/gjstest/builtin_scripts.binarypb
 
 ######################################################
 # House-keeping
