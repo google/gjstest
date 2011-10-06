@@ -37,7 +37,7 @@ ExceptionTest.prototype.stackOverflow = function() {
   foo();
 };
 
-ExceptionTest.prototype.unknownPropertyOnLongFuinction = function() {
+ExceptionTest.prototype.unknownPropertyOnLongFunction = function() {
   function foo() {
     return 'asd';
   }

@@ -15,7 +15,7 @@ TypeError: isNearNumber requires two number arguments]]></failure>
  <testcase name="ExceptionTest.stackOverflow" time="0.01">
   <failure><![CDATA[RangeError: Maximum call stack size exceeded]]></failure>
  </testcase>
- <testcase name="ExceptionTest.unknownPropertyOnLongFuinction" time="0.01">
+ <testcase name="ExceptionTest.unknownPropertyOnLongFunction" time="0.01">
   <failure><![CDATA[exception_test.js:45
 TypeError: Object function foo() {
     return 'asd';
