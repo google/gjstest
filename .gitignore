@@ -2,6 +2,7 @@
 *.bin
 *.compile
 *.deps
+*.generated.h
 *.generated.cc
 *.header_deps
 *.o

@@ -106,6 +106,7 @@ clean :
 	find . -name '*.bin' -delete
 	find . -name '*.compile' -delete
 	find . -name '*.deps' -delete
+	find . -name '*.generated.h' -delete
 	find . -name '*.generated.cc' -delete
 	find . -name '*.header_deps' -delete
 	find . -name '*.o' -delete

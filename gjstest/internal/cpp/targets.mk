@@ -1,10 +1,16 @@
 $(eval $(call cc_library, \
     gjstest/internal/cpp/builtin_data, \
         base/logging \
+        base/macros \
         base/stl_decl \
         file/file_utils \
+        gjstest/internal/cpp/builtin_paths.generated \
         gjstest/internal/proto/named_scripts.pb \
         strings/strutil \
+))
+
+$(eval $(call hdr_only_cc_library, \
+    gjstest/internal/cpp/builtin_paths.generated, \
 ))
 
 $(eval $(call cc_library, \
@@ -80,7 +86,7 @@ $(eval $(call cc_binary, \
 # Generated code
 ######################################################
 
-gjstest/internal/cpp/builtin_paths.generated.cc : gjstest/internal/js/use_global_namespace.deps scripts/echo_builtin_paths.sh
-	./scripts/echo_builtin_paths.sh gjstest/internal/js/use_global_namespace.deps > $@
-
-gjstest/internal/cpp/builtin_data.o : gjstest/internal/cpp/builtin_paths.generated.cc
+gjstest/internal/cpp/builtin_paths.generated.h : gjstest/internal/js/use_global_namespace.deps gjstest/internal/cpp/generate_builtin_paths.sh
+	./gjstest/internal/cpp/generate_builtin_paths.sh \
+		gjstest/internal/js/use_global_namespace.deps \
+		gjstest/internal/cpp/builtin_paths.generated.h

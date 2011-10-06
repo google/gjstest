@@ -16,8 +16,10 @@
 #include <gflags/gflags.h>
 
 #include "base/logging.h"
+#include "base/macros.h"
 #include "file/file_utils.h"
 #include "gjstest/internal/cpp/builtin_data.h"
+#include "gjstest/internal/cpp/builtin_paths.generated.h"
 #include "gjstest/internal/proto/named_scripts.pb.h"
 #include "strings/strutil.h"
 
@@ -63,8 +65,9 @@ bool GetBuiltinScripts(
 bool GetBuiltinScriptPaths(
     vector<string>* paths,
     string* error) {
-  // A topological sort of built-in script files.
-#include "gjstest/internal/cpp/builtin_paths.generated.cc"
+  for (uint32 i = 0; i < arraysize(kBuiltinPaths); ++i) {
+    paths->push_back(GetPath(kBuiltinPaths[i]));
+  }
 
   return true;
 }
