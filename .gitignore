@@ -1,15 +1,14 @@
-# Build outputs
-*.a
-*.o
-
 # Things built by make.
-*test.bin
-bin/
+*.a
+*.bin
+*.compile
+*.deps
+*.header_deps
+*.o
+*.object_deps
+*test.out
 share/
 
-# Generated proto bufer code.
+# Generated proto buffer code.
 *.pb.cc
 *.pb.h
-
-# vim noise
-.*.swp

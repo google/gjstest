@@ -1,126 +1,59 @@
-PROJECT_ROOT = .
-default: bin/gjstest share
+default: gjstest/internal/cpp/gjstest.bin share
 
-# Tools and flags.
-include $(PROJECT_ROOT)/tools.mk
+######################################################
+# Flags
+######################################################
 
 # The prefix into which the user wants to install.
 export PREFIX = /usr/local
+DEFAULT_DATA_DIR = $(PREFIX)/share/gjstest
 
+# Preprocessor flags.
+CPPFLAGS += -I.
+CPPFLAGS += -I/usr/include/libxml2
+CPPFLAGS += -DDEFAULT_DATA_DIR=$(DEFAULT_DATA_DIR)
+
+# Compiler flags.
+CXXFLAGS += -DHASH_NAMESPACE=__gnu_cxx
+
+# Fix clock_gettime in timer.cc.
 UNAME := $(shell uname)
-
 ifeq ($(UNAME), Linux)
-# For clock_gettime in timer.cc.
 CXXFLAGS += -lrt
 endif
 
-######################################################
-# House-keeping
-######################################################
-
-SUBDIRS := \
-    base \
-    file \
-    gjstest/internal/cpp \
-    gjstest/internal/integration_tests \
-    gjstest/internal/js \
-    gjstest/internal/proto \
-    gjstest/public \
-    gjstest/public/matchers \
-    strings \
-    third_party/cityhash \
-    webutil/xml \
-
-clean :
-	rm -f bin/gjstest
-	rm -rf share/
-	for subdir in $(SUBDIRS); \
-	do \
-	    echo "Cleaning in $$subdir"; \
-	    $(MAKE) -C $$subdir clean || exit 1; \
-	done
-	find . -name '*.a' -delete
-	find . -name '*.o' -delete
-	find . -name '*test.bin' -delete
-
-depend :
-	# Make sure proto buffer generated headers exist.
-	$(MAKE) -C gjstest/internal/proto named_scripts.pb.h
-
-	for subdir in $(SUBDIRS); \
-	do \
-	    echo "Making depend in $$subdir"; \
-	    $(MAKE) -C $$subdir depend || exit 1; \
-	done
-
-test : \
-    bin/gjstest \
-    gjstest/internal/cpp/cpp.a \
-    share
-	for subdir in $(SUBDIRS); \
-	do \
-	    echo "Making test in $$subdir"; \
-	    $(MAKE) -C $$subdir test || exit 1; \
-	done
+INSTALL = install
 
 ######################################################
-# Sub-packages
+# Functions
 ######################################################
 
-base/base.a :
-	$(MAKE) -C base base.a
-
-file/file.a :
-	$(MAKE) -C file file.a
-
-gjstest/internal/cpp/cpp.a : gjstest/internal/proto/named_scripts.pb.h
-	$(MAKE) -C gjstest/internal/cpp cpp.a
-
-gjstest/internal/cpp/gjstest_main.a : gjstest/internal/proto/named_scripts.pb.h
-	$(MAKE) -C gjstest/internal/cpp gjstest_main.a
-
-gjstest/internal/proto/named_scripts.pb.h :
-	$(MAKE) -C gjstest/internal/proto named_scripts.pb.h
-
-gjstest/internal/proto/proto.a :
-	$(MAKE) -C gjstest/internal/proto proto.a
-
-strings/strings.a :
-	$(MAKE) -C strings strings.a
-
-third_party/cityhash/cityhash.a :
-	$(MAKE) -C third_party/cityhash cityhash.a
-
-webutil/xml/xml.a :
-	$(MAKE) -C webutil/xml xml.a
-
-.PHONY: \
-    base/base.a \
-    file/file.a \
-    gjstest/internal/cpp/gjstest_main.a \
-    gjstest/internal/proto/named_scripts.pb.h \
-    gjstest/internal/proto/proto.a \
-    strings/strings.a \
-    third_party/cityhash/cityhash.a \
-    webutil/xml/xml.a
+include scripts/cc_rules.mk
+include scripts/js_rules.mk
+include scripts/proto_rules.mk
 
 ######################################################
-# Binaries
+# Packages
 ######################################################
 
-bin/gjstest: \
-    gjstest/internal/cpp/gjstest_main.a \
-    base/base.a \
-    file/file.a \
-    gjstest/internal/proto/proto.a \
-    strings/strings.a \
-    third_party/cityhash/cityhash.a \
-    webutil/xml/xml.a
-	mkdir -p bin/
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -lglog -lv8 -lgflags -lprotobuf -lre2 -lxml2
+include base/targets.mk
+include file/targets.mk
+include gjstest/internal/cpp/targets.mk
+include gjstest/internal/integration_tests/targets.mk
+include gjstest/internal/js/targets.mk
+include gjstest/internal/proto/targets.mk
+include gjstest/public/targets.mk
+include gjstest/public/matchers/targets.mk
+include strings/targets.mk
+include third_party/cityhash/targets.mk
+include util/gtl/targets.mk
+include util/hash/targets.mk
+include webutil/xml/targets.mk
 
 ######################################################
 # Data
+#
+# TODO(jacobsa): Make this a .binarypb target. See issue 9.
 ######################################################
 
 SHARE_DATA = \
@@ -164,16 +97,44 @@ share :
 .PHONY : share
 
 ######################################################
+# Collections
+######################################################
+
+binaries : $(CC_BINARIES)
+compilation_tests : $(COMPILATION_TESTS)
+compile : binaries compilation_tests
+
+js_tests : $(JS_TESTS)
+cc_tests : $(CC_TESTS)
+test : js_tests cc_tests
+
+######################################################
 # Installation
 ######################################################
 
-install : bin/gjstest share
+install : gjstest/internal/cpp/gjstest.bin share
 	$(INSTALL) -m 0755 -d $(PREFIX)/bin
 	$(INSTALL) -m 0755 -d $(PREFIX)/share
-	$(INSTALL) -m 0755 bin/gjstest $(PREFIX)/bin/gjstest
+	$(INSTALL) -m 0755 gjstest/internal/cpp/gjstest.bin $(PREFIX)/bin/gjstest
 	for f in $$(find share -type f); \
 	do \
 	    DIR=`dirname $$f`; \
 	    install -m 0755 -d $(PREFIX)/$$DIR; \
 	    install -m 0644 $$f $(PREFIX)/$$f; \
 	done
+
+######################################################
+# House-keeping
+######################################################
+
+clean :
+	find . -name '*.compile' -delete
+	find . -name '*.deps' -delete
+	find . -name '*.header_deps' -delete
+	find . -name '*.object_deps' -delete
+	find . -name '*.pb.h' -delete
+	find . -name '*.pb.cc' -delete
+	find . -name '*test.out' -delete
+	find . -name '*.o' -delete
+	rm -f $(CC_BINARIES)
+	rm -rf share/

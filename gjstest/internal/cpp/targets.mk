@@ -1,0 +1,76 @@
+$(eval $(call cc_library, \
+    gjstest/internal/cpp/builtin_data, \
+        base/logging \
+        base/stl_decl \
+        file/file_utils \
+        gjstest/internal/proto/named_scripts.pb \
+))
+
+$(eval $(call cc_library, \
+    gjstest/internal/cpp/run_tests, \
+        base/basictypes \
+        base/integral_types \
+        base/logging \
+        base/macros \
+        base/stl_decl \
+        base/stringprintf \
+        base/timer \
+        gjstest/internal/cpp/test_case \
+        gjstest/internal/cpp/v8_utils \
+        gjstest/internal/proto/named_scripts.pb \
+        strings/strutil \
+        util/gtl/map-util \
+        util/hash/hash \
+        webutil/xml/xml_writer \
+))
+
+$(eval $(call cc_library, \
+    gjstest/internal/cpp/test_case, \
+        base/callback \
+        base/integral_types \
+        base/logging \
+        base/macros \
+        base/stl_decl \
+        base/stringprintf \
+        base/timer \
+        gjstest/internal/cpp/v8_utils \
+))
+
+$(eval $(call cc_library, \
+    gjstest/internal/cpp/v8_utils, \
+        base/callback-types \
+        base/integral_types \
+        base/logging \
+        base/stringprintf \
+))
+
+######################################################
+# Tests
+######################################################
+
+$(eval $(call cc_test, \
+    gjstest/internal/cpp/v8_utils_test, \
+        base/callback \
+        base/integral_types \
+        base/logging \
+        base/macros \
+        gjstest/internal/cpp/v8_utils \
+))
+
+######################################################
+# Binaries
+######################################################
+
+$(eval $(call cc_binary, \
+    gjstest/internal/cpp/gjstest, \
+        base/integral_types \
+        base/logging \
+        base/stringprintf \
+        file/file_utils \
+        gjstest/internal/cpp/builtin_data \
+        gjstest/internal/cpp/run_tests \
+        gjstest/internal/proto/named_scripts.pb \
+        strings/strutil \
+        , \
+        -lprotobuf -lglog -lgflags -lxml2 -lre2 \
+))
