@@ -138,7 +138,8 @@ gjstest.internal.getErrorStack = function(error) {
       continue;
     }
 
-    throw new Error('Unhandled stack line:\n' + line);
+    gjstest.internal.getErrorStack.printUnparseableError_(error);
+    return [];
   }
 
   return stackFrames;
