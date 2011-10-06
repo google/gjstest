@@ -17,7 +17,10 @@
  * A representation of a single stack frame.
  * @interface
  */
-gjstest.internal.StackFrame = function() {};
+gjstest.internal.StackFrame = function() {
+  this.fileName = null;
+  this.lineNumber = null;
+};
 
 /**
  * The name of the source file if known, or null otherwise.
@@ -32,11 +35,3 @@ gjstest.internal.StackFrame.prototype.fileName;
  * @type {number?}
  */
 gjstest.internal.StackFrame.prototype.lineNumber;
-
-/**
- * The name of the function in which the source line is contained if known, or
- * null otherwise.
- *
- * @type {string?}
- */
-gjstest.internal.StackFrame.prototype.functionName;

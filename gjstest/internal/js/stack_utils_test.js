@@ -33,22 +33,18 @@ GetCurrentStackTest.prototype.goldenTest = function() {
   expectThat(frames, elementsAre([_, _, _, _]));
 
   frame = frames[0];
-  expectEq('fooBar', frame.functionName);
   expectEq('stack_utils_test.js', frame.fileName);
   expectEq(28, frame.lineNumber);
 
   frame = frames[1];
-  expectEq('GetCurrentStackTest.goldenTest', frame.functionName);
   expectEq('stack_utils_test.js', frame.fileName);
   expectEq(32, frame.lineNumber);
 
   frame = frames[2];
-  expectEq(null, frame.functionName);
   expectThat(frame.fileName, containsRegExp(/public\/register\.js/));
   expectNe(null, frame.lineNumber);
 
   frame = frames[3];
-  expectEq('runTest', frame.functionName);
   expectThat(frame.fileName, containsRegExp(/internal\/js\/run_test\.js/));
   expectNe(null, frame.lineNumber);
 };
@@ -59,7 +55,6 @@ GetCurrentStackTest.prototype.constructorFrame = function() {
   var dummy = new MyConstructor();
 
   var frame = frames[0];
-  expectEq('MyConstructor', frame.functionName);
   expectEq('stack_utils_test.js', frame.fileName);
 };
 
@@ -67,17 +62,6 @@ GetCurrentStackTest.prototype.anonymousFunctions = function() {
   var frames = (function() { return getCurrentStack(); })();
 
   var frame = frames[0];
-  expectEq(null, frame.functionName);
-  expectEq('stack_utils_test.js', frame.fileName);
-};
-
-GetCurrentStackTest.prototype.renamedFunction = function() {
-  // Assign a function named foo to a property named bar.
-  var obj = { bar: function foo() { return getCurrentStack(); } };
-  var frames = obj.bar();
-
-  var frame = frames[0];
-  expectEq('bar', frame.functionName);
   expectEq('stack_utils_test.js', frame.fileName);
 };
 
@@ -88,7 +72,6 @@ GetCurrentStackTest.prototype.anonymousClass = function() {
   var frames = (new someConstructor).foo();
 
   var frame = frames[0];
-  expectEq('[object Object].foo', frame.functionName);
   expectEq('stack_utils_test.js', frame.fileName);
 };
 
@@ -110,12 +93,10 @@ GetErrorStackTest.prototype.nativeCode = function() {
   var frame;
 
   frame = frames[0];
-  expectEq('Object.CALL_NON_FUNCTION', frame.functionName);
   expectEq(null, frame.fileName);
   expectEq(null, frame.lineNumber);
 
   frame = frames[1];
-  expectEq('GetErrorStackTest.nativeCode', frame.functionName);
   expectEq('stack_utils_test.js', frame.fileName);
 };
 
@@ -142,8 +123,6 @@ GetErrorStackTest.prototype.unknownPropertyOnSingleLineFunction = function() {
   var frame;
 
   frame = frames[0];
-  expectEq('GetErrorStackTest.unknownPropertyOnSingleLineFunction',
-           frame.functionName);
   expectEq('stack_utils_test.js', frame.fileName);
 };
 
@@ -162,7 +141,5 @@ GetErrorStackTest.prototype.unknownPropertyOnMultiLineFunction = function() {
   var frame;
 
   frame = frames[0];
-  expectEq('GetErrorStackTest.unknownPropertyOnMultiLineFunction',
-           frame.functionName);
   expectEq('stack_utils_test.js', frame.fileName);
 };
