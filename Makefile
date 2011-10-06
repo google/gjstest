@@ -1,4 +1,4 @@
-default: gjstest/internal/cpp/gjstest.bin share/builtin_scripts.binarypb
+default: gjstest/internal/cpp/gjstest.bin share
 
 ######################################################
 # Flags
@@ -47,7 +47,6 @@ include gjstest/public/matchers/targets.mk
 include gjstest/public/targets.mk
 include strings/targets.mk
 include third_party/cityhash/targets.mk
-include tools/targets.mk
 include util/gtl/targets.mk
 include util/hash/targets.mk
 include webutil/xml/targets.mk
@@ -56,10 +55,11 @@ include webutil/xml/targets.mk
 # Data
 ######################################################
 
-$(eval $(call js_scripts_binarypb, \
-    share/builtin_scripts.binarypb, \
-        gjstest/internal/js/use_global_namespace \
-))
+# A directory containing a file called builtin_scripts.deps with one relative
+# path per line, and the files defined by those relative paths. These are all
+# of the JS files needed at runtime.
+share : gjstest/internal/js/use_global_namespace.deps scripts/build_share_dir.sh
+	./scripts/build_share_dir.sh gjstest/internal/js/use_global_namespace.deps
 
 ######################################################
 # Collections
@@ -77,11 +77,18 @@ test : js_tests cc_tests
 # Installation
 ######################################################
 
-install : gjstest/internal/cpp/gjstest.bin share/builtin_scripts.binarypb
+install : gjstest/internal/cpp/gjstest.bin share
+	# Binary
 	$(INSTALL) -m 0755 -d $(PREFIX)/bin
-	$(INSTALL) -m 0755 -d $(PREFIX)/share
 	$(INSTALL) -m 0755 gjstest/internal/cpp/gjstest.bin $(PREFIX)/bin/gjstest
-	$(INSTALL) -m 0755 share/builtin_scripts.binarypb $(PREFIX)/share/gjstest/builtin_scripts.binarypb
+	
+	# Data
+	for f in $$(find share -type f); \
+	do \
+	    DIR=`dirname $$f` || exit 1; \
+	    install -m 0755 -d $(PREFIX)/$$DIR || exit 1; \
+	    install -m 0644 $$f $(PREFIX)/$$f || exit 1; \
+	done
 
 ######################################################
 # House-keeping

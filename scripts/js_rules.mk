@@ -69,26 +69,9 @@ $(eval $(call js_library,$(1)_test,$(1)))
 # Create a target for the test itself. Make sure to depend on the
 # use_global_namespace deps target, because the shell script tests it for
 # duplicates.
-$(1)_test.out : $(1)_test.deps scripts/js_test_run.sh gjstest/internal/js/use_global_namespace.deps gjstest/internal/cpp/gjstest.bin share/builtin_scripts.binarypb
+$(1)_test.out : $(1)_test.deps scripts/js_test_run.sh gjstest/internal/js/use_global_namespace.deps gjstest/internal/cpp/gjstest.bin share
 	./scripts/js_test_run.sh $(1)_test
 
 JS_TESTS += $(1)_test.out
-
-endef
-
-# Create a binary NamedScripts proto containing the transitive closure of a JS
-# library and its dependencies.
-#
-# Arg 1:
-#     The name of the output file.
-#
-# Arg 2:
-#     The name of the library.
-#
-define js_scripts_binarypb
-
-$(1) : $(2:=.deps) tools/build_binarypb.bin
-	mkdir -p `dirname $(1)`
-	./tools/build_binarypb.bin --deps_file=$(2:=.deps) --output_file=`echo $(1)`
 
 endef

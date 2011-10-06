@@ -19,6 +19,7 @@
 #include "file/file_utils.h"
 #include "gjstest/internal/cpp/builtin_data.h"
 #include "gjstest/internal/proto/named_scripts.pb.h"
+#include "strings/strutil.h"
 
 // The default data directory, which must be set at compilation time.
 #ifndef DEFAULT_DATA_DIR
@@ -41,14 +42,19 @@ static string GetPath(
 bool GetBuiltinScripts(
     NamedScripts* scripts,
     string* error) {
-  // Load the serialized NamedScripts proto from our data directory.
-  const string path = GetPath("builtin_scripts.binarypb");
-  const string file_contents = ReadFileOrDie(path);
-
-  // Attempt to deserialized its contents.
-  if (!scripts->ParseFromString(file_contents)) {
-    *error = "Invalid data in file: " + path;
+  // Attempt to get absolute paths for each built-in script.
+  vector<string> paths;
+  if (!GetBuiltinScriptPaths(&paths, error)) {
     return false;
+  }
+
+  // Load each script.
+  for (uint32 i = 0; i < paths.size(); ++i) {
+    const string& path = paths[i];
+
+    NamedScript* script = scripts->add_script();
+    script->set_name(path);
+    script->set_source(ReadFileOrDie(path));
   }
 
   return true;
@@ -57,13 +63,17 @@ bool GetBuiltinScripts(
 bool GetBuiltinScriptPaths(
     vector<string>* paths,
     string* error) {
-  NamedScripts scripts;
-  if (!GetBuiltinScripts(&scripts, error)) {
-    return false;
-  }
+  // Load the built-in scripts deps file.
+  const string deps_file_contents =
+      ReadFileOrDie(GetPath("builtin_scripts.deps"));
 
-  for (uint32 i = 0; i < scripts.script_size(); ++i) {
-    paths->push_back(GetPath(scripts.script(i).name()));
+  // Split its contents by newlines.
+  vector<string> relative_paths;
+  SplitStringUsing(deps_file_contents, "\n", &relative_paths);
+
+  // Make absolute paths.
+  for (uint32 i = 0; i < relative_paths.size(); ++i) {
+    paths->push_back(GetPath(relative_paths[i]));
   }
 
   return true;

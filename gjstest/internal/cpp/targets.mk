@@ -4,6 +4,7 @@ $(eval $(call cc_library, \
         base/stl_decl \
         file/file_utils \
         gjstest/internal/proto/named_scripts.pb \
+        strings/strutil \
 ))
 
 $(eval $(call cc_library, \

@@ -35,7 +35,7 @@ JOINED_JS_FILES=$(printf ",%s" "${JS_FILES[@]}")
 JOINED_JS_FILES=${JOINED_JS_FILES:1}
 
 set -x
-gjstest/internal/cpp/gjstest.bin --gjstest_data_dir=share "--js_files=$JOINED_JS_FILES" || exit 1
+gjstest/internal/cpp/gjstest.bin --gjstest_data_dir=share/gjstest "--js_files=$JOINED_JS_FILES" || exit 1
 set +x
 
 echo "ok" > $OUTPUT_FILE

@@ -30,7 +30,7 @@ bool GetBuiltinScripts(
     NamedScripts* scripts,
     string* error);
 
-// Get full paths for the built-in scripts.
+// Get absolute paths for the built-in scripts.
 bool GetBuiltinScriptPaths(
     vector<string>* paths,
     string* error);
