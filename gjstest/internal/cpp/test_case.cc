@@ -42,7 +42,7 @@ static Local<Function> GetFunctionNamed(const string& name) {
 // Log the supplied string to the test's output.
 static Handle<Value> LogString(TestCase* test_case, const Arguments& args) {
   CHECK_EQ(1, args.Length());
-  const string& message = ConvertToString(args[0]);
+  const string message = ConvertToString(args[0]);
   StringAppendF(&test_case->output, "%s\n", message.c_str());
 
   return v8::Undefined();
@@ -52,7 +52,7 @@ static Handle<Value> LogString(TestCase* test_case, const Arguments& args) {
 // arguments and append it to the existing messages, if any.
 static Handle<Value> RecordFailure(TestCase* test_case, const Arguments& args) {
   CHECK_EQ(1, args.Length());
-  const string& message = ConvertToString(args[0]);
+  const string message = ConvertToString(args[0]);
 
   test_case->succeeded = false;
   StringAppendF(&test_case->output, "%s\n\n", message.c_str());
