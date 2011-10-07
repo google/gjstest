@@ -32,7 +32,7 @@
 DEFINE_string(gjstest_binary, "", "Path to the gjstest binary.");
 DEFINE_string(test_srcdir, "", "Path to directory containing test files.");
 
-DEFINE_string(gjstest_data_dir, "",
+DEFINE_string(data_dir, "",
               "Directory to give to the gjstest binary as its data dir.");
 
 DEFINE_bool(dump_new, false,
@@ -90,7 +90,7 @@ static bool RunShellCommand(
 
 static bool RunTool(
     const string& gjstest_binary,
-    const string& gjstest_data_dir,
+    const string& data_dir,
     const vector<string>& js_files,
     const string& filter,
     bool* success,
@@ -106,12 +106,12 @@ static bool RunTool(
           "%s"
               " --js_files=\"%s\""
               " --xml_output_file=\"%s\""
-              " --gjstest_data_dir=\"%s\""
+              " --data_dir=\"%s\""
               " --filter=\"%s\"",
           gjstest_binary.c_str(),
           JoinStrings(js_files, ",").c_str(),
           xml_file.c_str(),
-          gjstest_data_dir.c_str(),
+          data_dir.c_str(),
           filter.c_str());
 
   // Call the command.
@@ -152,7 +152,7 @@ class IntegrationTest : public ::testing::Test {
     CHECK(
         RunTool(
             FLAGS_gjstest_binary,
-            FLAGS_gjstest_data_dir,
+            FLAGS_data_dir,
             js_files,
             test_filter,
             &success,

@@ -25,7 +25,7 @@ class NamedScripts;
 // Attempt to load the built-in scripts that every test should have accessible
 // (e.g. matchers and the mocking framework) into the supplied proto.
 //
-// The scripts are found using the gjstest_data_dir flag.
+// The scripts are found using the data_dir flag.
 bool GetBuiltinScripts(
     NamedScripts* scripts,
     string* error);

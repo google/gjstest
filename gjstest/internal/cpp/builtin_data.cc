@@ -31,14 +31,14 @@
 #define DOUBLE_STRINGIFY(x) STRINGIFY(x)
 #define STRINGIFY(x) #x
 
-DEFINE_string(gjstest_data_dir, DOUBLE_STRINGIFY(DEFAULT_DATA_DIR),
+DEFINE_string(data_dir, DOUBLE_STRINGIFY(DEFAULT_DATA_DIR),
               "A path containing built-in test dependencies.");
 
 namespace gjstest {
 
 static string GetPath(
     const string& relative_path) {
-  return FLAGS_gjstest_data_dir + "/" + relative_path;
+  return FLAGS_data_dir + "/" + relative_path;
 }
 
 bool GetBuiltinScripts(
