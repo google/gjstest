@@ -24,8 +24,9 @@
  * @suppress {missingProperties}
  */
 gjstest.internal.getErrorStack = function(error) {
-  // Temporary replace Error.prepareStackTrace with a function that returns the
-  // structured stack trace instead of a formatted one. See here for more info:
+  // Temporarily replace Error.prepareStackTrace with a function that returns
+  // the structured stack trace instead of a formatted one. See here for more
+  // info:
   //
   //     http://code.google.com/p/v8/wiki/JavaScriptStackTraceApi
   //
