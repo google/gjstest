@@ -26,6 +26,7 @@ CLOSURE_ARGS=(\
     "--jscomp_error=invalidCasts" \
     "--jscomp_error=missingProperties" \
     "--jscomp_off=internetExplorerChecks" \
+    "--compilation_level=WHITESPACE_ONLY" \
 )
 
 for js_file in `cat $DEPS_FILE`; do
