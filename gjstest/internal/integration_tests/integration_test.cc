@@ -226,9 +226,9 @@ TEST_F(IntegrationTest, TestCaseCalledConstructor) {
 
 TEST_F(IntegrationTest, FilteredFailingTest) {
   // Run only the passing tests.
-  ASSERT_TRUE(RunBundleNamed("failing", ".*passingTest.*")) << txt_;
+  ASSERT_TRUE(RunBundleNamed("failing", ".*PassingTest.*")) << txt_;
 
-  EXPECT_THAT(txt_, HasSubstr("[       OK ] FailingTest.passingTest1"));
+  EXPECT_THAT(txt_, HasSubstr("[       OK ] FailingTest.PassingTest1"));
   EXPECT_THAT(txt_, Not(HasSubstr("failingTest")));
   EXPECT_THAT(txt_, Not(HasSubstr("FAIL")));
 }

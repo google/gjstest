@@ -29,7 +29,7 @@ ExpectCallTest.prototype.tearDown = function() {
   gjstest.internal.registeredCallExpectations.length = 0;
 };
 
-ExpectCallTest.prototype.notAMockFunction = function() {
+ExpectCallTest.prototype.NotAMockFunction = function() {
   var expected = /TypeError.*not a mock/;
 
   expectThat(function() { expectCall(null) }, throwsError(expected));
@@ -38,7 +38,7 @@ ExpectCallTest.prototype.notAMockFunction = function() {
   expectThat(function() { expectCall(function() {}) }, throwsError(expected));
 };
 
-ExpectCallTest.prototype.addsExpectationsToMockAndArray = function() {
+ExpectCallTest.prototype.AddsExpectationsToMockAndArray = function() {
   expectCall(this.mockFunc_)(isNull, isUndefined);
   expectCall(this.mockFunc_)(7, 9);
 
@@ -53,7 +53,7 @@ ExpectCallTest.prototype.addsExpectationsToMockAndArray = function() {
   expectEq(funcExpectations[1], registeredExpectations[1]);
 };
 
-ExpectCallTest.prototype.usesSuppliedMatchers = function() {
+ExpectCallTest.prototype.UsesSuppliedMatchers = function() {
   var matcher_0 = isNull;
   var matcher_1 = equals(2);
   expectCall(this.mockFunc_)(matcher_0, matcher_1);
@@ -66,7 +66,7 @@ ExpectCallTest.prototype.usesSuppliedMatchers = function() {
   expectEq(matcher_1, matchers[1]);
 };
 
-ExpectCallTest.prototype.setsStackFrame = function() {
+ExpectCallTest.prototype.SetsStackFrame = function() {
   expectCall(this.mockFunc_)();
 
   var expectation = gjstest.internal.registeredCallExpectations[0];
@@ -76,7 +76,7 @@ ExpectCallTest.prototype.setsStackFrame = function() {
   expectEq(70, stackFrame.lineNumber);
 };
 
-ExpectCallTest.prototype.nonMatcherValues = function() {
+ExpectCallTest.prototype.NonMatcherValues = function() {
   var obj = {};
   expectCall(this.mockFunc_)(0, undefined, obj);
 
@@ -108,7 +108,7 @@ ExpectCallTest.prototype.nonMatcherValues = function() {
   expectEq('which is a reference to a different object', predicate({}));
 };
 
-ExpectCallTest.prototype.times = function() {
+ExpectCallTest.prototype.Times = function() {
   var result = expectCall(this.mockFunc_)();
   var expectation = gjstest.internal.registeredCallExpectations[0];
 
@@ -118,7 +118,7 @@ ExpectCallTest.prototype.times = function() {
   expectEq(7, expectation.expectedNumMatches);
 };
 
-ExpectCallTest.prototype.timesCalledTwice = function() {
+ExpectCallTest.prototype.TimesCalledTwice = function() {
   var result = expectCall(this.mockFunc_)();
   var expectation = gjstest.internal.registeredCallExpectations[0];
 
@@ -131,7 +131,7 @@ ExpectCallTest.prototype.timesCalledTwice = function() {
       throwsError(/times\(\) has already been called/));
 };
 
-ExpectCallTest.prototype.noActionsRegistered = function() {
+ExpectCallTest.prototype.NoActionsRegistered = function() {
   var result = expectCall(this.mockFunc_)();
   var expectation = gjstest.internal.registeredCallExpectations[0];
 
@@ -139,7 +139,7 @@ ExpectCallTest.prototype.noActionsRegistered = function() {
   expectEq(null, expectation.fallbackAction);
 };
 
-ExpectCallTest.prototype.willOnce = function() {
+ExpectCallTest.prototype.WillOnce = function() {
   var result = expectCall(this.mockFunc_)();
   var expectation = gjstest.internal.registeredCallExpectations[0];
 
@@ -155,7 +155,7 @@ ExpectCallTest.prototype.willOnce = function() {
   expectEq(func_1, expectation.oneTimeActions[1].actionFunction);
 };
 
-ExpectCallTest.prototype.willRepeatedly = function() {
+ExpectCallTest.prototype.WillRepeatedly = function() {
   var result = expectCall(this.mockFunc_)();
   var expectation = gjstest.internal.registeredCallExpectations[0];
 
@@ -165,7 +165,7 @@ ExpectCallTest.prototype.willRepeatedly = function() {
   expectEq(func, expectation.fallbackAction.actionFunction);
 };
 
-ExpectCallTest.prototype.willRepeatedlyCalledTwice = function() {
+ExpectCallTest.prototype.WillRepeatedlyCalledTwice = function() {
   var result = expectCall(this.mockFunc_)();
   var expectation = gjstest.internal.registeredCallExpectations[0];
 
@@ -178,7 +178,7 @@ ExpectCallTest.prototype.willRepeatedlyCalledTwice = function() {
       throwsError(/willRepeatedly\(\) has already been called/));
 };
 
-ExpectCallTest.prototype.willOnceCalledAfterWillRepeatedly = function() {
+ExpectCallTest.prototype.WillOnceCalledAfterWillRepeatedly = function() {
   var result = expectCall(this.mockFunc_)();
   var expectation = gjstest.internal.registeredCallExpectations[0];
 
@@ -192,7 +192,7 @@ ExpectCallTest.prototype.willOnceCalledAfterWillRepeatedly = function() {
       throwsError(/willOnce\(\) called after willRepeatedly\(\)/));
 };
 
-ExpectCallTest.prototype.timesCalledAfterWillOnce = function() {
+ExpectCallTest.prototype.TimesCalledAfterWillOnce = function() {
   var result = expectCall(this.mockFunc_)();
   var expectation = gjstest.internal.registeredCallExpectations[0];
 
@@ -205,7 +205,7 @@ ExpectCallTest.prototype.timesCalledAfterWillOnce = function() {
       throwsError(/times\(\) called after willOnce\(\)/));
 };
 
-ExpectCallTest.prototype.timesCalledAfterWillRepeatedly = function() {
+ExpectCallTest.prototype.TimesCalledAfterWillRepeatedly = function() {
   var result = expectCall(this.mockFunc_)();
   var expectation = gjstest.internal.registeredCallExpectations[0];
 

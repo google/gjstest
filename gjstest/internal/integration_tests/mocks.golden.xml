@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuite name="Google JS tests" failures="10" time="0.01">
- <testcase name="MocksTest.satisfiedMocks" time="0.01"/>
- <testcase name="MocksTest.mockActions" time="0.01"/>
- <testcase name="MocksTest.mockInstance" time="0.01"/>
- <testcase name="MocksTest.unexpectedFunctionCall" time="0.01">
+ <testcase name="MocksTest.SatisfiedMocks" time="0.01"/>
+ <testcase name="MocksTest.MockActions" time="0.01"/>
+ <testcase name="MocksTest.MockInstance" time="0.01"/>
+ <testcase name="MocksTest.UnexpectedFunctionCall" time="0.01">
   <failure><![CDATA[Call matches no expectation.
     Arg 0: 19
 
@@ -16,11 +16,11 @@ Tried expectation at mocks_test.js:67, but arg 0 didn't match:
 Call to bar matches no expectation.
     Arg 0: 29]]></failure>
  </testcase>
- <testcase name="MocksTest.unexpectedMethodCall" time="0.01">
+ <testcase name="MocksTest.UnexpectedMethodCall" time="0.01">
   <failure><![CDATA[Call to MyClass.doSomething matches no expectation.
     Arg 0: 17]]></failure>
  </testcase>
- <testcase name="MocksTest.unsatisfiedExpectations" time="0.01">
+ <testcase name="MocksTest.UnsatisfiedExpectations" time="0.01">
   <failure><![CDATA[Unsatisfied expectation at mocks_test.js:91:
     Arg 0: 19
 
@@ -36,8 +36,8 @@ Unsatisfied expectation at mocks_test.js:99:
 
 Expected 3 calls; called 4 times.]]></failure>
  </testcase>
- <testcase name="MocksTest.anotherTest" time="0.01"/>
- <testcase name="MocksTest.unsatisfiedExpectationsWithReferences" time="0.01">
+ <testcase name="MocksTest.AnotherTest" time="0.01"/>
+ <testcase name="MocksTest.UnsatisfiedExpectationsWithReferences" time="0.01">
   <failure><![CDATA[Unsatisfied expectation at mocks_test.js:130:
     Arg 0: is a reference to: { name: 'obj_1' }
 
@@ -53,7 +53,7 @@ Unsatisfied expectation at mocks_test.js:138:
 
 Expected 3 calls; called 4 times.]]></failure>
  </testcase>
- <testcase name="MocksTest.precedingExpectThat" time="0.01">
+ <testcase name="MocksTest.PrecedingExpectThat" time="0.01">
   <failure><![CDATA[Call matches no expectation.
     Arg 0: 23
 
@@ -65,18 +65,18 @@ Unsatisfied expectation at mocks_test.js:156:
 
 Expected 1 call; called 0 times.]]></failure>
  </testcase>
- <testcase name="MocksTest.expectCallWithNonMockFunction" time="0.01">
+ <testcase name="MocksTest.ExpectCallWithNonMockFunction" time="0.01">
   <failure><![CDATA[mocks_test.js:162
 TypeError: Supplied function is not a mock.]]></failure>
  </testcase>
- <testcase name="MocksTest.missingArguments" time="0.01">
+ <testcase name="MocksTest.MissingArguments" time="0.01">
   <failure><![CDATA[Call matches no expectation.
     (No arguments.)
 
 Tried expectation at mocks_test.js:169, but number of arguments didn't match:
     Arg 0: is anything]]></failure>
  </testcase>
- <testcase name="MocksTest.tooManyArguments" time="0.01">
+ <testcase name="MocksTest.TooManyArguments" time="0.01">
   <failure><![CDATA[Call matches no expectation.
     Arg 0: undefined
     Arg 1: 17
@@ -91,8 +91,8 @@ Call matches no expectation.
 Tried expectation at mocks_test.js:183, but number of arguments didn't match:
     Arg 0: is anything]]></failure>
  </testcase>
- <testcase name="MocksTest.optionalArgument" time="0.01"/>
- <testcase name="MocksTest.optionalOrExactValueArgument" time="0.01">
+ <testcase name="MocksTest.OptionalArgument" time="0.01"/>
+ <testcase name="MocksTest.OptionalOrExactValueArgument" time="0.01">
   <failure><![CDATA[Call matches no expectation.
     Arg 0: undefined
     Arg 1: undefined
@@ -117,7 +117,7 @@ Tried expectation at mocks_test.js:211, but arg 1 didn't match:
     Arg 0: is anything
     Arg 1: is not present, or 23]]></failure>
  </testcase>
- <testcase name="MocksTest.sentinelMatcher" time="0.01">
+ <testcase name="MocksTest.SentinelMatcher" time="0.01">
   <failure><![CDATA[Call matches no expectation.
     (No arguments.)
 

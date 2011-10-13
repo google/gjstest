@@ -1,57 +1,57 @@
 [----------]
-[ RUN      ] ExceptionTest.referenceError
+[ RUN      ] ExceptionTest.ReferenceError
 exception_test.js:23
 ReferenceError: fooBar is not defined
 
-[  FAILED  ] ExceptionTest.referenceError (1 ms)
-[ RUN      ] ExceptionTest.notAFunctionError
+[  FAILED  ] ExceptionTest.ReferenceError (1 ms)
+[ RUN      ] ExceptionTest.NotAFunctionError
 exception_test.js:28
 TypeError: object is not a function
 
-[  FAILED  ] ExceptionTest.notAFunctionError (1 ms)
-[ RUN      ] ExceptionTest.errorInMatcherFactory
+[  FAILED  ] ExceptionTest.NotAFunctionError (1 ms)
+[ RUN      ] ExceptionTest.ErrorInMatcherFactory
 exception_test.js:32
 TypeError: isNearNumber requires two number arguments
 
-[  FAILED  ] ExceptionTest.errorInMatcherFactory (1 ms)
-[ RUN      ] ExceptionTest.stackOverflow
+[  FAILED  ] ExceptionTest.ErrorInMatcherFactory (1 ms)
+[ RUN      ] ExceptionTest.StackOverflow
 RangeError: Maximum call stack size exceeded
 
-[  FAILED  ] ExceptionTest.stackOverflow (1 ms)
-[ RUN      ] ExceptionTest.unknownPropertyOnLongFunction
+[  FAILED  ] ExceptionTest.StackOverflow (1 ms)
+[ RUN      ] ExceptionTest.UnknownPropertyOnLongFunction
 exception_test.js:45
 TypeError: Object function foo() {
     return 'asd';
   } has no method 'bar'
 
-[  FAILED  ] ExceptionTest.unknownPropertyOnLongFunction (1 ms)
-[ RUN      ] ExceptionTest.objectLiteralException
+[  FAILED  ] ExceptionTest.UnknownPropertyOnLongFunction (1 ms)
+[ RUN      ] ExceptionTest.ObjectLiteralException
 { name: 'SomeException' }
 
-[  FAILED  ] ExceptionTest.objectLiteralException (1 ms)
-[ RUN      ] ExceptionTest.customExceptionClassWithoutStack
+[  FAILED  ] ExceptionTest.ObjectLiteralException (1 ms)
+[ RUN      ] ExceptionTest.CustomExceptionClassWithoutStack
 {}
 
-[  FAILED  ] ExceptionTest.customExceptionClassWithoutStack (1 ms)
-[ RUN      ] ExceptionTest.customExceptionClassWithStack
+[  FAILED  ] ExceptionTest.CustomExceptionClassWithoutStack (1 ms)
+[ RUN      ] ExceptionTest.CustomExceptionClassWithStack
 exception_test.js:63
 {}
 
-[  FAILED  ] ExceptionTest.customExceptionClassWithStack (1 ms)
-[ RUN      ] ExceptionTest.customExceptionClassWithToString
+[  FAILED  ] ExceptionTest.CustomExceptionClassWithStack (1 ms)
+[ RUN      ] ExceptionTest.CustomExceptionClassWithToString
 SomeException
 
-[  FAILED  ] ExceptionTest.customExceptionClassWithToString (1 ms)
-[ RUN      ] ExceptionTest.passingTest
-[       OK ] ExceptionTest.passingTest (1 ms)
+[  FAILED  ] ExceptionTest.CustomExceptionClassWithToString (1 ms)
+[ RUN      ] ExceptionTest.PassingTest
+[       OK ] ExceptionTest.PassingTest (1 ms)
 [----------]
 
 [----------]
-[ RUN      ] ThrowingConstructorTest.someTest
+[ RUN      ] ThrowingConstructorTest.SomeTest
 exception_test.js:77
 Error: taco
 
-[  FAILED  ] ThrowingConstructorTest.someTest (1 ms)
+[  FAILED  ] ThrowingConstructorTest.SomeTest (1 ms)
 [----------]
 
 [  FAILED  ]

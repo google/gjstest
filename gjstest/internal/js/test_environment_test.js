@@ -26,7 +26,7 @@ function TestEnvironmentTest() {
 }
 registerTestSuite(TestEnvironmentTest);
 
-TestEnvironmentTest.prototype.missingFunctions = function() {
+TestEnvironmentTest.prototype.MissingFunctions = function() {
   var TE = gjstest.internal.TestEnvironment;
   var me = this;
 
@@ -43,17 +43,17 @@ TestEnvironmentTest.prototype.missingFunctions = function() {
       throwsError(/TypeError.*getCurrentStack.*function/));
 };
 
-TestEnvironmentTest.prototype.log = function() {
+TestEnvironmentTest.prototype.Log = function() {
   expectCall(this.log_)('taco');
   this.testEnv_.log('taco');
 };
 
-TestEnvironmentTest.prototype.reportFailureWithoutUserStack = function() {
+TestEnvironmentTest.prototype.ReportFailureWithoutUserStack = function() {
   expectCall(this.reportFailure_)('taco');
   this.testEnv_.reportFailure('taco');
 };
 
-TestEnvironmentTest.prototype.reportFailureWithUserStack = function() {
+TestEnvironmentTest.prototype.ReportFailureWithUserStack = function() {
   var frame = {fileName: 'taco.js', lineNumber: 17};
   this.testEnv_.userStack.push(frame);
 
@@ -61,7 +61,7 @@ TestEnvironmentTest.prototype.reportFailureWithUserStack = function() {
   this.testEnv_.reportFailure('burrito');
 };
 
-TestEnvironmentTest.prototype.recordAndClearUserStack = function() {
+TestEnvironmentTest.prototype.RecordAndClearUserStack = function() {
   // Return four stack frames.
   var frame0 = new gjstest.internal.StackFrame;
   var frame1 = new gjstest.internal.StackFrame;
@@ -81,7 +81,7 @@ TestEnvironmentTest.prototype.recordAndClearUserStack = function() {
   expectThat(this.testEnv_.userStack, elementsAre([]));
 };
 
-TestEnvironmentTest.prototype.userStacksAreNotShared = function() {
+TestEnvironmentTest.prototype.UserStacksAreNotShared = function() {
   var otherEnv =
       new gjstest.internal.TestEnvironment(
           this.log_,

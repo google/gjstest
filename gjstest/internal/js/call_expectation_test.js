@@ -23,7 +23,7 @@ var stackFrame = {};
 function CheckSatisfiedTest() { }
 registerTestSuite(CheckSatisfiedTest);
 
-CheckSatisfiedTest.prototype.defaults = function() {
+CheckSatisfiedTest.prototype.Defaults = function() {
   // CallExpectation
   var matchers = [gjstest.equals(4)];
   var expectation = new gjstest.internal.CallExpectation(matchers, stackFrame);
@@ -43,7 +43,7 @@ CheckSatisfiedTest.prototype.defaults = function() {
   expectEq(false, action.expired);
 };
 
-CheckSatisfiedTest.prototype.noTimesNoActions = function() {
+CheckSatisfiedTest.prototype.NoTimesNoActions = function() {
   // The implicit expected count is 1.
   var e = new gjstest.internal.CallExpectation([], stackFrame);
 
@@ -60,7 +60,7 @@ CheckSatisfiedTest.prototype.noTimesNoActions = function() {
   expectEq('Expected 1 call; called 17 times.', checkExpectationSatisfied(e));
 };
 
-CheckSatisfiedTest.prototype.noTimesOnlyFallbackAction = function() {
+CheckSatisfiedTest.prototype.NoTimesOnlyFallbackAction = function() {
   // Any number of calls should be expected.
   var e = new gjstest.internal.CallExpectation([], stackFrame);
   e.fallbackAction = {};
@@ -78,7 +78,7 @@ CheckSatisfiedTest.prototype.noTimesOnlyFallbackAction = function() {
   expectEq(null, checkExpectationSatisfied(e));
 };
 
-CheckSatisfiedTest.prototype.noTimesOnlyOneTimeActions = function() {
+CheckSatisfiedTest.prototype.NoTimesOnlyOneTimeActions = function() {
   var e = new gjstest.internal.CallExpectation([], stackFrame);
 
   ////////////////////////
@@ -113,7 +113,7 @@ CheckSatisfiedTest.prototype.noTimesOnlyOneTimeActions = function() {
   expectEq('Expected 2 calls; called 3 times.', checkExpectationSatisfied(e));
 };
 
-CheckSatisfiedTest.prototype.noTimesBothKindsOfActions = function() {
+CheckSatisfiedTest.prototype.NoTimesBothKindsOfActions = function() {
   var e = new gjstest.internal.CallExpectation([], stackFrame);
   e.fallbackAction = {};
 
@@ -156,7 +156,7 @@ CheckSatisfiedTest.prototype.noTimesBothKindsOfActions = function() {
   expectEq(null, checkExpectationSatisfied(e));
 };
 
-CheckSatisfiedTest.prototype.timesAndActions = function() {
+CheckSatisfiedTest.prototype.TimesAndActions = function() {
   var e = new gjstest.internal.CallExpectation([], stackFrame);
 
   // Five one-time actions and a fallback action.
@@ -232,7 +232,7 @@ function CheckArgsTest() {
 }
 registerTestSuite(CheckArgsTest);
 
-CheckArgsTest.prototype.callsMatchers = function() {
+CheckArgsTest.prototype.CallsMatchers = function() {
   expectCall(this.predicateA_)('taco')
     .willOnce(returnWith(true));
 
@@ -242,7 +242,7 @@ CheckArgsTest.prototype.callsMatchers = function() {
   this.checkArgs_('taco', 'burrito');
 };
 
-CheckArgsTest.prototype.matcherReturnsFalse = function() {
+CheckArgsTest.prototype.MatcherReturnsFalse = function() {
   expectCall(this.predicateA_)(_)
     .willOnce(returnWith(true));
 
@@ -252,7 +252,7 @@ CheckArgsTest.prototype.matcherReturnsFalse = function() {
   expectEq("arg 1 didn't match", this.checkArgs_('taco', 'burrito'));
 };
 
-CheckArgsTest.prototype.matcherReturnsString = function() {
+CheckArgsTest.prototype.MatcherReturnsString = function() {
   expectCall(this.predicateA_)(_)
     .willOnce(returnWith(true));
 
@@ -262,7 +262,7 @@ CheckArgsTest.prototype.matcherReturnsString = function() {
   expectEq("arg 1 didn't match", this.checkArgs_('taco', 'burrito'));
 };
 
-CheckArgsTest.prototype.allMatchersSayOkay = function() {
+CheckArgsTest.prototype.AllMatchersSayOkay = function() {
   expectCall(this.predicateA_)(_)
     .willOnce(returnWith(true));
 
@@ -272,7 +272,7 @@ CheckArgsTest.prototype.allMatchersSayOkay = function() {
   expectEq(null, this.checkArgs_('taco', 'burrito'));
 };
 
-CheckArgsTest.prototype.undefinedArgs = function() {
+CheckArgsTest.prototype.UndefinedArgs = function() {
   expectCall(this.predicateA_)(undefined)
     .willOnce(returnWith(true));
 
@@ -282,12 +282,12 @@ CheckArgsTest.prototype.undefinedArgs = function() {
   expectEq(null, this.checkArgs_(undefined, null));
 };
 
-CheckArgsTest.prototype.tooManyArgs = function() {
+CheckArgsTest.prototype.TooManyArgs = function() {
   expectEq("number of arguments didn't match", this.checkArgs_(0, 1, 2));
   expectEq("number of arguments didn't match", this.checkArgs_(0, 1, 2, 3));
 };
 
-CheckArgsTest.prototype.oneMatcherDoesntUnderstandMissingArgs = function() {
+CheckArgsTest.prototype.OneMatcherDoesntUnderstandMissingArgs = function() {
   // First matcher doesn't understand
   this.matcherA_.understandsMissingArgs = false;
   this.matcherB_.understandsMissingArgs = true;
@@ -303,7 +303,7 @@ CheckArgsTest.prototype.oneMatcherDoesntUnderstandMissingArgs = function() {
   expectEq("number of arguments didn't match", this.checkArgs_());
 };
 
-CheckArgsTest.prototype.matchersUnderstandMissingArgs = function() {
+CheckArgsTest.prototype.MatchersUnderstandMissingArgs = function() {
   this.matcherA_.understandsMissingArgs = true;
   this.matcherB_.understandsMissingArgs = true;
 
@@ -332,7 +332,7 @@ CheckArgsTest.prototype.matchersUnderstandMissingArgs = function() {
   expectEq(null, this.checkArgs_());
 };
 
-CheckArgsTest.prototype.onlyOneArgMissing = function() {
+CheckArgsTest.prototype.OnlyOneArgMissing = function() {
   this.matcherB_.understandsMissingArgs = true;
 
   expectCall(this.predicateA_)('taco')
@@ -344,7 +344,7 @@ CheckArgsTest.prototype.onlyOneArgMissing = function() {
   this.checkArgs_('taco');
 };
 
-CheckArgsTest.prototype.isMissingArgSentinelMatcher = function() {
+CheckArgsTest.prototype.IsMissingArgSentinelMatcher = function() {
   var matchers = [isMissingArgSentinel];
   this.expectation_ = new gjstest.internal.CallExpectation(matchers, {});
 

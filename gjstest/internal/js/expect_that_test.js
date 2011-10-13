@@ -28,7 +28,7 @@ function ExpectThatTest() {
 }
 registerTestSuite(ExpectThatTest);
 
-ExpectThatTest.prototype.callsMatcher = function() {
+ExpectThatTest.prototype.CallsMatcher = function() {
   var obj = {};
 
   expectCall(this.predicate_)(obj)
@@ -37,7 +37,7 @@ ExpectThatTest.prototype.callsMatcher = function() {
   internalExpectThat(obj, this.matcher_, this.stringify_, this.reportFailure_);
 };
 
-ExpectThatTest.prototype.matcherSaysYes = function() {
+ExpectThatTest.prototype.MatcherSaysYes = function() {
   var obj = {};
 
   expectCall(this.predicate_)(_)
@@ -49,7 +49,7 @@ ExpectThatTest.prototype.matcherSaysYes = function() {
   internalExpectThat(obj, this.matcher_, this.stringify_, this.reportFailure_);
 };
 
-ExpectThatTest.prototype.matcherSaysNo = function() {
+ExpectThatTest.prototype.MatcherSaysNo = function() {
   var obj = {};
 
   expectCall(this.predicate_)(_)
@@ -63,7 +63,7 @@ ExpectThatTest.prototype.matcherSaysNo = function() {
   internalExpectThat(obj, this.matcher_, this.stringify_, this.reportFailure_);
 };
 
-ExpectThatTest.prototype.matcherReturnsString = function() {
+ExpectThatTest.prototype.MatcherReturnsString = function() {
   var obj = {};
 
   expectCall(this.predicate_)(_)

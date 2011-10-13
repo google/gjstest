@@ -27,7 +27,7 @@ FakeNode.prototype.addEventListener = function(event, fn, capture) {};
 function HtmlBuilderTest() {}
 registerTestSuite(HtmlBuilderTest);
 
-HtmlBuilderTest.prototype.appendAddsChild = function() {
+HtmlBuilderTest.prototype.AppendAddsChild = function() {
   var nodeA = gjstest.createMockInstance(FakeNode);
   var nodeB = gjstest.createMockInstance(FakeNode);
   var builderA = new gjstest.internal.HtmlBuilder(nodeA);
@@ -38,7 +38,7 @@ HtmlBuilderTest.prototype.appendAddsChild = function() {
   expectThat(ret, equals(builderA));
 };
 
-HtmlBuilderTest.prototype.attrSetsAttribute = function() {
+HtmlBuilderTest.prototype.AttrSetsAttribute = function() {
   var node = gjstest.createMockInstance(FakeNode);
   var builder = new gjstest.internal.HtmlBuilder(node);
 
@@ -47,7 +47,7 @@ HtmlBuilderTest.prototype.attrSetsAttribute = function() {
   expectThat(ret, equals(builder));
 };
 
-HtmlBuilderTest.prototype.textSetsTextContent = function() {
+HtmlBuilderTest.prototype.TextSetsTextContent = function() {
   var node = new FakeNode();
   var builder = new gjstest.internal.HtmlBuilder(node);
 
@@ -56,7 +56,7 @@ HtmlBuilderTest.prototype.textSetsTextContent = function() {
   expectThat(node.textContent, equals('Set text here'));
 };
 
-HtmlBuilderTest.prototype.addClassClassNameEmpty = function() {
+HtmlBuilderTest.prototype.AddClassClassNameEmpty = function() {
   var node = new FakeNode();
   node.className = '';
   var builder = new gjstest.internal.HtmlBuilder(node);
@@ -65,7 +65,7 @@ HtmlBuilderTest.prototype.addClassClassNameEmpty = function() {
   expectThat(node.className, equals('holly'));
 };
 
-HtmlBuilderTest.prototype.addClassClassNameNotEmpty = function() {
+HtmlBuilderTest.prototype.AddClassClassNameNotEmpty = function() {
   var node = new FakeNode();
   node.className = 'charlie 1611';
   var builder = new gjstest.internal.HtmlBuilder(node);
@@ -74,7 +74,7 @@ HtmlBuilderTest.prototype.addClassClassNameNotEmpty = function() {
   expectThat(node.className, equals('charlie 1611 holly'));
 };
 
-HtmlBuilderTest.prototype.addClassClassNameAlreadyContained = function() {
+HtmlBuilderTest.prototype.AddClassClassNameAlreadyContained = function() {
   var node = new FakeNode();
   node.className = 'charlie holly 1611';
   var builder = new gjstest.internal.HtmlBuilder(node);
@@ -83,7 +83,7 @@ HtmlBuilderTest.prototype.addClassClassNameAlreadyContained = function() {
   expectThat(node.className, equals('charlie holly 1611'));
 };
 
-HtmlBuilderTest.prototype.removeClassClassNameEmpty = function() {
+HtmlBuilderTest.prototype.RemoveClassClassNameEmpty = function() {
   var node = new FakeNode();
   node.className = '';
   var builder = new gjstest.internal.HtmlBuilder(node);
@@ -92,7 +92,7 @@ HtmlBuilderTest.prototype.removeClassClassNameEmpty = function() {
   expectThat(node.className, equals(''));
 };
 
-HtmlBuilderTest.prototype.removeClassClassNameNotEmpty = function() {
+HtmlBuilderTest.prototype.RemoveClassClassNameNotEmpty = function() {
   var node = new FakeNode();
   node.className = 'charlie 1611';
   var builder = new gjstest.internal.HtmlBuilder(node);
@@ -101,7 +101,7 @@ HtmlBuilderTest.prototype.removeClassClassNameNotEmpty = function() {
   expectThat(node.className, equals('charlie 1611'));
 };
 
-HtmlBuilderTest.prototype.removeClassClassNameAlreadyContained = function() {
+HtmlBuilderTest.prototype.RemoveClassClassNameAlreadyContained = function() {
   var node = new FakeNode();
   node.className = 'charlie holly 1611';
   var builder = new gjstest.internal.HtmlBuilder(node);
@@ -110,7 +110,7 @@ HtmlBuilderTest.prototype.removeClassClassNameAlreadyContained = function() {
   expectThat(node.className, equals('charlie 1611'));
 };
 
-HtmlBuilderTest.prototype.makeToggleForElem = function() {
+HtmlBuilderTest.prototype.MakeToggleForElem = function() {
   var node = gjstest.createMockInstance(FakeNode);
   node.className = '';
   var builder = new gjstest.internal.HtmlBuilder(node);

@@ -20,16 +20,16 @@
 function NotPresentTest() {}
 registerTestSuite(NotPresentTest);
 
-NotPresentTest.prototype.understandsMissingArgs = function() {
+NotPresentTest.prototype.UnderstandsMissingArgs = function() {
   expectTrue(notPresent.understandsMissingArgs);
 };
 
-NotPresentTest.prototype.matchesMissingArgs = function() {
+NotPresentTest.prototype.MatchesMissingArgs = function() {
   var pred = notPresent.predicate;
   expectTrue(pred(gjstest.missingArgSentinel));
 };
 
-NotPresentTest.prototype.doesntMatchAnythingElse = function() {
+NotPresentTest.prototype.DoesntMatchAnythingElse = function() {
   var pred = notPresent.predicate;
 
   expectFalse(pred(undefined));
@@ -45,7 +45,7 @@ NotPresentTest.prototype.doesntMatchAnythingElse = function() {
   expectFalse(pred(function() {}));
 };
 
-NotPresentTest.prototype.description = function() {
+NotPresentTest.prototype.Description = function() {
   expectEq('is not present', notPresent.description);
   expectEq('is present', notPresent.negativeDescription);
 };
@@ -57,11 +57,11 @@ NotPresentTest.prototype.description = function() {
 function MaybePresentTest() {}
 registerTestSuite(MaybePresentTest);
 
-MaybePresentTest.prototype.understandsMissingArgs = function() {
+MaybePresentTest.prototype.UnderstandsMissingArgs = function() {
   expectTrue(maybePresent.understandsMissingArgs);
 };
 
-MaybePresentTest.prototype.matchesEverything = function() {
+MaybePresentTest.prototype.MatchesEverything = function() {
   var pred = maybePresent.predicate;
 
   expectTrue(pred(undefined));
@@ -75,6 +75,6 @@ MaybePresentTest.prototype.matchesEverything = function() {
   expectTrue(pred(function() {}));
 };
 
-MaybePresentTest.prototype.description = function() {
+MaybePresentTest.prototype.Description = function() {
   expectEq('is anything, or is not present', maybePresent.description);
 };

@@ -18,7 +18,7 @@
 function MocksTest() {}
 registerTestSuite(MocksTest);
 
-MocksTest.prototype.satisfiedMocks = function() {
+MocksTest.prototype.SatisfiedMocks = function() {
   var foo = createMockFunction();
   var bar = createMockFunction();
 
@@ -31,7 +31,7 @@ MocksTest.prototype.satisfiedMocks = function() {
   bar(23);
 };
 
-MocksTest.prototype.mockActions = function() {
+MocksTest.prototype.MockActions = function() {
   var foo = createMockFunction();
 
   expectCall(foo)(17)
@@ -48,7 +48,7 @@ MocksTest.prototype.mockActions = function() {
   expectEq(12, foo(17));
 };
 
-MocksTest.prototype.mockInstance = function() {
+MocksTest.prototype.MockInstance = function() {
   function MyClass() {}
   MyClass.prototype.doSomething = function() {};
 
@@ -60,7 +60,7 @@ MocksTest.prototype.mockInstance = function() {
   expectEq(17, mockInstance.doSomething());
 };
 
-MocksTest.prototype.unexpectedFunctionCall = function() {
+MocksTest.prototype.UnexpectedFunctionCall = function() {
   var foo = createMockFunction();       // Not named
   var bar = createMockFunction('bar');  // Named
 
@@ -74,7 +74,7 @@ MocksTest.prototype.unexpectedFunctionCall = function() {
   bar(29);
 };
 
-MocksTest.prototype.unexpectedMethodCall = function() {
+MocksTest.prototype.UnexpectedMethodCall = function() {
   function MyClass() {}
   MyClass.prototype.doSomething = function() {};
 
@@ -82,7 +82,7 @@ MocksTest.prototype.unexpectedMethodCall = function() {
   mockInstance.doSomething(17);
 };
 
-MocksTest.prototype.unsatisfiedExpectations = function() {
+MocksTest.prototype.UnsatisfiedExpectations = function() {
   var foo = createMockFunction();
 
   expectCall(foo)(17);
@@ -107,13 +107,13 @@ MocksTest.prototype.unsatisfiedExpectations = function() {
   foo(29);
 };
 
-MocksTest.prototype.anotherTest = function() {
+MocksTest.prototype.AnotherTest = function() {
   // Make sure that the unsatisfied expectations from above don't interfere with
   // this test, which should pass.
   expectEq(7, 7);
 };
 
-MocksTest.prototype.unsatisfiedExpectationsWithReferences = function() {
+MocksTest.prototype.UnsatisfiedExpectationsWithReferences = function() {
   // Like the case above, except use references instead of numbers. This is to
   // test for something like bug 3396763, where we didn't pay proper attention
   // to a predicate that returned a string.
@@ -146,7 +146,7 @@ MocksTest.prototype.unsatisfiedExpectationsWithReferences = function() {
   foo(obj_3);
 };
 
-MocksTest.prototype.precedingExpectThat = function() {
+MocksTest.prototype.PrecedingExpectThat = function() {
   // Add a call to expectThat before an unexpected mock call and an unsatisfied
   // expectation. It should properly clean up after its recorded stack so we
   // don't get stray line numbers in the output.
@@ -158,11 +158,11 @@ MocksTest.prototype.precedingExpectThat = function() {
   foo(23);
 };
 
-MocksTest.prototype.expectCallWithNonMockFunction = function() {
+MocksTest.prototype.ExpectCallWithNonMockFunction = function() {
   expectCall(undefined)();
 };
 
-MocksTest.prototype.missingArguments = function() {
+MocksTest.prototype.MissingArguments = function() {
   var foo = createMockFunction();
 
   // Exactly one argument, undefined is okay.
@@ -176,7 +176,7 @@ MocksTest.prototype.missingArguments = function() {
   foo();
 };
 
-MocksTest.prototype.tooManyArguments = function() {
+MocksTest.prototype.TooManyArguments = function() {
   var foo = createMockFunction();
 
   // Exactly one argument, undefined is okay.
@@ -191,7 +191,7 @@ MocksTest.prototype.tooManyArguments = function() {
   foo(undefined, undefined);
 };
 
-MocksTest.prototype.optionalArgument = function() {
+MocksTest.prototype.OptionalArgument = function() {
   var foo = createMockFunction();
 
   // One or two args, any value for each (including undefined).
@@ -204,7 +204,7 @@ MocksTest.prototype.optionalArgument = function() {
   expectEq(17, foo(undefined, undefined));
 };
 
-MocksTest.prototype.optionalOrExactValueArgument = function() {
+MocksTest.prototype.OptionalOrExactValueArgument = function() {
   var foo = createMockFunction();
 
   // First arg must be present, second can be 23 or not present.
@@ -221,7 +221,7 @@ MocksTest.prototype.optionalOrExactValueArgument = function() {
   foo(undefined, 'taco');
 };
 
-MocksTest.prototype.sentinelMatcher = function() {
+MocksTest.prototype.SentinelMatcher = function() {
   var foo = createMockFunction();
 
   // Expect a call to the function with the sentinel value (*not* a call with a

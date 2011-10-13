@@ -20,7 +20,7 @@
 function ThrowsErrorTest() {}
 registerTestSuite(ThrowsErrorTest);
 
-ThrowsErrorTest.prototype.nonFunctions = function() {
+ThrowsErrorTest.prototype.NonFunctions = function() {
   var pred = throwsError(/.*/).predicate;
 
   expectEq('which is not a function', pred(null));
@@ -30,33 +30,33 @@ ThrowsErrorTest.prototype.nonFunctions = function() {
   expectEq('which is not a function', pred({}));
 };
 
-ThrowsErrorTest.prototype.wrongArity = function() {
+ThrowsErrorTest.prototype.WrongArity = function() {
   var pred = throwsError(/.*/).predicate;
 
   expectEq('which has arity 1', pred(function(foo) {}));
   expectEq('which has arity 2', pred(function(foo, bar) {}));
 };
 
-ThrowsErrorTest.prototype.noError = function() {
+ThrowsErrorTest.prototype.NoError = function() {
   var pred = throwsError(/.*/).predicate;
   expectEq('which threw no errors', pred(function() {}));
 };
 
-ThrowsErrorTest.prototype.nonMatchingError = function() {
+ThrowsErrorTest.prototype.NonMatchingError = function() {
   var pred = throwsError(/taco/).predicate;
   var func = function() { throw new TypeError('burrito'); };
 
   expectEq('which threw the wrong error: TypeError: burrito', pred(func));
 };
 
-ThrowsErrorTest.prototype.matchingError = function() {
+ThrowsErrorTest.prototype.MatchingError = function() {
   var pred = throwsError(/TypeError.*taco/).predicate;
   var func = function() { throw new TypeError('burritos and tacos'); };
 
   expectTrue(pred(func));
 };
 
-ThrowsErrorTest.prototype.descriptions = function() {
+ThrowsErrorTest.prototype.Descriptions = function() {
   var matcher = throwsError(/taco/);
 
   expectEq('is a function that throws an error matching /taco/',

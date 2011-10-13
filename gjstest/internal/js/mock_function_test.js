@@ -38,7 +38,7 @@ registerTestSuite(MockFunctionTest);
 // Tests
 ////////////////////////////
 
-MockFunctionTest.prototype.noExpectationsRegistered = function() {
+MockFunctionTest.prototype.NoExpectationsRegistered = function() {
   // Call the function without first registering expectations. Do it once with
   // and once without arguments.
   this.mockFunction_('taco', 2);
@@ -57,7 +57,7 @@ MockFunctionTest.prototype.noExpectationsRegistered = function() {
            messages[1]);
 };
 
-MockFunctionTest.prototype.callsCheckArgs = function() {
+MockFunctionTest.prototype.CallsCheckArgs = function() {
   // Expecations
   var expectation_0 = new CallExpectation([], {});
   var expectation_1 = new CallExpectation([], {});
@@ -77,7 +77,7 @@ MockFunctionTest.prototype.callsCheckArgs = function() {
   this.mockFunction_('taco', 'burrito');
 };
 
-MockFunctionTest.prototype.checkArgsSaysNo = function() {
+MockFunctionTest.prototype.CheckArgsSaysNo = function() {
   // Expectations
   var expectation_0 =
     new CallExpectation(
@@ -118,7 +118,7 @@ MockFunctionTest.prototype.checkArgsSaysNo = function() {
            messages[0]);
 };
 
-MockFunctionTest.prototype.noMatchingExpectationsWithNamedFunction =
+MockFunctionTest.prototype.NoMatchingExpectationsWithNamedFunction =
     function() {
   // Re-create the mock function with a name.
   var me = this;
@@ -141,7 +141,7 @@ MockFunctionTest.prototype.noMatchingExpectationsWithNamedFunction =
            this.failureMessages_[0]);
 };
 
-MockFunctionTest.prototype.secondExpectationMatches = function() {
+MockFunctionTest.prototype.SecondExpectationMatches = function() {
   // Expectations
   var expectation_0 =
     new CallExpectation([], { fileName: 'foo.js', lineNumber: 17 });
@@ -180,7 +180,7 @@ MockFunctionTest.prototype.secondExpectationMatches = function() {
   expectEq(0, expectation_2.numMatches);
 };
 
-MockFunctionTest.prototype.noActions = function() {
+MockFunctionTest.prototype.NoActions = function() {
   // Set up an expectation without actions.
   var expectation =
     new CallExpectation([], { fileName: 'foo.js', lineNumber: 17 });
@@ -198,7 +198,7 @@ MockFunctionTest.prototype.noActions = function() {
   expectEq(0, this.failureMessages_.length);
 };
 
-MockFunctionTest.prototype.onlyFallbackAction = function() {
+MockFunctionTest.prototype.OnlyFallbackAction = function() {
   // An action that increments a counter when it's called.
   var counter = 0;
   var action = new MockAction(function() { ++counter; });
@@ -222,7 +222,7 @@ MockFunctionTest.prototype.onlyFallbackAction = function() {
   expectEq(3, counter);
 };
 
-MockFunctionTest.prototype.onlyOneTimeActions = function() {
+MockFunctionTest.prototype.OnlyOneTimeActions = function() {
   // Two actions that keep track of when they were called.
   var callSequence = [];
   var action_0 = new MockAction(function() { callSequence.push(0); });
@@ -253,7 +253,7 @@ MockFunctionTest.prototype.onlyOneTimeActions = function() {
   expectEq(1, callSequence[1]);
 };
 
-MockFunctionTest.prototype.bothTypesOfActions = function() {
+MockFunctionTest.prototype.BothTypesOfActions = function() {
   // Three actions that keep track of when they were called.
   var callSequence = [];
   var action_0 = new MockAction(function() { callSequence.push(0); });
@@ -289,7 +289,7 @@ MockFunctionTest.prototype.bothTypesOfActions = function() {
   expectEq(2, callSequence[4]);
 };
 
-MockFunctionTest.prototype.actionArguments = function() {
+MockFunctionTest.prototype.ActionArguments = function() {
   // An action that makes a copy of its arguments.
   var args = null;
   var action = new MockAction(function() { args = arguments; });
@@ -311,7 +311,7 @@ MockFunctionTest.prototype.actionArguments = function() {
   expectThat(args, elementsAre([2, 3, 4]));
 };
 
-MockFunctionTest.prototype.actionReturnValues = function() {
+MockFunctionTest.prototype.ActionReturnValues = function() {
   // An expectation with an action that returns 17.
   var action_0 = new MockAction(function() { return 17; });
   var expectation_0 =

@@ -22,7 +22,7 @@ var getCurrentStack = gjstest.internal.getCurrentStack;
 function GetCurrentStackTest() {}
 registerTestSuite(GetCurrentStackTest);
 
-GetCurrentStackTest.prototype.goldenTest = function() {
+GetCurrentStackTest.prototype.GoldenTest = function() {
   // Get the stack for this test and the test runner itself.
   function fooBar() {
     return getCurrentStack();
@@ -58,14 +58,14 @@ GetCurrentStackTest.prototype.constructorFrame = function() {
   expectEq('stack_utils_test.js', frame.fileName);
 };
 
-GetCurrentStackTest.prototype.anonymousFunctions = function() {
+GetCurrentStackTest.prototype.AnonymousFunctions = function() {
   var frames = (function() { return getCurrentStack(); })();
 
   var frame = frames[0];
   expectEq('stack_utils_test.js', frame.fileName);
 };
 
-GetCurrentStackTest.prototype.anonymousClass = function() {
+GetCurrentStackTest.prototype.AnonymousClass = function() {
   // Create a constructor with an un-named function.
   var someConstructor = function() { }
   someConstructor.prototype.foo = function() { return getCurrentStack(); };
@@ -82,7 +82,7 @@ GetCurrentStackTest.prototype.anonymousClass = function() {
 function GetErrorStackTest() {}
 registerTestSuite(GetErrorStackTest);
 
-GetErrorStackTest.prototype.nativeCode = function() {
+GetErrorStackTest.prototype.NativeCode = function() {
   var frames = null;
   try {
     ({})();
@@ -100,7 +100,7 @@ GetErrorStackTest.prototype.nativeCode = function() {
   expectEq('stack_utils_test.js', frame.fileName);
 };
 
-GetErrorStackTest.prototype.stackOverflow = function() {
+GetErrorStackTest.prototype.StackOverflow = function() {
   var frames = null;
   try {
     function foo() { foo(); }
@@ -112,7 +112,7 @@ GetErrorStackTest.prototype.stackOverflow = function() {
   expectThat(frames, elementsAre([]));
 };
 
-GetErrorStackTest.prototype.unknownPropertyOnSingleLineFunction = function() {
+GetErrorStackTest.prototype.UnknownPropertyOnSingleLineFunction = function() {
   function foo() {}
   try {
     foo.load(17);
@@ -126,7 +126,7 @@ GetErrorStackTest.prototype.unknownPropertyOnSingleLineFunction = function() {
   expectEq('stack_utils_test.js', frame.fileName);
 };
 
-GetErrorStackTest.prototype.unknownPropertyOnMultiLineFunction = function() {
+GetErrorStackTest.prototype.UnknownPropertyOnMultiLineFunction = function() {
   function foo() {
     // ASDF
     return 'bar';

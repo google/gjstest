@@ -23,7 +23,7 @@ var truePred = gjstest.evalsToTrue.predicate;
 function EvalsToTrueFalseTest() {}
 registerTestSuite(EvalsToTrueFalseTest);
 
-EvalsToTrueFalseTest.prototype.booleans = function() {
+EvalsToTrueFalseTest.prototype.Booleans = function() {
   expectFalse(truePred(false));
   expectTrue(falsePred(false));
 
@@ -31,7 +31,7 @@ EvalsToTrueFalseTest.prototype.booleans = function() {
   expectFalse(falsePred(true));
 };
 
-EvalsToTrueFalseTest.prototype.nullAndUndefined = function() {
+EvalsToTrueFalseTest.prototype.NullAndUndefined = function() {
   expectFalse(truePred(null));
   expectTrue(falsePred(null));
 
@@ -39,7 +39,7 @@ EvalsToTrueFalseTest.prototype.nullAndUndefined = function() {
   expectTrue(falsePred(undefined));
 };
 
-EvalsToTrueFalseTest.prototype.strings = function() {
+EvalsToTrueFalseTest.prototype.Strings = function() {
   expectFalse(truePred(''));
   expectTrue(falsePred(''));
 
@@ -50,7 +50,7 @@ EvalsToTrueFalseTest.prototype.strings = function() {
   expectFalse(falsePred('taco'));
 };
 
-EvalsToTrueFalseTest.prototype.arrays = function() {
+EvalsToTrueFalseTest.prototype.Arrays = function() {
   expectTrue(truePred([]));
   expectFalse(falsePred([]));
 
@@ -61,7 +61,7 @@ EvalsToTrueFalseTest.prototype.arrays = function() {
   expectFalse(falsePred([1]));
 };
 
-EvalsToTrueFalseTest.prototype.functions = function() {
+EvalsToTrueFalseTest.prototype.Functions = function() {
   expectTrue(truePred(function() {}));
   expectFalse(falsePred(function() {}));
 
@@ -69,7 +69,7 @@ EvalsToTrueFalseTest.prototype.functions = function() {
   expectFalse(falsePred(function() { return 0; }));
 };
 
-EvalsToTrueFalseTest.prototype.objects = function() {
+EvalsToTrueFalseTest.prototype.Objects = function() {
   expectTrue(truePred({}));
   expectFalse(falsePred({}));
 
@@ -77,7 +77,7 @@ EvalsToTrueFalseTest.prototype.objects = function() {
   expectFalse(falsePred({ 'foo': 'bar' }));
 };
 
-EvalsToTrueFalseTest.prototype.descriptions = function() {
+EvalsToTrueFalseTest.prototype.Descriptions = function() {
   expectEq('evaluates to true', gjstest.evalsToTrue.description);
   expectEq('evaluates to false', gjstest.evalsToTrue.negativeDescription);
 

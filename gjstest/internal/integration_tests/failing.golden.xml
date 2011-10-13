@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuite name="Google JS tests" failures="4" time="0.01">
- <testcase name="FailingTest.passingTest1" time="0.01"/>
- <testcase name="FailingTest.failingTest1" time="0.01">
+ <testcase name="FailingTest.PassingTest1" time="0.01"/>
+ <testcase name="FailingTest.FailingTest1" time="0.01">
   <failure><![CDATA[failing_test.js:27
 Expected: evaluates to false
 Actual:   'a']]></failure>
  </testcase>
- <testcase name="FailingTest.failingTest2" time="0.01">
+ <testcase name="FailingTest.FailingTest2" time="0.01">
   <failure><![CDATA[failing_test.js:31
 Expected: evaluates to false
 Actual:   2
@@ -15,7 +15,7 @@ failing_test.js:32
 Expected: is an array or Arguments object of length 3 with elements matching: [ 1, 2, 3 ]
 Actual:   [ 1, 2 ], which has length 2]]></failure>
  </testcase>
- <testcase name="FailingTest.failureWithLogOutput" time="0.01">
+ <testcase name="FailingTest.FailureWithLogOutput" time="0.01">
   <failure><![CDATA[failing_test.js:36
 Expected: evaluates to false
 Actual:   2
@@ -24,8 +24,8 @@ failing_test.js:38
 Expected: evaluates to false
 Actual:   3]]></failure>
  </testcase>
- <testcase name="FailingTest.passingTest2" time="0.01"/>
- <testcase name="FailingTest.numberExpectations" time="0.01">
+ <testcase name="FailingTest.PassingTest2" time="0.01"/>
+ <testcase name="FailingTest.NumberExpectations" time="0.01">
   <failure><![CDATA[failing_test.js:46
 Expected: is less than 0
 Actual:   1

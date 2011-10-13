@@ -20,7 +20,7 @@
 function ContainsRegExpTest() {}
 registerTestSuite(ContainsRegExpTest);
 
-ContainsRegExpTest.prototype.nonStrings = function() {
+ContainsRegExpTest.prototype.NonStrings = function() {
   var pred = containsRegExp(/.+taco.*/).predicate;
 
   expectFalse(pred(null));
@@ -32,7 +32,7 @@ ContainsRegExpTest.prototype.nonStrings = function() {
   expectFalse(pred(function() {}));
 };
 
-ContainsRegExpTest.prototype.nonMatchingStrings = function() {
+ContainsRegExpTest.prototype.NonMatchingStrings = function() {
   var pred = containsRegExp(/.+taco.*/).predicate;
 
   expectFalse(pred(''));
@@ -40,14 +40,14 @@ ContainsRegExpTest.prototype.nonMatchingStrings = function() {
   expectFalse(pred('asd tac'));
 };
 
-ContainsRegExpTest.prototype.matchingStrings = function() {
+ContainsRegExpTest.prototype.MatchingStrings = function() {
   var pred = containsRegExp(/.+taco.*/).predicate;
 
   expectTrue(pred('1taco'));
   expectTrue(pred('blah taco blah'));
 };
 
-ContainsRegExpTest.prototype.partialMatch = function() {
+ContainsRegExpTest.prototype.PartialMatch = function() {
   var pred = containsRegExp(/t.*o/).predicate;
 
   expectTrue(pred('to'));
@@ -55,7 +55,7 @@ ContainsRegExpTest.prototype.partialMatch = function() {
   expectTrue(pred('burrito and taco filling'));
 };
 
-ContainsRegExpTest.prototype.anchoredToEdges = function() {
+ContainsRegExpTest.prototype.AnchoredToEdges = function() {
   var pred = containsRegExp(/^t.*o$/).predicate;
 
   expectTrue(pred('to'));
@@ -63,7 +63,7 @@ ContainsRegExpTest.prototype.anchoredToEdges = function() {
   expectFalse(pred('burrito and taco filling'));
 };
 
-ContainsRegExpTest.prototype.description = function() {
+ContainsRegExpTest.prototype.Description = function() {
   var matcher = containsRegExp(/.+taco.*/);
   expectEq('partially matches regex: /.+taco.*/', matcher.description);
   expectEq('doesn\'t partially match regex: /.+taco.*/',

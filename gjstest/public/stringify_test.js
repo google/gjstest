@@ -16,7 +16,7 @@
 function StringifyTest() { }
 registerTestSuite(StringifyTest);
 
-StringifyTest.prototype.primitiveTypes = function() {
+StringifyTest.prototype.PrimitiveTypes = function() {
   expectEq('null', stringify(null));
   expectEq('undefined', stringify(undefined));
 
@@ -29,29 +29,29 @@ StringifyTest.prototype.primitiveTypes = function() {
   expectEq('NaN', stringify(NaN));
 };
 
-StringifyTest.prototype.strings = function() {
+StringifyTest.prototype.Strings = function() {
   expectEq("''", stringify(''));
   expectEq("'taco burrito'", stringify('taco burrito'));
   expectEq("'taco\\nburrito\\nenchilada'",
            stringify('taco\nburrito\nenchilada'));
 };
 
-StringifyTest.prototype.regExps = function() {
+StringifyTest.prototype.RegExps = function() {
   expectEq('/taco.*burrito/', stringify(/taco.*burrito/));
 };
 
-StringifyTest.prototype.errors = function() {
+StringifyTest.prototype.Errors = function() {
   var error = new TypeError('taco burrito');
   expectEq('TypeError: taco burrito', stringify(error));
 };
 
-StringifyTest.prototype.dates = function() {
+StringifyTest.prototype.Dates = function() {
   expectThat(
       stringify(new Date(1985, 2, 18)),
       containsRegExp(/^Mon Mar 18 1985 00:00:00 GMT[+-]\d{4} \(\w{3}\)$/))
 };
 
-StringifyTest.prototype.functions = function() {
+StringifyTest.prototype.Functions = function() {
   function fooBar(baz) {
     doSomething(baz);
     return baz + 1;
@@ -62,7 +62,7 @@ StringifyTest.prototype.functions = function() {
   expectEq('function (foo, bar)', stringify(function(foo, bar) {}));
 };
 
-StringifyTest.prototype.objects = function() {
+StringifyTest.prototype.Objects = function() {
   expectEq('{}', stringify({}));
   expectEq('{ foo: 1, bar: 2 }', stringify({ foo: 1, bar: 2 }));
 
@@ -73,7 +73,7 @@ StringifyTest.prototype.objects = function() {
   expectEq('{ foo: 1, bar: { baz: 2 } }', stringify(multiLevelObj));
 };
 
-StringifyTest.prototype.selfReferences = function() {
+StringifyTest.prototype.SelfReferences = function() {
   // Object
   var selfReferentialObject = {foo: 1, bar: [17]};
   selfReferentialObject.bar.push(selfReferentialObject);
@@ -89,7 +89,7 @@ StringifyTest.prototype.selfReferences = function() {
            stringify(selfReferentialArray));
 };
 
-StringifyTest.prototype.selfReferencePropertyCleared = function() {
+StringifyTest.prototype.SelfReferencePropertyCleared = function() {
   // Object
   var obj = {foo: 1, bar: {baz: 19}};
 
@@ -107,13 +107,13 @@ StringifyTest.prototype.selfReferencePropertyCleared = function() {
   expectFalse('__gjstest_stringify_already_seen' in arr[1]);
 };
 
-StringifyTest.prototype.arrays = function() {
+StringifyTest.prototype.Arrays = function() {
   expectEq('[]', stringify([]));
   expectEq('[ 1, \'foo\\nbar\' ]', stringify([ 1, 'foo\nbar' ]));
   expectEq('[ [ 1 ], { foo: 2 } ]', stringify([ [1], { foo: 2 } ]));
 };
 
-StringifyTest.prototype.argumentObjects = function() {
+StringifyTest.prototype.ArgumentObjects = function() {
   function grabArgs() { return arguments; }
 
   expectEq('[]', stringify(grabArgs()));
@@ -121,7 +121,7 @@ StringifyTest.prototype.argumentObjects = function() {
   expectEq('[ [ 1 ], { foo: 2 } ]', stringify(grabArgs([1], { foo: 2 })));
 };
 
-StringifyTest.prototype.userDefinedClass = function() {
+StringifyTest.prototype.UserDefinedClass = function() {
   function MyClass() {}
   MyClass.prototype.toString = function() { return 'MyClass: taco'; };
   var instance = new MyClass;

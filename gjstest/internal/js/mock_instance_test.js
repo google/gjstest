@@ -43,7 +43,7 @@ function MockInstanceTest() {
 }
 registerTestSuite(MockInstanceTest);
 
-MockInstanceTest.prototype.notAFunction = function() {
+MockInstanceTest.prototype.NotAFunction = function() {
   var me = this;
   var error = captureError(function() {
     me.createMockInstance_({});
@@ -52,14 +52,14 @@ MockInstanceTest.prototype.notAFunction = function() {
   expectThat(error, containsRegExp(/TypeError.*function/));
 };
 
-MockInstanceTest.prototype.createsInstanceOf = function() {
+MockInstanceTest.prototype.CreatesInstanceOf = function() {
   function MyClass() {}
   var result = this.createMockInstance_(MyClass);
 
   expectTrue(result instanceof MyClass);
 };
 
-MockInstanceTest.prototype.addsMockMethods = function() {
+MockInstanceTest.prototype.AddsMockMethods = function() {
   // Class
   function MyClass() {}
   MyClass.prototype.taco = function() {};
@@ -82,7 +82,7 @@ MockInstanceTest.prototype.addsMockMethods = function() {
   expectEq(mockFn_1, result.burrito);
 };
 
-MockInstanceTest.prototype.preservesOtherPrototypeProperties = function() {
+MockInstanceTest.prototype.PreservesOtherPrototypeProperties = function() {
   // Class
   function MyClass() {}
   MyClass.prototype.taco = 17;
@@ -92,7 +92,7 @@ MockInstanceTest.prototype.preservesOtherPrototypeProperties = function() {
   expectEq(17, result.taco);
 };
 
-MockInstanceTest.prototype.doesNotCallConstructor = function() {
+MockInstanceTest.prototype.DoesNotCallConstructor = function() {
   var called = false;
   function MyClass() { called = true; }
   this.createMockInstance_(MyClass);
@@ -100,7 +100,7 @@ MockInstanceTest.prototype.doesNotCallConstructor = function() {
   expectFalse(called);
 };
 
-MockInstanceTest.prototype.inheritance = function() {
+MockInstanceTest.prototype.Inheritance = function() {
   // Parent class
   function ParentClass() {}
   ParentClass.prototype.taco = 17;

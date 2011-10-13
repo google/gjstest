@@ -20,7 +20,7 @@
 function GreaterThanTest() {}
 registerTestSuite(GreaterThanTest);
 
-GreaterThanTest.prototype.badArgs = function() {
+GreaterThanTest.prototype.BadArgs = function() {
   var expected = /TypeError.*greaterThan requires a number/;
 
   expectThat(function() { greaterThan(null); }, throwsError(expected));
@@ -30,7 +30,7 @@ GreaterThanTest.prototype.badArgs = function() {
   expectThat(function() { greaterThan({}); }, throwsError(expected));
 };
 
-GreaterThanTest.prototype.nonNumbers = function() {
+GreaterThanTest.prototype.NonNumbers = function() {
   var pred = greaterThan(7).predicate;
 
   expectEq('which is not a number', pred(null));
@@ -39,7 +39,7 @@ GreaterThanTest.prototype.nonNumbers = function() {
   expectEq('which is not a number', pred({}));
 };
 
-GreaterThanTest.prototype.numbers = function() {
+GreaterThanTest.prototype.Numbers = function() {
   var pred;
 
   // 7
@@ -91,7 +91,7 @@ GreaterThanTest.prototype.numbers = function() {
   expectFalse(pred(Infinity));
 };
 
-GreaterThanTest.prototype.descriptions = function() {
+GreaterThanTest.prototype.Descriptions = function() {
   var matcher = greaterThan(7.01);
   expectEq('is greater than 7.01', matcher.description);
   expectEq('is less than or equal to 7.01', matcher.negativeDescription);
@@ -104,7 +104,7 @@ GreaterThanTest.prototype.descriptions = function() {
 function GreaterOrEqualTest() {}
 registerTestSuite(GreaterOrEqualTest);
 
-GreaterOrEqualTest.prototype.badArgs = function() {
+GreaterOrEqualTest.prototype.BadArgs = function() {
   var expected = /TypeError.*greaterOrEqual requires a number/;
 
   expectThat(function() { greaterOrEqual(null); }, throwsError(expected));
@@ -114,7 +114,7 @@ GreaterOrEqualTest.prototype.badArgs = function() {
   expectThat(function() { greaterOrEqual({}); }, throwsError(expected));
 };
 
-GreaterOrEqualTest.prototype.nonNumbers = function() {
+GreaterOrEqualTest.prototype.NonNumbers = function() {
   var pred = greaterOrEqual(7).predicate;
 
   expectEq('which is not a number', pred(null));
@@ -123,7 +123,7 @@ GreaterOrEqualTest.prototype.nonNumbers = function() {
   expectEq('which is not a number', pred({}));
 };
 
-GreaterOrEqualTest.prototype.numbers = function() {
+GreaterOrEqualTest.prototype.Numbers = function() {
   var pred;
 
   // 7
@@ -175,7 +175,7 @@ GreaterOrEqualTest.prototype.numbers = function() {
   expectFalse(pred(Infinity));
 };
 
-GreaterOrEqualTest.prototype.descriptions = function() {
+GreaterOrEqualTest.prototype.Descriptions = function() {
   var matcher = greaterOrEqual(7.01);
   expectEq('is greater than or equal to 7.01', matcher.description);
   expectEq('is less than 7.01', matcher.negativeDescription);
@@ -188,7 +188,7 @@ GreaterOrEqualTest.prototype.descriptions = function() {
 function LessThanTest() {}
 registerTestSuite(LessThanTest);
 
-LessThanTest.prototype.badArgs = function() {
+LessThanTest.prototype.BadArgs = function() {
   var expected = /TypeError.*lessThan requires a number/;
 
   expectThat(function() { lessThan(null); }, throwsError(expected));
@@ -198,7 +198,7 @@ LessThanTest.prototype.badArgs = function() {
   expectThat(function() { lessThan({}); }, throwsError(expected));
 };
 
-LessThanTest.prototype.nonNumbers = function() {
+LessThanTest.prototype.NonNumbers = function() {
   var pred = lessThan(7).predicate;
 
   expectEq('which is not a number', pred(null));
@@ -207,7 +207,7 @@ LessThanTest.prototype.nonNumbers = function() {
   expectEq('which is not a number', pred({}));
 };
 
-LessThanTest.prototype.numbers = function() {
+LessThanTest.prototype.Numbers = function() {
   var pred;
 
   // 7
@@ -259,7 +259,7 @@ LessThanTest.prototype.numbers = function() {
   expectFalse(pred(Infinity));
 };
 
-LessThanTest.prototype.descriptions = function() {
+LessThanTest.prototype.Descriptions = function() {
   var matcher = lessThan(7.01);
   expectEq('is less than 7.01', matcher.description);
   expectEq('is greater than or equal to 7.01', matcher.negativeDescription);
@@ -272,7 +272,7 @@ LessThanTest.prototype.descriptions = function() {
 function LessOrEqualTest() {}
 registerTestSuite(LessOrEqualTest);
 
-LessOrEqualTest.prototype.badArgs = function() {
+LessOrEqualTest.prototype.BadArgs = function() {
   var expected = /TypeError.*lessOrEqual requires a number/;
 
   expectThat(function() { lessOrEqual(null); }, throwsError(expected));
@@ -282,7 +282,7 @@ LessOrEqualTest.prototype.badArgs = function() {
   expectThat(function() { lessOrEqual({}); }, throwsError(expected));
 };
 
-LessOrEqualTest.prototype.nonNumbers = function() {
+LessOrEqualTest.prototype.NonNumbers = function() {
   var pred = lessOrEqual(7).predicate;
 
   expectEq('which is not a number', pred(null));
@@ -291,7 +291,7 @@ LessOrEqualTest.prototype.nonNumbers = function() {
   expectEq('which is not a number', pred({}));
 };
 
-LessOrEqualTest.prototype.numbers = function() {
+LessOrEqualTest.prototype.Numbers = function() {
   var pred;
 
   // 7
@@ -343,7 +343,7 @@ LessOrEqualTest.prototype.numbers = function() {
   expectFalse(pred(Infinity));
 };
 
-LessOrEqualTest.prototype.descriptions = function() {
+LessOrEqualTest.prototype.Descriptions = function() {
   var matcher = lessOrEqual(7.01);
   expectEq('is less than or equal to 7.01', matcher.description);
   expectEq('is greater than 7.01', matcher.negativeDescription);
@@ -356,7 +356,7 @@ LessOrEqualTest.prototype.descriptions = function() {
 function IsNearNumberTest() {}
 registerTestSuite(IsNearNumberTest);
 
-IsNearNumberTest.prototype.badArgs = function() {
+IsNearNumberTest.prototype.BadArgs = function() {
   var expected = /TypeError.*isNearNumber requires two number arguments/;
 
   expectThat(function() { isNearNumber(null, 1); }, throwsError(expected));
@@ -372,7 +372,7 @@ IsNearNumberTest.prototype.badArgs = function() {
   expectThat(function() { isNearNumber(0, {}); }, throwsError(expected));
 };
 
-IsNearNumberTest.prototype.nonNumbers = function() {
+IsNearNumberTest.prototype.NonNumbers = function() {
   var pred = isNearNumber(7, 1).predicate;
 
   expectEq('which is not a number', pred(null));
@@ -381,7 +381,7 @@ IsNearNumberTest.prototype.nonNumbers = function() {
   expectEq('which is not a number', pred({}));
 };
 
-IsNearNumberTest.prototype.normalNumbers = function() {
+IsNearNumberTest.prototype.NormalNumbers = function() {
   var pred;
 
   // Zero
@@ -411,7 +411,7 @@ IsNearNumberTest.prototype.normalNumbers = function() {
   expectFalse(pred( Infinity));
 };
 
-IsNearNumberTest.prototype.degenerateNumbers = function() {
+IsNearNumberTest.prototype.DegenerateNumbers = function() {
   var pred;
 
   // NaN
@@ -429,7 +429,7 @@ IsNearNumberTest.prototype.degenerateNumbers = function() {
   expectFalse(pred( Infinity));
 };
 
-IsNearNumberTest.prototype.descriptions = function() {
+IsNearNumberTest.prototype.Descriptions = function() {
   var matcher = isNearNumber(-17, 19);
 
   expectEq('is a number within 19 of -17', matcher.description);

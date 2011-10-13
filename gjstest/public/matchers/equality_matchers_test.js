@@ -20,11 +20,11 @@
 function AnythingTest() {}
 registerTestSuite(AnythingTest);
 
-AnythingTest.prototype.doesntUnderstandMissingArgs = function() {
+AnythingTest.prototype.DoesntUnderstandMissingArgs = function() {
   expectFalse(_.understandsMissingArgs);
 };
 
-AnythingTest.prototype.matchesEverything = function() {
+AnythingTest.prototype.MatchesEverything = function() {
   var pred = _.predicate;
 
   expectTrue(pred(undefined));
@@ -40,7 +40,7 @@ AnythingTest.prototype.matchesEverything = function() {
   expectTrue(pred(function() {}));
 };
 
-AnythingTest.prototype.description = function() {
+AnythingTest.prototype.Description = function() {
   expectEq('is anything', _.description);
 };
 
@@ -51,7 +51,7 @@ AnythingTest.prototype.description = function() {
 function EqualsTest() {}
 registerTestSuite(EqualsTest);
 
-EqualsTest.prototype.notEqual = function() {
+EqualsTest.prototype.NotEqual = function() {
   var pred;
 
   pred = equals('').predicate;
@@ -78,7 +78,7 @@ EqualsTest.prototype.notEqual = function() {
   expectFalse(pred(NaN));
 };
 
-EqualsTest.prototype.equal = function() {
+EqualsTest.prototype.Equal = function() {
   var pred;
 
   pred = equals('').predicate;
@@ -109,7 +109,7 @@ EqualsTest.prototype.equal = function() {
   expectTrue(pred(undefined));
 };
 
-EqualsTest.prototype.wrongTypes = function() {
+EqualsTest.prototype.WrongTypes = function() {
   var pred;
 
   pred = equals('').predicate;
@@ -133,7 +133,7 @@ EqualsTest.prototype.wrongTypes = function() {
   expectFalse(pred(null));
 };
 
-EqualsTest.prototype.description = function() {
+EqualsTest.prototype.Description = function() {
   var matcher;
 
   matcher = equals(null)
@@ -171,7 +171,7 @@ EqualsTest.prototype.description = function() {
            matcher.negativeDescription);
 };
 
-EqualsTest.prototype.gjstestEqualsWithSameType = function() {
+EqualsTest.prototype.GjstestEqualsWithSameType = function() {
   function MyClass() {}
   MyClass.prototype.gjstestEquals = gjstest.createMockFunction();
   var obj1 = new MyClass;
@@ -187,7 +187,7 @@ EqualsTest.prototype.gjstestEqualsWithSameType = function() {
   expectFalse(pred(obj2));
 };
 
-EqualsTest.prototype.gjstestEqualsWithDifferentTypes = function() {
+EqualsTest.prototype.GjstestEqualsWithDifferentTypes = function() {
   function MyClass1() {}
   MyClass1.prototype.gjstestEquals = gjstest.createMockFunction();
   function MyClass2() {}
@@ -203,13 +203,13 @@ EqualsTest.prototype.gjstestEqualsWithDifferentTypes = function() {
 function IsNullTest() {}
 registerTestSuite(IsNullTest);
 
-IsNullTest.prototype.matches = function() {
+IsNullTest.prototype.Matches = function() {
   var pred = isNull.predicate;
 
   expectTrue(pred(null));
 };
 
-IsNullTest.prototype.nonMatches = function() {
+IsNullTest.prototype.NonMatches = function() {
   var pred = isNull.predicate;
 
   expectFalse(pred(undefined));
@@ -217,7 +217,7 @@ IsNullTest.prototype.nonMatches = function() {
   expectFalse(pred(0));
 };
 
-IsNullTest.prototype.description = function() {
+IsNullTest.prototype.Description = function() {
   expectEq('is null', isNull.description);
   expectEq('is not null', isNull.negativeDescription);
 };
@@ -229,13 +229,13 @@ IsNullTest.prototype.description = function() {
 function IsUndefinedTest() {}
 registerTestSuite(IsUndefinedTest);
 
-IsUndefinedTest.prototype.matches = function() {
+IsUndefinedTest.prototype.Matches = function() {
   var pred = isUndefined.predicate;
 
   expectTrue(pred(undefined));
 };
 
-IsUndefinedTest.prototype.nonMatches = function() {
+IsUndefinedTest.prototype.NonMatches = function() {
   var pred = isUndefined.predicate;
 
   expectFalse(pred(null));
@@ -243,7 +243,7 @@ IsUndefinedTest.prototype.nonMatches = function() {
   expectFalse(pred(0));
 };
 
-IsUndefinedTest.prototype.description = function() {
+IsUndefinedTest.prototype.Description = function() {
   expectEq('is undefined', isUndefined.description);
   expectEq('is not undefined', isUndefined.negativeDescription);
 };
@@ -255,7 +255,7 @@ IsUndefinedTest.prototype.description = function() {
 function RecursivelyEqualsTest() {}
 registerTestSuite(RecursivelyEqualsTest);
 
-RecursivelyEqualsTest.prototype.nonObjectArgs = function() {
+RecursivelyEqualsTest.prototype.NonObjectArgs = function() {
   var expected = /TypeError.*recursivelyEquals.*plain object or array/;
 
   expectThat(function() { recursivelyEquals(null) }, throwsError(expected));
@@ -273,7 +273,7 @@ RecursivelyEqualsTest.prototype.nonObjectArgs = function() {
              throwsError(expected));
 };
 
-RecursivelyEqualsTest.prototype.selfReferenceInExpected = function() {
+RecursivelyEqualsTest.prototype.SelfReferenceInExpected = function() {
   var pred;
   var nonTree = {foo: 2, bar: [17]};
   nonTree.bar.push(nonTree);
@@ -283,7 +283,7 @@ RecursivelyEqualsTest.prototype.selfReferenceInExpected = function() {
   expectFalse('__gjstest_containsCycle_already_seen' in nonTree);
 };
 
-RecursivelyEqualsTest.prototype.selfReferenceInActual = function() {
+RecursivelyEqualsTest.prototype.SelfReferenceInActual = function() {
   var pred;
   var someObj = {foo: 2, bar: [17]};
   var nonTree = {foo: 2, bar: [17]};
@@ -294,7 +294,7 @@ RecursivelyEqualsTest.prototype.selfReferenceInActual = function() {
   expectFalse('__gjstest_containsCycle_already_seen' in nonTree);
 };
 
-RecursivelyEqualsTest.prototype.wrongTypeCandidates = function() {
+RecursivelyEqualsTest.prototype.WrongTypeCandidates = function() {
   var pred;
   function MyClass() {}
 
@@ -317,7 +317,7 @@ RecursivelyEqualsTest.prototype.wrongTypeCandidates = function() {
   expectEq('which is not an Array', pred({}));
 };
 
-RecursivelyEqualsTest.prototype.differingKeys = function() {
+RecursivelyEqualsTest.prototype.DifferingKeys = function() {
   var pred;
   var obj;
 
@@ -347,7 +347,7 @@ RecursivelyEqualsTest.prototype.differingKeys = function() {
            pred({foo: 17, bar: {baz: 19, blah: 0}}));
 };
 
-RecursivelyEqualsTest.prototype.differingSimpleValues = function() {
+RecursivelyEqualsTest.prototype.DifferingSimpleValues = function() {
   var pred;
   var obj;
 
@@ -390,7 +390,7 @@ RecursivelyEqualsTest.prototype.differingSimpleValues = function() {
            pred({foo: 17, bar: {baz: 19}}));
 };
 
-RecursivelyEqualsTest.prototype.differingReferences = function() {
+RecursivelyEqualsTest.prototype.DifferingReferences = function() {
   var pred;
   var obj;
 
@@ -412,7 +412,7 @@ RecursivelyEqualsTest.prototype.differingReferences = function() {
   expectEq('which differs in reference for key foo', pred({foo: func_1}));
 };
 
-RecursivelyEqualsTest.prototype.mixedArraysAndObjects = function() {
+RecursivelyEqualsTest.prototype.MixedArraysAndObjects = function() {
   var pred;
   var obj;
 
@@ -427,7 +427,7 @@ RecursivelyEqualsTest.prototype.mixedArraysAndObjects = function() {
   expectEq('which has wrong type for key foo', pred({foo: {0: 'taco'}}));
 };
 
-RecursivelyEqualsTest.prototype.everythingMatches = function() {
+RecursivelyEqualsTest.prototype.EverythingMatches = function() {
   var pred;
   var obj;
 
@@ -436,7 +436,7 @@ RecursivelyEqualsTest.prototype.everythingMatches = function() {
   expectTrue(pred({bar: 19, foo: {0: 'taco'}}));
 };
 
-RecursivelyEqualsTest.prototype.arrays = function() {
+RecursivelyEqualsTest.prototype.Arrays = function() {
   var pred;
   var obj;
 
@@ -468,7 +468,7 @@ RecursivelyEqualsTest.prototype.arrays = function() {
   expectTrue(pred(['taco', ['burrito', 'enchilada']]));
 };
 
-RecursivelyEqualsTest.prototype.nestedMatchers = function() {
+RecursivelyEqualsTest.prototype.NestedMatchers = function() {
   var isOdd = new gjstest.Matcher(
       'is odd',
       'is even',
@@ -491,7 +491,7 @@ RecursivelyEqualsTest.prototype.nestedMatchers = function() {
   expectTrue(pred([3, {a: 7, b: 2}]));
 };
 
-RecursivelyEqualsTest.prototype.descriptions = function() {
+RecursivelyEqualsTest.prototype.Descriptions = function() {
   var matcher = recursivelyEquals({foo: ['taco'], bar: 17});
 
   expectEq("recursively equals { foo: [ 'taco' ], bar: 17 }",
@@ -501,7 +501,7 @@ RecursivelyEqualsTest.prototype.descriptions = function() {
            matcher.negativeDescription);
 };
 
-RecursivelyEqualsTest.prototype.gjstestEqualsWithSameType = function() {
+RecursivelyEqualsTest.prototype.GjstestEqualsWithSameType = function() {
   function MyClass() {}
   MyClass.prototype.gjstestEquals = gjstest.createMockFunction();
   var obj1 = new MyClass;
@@ -517,7 +517,7 @@ RecursivelyEqualsTest.prototype.gjstestEqualsWithSameType = function() {
   expectEq('which differs in value for key 0', pred([obj2]));
 };
 
-RecursivelyEqualsTest.prototype.gjstestEqualsWithDifferentTypes = function() {
+RecursivelyEqualsTest.prototype.GjstestEqualsWithDifferentTypes = function() {
   function MyClass1() {}
   MyClass1.prototype.gjstestEquals = gjstest.createMockFunction();
   function MyClass2() {}

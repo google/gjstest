@@ -24,20 +24,20 @@ function PassingTest() {
 }
 registerTestSuite(PassingTest);
 
-PassingTest.prototype.someString = function() {
+PassingTest.prototype.SomeString = function() {
   expectThat(this.someString_, containsRegExp(/burrito|taco/));
 };
 
-PassingTest.prototype.passingTest = function() {
+PassingTest.prototype.PassingTest = function() {
   expectThat(returnMe('s'), evalsToTrue);
   expectThat(returnMe(null), evalsToFalse);
 };
 
-PassingTest.prototype.logging = function() {
+PassingTest.prototype.Logging = function() {
   gjstest.log('foo bar');
 };
 
-PassingTest.prototype.numberExpectations = function() {
+PassingTest.prototype.NumberExpectations = function() {
   expectLe(1, 1);
   expectLe(1, 2);
   expectLt(1, 2);

@@ -19,25 +19,25 @@
 function ExceptionTest() {}
 gjstest.registerTestSuite(ExceptionTest);
 
-ExceptionTest.prototype.referenceError = function() {
+ExceptionTest.prototype.ReferenceError = function() {
   fooBar(2);
 };
 
-ExceptionTest.prototype.notAFunctionError = function() {
+ExceptionTest.prototype.NotAFunctionError = function() {
   var foo = {};
   foo();
 };
 
-ExceptionTest.prototype.errorInMatcherFactory = function() {
+ExceptionTest.prototype.ErrorInMatcherFactory = function() {
   gjstest.isNearNumber('asd', 17);
 };
 
-ExceptionTest.prototype.stackOverflow = function() {
+ExceptionTest.prototype.StackOverflow = function() {
   function foo() { foo(); }
   foo();
 };
 
-ExceptionTest.prototype.unknownPropertyOnLongFunction = function() {
+ExceptionTest.prototype.UnknownPropertyOnLongFunction = function() {
   function foo() {
     return 'asd';
   }
@@ -45,17 +45,17 @@ ExceptionTest.prototype.unknownPropertyOnLongFunction = function() {
   foo.bar();
 };
 
-ExceptionTest.prototype.objectLiteralException = function() {
+ExceptionTest.prototype.ObjectLiteralException = function() {
   var e = { name: 'SomeException' };
   throw e;
 };
 
-ExceptionTest.prototype.customExceptionClassWithoutStack = function() {
+ExceptionTest.prototype.CustomExceptionClassWithoutStack = function() {
   function SomeException() {}
   throw new SomeException;
 };
 
-ExceptionTest.prototype.customExceptionClassWithStack = function() {
+ExceptionTest.prototype.CustomExceptionClassWithStack = function() {
   function SomeException() {
     Error.captureStackTrace(this, SomeException);
   }
@@ -63,13 +63,13 @@ ExceptionTest.prototype.customExceptionClassWithStack = function() {
   throw new SomeException;
 };
 
-ExceptionTest.prototype.customExceptionClassWithToString = function() {
+ExceptionTest.prototype.CustomExceptionClassWithToString = function() {
   function SomeException() {}
   SomeException.prototype.toString = function() { return 'SomeException'; }
   throw new SomeException;
 };
 
-ExceptionTest.prototype.passingTest = function() {
+ExceptionTest.prototype.PassingTest = function() {
 };
 
 // A test constructor that throws an error.
@@ -78,5 +78,5 @@ function ThrowingConstructorTest() {
 }
 gjstest.registerTestSuite(ThrowingConstructorTest);
 
-ThrowingConstructorTest.prototype.someTest = function() {
+ThrowingConstructorTest.prototype.SomeTest = function() {
 };

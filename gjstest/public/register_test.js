@@ -41,13 +41,13 @@ RegisterTestSuiteTest.prototype.tearDown = function() {
   gjstest.internal.testSuites = this.originalTestConstructors_;
 };
 
-RegisterTestSuiteTest.prototype.notAFunction = function() {
+RegisterTestSuiteTest.prototype.NotAFunction = function() {
   expectThat(function() {
     registerTestSuite({});
   }, throwsError(/TypeError.*registerTestSuite.*function/));
 };
 
-RegisterTestSuiteTest.prototype.storesConstructors = function() {
+RegisterTestSuiteTest.prototype.StoresConstructors = function() {
   function TestSuite1() {}
   function TestSuite2() {}
 
@@ -58,7 +58,7 @@ RegisterTestSuiteTest.prototype.storesConstructors = function() {
              elementsAre([TestSuite1, TestSuite2]));
 };
 
-RegisterTestSuiteTest.prototype.alreadyRegistered = function() {
+RegisterTestSuiteTest.prototype.AlreadyRegistered = function() {
   function TestSuite() {}
 
   expectThat(function() {
@@ -74,7 +74,7 @@ RegisterTestSuiteTest.prototype.alreadyRegistered = function() {
 function GetTestFunctionsTest() {}
 registerTestSuite(GetTestFunctionsTest);
 
-GetTestFunctionsTest.prototype.testNames = function() {
+GetTestFunctionsTest.prototype.TestNames = function() {
   function TestSuite() {}
   TestSuite.prototype.someName = function() {};
   TestSuite.prototype.someOtherName = function() {};
@@ -87,7 +87,7 @@ GetTestFunctionsTest.prototype.testNames = function() {
              ]));
 };
 
-GetTestFunctionsTest.prototype.ignoresTrailingUnderscores = function() {
+GetTestFunctionsTest.prototype.IgnoresTrailingUnderscores = function() {
   function TestSuite() {}
   TestSuite.prototype.harmless_underscores = function() {};
   TestSuite.prototype.ignoredName_ = function() {};
@@ -96,7 +96,7 @@ GetTestFunctionsTest.prototype.ignoresTrailingUnderscores = function() {
   expectThat(getKeys(result), elementsAre(['TestSuite.harmless_underscores']));
 };
 
-GetTestFunctionsTest.prototype.ignoresTearDown = function() {
+GetTestFunctionsTest.prototype.IgnoresTearDown = function() {
   function TestSuite() {}
   TestSuite.prototype.someName = function() {};
   TestSuite.prototype.tearDown = function() {};
@@ -105,7 +105,7 @@ GetTestFunctionsTest.prototype.ignoresTearDown = function() {
   expectThat(getKeys(result), elementsAre(['TestSuite.someName']));
 };
 
-GetTestFunctionsTest.prototype.ignoresInheritedFunctions = function() {
+GetTestFunctionsTest.prototype.IgnoresInheritedFunctions = function() {
   function ParentSuite() {}
   ParentSuite.prototype.overridden = function() {};
   ParentSuite.prototype.nonOverridden = function() {};
@@ -118,7 +118,7 @@ GetTestFunctionsTest.prototype.ignoresInheritedFunctions = function() {
   expectThat(getKeys(result), elementsAre(['TestSuite.overridden']));
 };
 
-GetTestFunctionsTest.prototype.ignoresNonFunctions = function() {
+GetTestFunctionsTest.prototype.IgnoresNonFunctions = function() {
   function TestSuite() {}
   TestSuite.prototype.someName = function() {};
   TestSuite.prototype.ignoredName = {};
@@ -128,7 +128,7 @@ GetTestFunctionsTest.prototype.ignoresNonFunctions = function() {
   expectThat(getKeys(result), elementsAre(['TestSuite.someName']));
 };
 
-GetTestFunctionsTest.prototype.testConstructorName = function() {
+GetTestFunctionsTest.prototype.TestConstructorName = function() {
   function TestSuite() {}
   TestSuite.prototype.constructor = function() {};
 
@@ -136,7 +136,7 @@ GetTestFunctionsTest.prototype.testConstructorName = function() {
   expectThat(getKeys(result), elementsAre(['TestSuite.constructor']));
 };
 
-GetTestFunctionsTest.prototype.execution = function() {
+GetTestFunctionsTest.prototype.Execution = function() {
   // Create two test functions that record 'this'.
   var testAThis = null;
   var testBThis = null;
@@ -157,7 +157,7 @@ GetTestFunctionsTest.prototype.execution = function() {
   expectTrue(testBThis instanceof TestSuite);
 };
 
-GetTestFunctionsTest.prototype.executionWithTearDown = function() {
+GetTestFunctionsTest.prototype.ExecutionWithTearDown = function() {
   // A test suite whose tearDown method records the 'this' values it sees.
   var tearDownThisValues = [];
 
@@ -181,7 +181,7 @@ GetTestFunctionsTest.prototype.executionWithTearDown = function() {
   expectTrue(tearDownThisValues[1] instanceof TestSuite);
 };
 
-GetTestFunctionsTest.prototype.errorWithoutTearDown = function() {
+GetTestFunctionsTest.prototype.ErrorWithoutTearDown = function() {
   // Register a test that throws an error.
   function TestSuite() {}
   TestSuite.prototype.someName = function() { throw new Error('taco'); };
@@ -191,7 +191,7 @@ GetTestFunctionsTest.prototype.errorWithoutTearDown = function() {
              throwsError(/Error: taco/));
 };
 
-GetTestFunctionsTest.prototype.errorWithTearDown = function() {
+GetTestFunctionsTest.prototype.ErrorWithTearDown = function() {
   // A suite with a tearDown method.
   var tearDownThis = null;
   function TestSuite() {}
@@ -208,7 +208,7 @@ GetTestFunctionsTest.prototype.errorWithTearDown = function() {
   expectTrue(tearDownThis instanceof TestSuite);
 };
 
-GetTestFunctionsTest.prototype.errorInConstructor = function() {
+GetTestFunctionsTest.prototype.ErrorInConstructor = function() {
   // Register a test whose constructor throws an error.
   function TestSuite() { throw new Error('taco'); }
   TestSuite.prototype.someName = function() {};

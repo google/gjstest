@@ -19,30 +19,30 @@
 function FailingTest() {}
 registerTestSuite(FailingTest);
 
-FailingTest.prototype.passingTest1 = function() {
+FailingTest.prototype.PassingTest1 = function() {
   expectThat(null, evalsToFalse);
 };
 
-FailingTest.prototype.failingTest1 = function() {
+FailingTest.prototype.FailingTest1 = function() {
   expectThat('a', evalsToFalse);
 };
 
-FailingTest.prototype.failingTest2 = function() {
+FailingTest.prototype.FailingTest2 = function() {
   expectThat(2, evalsToFalse);
   expectThat([1, 2], elementsAre([1, 2, 3]));
 };
 
-FailingTest.prototype.failureWithLogOutput = function() {
+FailingTest.prototype.FailureWithLogOutput = function() {
   expectThat(2, evalsToFalse);
   gjstest.log('foo bar');
   expectThat(3, evalsToFalse);
 };
 
-FailingTest.prototype.passingTest2 = function() {
+FailingTest.prototype.PassingTest2 = function() {
   expectThat(undefined, evalsToFalse);
 };
 
-FailingTest.prototype.numberExpectations = function() {
+FailingTest.prototype.NumberExpectations = function() {
   expectLt(1, 0);
   expectLt(1, 1);
 
