@@ -27,3 +27,27 @@ gjstest.containsRegExp = function(re) {
       function(obj) { return re.test(obj); }
   );
 };
+
+/**
+ * Match strings containing the supplied substring.
+ *
+ * @param {string} substr
+ * @return {!gjstest.Matcher}
+ */
+gjstest.hasSubstr = function(substr) {
+  if (typeof(substr) != 'string') {
+    throw new TypeError('hasSubstr requires a string argument.');
+  }
+
+  return new gjstest.Matcher(
+      'is a string containing the substring ' + gjstest.stringify(substr),
+      'is not a string containing the substring ' + gjstest.stringify(substr),
+      function(candidate) {
+        if (typeof(candidate) != 'string') {
+          return 'which is not a string';
+        }
+
+        return candidate.indexOf(substr) != -1;
+      }
+  );
+};

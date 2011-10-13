@@ -33,6 +33,12 @@ PassingTest.prototype.PassingTest = function() {
   expectThat(returnMe(null), evalsToFalse);
 };
 
+PassingTest.prototype.StringMatchers = function() {
+  expectThat('burritos and tacos', containsRegExp(/taco/));
+  expectThat('burritos and tacos', hasSubstr('taco'));
+  expectThat('enchiladas', not(hasSubstr('taco')));
+};
+
 PassingTest.prototype.Logging = function() {
   gjstest.log('foo bar');
 };

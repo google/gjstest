@@ -2,6 +2,7 @@
 <testsuite name="Google JS tests" failures="0" time="0.01">
  <testcase name="PassingTest.SomeString" time="0.01"/>
  <testcase name="PassingTest.PassingTest" time="0.01"/>
+ <testcase name="PassingTest.StringMatchers" time="0.01"/>
  <testcase name="PassingTest.Logging" time="0.01"/>
  <testcase name="PassingTest.NumberExpectations" time="0.01"/>
 </testsuite>

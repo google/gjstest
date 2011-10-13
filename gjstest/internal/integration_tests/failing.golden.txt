@@ -17,13 +17,27 @@ Expected: is an array or Arguments object of length 3 with elements matching: [ 
 Actual:   [ 1, 2 ], which has length 2
 
 [  FAILED  ] FailingTest.FailingTest2 (1 ms)
-[ RUN      ] FailingTest.FailureWithLogOutput
+[ RUN      ] FailingTest.StringMatchers
 failing_test.js:36
+Expected: partially matches regex: /enchilada/
+Actual:   'burritos and tacos'
+
+failing_test.js:37
+Expected: is a string containing the substring 'enchilada'
+Actual:   'burritos and tacos'
+
+failing_test.js:38
+Expected: is not a string containing the substring 'taco'
+Actual:   'tacos'
+
+[  FAILED  ] FailingTest.StringMatchers (1 ms)
+[ RUN      ] FailingTest.FailureWithLogOutput
+failing_test.js:42
 Expected: evaluates to false
 Actual:   2
 
 foo bar
-failing_test.js:38
+failing_test.js:44
 Expected: evaluates to false
 Actual:   3
 
@@ -31,35 +45,35 @@ Actual:   3
 [ RUN      ] FailingTest.PassingTest2
 [       OK ] FailingTest.PassingTest2 (1 ms)
 [ RUN      ] FailingTest.NumberExpectations
-failing_test.js:46
+failing_test.js:52
 Expected: is less than 0
 Actual:   1
 
-failing_test.js:47
+failing_test.js:53
 Expected: is less than 1
 Actual:   1
 
-failing_test.js:49
+failing_test.js:55
 Expected: is less than or equal to -1
 Actual:   1
 
-failing_test.js:50
+failing_test.js:56
 Expected: is less than or equal to 0
 Actual:   1
 
-failing_test.js:52
+failing_test.js:58
 Expected: is greater than 7
 Actual:   7
 
-failing_test.js:53
+failing_test.js:59
 Expected: is greater than 9
 Actual:   7
 
-failing_test.js:55
+failing_test.js:61
 Expected: is greater than or equal to 8
 Actual:   7
 
-failing_test.js:56
+failing_test.js:62
 Expected: is greater than or equal to 9
 Actual:   7
 

@@ -3,6 +3,8 @@
 [       OK ] PassingTest.SomeString (1 ms)
 [ RUN      ] PassingTest.PassingTest
 [       OK ] PassingTest.PassingTest (1 ms)
+[ RUN      ] PassingTest.StringMatchers
+[       OK ] PassingTest.StringMatchers (1 ms)
 [ RUN      ] PassingTest.Logging
 foo bar
 [       OK ] PassingTest.Logging (1 ms)

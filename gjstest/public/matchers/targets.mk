@@ -57,6 +57,7 @@ $(eval $(call compiled_js_library, \
     gjstest/public/matchers/string_matchers, \
         gjstest/internal/js/namespace \
         gjstest/public/matcher_types \
+        gjstest/public/stringify \
 ))
 
 ######################################################

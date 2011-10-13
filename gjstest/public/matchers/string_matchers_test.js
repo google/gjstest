@@ -69,3 +69,66 @@ ContainsRegExpTest.prototype.Description = function() {
   expectEq('doesn\'t partially match regex: /.+taco.*/',
            matcher.negativeDescription);
 };
+
+//////////////////////
+// hasSubstr
+//////////////////////
+
+function HasSubstrTest() {}
+registerTestSuite(HasSubstrTest);
+
+HasSubstrTest.prototype.WrongTypeArgs = function() {
+  function callFunc(arg) { return function() { hasSubstr(arg) } }
+
+  expectThat(callFunc(null), throwsError(/TypeError.*hasSubstr.*string/));
+  expectThat(callFunc(17), throwsError(/TypeError.*hasSubstr.*string/));
+  expectThat(callFunc(/a/), throwsError(/TypeError.*hasSubstr.*string/));
+};
+
+HasSubstrTest.prototype.NonStringCandidates = function() {
+  var pred = hasSubstr('taco').predicate;
+
+  expectEq('which is not a string', pred(null));
+  expectEq('which is not a string', pred(undefined));
+  expectEq('which is not a string', pred(false));
+  expectEq('which is not a string', pred(0));
+  expectEq('which is not a string', pred(17));
+  expectEq('which is not a string', pred([]));
+  expectEq('which is not a string', pred(function() {}));
+};
+
+HasSubstrTest.prototype.NonMatchingStrings = function() {
+  var pred = hasSubstr('taco').predicate;
+
+  expectFalse(pred(''));
+  expectFalse(pred('tac'));
+  expectFalse(pred('aco'));
+  expectFalse(pred('burrito'));
+  expectFalse(pred('Taco'));
+};
+
+HasSubstrTest.prototype.MatchingStrings = function() {
+  var pred = hasSubstr('taco').predicate;
+
+  expectTrue(pred('taco'));
+  expectTrue(pred('ataco'));
+  expectTrue(pred('tacob'));
+  expectTrue(pred('atacob'));
+};
+
+HasSubstrTest.prototype.NonAscii = function() {
+  var pred = hasSubstr('김치').predicate;
+
+  expectTrue(pred('김치'));
+  expectTrue(pred('맛있는 김치'));
+};
+
+HasSubstrTest.prototype.Description = function() {
+  var matcher = hasSubstr('taco');
+
+  expectEq('is a string containing the substring \'taco\'',
+           matcher.description);
+
+  expectEq('is not a string containing the substring \'taco\'',
+           matcher.negativeDescription);
+};

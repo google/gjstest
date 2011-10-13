@@ -32,6 +32,12 @@ FailingTest.prototype.FailingTest2 = function() {
   expectThat([1, 2], elementsAre([1, 2, 3]));
 };
 
+FailingTest.prototype.StringMatchers = function() {
+  expectThat('burritos and tacos', containsRegExp(/enchilada/));
+  expectThat('burritos and tacos', hasSubstr('enchilada'));
+  expectThat('tacos', not(hasSubstr('taco')));
+};
+
 FailingTest.prototype.FailureWithLogOutput = function() {
   expectThat(2, evalsToFalse);
   gjstest.log('foo bar');
