@@ -15,7 +15,7 @@
 
 /**
  * A representation of a single stack frame.
- * @interface
+ * @constructor
  */
 gjstest.internal.StackFrame = function() {
   this.fileName = null;
