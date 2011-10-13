@@ -20,7 +20,36 @@
 function ThrowsErrorTest() {}
 registerTestSuite(ThrowsErrorTest);
 
-ThrowsErrorTest.prototype.NonFunctions = function() {
+ThrowsErrorTest.prototype.WrongTypeArgs = function() {
+  var error;
+
+  function getError(arg) {
+    try {
+      throwsError(arg);
+    } catch (e) {
+      return e;
+    }
+
+    return null;
+  }
+
+  error = getError(null);
+  expectThat(error.toString(), hasSubstr('TypeError'));
+  expectThat(error.toString(), hasSubstr('throwsError'));
+  expectThat(error.toString(), hasSubstr('RegExp'));
+
+  error = getError('taco');
+  expectThat(error.toString(), hasSubstr('TypeError'));
+  expectThat(error.toString(), hasSubstr('throwsError'));
+  expectThat(error.toString(), hasSubstr('RegExp'));
+
+  error = getError(17);
+  expectThat(error.toString(), hasSubstr('TypeError'));
+  expectThat(error.toString(), hasSubstr('throwsError'));
+  expectThat(error.toString(), hasSubstr('RegExp'));
+};
+
+ThrowsErrorTest.prototype.NonFunctionCandidates = function() {
   var pred = throwsError(/.*/).predicate;
 
   expectEq('which is not a function', pred(null));
@@ -30,7 +59,7 @@ ThrowsErrorTest.prototype.NonFunctions = function() {
   expectEq('which is not a function', pred({}));
 };
 
-ThrowsErrorTest.prototype.WrongArity = function() {
+ThrowsErrorTest.prototype.WrongArityCandidates = function() {
   var pred = throwsError(/.*/).predicate;
 
   expectEq('which has arity 1', pred(function(foo) {}));

@@ -21,10 +21,20 @@
  * @return {!gjstest.Matcher}
  */
 gjstest.containsRegExp = function(re) {
+  if (!(re instanceof RegExp)) {
+    throw new TypeError('containsRegExp requires a RegExp argument.');
+  }
+
   return new gjstest.Matcher(
       'partially matches regex: ' + re,
       'doesn\'t partially match regex: ' + re,
-      function(obj) { return re.test(obj); }
+      function(candidate) {
+        if (typeof(candidate) != 'string') {
+          return 'which is not a string';
+        }
+
+        return re.test(candidate);
+      }
   );
 };
 

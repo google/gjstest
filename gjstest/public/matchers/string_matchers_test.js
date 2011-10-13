@@ -20,16 +20,24 @@
 function ContainsRegExpTest() {}
 registerTestSuite(ContainsRegExpTest);
 
-ContainsRegExpTest.prototype.NonStrings = function() {
+ContainsRegExpTest.prototype.WrongTypeArgs = function() {
+  function callFunc(arg) { return function() { containsRegExp(arg) } }
+
+  expectThat(callFunc(null), throwsError(/TypeError.*containsRegExp.*RegExp/));
+  expectThat(callFunc(17), throwsError(/TypeError.*containsRegExp.*RegExp/));
+  expectThat(callFunc('a'), throwsError(/TypeError.*containsRegExp.*RegExp/));
+};
+
+ContainsRegExpTest.prototype.NonStringCandidates = function() {
   var pred = containsRegExp(/.+taco.*/).predicate;
 
-  expectFalse(pred(null));
-  expectFalse(pred(undefined));
-  expectFalse(pred(false));
-  expectFalse(pred(0));
-  expectFalse(pred(17));
-  expectFalse(pred([]));
-  expectFalse(pred(function() {}));
+  expectEq('which is not a string', pred(null));
+  expectEq('which is not a string', pred(undefined));
+  expectEq('which is not a string', pred(false));
+  expectEq('which is not a string', pred(0));
+  expectEq('which is not a string', pred(17));
+  expectEq('which is not a string', pred([]));
+  expectEq('which is not a string', pred(function() {}));
 };
 
 ContainsRegExpTest.prototype.NonMatchingStrings = function() {

@@ -49,7 +49,7 @@ MockInstanceTest.prototype.NotAFunction = function() {
     me.createMockInstance_({});
   });
 
-  expectThat(error, containsRegExp(/TypeError.*function/));
+  expectThat(error.toString(), containsRegExp(/TypeError.*function/));
 };
 
 MockInstanceTest.prototype.CreatesInstanceOf = function() {

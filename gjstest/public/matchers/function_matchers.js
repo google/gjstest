@@ -21,6 +21,11 @@
  * @return {!gjstest.Matcher}
  */
 gjstest.throwsError = function(re) {
+  // Make sure the input is a regexp.
+  if (!(re instanceof RegExp)) {
+    throw new TypeError('throwsError requires a RegExp argument.');
+  }
+
   var description = 'is a function that throws an error matching ' + re;
   var negativeDescription = description.replace('is a', 'is not a');
 
