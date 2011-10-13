@@ -46,6 +46,7 @@ $(eval $(call compiled_js_library, \
         gjstest/public/assertions \
         gjstest/public/mocking \
         gjstest/public/register \
+        gjstest/public/stringify \
 ))
 
 $(eval $(call compiled_js_library, \

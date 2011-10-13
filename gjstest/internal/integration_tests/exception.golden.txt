@@ -25,13 +25,30 @@ TypeError: Object function foo() {
   } has no method 'bar'
 
 [  FAILED  ] ExceptionTest.unknownPropertyOnLongFunction (1 ms)
+[ RUN      ] ExceptionTest.objectLiteralException
+{ name: 'SomeException' }
+
+[  FAILED  ] ExceptionTest.objectLiteralException (1 ms)
+[ RUN      ] ExceptionTest.customExceptionClassWithoutStack
+{}
+
+[  FAILED  ] ExceptionTest.customExceptionClassWithoutStack (1 ms)
+[ RUN      ] ExceptionTest.customExceptionClassWithStack
+exception_test.js:63
+{}
+
+[  FAILED  ] ExceptionTest.customExceptionClassWithStack (1 ms)
+[ RUN      ] ExceptionTest.customExceptionClassWithToString
+SomeException
+
+[  FAILED  ] ExceptionTest.customExceptionClassWithToString (1 ms)
 [ RUN      ] ExceptionTest.passingTest
 [       OK ] ExceptionTest.passingTest (1 ms)
 [----------]
 
 [----------]
 [ RUN      ] ThrowingConstructorTest.someTest
-exception_test.js:53
+exception_test.js:77
 Error: taco
 
 [  FAILED  ] ThrowingConstructorTest.someTest (1 ms)

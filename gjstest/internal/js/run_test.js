@@ -45,7 +45,7 @@ gjstest.internal.runTest = function runTest(testFn, testEnvironment) {
     //
     // The test environment will do this latter part for us, so skip adding a
     // stack frame if there is already a user stack frame present.
-    var failureMessage = '' + error;
+    var failureMessage = '' + gjstest.stringify(error);
     if (testEnvironment.userStack.length == 0) {
       var errorStack = gjstest.internal.getErrorStack(error);
       var stackFrame = errorStack[0];

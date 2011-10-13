@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Google JS tests" failures="6" time="0.01">
+<testsuite name="Google JS tests" failures="10" time="0.01">
  <testcase name="ExceptionTest.referenceError" time="0.01">
   <failure><![CDATA[exception_test.js:23
 ReferenceError: fooBar is not defined]]></failure>
@@ -21,9 +21,22 @@ TypeError: Object function foo() {
     return 'asd';
   } has no method 'bar']]></failure>
  </testcase>
+ <testcase name="ExceptionTest.objectLiteralException" time="0.01">
+  <failure><![CDATA[{ name: 'SomeException' }]]></failure>
+ </testcase>
+ <testcase name="ExceptionTest.customExceptionClassWithoutStack" time="0.01">
+  <failure><![CDATA[{}]]></failure>
+ </testcase>
+ <testcase name="ExceptionTest.customExceptionClassWithStack" time="0.01">
+  <failure><![CDATA[exception_test.js:63
+{}]]></failure>
+ </testcase>
+ <testcase name="ExceptionTest.customExceptionClassWithToString" time="0.01">
+  <failure><![CDATA[SomeException]]></failure>
+ </testcase>
  <testcase name="ExceptionTest.passingTest" time="0.01"/>
  <testcase name="ThrowingConstructorTest.someTest" time="0.01">
-  <failure><![CDATA[exception_test.js:53
+  <failure><![CDATA[exception_test.js:77
 Error: taco]]></failure>
  </testcase>
 </testsuite>

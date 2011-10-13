@@ -45,6 +45,30 @@ ExceptionTest.prototype.unknownPropertyOnLongFunction = function() {
   foo.bar();
 };
 
+ExceptionTest.prototype.objectLiteralException = function() {
+  var e = { name: 'SomeException' };
+  throw e;
+};
+
+ExceptionTest.prototype.customExceptionClassWithoutStack = function() {
+  function SomeException() {}
+  throw new SomeException;
+};
+
+ExceptionTest.prototype.customExceptionClassWithStack = function() {
+  function SomeException() {
+    Error.captureStackTrace(this, SomeException);
+  }
+
+  throw new SomeException;
+};
+
+ExceptionTest.prototype.customExceptionClassWithToString = function() {
+  function SomeException() {}
+  SomeException.prototype.toString = function() { return 'SomeException'; }
+  throw new SomeException;
+};
+
 ExceptionTest.prototype.passingTest = function() {
 };
 
