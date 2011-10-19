@@ -25,7 +25,7 @@
 #elif defined(__APPLE__) /* gcc with a twist */
 #include "base/stl_decl_osx.h"
 
-#elif defined(__linux__)
+#elif defined(__linux__) || defined(__FreeBSD__)
 #include "base/stl_decl_linux.h"
 
 #else
