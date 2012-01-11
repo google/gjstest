@@ -152,8 +152,9 @@ gjstest.internal.browser.addToLog =
   var logElem = $.elem(tagName).addClass(className);
   list.append($.elem('li').append(logElem));
 
-  // Convert the message into text elements, extracting URLs where they exist.
-  var parts = message.split(/((?:https?|file):\/\/\S*)/);
+  // Convert the message into text elements, extracting URLs which point to
+  // source files where they exist.
+  var parts = message.split(/((?:https?|file):\/\/\S*:\d+\b)/);
   for (var i = 0, I = parts.length; i < I; ++i) {
     // Every second part is a URL.
     var part = parts[i];
