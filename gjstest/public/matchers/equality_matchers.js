@@ -256,9 +256,9 @@ gjstest.internal.compareRecursively_ = function(lhs, rhs, keyPrefix) {
       // of the same type.
       if (lhsValue instanceof Object &&
           rhsValue instanceof Object &&
-          rhsValue['gjstestEquals'] &&
+          lhsValue['gjstestEquals'] &&
           lhsValue.constructor == rhsValue.constructor) {
-        if (rhsValue['gjstestEquals'](rhsValue)) {
+        if (lhsValue['gjstestEquals'](rhsValue)) {
           continue;
         } else {
           return 'which differs in value for key ' + keyPath;

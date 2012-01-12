@@ -173,9 +173,13 @@ EqualsTest.prototype.Description = function() {
 
 EqualsTest.prototype.GjstestEqualsWithSameType = function() {
   function MyClass() {}
-  MyClass.prototype.gjstestEquals = gjstest.createMockFunction();
+
   var obj1 = new MyClass;
   var obj2 = new MyClass;
+
+  obj1.gjstestEquals = createMockFunction('obj1.gjstestEquals');
+  obj2.gjstestEquals = createMockFunction('obj2.gjstestEquals');
+
   var pred = equals(obj1).predicate;
 
   expectCall(obj1.gjstestEquals)(obj2)
@@ -190,8 +194,10 @@ EqualsTest.prototype.GjstestEqualsWithSameType = function() {
 EqualsTest.prototype.GjstestEqualsWithDifferentTypes = function() {
   function MyClass1() {}
   MyClass1.prototype.gjstestEquals = gjstest.createMockFunction();
+
   function MyClass2() {}
   MyClass2.prototype.gjstestEquals = gjstest.createMockFunction();
+
   var pred = equals(new MyClass1).predicate;
   expectEq('which is a reference to a different object', pred(new MyClass2));
 };
@@ -503,9 +509,13 @@ RecursivelyEqualsTest.prototype.Descriptions = function() {
 
 RecursivelyEqualsTest.prototype.GjstestEqualsWithSameType = function() {
   function MyClass() {}
-  MyClass.prototype.gjstestEquals = gjstest.createMockFunction();
+
   var obj1 = new MyClass;
   var obj2 = new MyClass;
+
+  obj1.gjstestEquals = gjstest.createMockFunction('obj1.gjstestEquals');
+  obj2.gjstestEquals = gjstest.createMockFunction('obj2.gjstestEquals');
+
   var pred = recursivelyEquals([obj1]).predicate;
 
   expectCall(obj1.gjstestEquals)(obj2)
@@ -520,8 +530,10 @@ RecursivelyEqualsTest.prototype.GjstestEqualsWithSameType = function() {
 RecursivelyEqualsTest.prototype.GjstestEqualsWithDifferentTypes = function() {
   function MyClass1() {}
   MyClass1.prototype.gjstestEquals = gjstest.createMockFunction();
+
   function MyClass2() {}
   MyClass2.prototype.gjstestEquals = gjstest.createMockFunction();
+
   var pred = recursivelyEquals([new MyClass1]).predicate;
   expectEq('which differs in reference for key 0', pred([new MyClass2]));
 };
