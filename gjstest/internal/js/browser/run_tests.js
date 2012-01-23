@@ -22,6 +22,9 @@
 gjstest.internal.runTestsInBrowser = function(pageTitle) {
   document.title = pageTitle;
 
+  // Grab hold of window.setTimeout in case a test mocks it out.
+  var setTimeout = window.setTimeout;
+
   // Iterate through the registered test suites to construct browser-specific
   // test suite and case objects.
   var testSuites = {};
@@ -56,7 +59,7 @@ gjstest.internal.runTestsInBrowser = function(pageTitle) {
     // Take one test off the list, returning immediately if there are none left.
     var testCase = allCases.shift();
     if (!testCase) return;
-    window.setTimeout(function() {
+    setTimeout(function() {
       var passed = testCase.run();
       ++testsRun;
       if (passed) ++testsPassed;
