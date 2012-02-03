@@ -117,3 +117,87 @@ TypedArraysTest.prototype.Int32Array = function() {
   expectEq(kMin + 2, a[1]);
   expectThat(a, elementsAre([kMax - 1, kMin + 2]));
 };
+
+TypedArraysTest.prototype.Uint8Array = function() {
+  var kType = Uint8Array;
+  var kBitWidth = 8;
+
+  var a = new kType(2);
+  expectEq(kBitWidth / 8, a.BYTES_PER_ELEMENT);
+  expectEq(2, a.length);
+
+  var kMin = 0;
+  var kMax = (1 << kBitWidth) - 1;
+
+  // Non-overflowing
+  a[0] = kMin;
+  a[1] = kMax;
+
+  expectEq(kMin, a[0]);
+  expectEq(kMax, a[1]);
+  expectThat(a, elementsAre([kMin, kMax]));
+
+  // Overflowing
+  a[0] = kMin - 2;
+  a[1] = kMax + 3;
+
+  expectEq(kMax - 1, a[0]);
+  expectEq(kMin + 2, a[1]);
+  expectThat(a, elementsAre([kMax - 1, kMin + 2]));
+};
+
+TypedArraysTest.prototype.Uint16Array = function() {
+  var kType = Uint16Array;
+  var kBitWidth = 16;
+
+  var a = new kType(2);
+  expectEq(kBitWidth / 8, a.BYTES_PER_ELEMENT);
+  expectEq(2, a.length);
+
+  var kMin = 0;
+  var kMax = (1 << kBitWidth) - 1;
+
+  // Non-overflowing
+  a[0] = kMin;
+  a[1] = kMax;
+
+  expectEq(kMin, a[0]);
+  expectEq(kMax, a[1]);
+  expectThat(a, elementsAre([kMin, kMax]));
+
+  // Overflowing
+  a[0] = kMin - 2;
+  a[1] = kMax + 3;
+
+  expectEq(kMax - 1, a[0]);
+  expectEq(kMin + 2, a[1]);
+  expectThat(a, elementsAre([kMax - 1, kMin + 2]));
+};
+
+TypedArraysTest.prototype.Uint32Array = function() {
+  var kType = Uint32Array;
+  var kBitWidth = 32;
+
+  var a = new kType(2);
+  expectEq(kBitWidth / 8, a.BYTES_PER_ELEMENT);
+  expectEq(2, a.length);
+
+  var kMin = 0;
+  var kMax = (1 << kBitWidth) - 1;
+
+  // Non-overflowing
+  a[0] = kMin;
+  a[1] = kMax;
+
+  expectEq(kMin, a[0]);
+  expectEq(kMax, a[1]);
+  expectThat(a, elementsAre([kMin, kMax]));
+
+  // Overflowing
+  a[0] = kMin - 2;
+  a[1] = kMax + 3;
+
+  expectEq(kMax - 1, a[0]);
+  expectEq(kMin + 2, a[1]);
+  expectThat(a, elementsAre([kMax - 1, kMin + 2]));
+};
