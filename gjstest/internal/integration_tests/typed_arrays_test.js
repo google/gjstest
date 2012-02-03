@@ -20,18 +20,19 @@ function TypedArraysTest() {}
 registerTestSuite(TypedArraysTest);
 
 TypedArraysTest.prototype.ArrayBuffer = function() {
-  var bytes = new Uint8Array(4);
-  var middle16 = new Uint16Array(bytes.buffer, 1, 1);
+  var buffer = new ArrayBuffer(4);
+  var bytes = new Uint8Array(buffer);
+  var last16 = new Uint16Array(buffer, 2, 1);
 
   expectEq(4, bytes.length);
-  expectEq(1, middle16.length);
+  expectEq(1, last16.length);
 
   bytes[0] = 0x12;
   bytes[1] = 0x34;
   bytes[2] = 0x56;
   bytes[3] = 0x78;
 
-  expectEq(0x3456, middle16[0]);
+  expectEq(0x7856, last16[0]);
 }
 
 TypedArraysTest.prototype.Int8Array = function() {
