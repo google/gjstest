@@ -201,3 +201,33 @@ TypedArraysTest.prototype.Uint32Array = function() {
   expectEq(kMin + 2, a[1]);
   expectThat(a, elementsAre([kMax - 1, kMin + 2]));
 };
+
+TypedArraysTest.prototype.Float32Array = function() {
+  var a = new Float32Array(2);
+
+  expectEq(4, a.BYTES_PER_ELEMENT);
+  expectEq(2, a.length);
+
+  a[0] = 17.5;
+  a[1] = -17.5
+
+
+  expectEq(17.5, a[0]);
+  expectEq(-17.5, a[1]);
+  expectThat(a, elementsAre([17.5, -17.5]));
+};
+
+TypedArraysTest.prototype.Float64Array = function() {
+  var a = new Float64Array(2);
+
+  expectEq(8, a.BYTES_PER_ELEMENT);
+  expectEq(2, a.length);
+
+  a[0] = 17.5;
+  a[1] = -17.5
+
+
+  expectEq(17.5, a[0]);
+  expectEq(-17.5, a[1]);
+  expectThat(a, elementsAre([17.5, -17.5]));
+};
