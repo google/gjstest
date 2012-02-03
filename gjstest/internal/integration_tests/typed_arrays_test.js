@@ -35,12 +35,41 @@ TypedArraysTest.prototype.ArrayBuffer = function() {
 }
 
 TypedArraysTest.prototype.Int8Array = function() {
-  var a = new Int8Array(2);
+  var kType = Int8Array;
+  var kBitWidth = 8;
 
-  expectEq(1, a.BYTES_PER_ELEMENT);
+  var a = new kType(2);
+  expectEq(kBitWidth / 8, a.BYTES_PER_ELEMENT);
   expectEq(2, a.length);
 
-  var kBitWidth = 8;
+  var kMax = (1 << kBitWidth - 1) - 1;
+  var kMin = -1 * kMax - 1;
+
+  // Non-overflowing
+  a[0] = kMin;
+  a[1] = kMax;
+
+  expectEq(kMin, a[0]);
+  expectEq(kMax, a[1]);
+  expectThat(a, elementsAre([kMin, kMax]));
+
+  // Overflowing
+  a[0] = kMin - 2;
+  a[1] = kMax + 3;
+
+  expectEq(kMax - 1, a[0]);
+  expectEq(kMin + 2, a[1]);
+  expectThat(a, elementsAre([kMax - 1, kMin + 2]));
+};
+
+TypedArraysTest.prototype.Int16Array = function() {
+  var kType = Int16Array;
+  var kBitWidth = 16;
+
+  var a = new kType(2);
+  expectEq(kBitWidth / 8, a.BYTES_PER_ELEMENT);
+  expectEq(2, a.length);
+
   var kMax = (1 << kBitWidth - 1) - 1;
   var kMin = -1 * kMax - 1;
 

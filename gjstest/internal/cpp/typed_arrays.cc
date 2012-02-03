@@ -64,6 +64,7 @@ using v8::True;
 using v8::TryCatch;
 using v8::Value;
 using v8::kExternalByteArray;
+using v8::kExternalShortArray;
 using v8::kExternalUnsignedByteArray;
 
 namespace gjstest {
@@ -245,6 +246,10 @@ Handle<Value> Int8Array(const Arguments& args) {
   return CreateExternalArray(args, kExternalByteArray, sizeof(int8_t));
 }
 
+Handle<Value> Int16Array(const Arguments& args) {
+  return CreateExternalArray(args, kExternalShortArray, sizeof(int16_t));
+}
+
 void ExportTypedArrays(
     const Handle<ObjectTemplate>& global_template) {
   global_template->Set(
@@ -254,6 +259,10 @@ void ExportTypedArrays(
   global_template->Set(
       String::New("Int8Array"),
       FunctionTemplate::New(Int8Array));
+
+  global_template->Set(
+      String::New("Int16Array"),
+      FunctionTemplate::New(Int16Array));
 }
 
 }  // namespace gjstest
