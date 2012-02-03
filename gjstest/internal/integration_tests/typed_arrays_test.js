@@ -23,8 +23,8 @@ TypedArraysTest.prototype.ArrayBuffer = function() {
   var bytes = new Uint8Array(4);
   var middle16 = new Uint16Array(bytes.buffer, 1, 2);
 
-  assertEq(4, bytes.length);
-  assertEq(1, middle16.length);
+  expectEq(4, bytes.length);
+  expectEq(1, middle16.length);
 
   bytes[0] = 0x12;
   bytes[1] = 0x34;
@@ -42,7 +42,7 @@ TypedArraysTest.prototype.Int8Array = function() {
   expectEq(kBitWidth / 8, a.BYTES_PER_ELEMENT);
   expectEq(2, a.length);
 
-  var kMax = (1 << kBitWidth - 1) - 1;
+  var kMax = Math.pow(2, kBitWidth - 1) - 1;
   var kMin = -1 * kMax - 1;
 
   // Non-overflowing
@@ -70,7 +70,7 @@ TypedArraysTest.prototype.Int16Array = function() {
   expectEq(kBitWidth / 8, a.BYTES_PER_ELEMENT);
   expectEq(2, a.length);
 
-  var kMax = (1 << kBitWidth - 1) - 1;
+  var kMax = Math.pow(2, kBitWidth - 1) - 1;
   var kMin = -1 * kMax - 1;
 
   // Non-overflowing
@@ -98,7 +98,7 @@ TypedArraysTest.prototype.Int32Array = function() {
   expectEq(kBitWidth / 8, a.BYTES_PER_ELEMENT);
   expectEq(2, a.length);
 
-  var kMax = (1 << kBitWidth - 1) - 1;
+  var kMax = Math.pow(2, kBitWidth - 1) - 1;
   var kMin = -1 * kMax - 1;
 
   // Non-overflowing
@@ -127,7 +127,7 @@ TypedArraysTest.prototype.Uint8Array = function() {
   expectEq(2, a.length);
 
   var kMin = 0;
-  var kMax = (1 << kBitWidth) - 1;
+  var kMax = Math.pow(2, kBitWidth) - 1;
 
   // Non-overflowing
   a[0] = kMin;
@@ -155,7 +155,7 @@ TypedArraysTest.prototype.Uint16Array = function() {
   expectEq(2, a.length);
 
   var kMin = 0;
-  var kMax = (1 << kBitWidth) - 1;
+  var kMax = Math.pow(2, kBitWidth) - 1;
 
   // Non-overflowing
   a[0] = kMin;
@@ -183,7 +183,7 @@ TypedArraysTest.prototype.Uint32Array = function() {
   expectEq(2, a.length);
 
   var kMin = 0;
-  var kMax = (1 << kBitWidth) - 1;
+  var kMax = Math.pow(2, kBitWidth) - 1;
 
   // Non-overflowing
   a[0] = kMin;
