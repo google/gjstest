@@ -138,6 +138,32 @@ ElementsAreTest.prototype.Description = function() {
            matcher.negativeDescription);
 };
 
+ElementsAreTest.prototype.ArrayLikeObjects = function() {
+  // Create a matcher arg and a candidate that aren't arrays, but play them on
+  // TV.
+  var matcherArg = {};
+  var candidate = {};
+
+  matcherArg.length = 2;
+  matcherArg[0] = 17;
+  matcherArg[1] = containsRegExp(/taco/)
+
+  candidate.length = 2;
+  candidate[0] = 17;
+  candidate[1] = 'burrito';
+
+  // Create a matcher and kick its tires.
+  var matcher = elementsAre(matcherArg);
+  var pred = matcher.predicate;
+
+  expectEq(
+      'is an array or Arguments object of length 2 with elements ' +
+          'matching: [ 17, partially matches regex: /taco/ ]',
+      matcher.description);
+
+  expectEq('whose element 1 doesn\'t match', pred(candidate));
+};
+
 //////////////////////////////////////////////////////
 // contains
 //////////////////////////////////////////////////////
@@ -257,6 +283,17 @@ ContainsTest.prototype.DescriptionWithRawValue = function() {
 
   expectEq('is not an array or Arguments object containing \'taco\'',
            matcher.negativeDescription);
+};
+
+ContainsTest.prototype.ArrayLikeObjects = function() {
+  var pred = contains(17).predicate;
+
+  var candidate = {};
+  candidate.length = 2;
+  candidate[0] = 13;
+  candidate[1] = 17;
+
+  expectTrue(pred(candidate));
 };
 
 //////////////////////////////////////////////////////

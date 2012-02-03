@@ -14,6 +14,21 @@
 // limitations under the License.
 
 /**
+ * Return true if the object can be iterated like an array.
+ *
+ * @param {!Object} obj
+ * @return {boolean}
+ */
+gjstest.internal.isArrayLike = function(obj) {
+  if (!obj) {
+    return false;
+  }
+
+  return (obj instanceof Array) ||
+      (typeof obj == 'object' && typeof obj.length == 'number');
+}
+
+/**
  * Match arrays and Arguments objects with the same length as matchers, whose
  * corresponding elements match each corresponding matcher.
  *
@@ -34,7 +49,7 @@
  * @return {!gjstest.Matcher}
  */
 gjstest.elementsAre = function(matchers) {
-  if (!(matchers instanceof Array)) {
+  if (!gjstest.internal.isArrayLike(matchers)) {
     gjstest.internal.currentTestEnvironment.recordUserStack(1);
     throw new TypeError('elementsAre requires an array or Arguments argument.');
   }
@@ -81,8 +96,7 @@ gjstest.elementsAre = function(matchers) {
       function(obj) {
         // Is this object an array or Arguments object of the appropriate
         // length?
-        if (!obj ||
-            !(obj instanceof Array || obj.toString() == '[object Arguments]')) {
+        if (!gjstest.internal.isArrayLike(obj)) {
           return "which isn't an array or Arguments object";
         } else if (obj.length !== transformedMatchers.length) {
           return 'which has length ' + obj.length;
@@ -138,9 +152,7 @@ gjstest.contains = function(x) {
       'is an array or Arguments object containing ' + nounPhrase,
       'is not an array or Arguments object containing ' + nounPhrase,
       function(candidate) {
-        if (!candidate ||
-            !(candidate instanceof Array ||
-              candidate.toString() == '[object Arguments]')) {
+        if (!gjstest.internal.isArrayLike(candidate)) {
           return "which isn't an array or Arguments object";
         }
 
