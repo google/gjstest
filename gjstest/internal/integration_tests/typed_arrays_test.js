@@ -89,3 +89,31 @@ TypedArraysTest.prototype.Int16Array = function() {
   expectEq(kMin + 2, a[1]);
   expectThat(a, elementsAre([kMax - 1, kMin + 2]));
 };
+
+TypedArraysTest.prototype.Int32Array = function() {
+  var kType = Int32Array;
+  var kBitWidth = 32;
+
+  var a = new kType(2);
+  expectEq(kBitWidth / 8, a.BYTES_PER_ELEMENT);
+  expectEq(2, a.length);
+
+  var kMax = (1 << kBitWidth - 1) - 1;
+  var kMin = -1 * kMax - 1;
+
+  // Non-overflowing
+  a[0] = kMin;
+  a[1] = kMax;
+
+  expectEq(kMin, a[0]);
+  expectEq(kMax, a[1]);
+  expectThat(a, elementsAre([kMin, kMax]));
+
+  // Overflowing
+  a[0] = kMin - 2;
+  a[1] = kMax + 3;
+
+  expectEq(kMax - 1, a[0]);
+  expectEq(kMin + 2, a[1]);
+  expectThat(a, elementsAre([kMax - 1, kMin + 2]));
+};
