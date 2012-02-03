@@ -46,6 +46,7 @@ $(eval $(call cc_library, \
 
 $(eval $(call cc_library, \
     gjstest/internal/cpp/typed_arrays, \
+        base/logging \
 ))
 
 $(eval $(call cc_library, \
