@@ -285,6 +285,17 @@ ContainsTest.prototype.DescriptionWithRawValue = function() {
            matcher.negativeDescription);
 };
 
+ContainsTest.prototype.ArrayLikeObjects = function() {
+  var pred = contains(17).predicate;
+
+  var candidate = {};
+  candidate.length = 2;
+  candidate[0] = 13;
+  candidate[1] = 17;
+
+  expectTrue(pred(candidate));
+};
+
 //////////////////////////////////////////////////////
 // whenSorted
 //////////////////////////////////////////////////////
