@@ -152,9 +152,7 @@ gjstest.contains = function(x) {
       'is an array or Arguments object containing ' + nounPhrase,
       'is not an array or Arguments object containing ' + nounPhrase,
       function(candidate) {
-        if (!candidate ||
-            !(candidate instanceof Array ||
-              candidate.toString() == '[object Arguments]')) {
+        if (!gjstest.internal.isArrayLike(candidate)) {
           return "which isn't an array or Arguments object";
         }
 
