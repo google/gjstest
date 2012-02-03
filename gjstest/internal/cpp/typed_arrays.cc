@@ -64,8 +64,13 @@ using v8::True;
 using v8::TryCatch;
 using v8::Value;
 using v8::kExternalByteArray;
+using v8::kExternalDoubleArray;
+using v8::kExternalFloatArray;
+using v8::kExternalIntArray;
 using v8::kExternalShortArray;
 using v8::kExternalUnsignedByteArray;
+using v8::kExternalUnsignedIntArray;
+using v8::kExternalUnsignedShortArray;
 
 namespace gjstest {
 
@@ -250,12 +255,37 @@ Handle<Value> Int16Array(const Arguments& args) {
   return CreateExternalArray(args, kExternalShortArray, sizeof(int16_t));
 }
 
+Handle<Value> Int32Array(const Arguments& args) {
+  return CreateExternalArray(args, kExternalIntArray, sizeof(int32_t));
+}
+
+Handle<Value> Uint8Array(const Arguments& args) {
+  return CreateExternalArray(args, kExternalUnsignedByteArray, sizeof(uint8_t));
+}
+
+Handle<Value> Uint16Array(const Arguments& args) {
+  return CreateExternalArray(args, kExternalUnsignedShortArray, sizeof(uint16_t));
+}
+
+Handle<Value> Uint32Array(const Arguments& args) {
+  return CreateExternalArray(args, kExternalUnsignedIntArray, sizeof(uint32_t));
+}
+
+Handle<Value> Float32Array(const Arguments& args) {
+  return CreateExternalArray(args, kExternalFloatArray, sizeof(float));
+}
+
+Handle<Value> Float64Array(const Arguments& args) {
+  return CreateExternalArray(args, kExternalDoubleArray, sizeof(double));
+}
+
 void ExportTypedArrays(
     const Handle<ObjectTemplate>& global_template) {
   global_template->Set(
       String::New("ArrayBuffer"),
       FunctionTemplate::New(ArrayBuffer));
 
+  // Signed integers.
   global_template->Set(
       String::New("Int8Array"),
       FunctionTemplate::New(Int8Array));
@@ -263,6 +293,32 @@ void ExportTypedArrays(
   global_template->Set(
       String::New("Int16Array"),
       FunctionTemplate::New(Int16Array));
+
+  global_template->Set(
+      String::New("Int32Array"),
+      FunctionTemplate::New(Int32Array));
+
+  // Unigned integers.
+  global_template->Set(
+      String::New("Uint8Array"),
+      FunctionTemplate::New(Uint8Array));
+
+  global_template->Set(
+      String::New("Uint16Array"),
+      FunctionTemplate::New(Uint16Array));
+
+  global_template->Set(
+      String::New("Uint32Array"),
+      FunctionTemplate::New(Uint32Array));
+
+  // Floats.
+  global_template->Set(
+      String::New("Float32Array"),
+      FunctionTemplate::New(Float32Array));
+
+  global_template->Set(
+      String::New("Float64Array"),
+      FunctionTemplate::New(Float64Array));
 }
 
 }  // namespace gjstest
