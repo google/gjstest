@@ -21,10 +21,8 @@ using v8::ObjectTemplate;
 namespace gjstest {
 
 void ExportTypedArrays(
-    const Handle<ObjectTemplate>& global_template);{
+    const Handle<ObjectTemplate>& global_template) {
   // TODO(jacobsa): Implement me.
 }
-
-}  // namespace gjstest
 
 }  // namespace gjstest
