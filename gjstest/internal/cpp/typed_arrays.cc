@@ -50,6 +50,7 @@
 
 using v8::Arguments;
 using v8::ExternalArrayType;
+using v8::FunctionTemplate;
 using v8::Handle;
 using v8::HandleScope;
 using v8::Int32;
@@ -62,6 +63,8 @@ using v8::String;
 using v8::True;
 using v8::TryCatch;
 using v8::Value;
+using v8::kExternalByteArray;
+using v8::kExternalUnsignedByteArray;
 
 namespace gjstest {
 
@@ -234,9 +237,23 @@ static Handle<Value> CreateExternalArray(
   return array;
 }
 
+Handle<Value> ArrayBuffer(const Arguments& args) {
+  return CreateExternalArray(args, kExternalByteArray, 0);
+}
+
+Handle<Value> Int8Array(const Arguments& args) {
+  return CreateExternalArray(args, kExternalByteArray, sizeof(int8_t));
+}
+
 void ExportTypedArrays(
     const Handle<ObjectTemplate>& global_template) {
-  // TODO(jacobsa): Implement me.
+  global_template->Set(
+      String::New("ArrayBuffer"),
+      FunctionTemplate::New(ArrayBuffer));
+
+  global_template->Set(
+      String::New("Int8Array"),
+      FunctionTemplate::New(Int8Array));
 }
 
 }  // namespace gjstest
