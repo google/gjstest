@@ -21,7 +21,7 @@ registerTestSuite(TypedArraysTest);
 
 TypedArraysTest.prototype.ArrayBuffer = function() {
   var bytes = new Uint8Array(4);
-  var middle16 = new Uint16Array(bytes.buffer, 1, 2);
+  var middle16 = new Uint16Array(bytes.buffer, 1, 1);
 
   expectEq(4, bytes.length);
   expectEq(1, middle16.length);
