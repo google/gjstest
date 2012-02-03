@@ -29,6 +29,7 @@
 #include "base/stringprintf.h"
 #include "base/timer.h"
 #include "gjstest/internal/cpp/test_case.h"
+#include "gjstest/internal/cpp/typed_arrays.h"
 #include "gjstest/internal/cpp/v8_utils.h"
 #include "gjstest/internal/proto/named_scripts.pb.h"
 #include "strings/strutil.h"
@@ -193,7 +194,10 @@ bool RunTests(
 
   // Create a context in which to run scripts and ensure that it's used whenever
   // a context is needed below.
-  Persistent<Context> context = Context::New();
+  Handle<ObjectTemplate> global_template = ObjectTemplate::New();
+  ExportTypedArrays(global_template);
+
+  Persistent<Context> context = Context::New(NULL, global_template);
   Context::Scope context_scope(context);
 
   // Run all of the scripts.

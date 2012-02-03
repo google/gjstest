@@ -218,6 +218,12 @@ TEST_F(IntegrationTest, ExceptionDuringTest) {
   EXPECT_TRUE(CheckGoldenFile("exception.golden.xml", xml_));
 }
 
+TEST_F(IntegrationTest, TypedArrays) {
+  EXPECT_TRUE(RunBundleNamed("typed_arrays")) << txt_;
+  EXPECT_TRUE(CheckGoldenFile("typed_arrays.golden.txt", txt_));
+  EXPECT_TRUE(CheckGoldenFile("typed_arrays.golden.xml", xml_));
+}
+
 TEST_F(IntegrationTest, TestCaseCalledConstructor) {
   EXPECT_FALSE(RunBundleNamed("constructor")) << txt_;
   EXPECT_TRUE(CheckGoldenFile("constructor.golden.txt", txt_));

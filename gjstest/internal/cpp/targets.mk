@@ -23,6 +23,7 @@ $(eval $(call cc_library, \
         base/stringprintf \
         base/timer \
         gjstest/internal/cpp/test_case \
+        gjstest/internal/cpp/typed_arrays \
         gjstest/internal/cpp/v8_utils \
         gjstest/internal/proto/named_scripts.pb \
         strings/strutil \
@@ -41,6 +42,11 @@ $(eval $(call cc_library, \
         base/stringprintf \
         base/timer \
         gjstest/internal/cpp/v8_utils \
+))
+
+$(eval $(call cc_library, \
+    gjstest/internal/cpp/typed_arrays, \
+        base/logging \
 ))
 
 $(eval $(call cc_library, \
