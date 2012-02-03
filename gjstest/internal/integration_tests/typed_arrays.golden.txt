@@ -3,6 +3,20 @@
 [       OK ] TypedArraysTest.ArrayBuffer (1 ms)
 [ RUN      ] TypedArraysTest.Int8Array
 [       OK ] TypedArraysTest.Int8Array (1 ms)
+[ RUN      ] TypedArraysTest.Int16Array
+[       OK ] TypedArraysTest.Int16Array (1 ms)
+[ RUN      ] TypedArraysTest.Int32Array
+[       OK ] TypedArraysTest.Int32Array (1 ms)
+[ RUN      ] TypedArraysTest.Uint8Array
+[       OK ] TypedArraysTest.Uint8Array (1 ms)
+[ RUN      ] TypedArraysTest.Uint16Array
+[       OK ] TypedArraysTest.Uint16Array (1 ms)
+[ RUN      ] TypedArraysTest.Uint32Array
+[       OK ] TypedArraysTest.Uint32Array (1 ms)
+[ RUN      ] TypedArraysTest.Float32Array
+[       OK ] TypedArraysTest.Float32Array (1 ms)
+[ RUN      ] TypedArraysTest.Float64Array
+[       OK ] TypedArraysTest.Float64Array (1 ms)
 [----------]
 
 [  PASSED  ]
