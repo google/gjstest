@@ -40,19 +40,23 @@ TypedArraysTest.prototype.Int8Array = function() {
   expectEq(1, a.BYTES_PER_ELEMENT);
   expectEq(2, a.length);
 
-  // Non-overflowing
-  a[0] = -17;
-  a[1] = 17;
+  var kBitWidth = 8;
+  var kMax = (1 << kBitWidth - 1) - 1;
+  var kMin = -1 * kMax - 1;
 
-  expectEq(-17, a[0]);
-  expectEq(17, a[1]);
-  expectThat(a, elementsAre([-17, 17]));
+  // Non-overflowing
+  a[0] = kMin;
+  a[1] = kMax;
+
+  expectEq(kMin, a[0]);
+  expectEq(kMax, a[1]);
+  expectThat(a, elementsAre([kMin, kMax]));
 
   // Overflowing
-  a[0] = -129;
-  a[1] = 129;
+  a[0] = kMin - 2;
+  a[1] = kMax + 3;
 
-  expectEq(127, a[0]);
-  expectEq(-127, a[1]);
-  expectThat(a, elementsAre([127, -127]));
+  expectEq(kMax - 1, a[0]);
+  expectEq(kMin + 2, a[1]);
+  expectThat(a, elementsAre([kMax - 1, kMin + 2]));
 };
