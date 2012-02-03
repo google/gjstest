@@ -1,0 +1,8 @@
+[----------]
+[ RUN      ] TypedArraysTest.ArrayBuffer
+[       OK ] TypedArraysTest.ArrayBuffer (1 ms)
+[ RUN      ] TypedArraysTest.Int8Array
+[       OK ] TypedArraysTest.Int8Array (1 ms)
+[----------]
+
+[  PASSED  ]

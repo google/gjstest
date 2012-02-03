@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Google JS tests" failures="2" time="0.01">
+ <testcase name="TypedArraysTest.ArrayBuffer" time="0.01">
+ <testcase name="TypedArraysTest.Int8Array" time="0.01"/>
+</testsuite>
