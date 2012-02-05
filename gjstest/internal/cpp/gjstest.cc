@@ -46,6 +46,12 @@ DEFINE_string(js_files, "",
               "The list of JS files to execute, comma separated.");
 
 DEFINE_string(xml_output_file, "", "An XML file to write results to.");
+
+DEFINE_string(coverage_output_file, "",
+              "A file to which coverage info should be written. If this is "
+              "specified, it is assumed that the input JS files are "
+              "instrumented using jscoverage.");
+
 DEFINE_string(filter, "", "Regular expression for test names to run.");
 
 // Browser support
@@ -158,7 +164,15 @@ static bool Run() {
   // Run any tests registered.
   string output;
   string xml;
-  const bool success = RunTests(scripts, FLAGS_filter, &output, &xml);
+  string coverage_info;
+
+  const bool success =
+      RunTests(
+          scripts,
+          FLAGS_filter,
+          &output,
+          &xml,
+          FLAGS_coverage_output_file.empty() ? NULL : &coverage_info);
 
   // Log the output.
   std::cout << output;
@@ -166,6 +180,11 @@ static bool Run() {
   // Write out the XML file to the appropriate place.
   if (!FLAGS_xml_output_file.empty()) {
     WriteStringToFileOrDie(xml, FLAGS_xml_output_file);
+  }
+
+  // Write out coverage info to the appropriate place.
+  if (!FLAGS_coverage_output_file.empty()) {
+    WriteStringToFileOrDie(coverage_info, FLAGS_coverage_output_file);
   }
 
   return success;
