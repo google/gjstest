@@ -275,9 +275,38 @@ TypedArraysTest.prototype.Float64Array = function() {
   expectThat(a, elementsAre([17.5, -17.5]));
 };
 
+TypedArraysTest.prototype.ArrayBufferContructorErrors = function() {
+  var f;
+
+  // Negative length.
+  f = function() { new ArrayBuffer(-1) };
+  expectThat(f, throwsError(/positive integer|not be negative/));
+
+  // No arguments. This should be an error according to the spec, but Chrome
+  // doesn't treat it as one. In order to make sure this test runs correctly in
+  // Chrome as well as the gjstest runner, simply make sure we don't crash.
+  try {
+    new ArrayBuffer();
+  } catch (e) {
+  }
+
+  // Too many arguments. This should be an error according to the spec, but
+  // Chrome doesn't treat it as one. In order to make sure this test runs
+  // correctly in Chrome as well as the gjstest runner, simply make sure we
+  // don't crash.
+  try {
+    new ArrayBuffer(10, 12);
+  } catch (e) {
+  }
+};
+
 TypedArraysTest.prototype.TypedArrayContructorErrors = function() {
   var buffer;
   var f;
+
+  // Negative length.
+  f = function() { new Uint16Array(-1) };
+  expectThat(f, throwsError(/positive integer|not be negative/));
 
   // Offset not a multiple of element size.
   buffer = new ArrayBuffer(6);
