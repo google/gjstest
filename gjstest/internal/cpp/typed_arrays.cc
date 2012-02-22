@@ -125,7 +125,7 @@ static void ExternalArrayWeakCallback(Persistent<Value> object, void* data) {
 // Create an external array from an underlying set of data. Takes ownership of
 // the data.
 static Handle<Object> CreateExternalArray(
-    uint8_t* data,
+    void* data,
     size_t num_elements,
     size_t element_size,
     ExternalArrayType element_type) {
@@ -237,9 +237,7 @@ static Handle<Value> CreateExternalArrayFromArrayBuffer(
   }
 
   // Grab the data property from the array buffer.
-  uint8_t* const data =
-      static_cast<uint8_t*>(
-          array_buffer->GetIndexedPropertiesExternalArrayData());
+  void* const data = array_buffer->GetIndexedPropertiesExternalArrayData();
 
   if (!data) {
     return ThrowException(String::New("ArrayBuffer doesn't have data."));
@@ -248,7 +246,7 @@ static Handle<Value> CreateExternalArrayFromArrayBuffer(
   // Create the resulting object.
   const Handle<Object> result =
       CreateExternalArray(
-          data + byte_offset,
+          static_cast<uint8_t*>(data) + byte_offset,
           length,
           element_size,
           element_type);
@@ -282,10 +280,7 @@ static Handle<Value> CreateExternalArrayWithLengthArg(
   }
 
   // Create the underlying data buffer.
-  uint8_t* const data =
-      static_cast<uint8_t*>(
-          calloc(length, element_size));
-
+  void* const data = calloc(length, element_size);
   const size_t offset = 0;
 
   if (!data) {
