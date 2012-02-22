@@ -14,8 +14,8 @@
 // limitations under the License.
 
 
-// This file contains mostly code imported from the v8 project, at
-// trunk/src/d8.cc. The original copyright notice is as follows.
+// This file contains code imported from the v8 project, at trunk/src/d8.cc, and
+// then modified by Aaron Jacobs. The original copyright notice is as follows.
 
 // Copyright 2012 the V8 project authors. All rights reserved.
 // Redistribution and use in source and binary forms, with or without
@@ -49,6 +49,7 @@
 #include "base/logging.h"
 
 using v8::Arguments;
+using v8::Array;
 using v8::ExternalArrayType;
 using v8::FunctionTemplate;
 using v8::Handle;
@@ -77,7 +78,11 @@ namespace gjstest {
 static const char kArrayBufferReferencePropName[] = "_is_array_buffer_";
 static const char kArrayBufferMarkerPropName[] = "_array_buffer_ref_";
 
-static size_t convertToUint(Local<Value> value_in, TryCatch* try_catch) {
+static size_t ConvertToUint(
+    const Handle<Value>& value_in,
+    TryCatch* try_catch) {
+  CHECK(!value_in.IsEmpty());
+
   if (value_in->IsUint32()) {
     return value_in->Uint32Value();
   }
@@ -102,6 +107,7 @@ static size_t convertToUint(Local<Value> value_in, TryCatch* try_catch) {
     ThrowException(
         String::New("Array length exceeds maximum length."));
   }
+
   return static_cast<size_t>(raw_value);
 }
 
@@ -116,167 +122,367 @@ static void ExternalArrayWeakCallback(Persistent<Value> object, void* data) {
   object.Dispose();
 }
 
+// Create an external array from an underlying set of data. Takes ownership of
+// the data.
+static Handle<Object> CreateExternalArray(
+    void* data,
+    size_t num_elements,
+    size_t element_size,
+    ExternalArrayType element_type) {
+  Handle<Object> result = Object::New();
+
+  // Create a weak reference to the handle that will delete the underlying data
+  // when it is disposed of.
+  Persistent<Object> persistent = Persistent<Object>::New(result);
+  persistent.MakeWeak(data, ExternalArrayWeakCallback);
+  persistent.MarkIndependent();
+
+  // Set the backing store for indexed elements.
+  result->SetIndexedPropertiesToExternalArrayData(
+      data,
+      element_type,
+      num_elements);
+
+  // Set up the length and BYTES_PER_ELEMENT properties on the result.
+  result->Set(
+      String::New("length"),
+      Int32::New(num_elements),
+      ReadOnly);
+
+  result->Set(
+      String::New("BYTES_PER_ELEMENT"),
+      Int32::New(element_size));
+
+  return result;
+}
+
+static bool IsArrayBuffer(const Handle<Value>& val) {
+  return val->IsObject() &&
+         val->ToObject()->Get(String::New(kArrayBufferMarkerPropName))->
+             IsTrue();
+}
+
+// Create a typed array from an existing array buffer. The array_buffer
+// reference must be non-empty, but the other two arguments are optional.
+static Handle<Value> CreateExternalArrayFromArrayBuffer(
+    ExternalArrayType element_type,
+    size_t element_size,
+    const Handle<Object>& array_buffer,
+    const Handle<Value>& byte_offset_arg,
+    const Handle<Value>& length_arg) {
+  CHECK(!array_buffer.IsEmpty());
+  CHECK(IsArrayBuffer(array_buffer));
+
+  TryCatch try_catch;
+
+  // Figure out what the length of the existing array buffer is.
+  const Local<Value> array_buffer_length_property =
+      array_buffer->Get(String::New("length"));
+  CHECK(!array_buffer_length_property.IsEmpty());
+
+  const size_t array_buffer_length =
+      ConvertToUint(array_buffer_length_property, &try_catch);
+
+  if (try_catch.HasCaught()) {
+    return try_catch.Exception();
+  }
+
+  // Figure out what the offset into the array buffer should be.
+  size_t byte_offset = 0;
+  if (!byte_offset_arg.IsEmpty()) {
+    byte_offset = ConvertToUint(byte_offset_arg, &try_catch);
+    if (try_catch.HasCaught()) {
+      return try_catch.Exception();
+    }
+  }
+
+  // Make sure the offset is legal.
+  if (byte_offset % element_size) {
+    return ThrowException(
+        String::New("Offset must be a multiple of element size."));
+  }
+
+  if (byte_offset > array_buffer_length) {
+    return ThrowException(
+        String::New("Offset must be less than the array buffer length."));
+  }
+
+  // Figure out what the length of the resulting array should be (in elements,
+  // not bytes)
+  size_t length = 0;
+  if (length_arg.IsEmpty()) {
+    // If the length arg is omitted, the array spans from the byte offset to the
+    // end of the array buffer. The size of the range spanned must be a multiple
+    // of the element size.
+    if ((array_buffer_length - byte_offset) % element_size) {
+      return ThrowException(
+          String::New(
+              "Array buffer length minus the byte offset must be a "
+                  "multiple of the element size"));
+    }
+
+    length = (array_buffer_length - byte_offset) / element_size;
+  } else {
+    length = ConvertToUint(length_arg, &try_catch);
+    if (try_catch.HasCaught()) {
+      return try_catch.Exception();
+    }
+  }
+
+  // Make sure the length is legal.
+  if (byte_offset + (length * element_size) > array_buffer_length) {
+    return ThrowException(
+        String::New(
+            "length references an area beyond the end of the array buffer."));
+  }
+
+  // Grab the data property from the array buffer.
+  void* const data = array_buffer->GetIndexedPropertiesExternalArrayData();
+
+  if (!data) {
+    return ThrowException(String::New("ArrayBuffer doesn't have data."));
+  }
+
+  // Create the resulting object.
+  const Handle<Object> result =
+      CreateExternalArray(
+          static_cast<uint8_t*>(data) + byte_offset,
+          length,
+          element_size,
+          element_type);
+
+  // Hold a reference to the ArrayBuffer so its buffer doesn't get collected.
+  result->Set(
+      String::New(kArrayBufferReferencePropName),
+      array_buffer,
+      ReadOnly);
+
+  return result;
+}
+
+// Implement the constructor with this signature:
+//
+//     TypedArray(unsigned long length)
+//
+static Handle<Value> CreateExternalArrayWithLengthArg(
+    ExternalArrayType element_type,
+    size_t element_size,
+    const Handle<Value>& length_arg) {
+  CHECK(!length_arg.IsEmpty());
+  CHECK(element_size);
+
+  TryCatch try_catch;
+
+  // Convert the length to a useful value.
+  const size_t length = ConvertToUint(length_arg, &try_catch);
+  if (try_catch.HasCaught()) {
+    return try_catch.Exception();
+  }
+
+  // Create the underlying data buffer.
+  void* const data = calloc(length, element_size);
+  const size_t offset = 0;
+
+  if (!data) {
+    return ThrowException(String::New("Memory allocation failed."));
+  }
+
+  return CreateExternalArray(data, length, element_size, element_type);
+}
+
+// Implement the ArrayBuffer constructor.
+static Handle<Value> CreateArrayBuffer(
+    const Arguments& args) {
+  // Check the number of arguments.
+  const size_t num_args = args.Length();
+  if (num_args != 1) {
+    return ThrowException(String::New("Expected exactly one argument."));
+  }
+
+  // Create the underlying array.
+  const ExternalArrayType element_type = v8::kExternalByteArray;
+  const size_t element_size = 1;
+
+  const Handle<Value> result =
+      CreateExternalArrayWithLengthArg(
+          element_type,
+          element_size,
+          args[0]);
+
+  // Mark this as an array buffer, for use by other code in this file.
+  result->ToObject()->Set(
+      String::New(kArrayBufferMarkerPropName),
+      True(),
+      ReadOnly);
+
+  return result;
+}
+
+// Implement the constructor with this signature:
+//
+//     TypedArray(type[] array)
+//
+template <typename T>
+static Handle<Value> CreateExternalArrayWithArrayArg(
+    ExternalArrayType element_type,
+    const Handle<Array>& array) {
+  CHECK(!array.IsEmpty());
+  TryCatch try_catch;
+
+  const size_t element_size = sizeof(T);
+  const uint32_t num_elements = array->Length();
+
+  // Create the underlying data.
+  T* const data =
+      static_cast<T*>(
+          calloc(num_elements, element_size));
+
+  const size_t offset = 0;
+
+  if (!data) {
+    return ThrowException(String::New("Memory allocation failed."));
+  }
+
+  // Convert each element.
+  for (uint32_t i = 0; i < num_elements; ++i) {
+    data[i] = array->Get(i)->ToInteger()->Value();
+  }
+
+  return CreateExternalArray(
+      data,
+      num_elements,
+      element_size,
+      element_type);
+}
+
+// Common constructor code for all typed arrays. The following signatures are
+// supported:
+//
+//     TypedArray(
+//         ArrayBuffer buffer,
+//         optional unsigned long byteOffset,
+//         optional unsigned long length)
+//
+//     TypedArray(unsigned long length)
+//
+//     TypedArray(type[] array)
+//
+template <typename T>
 static Handle<Value> CreateExternalArray(
     const Arguments& args,
-    ExternalArrayType type,
-    size_t element_size) {
-  TryCatch try_catch;
-  bool is_array_buffer_construct = element_size == 0;
-  if (is_array_buffer_construct) {
-    type = v8::kExternalByteArray;
-    element_size = 1;
-  }
-  CHECK(element_size == 1 || element_size == 2 || element_size == 4 ||
-        element_size == 8);
-  if (args.Length() == 0) {
-    return ThrowException(
-        String::New("Array constructor must have at least one "
-                    "parameter."));
-  }
-  bool first_arg_is_array_buffer =
-      args[0]->IsObject() &&
-      args[0]->ToObject()->Get(
-          String::New(kArrayBufferMarkerPropName))->IsTrue();
-  // Currently, only the following constructors are supported:
-  //   TypedArray(unsigned long length)
-  //   TypedArray(ArrayBuffer buffer,
-  //              optional unsigned long byteOffset,
-  //              optional unsigned long length)
-  if (args.Length() > 3) {
-    return ThrowException(
-        String::New("Array constructor from ArrayBuffer must "
-                    "have 1-3 parameters."));
+    ExternalArrayType element_type) {
+  const size_t element_size = sizeof(T);
+  const size_t num_args = args.Length();
+
+  // We only support these element sizes.
+  CHECK(
+      element_size == 1 ||
+      element_size == 2 ||
+      element_size == 4 ||
+      element_size == 8);
+
+  // We require at least one arg.
+  if (num_args == 0) {
+    return ThrowException(String::New("Expected at least one argument."));
   }
 
-  Local<Value> length_value = (args.Length() < 3)
-      ? (first_arg_is_array_buffer
-         ? args[0]->ToObject()->Get(String::New("length"))
-         : args[0])
-      : args[2];
-  size_t length = convertToUint(length_value, &try_catch);
-  if (try_catch.HasCaught()) return try_catch.Exception();
-
-  void* data = NULL;
-  size_t offset = 0;
-
-  Handle<Object> array = Object::New();
-  if (first_arg_is_array_buffer) {
-    Handle<Object> derived_from = args[0]->ToObject();
-    data = derived_from->GetIndexedPropertiesExternalArrayData();
-
-    size_t array_buffer_length = convertToUint(
-        derived_from->Get(String::New("length")),
-        &try_catch);
-    if (try_catch.HasCaught()) return try_catch.Exception();
-
-    if (data == NULL && array_buffer_length != 0) {
+  // Is this the constructor with the following signature?
+  //
+  //     TypedArray(
+  //         ArrayBuffer buffer,
+  //         optional unsigned long byteOffset,
+  //         optional unsigned long length)
+  //
+  if (IsArrayBuffer(args[0])) {
+    if (num_args > 3) {
       return ThrowException(
-          String::New("ArrayBuffer doesn't have data"));
+          String::New(
+              "Array constructor from ArrayBuffer must have 1-3 parameters."));
     }
 
-    if (args.Length() > 1) {
-      offset = convertToUint(args[1], &try_catch);
-      if (try_catch.HasCaught()) return try_catch.Exception();
-
-      // The given byteOffset must be a multiple of the element size of the
-      // specific type, otherwise an exception is raised.
-      if (offset % element_size != 0) {
-        return ThrowException(
-            String::New("offset must be multiple of element_size"));
-      }
-    }
-
-    if (offset > array_buffer_length) {
-      return ThrowException(
-          String::New("byteOffset must be less than ArrayBuffer length."));
-    }
-
-    if (args.Length() == 2) {
-      // If length is not explicitly specified, the length of the ArrayBuffer
-      // minus the byteOffset must be a multiple of the element size of the
-      // specific type, or an exception is raised.
-      length = array_buffer_length - offset;
-    }
-
-    if (args.Length() != 3) {
-      if (length % element_size != 0) {
-        return ThrowException(
-            String::New("ArrayBuffer length minus the byteOffset must be a "
-                        "multiple of the element size"));
-      }
-      length /= element_size;
-    }
-
-    // If a given byteOffset and length references an area beyond the end of
-    // the ArrayBuffer an exception is raised.
-    if (offset + (length * element_size) > array_buffer_length) {
-      return ThrowException(
-          String::New("length references an area beyond the end of the "
-                      "ArrayBuffer"));
-    }
-
-    // Hold a reference to the ArrayBuffer so its buffer doesn't get collected.
-    array->Set(String::New(kArrayBufferReferencePropName), args[0], ReadOnly);
+    return CreateExternalArrayFromArrayBuffer(
+        element_type,
+        element_size,
+        args[0]->ToObject(),
+        num_args > 1 ? args[1] : Handle<Value>(),
+        num_args > 2 ? args[2] : Handle<Value>());
   }
 
-  if (is_array_buffer_construct) {
-    array->Set(String::New(kArrayBufferMarkerPropName), True(), ReadOnly);
+  // Otherwise, there should be exactly one argument.
+  if (num_args != 1) {
+    return ThrowException(String::New("Expected exactly one argument."));
   }
 
-  Persistent<Object> persistent_array = Persistent<Object>::New(array);
-  persistent_array.MakeWeak(data, ExternalArrayWeakCallback);
-  persistent_array.MarkIndependent();
-  if (data == NULL && length != 0) {
-    data = calloc(length, element_size);
-    if (data == NULL) {
-      return ThrowException(String::New("Memory allocation failed."));
-    }
+  // Is this the constructor with the following signature?
+  //
+  //     TypedArray(type[] array)
+  //
+  if (args[0]->IsArray()) {
+    return CreateExternalArrayWithArrayArg<T>(
+        element_type,
+        Local<Array>::Cast(args[0]));
   }
 
-  array->SetIndexedPropertiesToExternalArrayData(
-      reinterpret_cast<uint8_t*>(data) + offset, type,
-      static_cast<int>(length));
-  array->Set(String::New("length"),
-             Int32::New(static_cast<int32_t>(length)), ReadOnly);
-  array->Set(String::New("BYTES_PER_ELEMENT"),
-             Int32::New(static_cast<int32_t>(element_size)));
-  return array;
+  // Otherwise, this is the constructor with the following signature:
+  //
+  //     TypedArray(unsigned long length)
+  //
+  return CreateExternalArrayWithLengthArg(
+      element_type,
+      element_size,
+      args[0]);
 }
 
 Handle<Value> ArrayBuffer(const Arguments& args) {
-  return CreateExternalArray(args, kExternalByteArray, 0);
+  return CreateArrayBuffer(args);
 }
 
 Handle<Value> Int8Array(const Arguments& args) {
-  return CreateExternalArray(args, kExternalByteArray, sizeof(int8_t));
+  return CreateExternalArray<int8_t>(
+      args,
+      kExternalByteArray);
 }
 
 Handle<Value> Int16Array(const Arguments& args) {
-  return CreateExternalArray(args, kExternalShortArray, sizeof(int16_t));
+  return CreateExternalArray<int16_t>(
+      args,
+      kExternalShortArray);
 }
 
 Handle<Value> Int32Array(const Arguments& args) {
-  return CreateExternalArray(args, kExternalIntArray, sizeof(int32_t));
+  return CreateExternalArray<int32_t>(
+      args,
+      kExternalIntArray);
 }
 
 Handle<Value> Uint8Array(const Arguments& args) {
-  return CreateExternalArray(args, kExternalUnsignedByteArray, sizeof(uint8_t));
+  return CreateExternalArray<uint8_t>(
+      args,
+      kExternalUnsignedByteArray);
 }
 
 Handle<Value> Uint16Array(const Arguments& args) {
-  return CreateExternalArray(args, kExternalUnsignedShortArray, sizeof(uint16_t));
+  return CreateExternalArray<uint16_t>(
+      args,
+      kExternalUnsignedShortArray);
 }
 
 Handle<Value> Uint32Array(const Arguments& args) {
-  return CreateExternalArray(args, kExternalUnsignedIntArray, sizeof(uint32_t));
+  return CreateExternalArray<uint32_t>(
+      args,
+      kExternalUnsignedIntArray);
 }
 
 Handle<Value> Float32Array(const Arguments& args) {
-  return CreateExternalArray(args, kExternalFloatArray, sizeof(float));
+  return CreateExternalArray<float>(
+      args,
+      kExternalFloatArray);
 }
 
 Handle<Value> Float64Array(const Arguments& args) {
-  return CreateExternalArray(args, kExternalDoubleArray, sizeof(double));
+  return CreateExternalArray<double>(
+      args,
+      kExternalDoubleArray);
 }
 
 void ExportTypedArrays(

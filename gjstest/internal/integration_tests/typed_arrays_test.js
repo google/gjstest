@@ -61,6 +61,48 @@ TypedArraysTest.prototype.Int8Array = function() {
   expectEq(kMax - 1, a[0]);
   expectEq(kMin + 2, a[1]);
   expectThat(a, elementsAre([kMax - 1, kMin + 2]));
+
+  // Convert from numbers.
+  var numberArray = [
+      kMin - 1,
+      kMin,
+      kMin + 1,
+      -1.7,
+      0,
+      1.7,
+      kMax - 1,
+      kMax,
+      kMax + 1,
+      NaN,
+      Infinity,
+      -Infinity,
+      -0,
+  ];
+
+  a = new kType(numberArray);
+  expectThat(
+      a,
+      elementsAre([
+          kMax,  // Overflowed
+          kMin,
+          kMin + 1,
+          -1,    // Truncated toward zero
+          0,
+          1,     // Truncated toward zero
+          kMax - 1,
+          kMax,
+          kMin,  // Overflowed
+          0,
+          0,
+          0,
+          0,
+      ]));
+
+  // Converted from non-numbers.
+  var nonNumberArray = ['', '17', 'foo', {}, true];
+
+  a = new kType(nonNumberArray);
+  expectThat(a, elementsAre([0, 17, 0, 0, 1]));
 };
 
 TypedArraysTest.prototype.Int16Array = function() {
@@ -231,4 +273,70 @@ TypedArraysTest.prototype.Float64Array = function() {
   expectEq(17.5, a[0]);
   expectEq(-17.5, a[1]);
   expectThat(a, elementsAre([17.5, -17.5]));
+};
+
+TypedArraysTest.prototype.ArrayBufferContructorErrors = function() {
+  var f;
+
+  // Negative length.
+  f = function() { new ArrayBuffer(-1) };
+  expectThat(f, throwsError(/positive integer|not be negative/));
+
+  // No arguments. This should be an error according to the spec, but Chrome
+  // doesn't treat it as one. In order to make sure this test runs correctly in
+  // Chrome as well as the gjstest runner, simply make sure we don't crash.
+  try {
+    new ArrayBuffer();
+  } catch (e) {
+  }
+
+  // Too many arguments. This should be an error according to the spec, but
+  // Chrome doesn't treat it as one. In order to make sure this test runs
+  // correctly in Chrome as well as the gjstest runner, simply make sure we
+  // don't crash.
+  try {
+    new ArrayBuffer(10, 12);
+  } catch (e) {
+  }
+};
+
+TypedArraysTest.prototype.TypedArrayContructorErrors = function() {
+  var buffer;
+  var f;
+
+  // Negative length.
+  f = function() { new Uint16Array(-1) };
+  expectThat(f, throwsError(/positive integer|not be negative/));
+
+  // Offset not a multiple of element size.
+  buffer = new ArrayBuffer(6);
+  f = function() { new Uint16Array(buffer, 1, 1) };
+  expectThat(f, throwsError(/INDEX_SIZE_ERR|multiple of/));
+
+  // View runs off end of buffer.
+  buffer = new ArrayBuffer(6);
+  f = function() { new Uint16Array(buffer, 2, 3) };
+  expectThat(f, throwsError(/INDEX_SIZE_ERR|beyond the end/));
+
+  // Buffer length minus offset not multiple of element size.
+  buffer = new ArrayBuffer(5);
+  f = function() { new Uint16Array(buffer, 2) };
+  expectThat(f, throwsError(/INDEX_SIZE_ERR|minus.*multiple of/));
+
+  // No arguments. This should be an error according to the spec, but Chrome
+  // doesn't treat it as one. In order to make sure this test runs correctly in
+  // Chrome as well as the gjstest runner, simply make sure we don't crash.
+  try {
+    new Uint16Array();
+  } catch (e) {
+  }
+
+  // Too many arguments. This should be an error according to the spec, but
+  // Chrome doesn't treat it as one. In order to make sure this test runs
+  // correctly in Chrome as well as the gjstest runner, simply make sure we
+  // don't crash.
+  try {
+    new Uint16Array(new ArrayBuffer(2), 0, 1, 17);
+  } catch (e) {
+  }
 };
