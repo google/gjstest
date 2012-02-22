@@ -116,6 +116,40 @@ static void ExternalArrayWeakCallback(Persistent<Value> object, void* data) {
   object.Dispose();
 }
 
+// Create an external array from an underlying set of data. Takes ownership of
+// the data.
+static Handle<Object> CreateExternalArray(
+    uint8_t* data,
+    size_t num_elements,
+    size_t element_size,
+    ExternalArrayType element_type) {
+  Handle<Object> result = Object::New();
+
+  // Create a weak reference to the handle that will delete the underlying data
+  // when it is disposed of.
+  Persistent<Object> persistent = Persistent<Object>::New(result);
+  persistent.MakeWeak(data, ExternalArrayWeakCallback);
+  persistent.MarkIndependent();
+
+  // Set the backing store for indexed elements.
+  result->SetIndexedPropertiesToExternalArrayData(
+      data,
+      element_type,
+      num_elements);
+
+  // Set up the length and BYTES_PER_ELEMENT properties on the result.
+  result->Set(
+      String::New("length"),
+      Int32::New(num_elements),
+      ReadOnly);
+
+  result->Set(
+      String::New("BYTES_PER_ELEMENT"),
+      Int32::New(element_size));
+
+  return result;
+}
+
 // Common constructor code for all typed arrays. The following signatures are
 // supported:
 //
