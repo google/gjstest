@@ -274,3 +274,40 @@ TypedArraysTest.prototype.Float64Array = function() {
   expectEq(-17.5, a[1]);
   expectThat(a, elementsAre([17.5, -17.5]));
 };
+
+TypedArraysTest.prototype.TypedArrayContructorErrors = function() {
+  var buffer;
+  var f;
+
+  // Offset not a multiple of element size.
+  buffer = new ArrayBuffer(6);
+  f = function() { new Uint16Array(buffer, 1, 1) };
+  expectThat(f, throwsError(/INDEX_SIZE_ERR|multiple of/));
+
+  // View runs off end of buffer.
+  buffer = new ArrayBuffer(6);
+  f = function() { new Uint16Array(buffer, 2, 3) };
+  expectThat(f, throwsError(/INDEX_SIZE_ERR|beyond the end/));
+
+  // Buffer length minus offset not multiple of element size.
+  buffer = new ArrayBuffer(5);
+  f = function() { new Uint16Array(buffer, 2) };
+  expectThat(f, throwsError(/INDEX_SIZE_ERR|minus.*multiple of/));
+
+  // No arguments. This should be an error according to the spec, but Chrome
+  // doesn't treat it as one. In order to make sure this test runs correctly in
+  // Chrome as well as the gjstest runner, simply make sure we don't crash.
+  try {
+    new Uint16Array();
+  } catch (e) {
+  }
+
+  // Too many arguments. This should be an error according to the spec, but
+  // Chrome doesn't treat it as one. In order to make sure this test runs
+  // correctly in Chrome as well as the gjstest runner, simply make sure we
+  // don't crash.
+  try {
+    new Uint16Array(new ArrayBuffer(2), 0, 1, 17);
+  } catch (e) {
+  }
+};
