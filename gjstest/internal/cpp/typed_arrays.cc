@@ -418,6 +418,20 @@ static Handle<Value> CreateExternalArray(
     return ThrowException(String::New("Expected exactly one argument."));
   }
 
+  // Is this the constructor with the following signature?
+  //
+  //     TypedArray(type[] array)
+  //
+  if (args[0]->IsArray()) {
+    return CreateExternalArrayWithArrayArg<T>(
+        element_type,
+        Local<Array>::Cast(args[0]));
+  }
+
+  // Otherwise, this is the constructor with the following signature:
+  //
+  //     TypedArray(unsigned long length)
+  //
   return CreateExternalArrayWithLengthArg(
       element_type,
       element_size,
