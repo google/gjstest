@@ -369,10 +369,11 @@ static Handle<Value> CreateExternalArrayWithArrayArg(
 //
 //     TypedArray(type[] array)
 //
+template <typename T>
 static Handle<Value> CreateExternalArray(
     const Arguments& args,
-    ExternalArrayType element_type,
-    size_t element_size) {
+    ExternalArrayType element_type) {
+  const size_t element_size = sizeof(T);
   const size_t num_args = args.Length();
 
   // Of the functions that defer to this one, the only one with element_size
@@ -431,39 +432,57 @@ static Handle<Value> CreateExternalArray(
 }
 
 Handle<Value> ArrayBuffer(const Arguments& args) {
-  return CreateExternalArray(args, kExternalByteArray, 0);
+  return CreateExternalArray<uint8_t>(
+      args,
+      kExternalByteArray);
 }
 
 Handle<Value> Int8Array(const Arguments& args) {
-  return CreateExternalArray(args, kExternalByteArray, sizeof(int8_t));
+  return CreateExternalArray<int8_t>(
+      args,
+      kExternalByteArray);
 }
 
 Handle<Value> Int16Array(const Arguments& args) {
-  return CreateExternalArray(args, kExternalShortArray, sizeof(int16_t));
+  return CreateExternalArray<int16_t>(
+      args,
+      kExternalShortArray);
 }
 
 Handle<Value> Int32Array(const Arguments& args) {
-  return CreateExternalArray(args, kExternalIntArray, sizeof(int32_t));
+  return CreateExternalArray<int32_t>(
+      args,
+      kExternalIntArray);
 }
 
 Handle<Value> Uint8Array(const Arguments& args) {
-  return CreateExternalArray(args, kExternalUnsignedByteArray, sizeof(uint8_t));
+  return CreateExternalArray<uint8_t>(
+      args,
+      kExternalUnsignedByteArray);
 }
 
 Handle<Value> Uint16Array(const Arguments& args) {
-  return CreateExternalArray(args, kExternalUnsignedShortArray, sizeof(uint16_t));
+  return CreateExternalArray<uint16_t>(
+      args,
+      kExternalUnsignedShortArray);
 }
 
 Handle<Value> Uint32Array(const Arguments& args) {
-  return CreateExternalArray(args, kExternalUnsignedIntArray, sizeof(uint32_t));
+  return CreateExternalArray<uint32_t>(
+      args,
+      kExternalUnsignedIntArray);
 }
 
 Handle<Value> Float32Array(const Arguments& args) {
-  return CreateExternalArray(args, kExternalFloatArray, sizeof(float));
+  return CreateExternalArray<float>(
+      args,
+      kExternalFloatArray);
 }
 
 Handle<Value> Float64Array(const Arguments& args) {
-  return CreateExternalArray(args, kExternalDoubleArray, sizeof(double));
+  return CreateExternalArray<double>(
+      args,
+      kExternalDoubleArray);
 }
 
 void ExportTypedArrays(
