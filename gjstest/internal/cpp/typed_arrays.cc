@@ -116,7 +116,18 @@ static void ExternalArrayWeakCallback(Persistent<Value> object, void* data) {
   object.Dispose();
 }
 
-// Common constructor code for all typed arrays.
+// Common constructor code for all typed arrays. The following signatures are
+// supported:
+//
+//     TypedArray(
+//         ArrayBuffer buffer,
+//         optional unsigned long byteOffset,
+//         optional unsigned long length)
+//
+//     TypedArray(unsigned long length)
+//
+//     TypedArray(type[] array)
+//
 static Handle<Value> CreateExternalArray(
     const Arguments& args,
     ExternalArrayType type,
