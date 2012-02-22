@@ -77,7 +77,9 @@ namespace gjstest {
 static const char kArrayBufferReferencePropName[] = "_is_array_buffer_";
 static const char kArrayBufferMarkerPropName[] = "_array_buffer_ref_";
 
-static size_t convertToUint(Local<Value> value_in, TryCatch* try_catch) {
+static size_t ConvertToUint(
+    const Handle<Value>& value_in,
+    TryCatch* try_catch) {
   if (value_in->IsUint32()) {
     return value_in->Uint32Value();
   }
@@ -102,6 +104,7 @@ static size_t convertToUint(Local<Value> value_in, TryCatch* try_catch) {
     ThrowException(
         String::New("Array length exceeds maximum length."));
   }
+
   return static_cast<size_t>(raw_value);
 }
 
@@ -146,6 +149,104 @@ static Handle<Object> CreateExternalArray(
   result->Set(
       String::New("BYTES_PER_ELEMENT"),
       Int32::New(element_size));
+
+  return result;
+}
+
+// Create a typed array from an existing array buffer. The array_buffer
+// reference must be non-empty, but the other two arguments are optional.
+static Handle<Value> CreateExternalArrayFromArrayBuffer(
+    ExternalArrayType element_type,
+    size_t element_size,
+    const Handle<Object>& array_buffer,
+    const Handle<Value>& byte_offset_arg,
+    const Handle<Value>& length_arg) {
+  CHECK(!array_buffer.IsEmpty());
+  CHECK(
+      array_buffer->Get(String::New(kArrayBufferReferencePropName))->
+          IsTrue());
+
+  TryCatch try_catch;
+
+  // Figure out what the length of the existing array buffer is.
+  const size_t array_buffer_length =
+      ConvertToUint(array_buffer->Get(String::New("length")), &try_catch);
+
+  if (try_catch.HasCaught()) {
+    return try_catch.Exception();
+  }
+
+  // Figure out what the offset into the array buffer should be.
+  size_t byte_offset = 0;
+  if (!byte_offset_arg.IsEmpty()) {
+    byte_offset = ConvertToUint(byte_offset_arg, &try_catch);
+    if (try_catch.HasCaught()) {
+      return try_catch.Exception();
+    }
+  }
+
+  // Make sure the offset is legal.
+  if (byte_offset % element_size) {
+    return ThrowException(
+        String::New("Offset must be a multiple of element size."));
+  }
+
+  if (byte_offset > array_buffer_length) {
+    return ThrowException(
+        String::New("Offset must be less than the array buffer length."));
+  }
+
+  // Figure out what the length of the resulting array should be (in elements,
+  // not bytes)
+  size_t length = 0;
+  if (length_arg.IsEmpty()) {
+    // If the length arg is omitted, the array spans from the byte offset to the
+    // end of the array buffer. The size of the range spanned must be a multiple
+    // of the element size.
+    if ((array_buffer_length - byte_offset) % element_size) {
+      return ThrowException(
+          String::New(
+              "Array buffer length minus the byte offset must be a "
+                  "multiple of the element size"));
+
+      length = (array_buffer_length - byte_offset) / element_size;
+    } else {
+      length = ConvertToUint(length_arg, &try_catch);
+      if (try_catch.HasCaught()) {
+        return try_catch.Exception();
+      }
+    }
+  }
+
+  // Make sure the length is legal.
+  if (byte_offset + (length * element_size) > array_buffer_length) {
+    return ThrowException(
+        String::New(
+            "length references an area beyond the end of the array buffer."));
+  }
+
+  // Grab the data property from the array buffer.
+  uint8_t* const data =
+      static_cast<uint8_t*>(
+          array_buffer->GetIndexedPropertiesExternalArrayData());
+
+  if (!data) {
+    return ThrowException(String::New("ArrayBuffer doesn't have data."));
+  }
+
+  // Create the resulting object.
+  const Handle<Object> result =
+      CreateExternalArray(
+          data,
+          length,
+          element_size,
+          element_type);
+
+  // Hold a reference to the ArrayBuffer so its buffer doesn't get collected.
+  result->Set(
+      String::New(kArrayBufferReferencePropName),
+      array_buffer,
+      ReadOnly);
 
   return result;
 }
@@ -232,7 +333,7 @@ static Handle<Value> CreateExternalArray(
          ? args[0]->ToObject()->Get(String::New("length"))
          : args[0])
       : args[2];
-  size_t length = convertToUint(length_value, &try_catch);
+  size_t length = ConvertToUint(length_value, &try_catch);
   if (try_catch.HasCaught()) return try_catch.Exception();
 
   void* data = NULL;
@@ -243,7 +344,7 @@ static Handle<Value> CreateExternalArray(
     Handle<Object> derived_from = args[0]->ToObject();
     data = derived_from->GetIndexedPropertiesExternalArrayData();
 
-    size_t array_buffer_length = convertToUint(
+    size_t array_buffer_length = ConvertToUint(
         derived_from->Get(String::New("length")),
         &try_catch);
     if (try_catch.HasCaught()) return try_catch.Exception();
@@ -254,7 +355,7 @@ static Handle<Value> CreateExternalArray(
     }
 
     if (args.Length() > 1) {
-      offset = convertToUint(args[1], &try_catch);
+      offset = ConvertToUint(args[1], &try_catch);
       if (try_catch.HasCaught()) return try_catch.Exception();
 
       // The given byteOffset must be a multiple of the element size of the
