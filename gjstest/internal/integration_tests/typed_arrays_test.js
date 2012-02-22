@@ -61,6 +61,48 @@ TypedArraysTest.prototype.Int8Array = function() {
   expectEq(kMax - 1, a[0]);
   expectEq(kMin + 2, a[1]);
   expectThat(a, elementsAre([kMax - 1, kMin + 2]));
+
+  // Convert from numbers.
+  var numberArray = [
+      kMin - 1,
+      kMin,
+      kMin + 1,
+      -1.7,
+      0,
+      1.7,
+      kMax - 1,
+      kMax,
+      kMax + 1,
+      NaN,
+      Infinity,
+      -Infinity,
+      -0,
+  ];
+
+  a = new kType(numberArray);
+  expectThat(
+      a,
+      elementsAre([
+          kMax,  // Overflowed
+          kMin,
+          kMin + 1,
+          -1,    // Truncated toward zero
+          0,
+          1,     // Truncated toward zero
+          kMax - 1,
+          kMax,
+          kMin,  // Overflowed
+          0,
+          0,
+          0,
+          0,
+      ]));
+
+  // Converted from non-numbers.
+  var nonNumberArray = ['', '17', 'foo', {}, true];
+
+  a = new kType(nonNumberArray);
+  expectThat(a, elementsAre([0, 17, 0, 0, 1]));
 };
 
 TypedArraysTest.prototype.Int16Array = function() {
