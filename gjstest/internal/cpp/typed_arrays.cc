@@ -116,37 +116,71 @@ static void ExternalArrayWeakCallback(Persistent<Value> object, void* data) {
   object.Dispose();
 }
 
+// Common constructor code for all typed arrays.
 static Handle<Value> CreateExternalArray(
     const Arguments& args,
     ExternalArrayType type,
     size_t element_size) {
   TryCatch try_catch;
-  bool is_array_buffer_construct = element_size == 0;
+
+  // Of the functions that defer to this one, the only one with element_size
+  // equal to zero is the constructor for ArrayBuffer.
+  const bool is_array_buffer_construct = (element_size == 0);
   if (is_array_buffer_construct) {
     type = v8::kExternalByteArray;
     element_size = 1;
   }
-  CHECK(element_size == 1 || element_size == 2 || element_size == 4 ||
-        element_size == 8);
+
+  // We only support these element sizes.
+  CHECK(
+      element_size == 1 ||
+      element_size == 2 ||
+      element_size == 4 ||
+      element_size == 8);
+
+  // We require at least one arg.
   if (args.Length() == 0) {
     return ThrowException(
-        String::New("Array constructor must have at least one "
-                    "parameter."));
+        String::New(
+            "Array constructor must have at least one parameter."));
   }
-  bool first_arg_is_array_buffer =
+
+  // Is this the constructor with the following signature?
+  //
+  //     TypedArray(
+  //         ArrayBuffer buffer,
+  //         optional unsigned long byteOffset,
+  //         optional unsigned long length)
+  //
+  const bool first_arg_is_array_buffer =
       args[0]->IsObject() &&
       args[0]->ToObject()->Get(
           String::New(kArrayBufferMarkerPropName))->IsTrue();
+
+  // Is this the constructor with the following signature?
+  //
+  //     TypedArray(type[] array)
+  //
+  const bool first_arg_is_array = args[0]->IsArray();
+
+  // Check the number of arguments for the array buffer case.
+  if (first_arg_is_array_buffer && args.Length() > 3) {
+    return ThrowException(
+        String::New("Array constructor from ArrayBuffer must "
+                    "have 1-3 parameters."));
+  }
+
+  // Check the number of arguments for the array case.
+  if (first_arg_is_array && args.Length() != 1) {
+    return ThrowException(
+        String::New("Array constructor from array must have 1 parameter."));
+  }
+
   // Currently, only the following constructors are supported:
   //   TypedArray(unsigned long length)
   //   TypedArray(ArrayBuffer buffer,
   //              optional unsigned long byteOffset,
   //              optional unsigned long length)
-  if (args.Length() > 3) {
-    return ThrowException(
-        String::New("Array constructor from ArrayBuffer must "
-                    "have 1-3 parameters."));
-  }
 
   Local<Value> length_value = (args.Length() < 3)
       ? (first_arg_is_array_buffer
