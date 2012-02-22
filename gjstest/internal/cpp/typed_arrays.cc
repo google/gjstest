@@ -49,6 +49,7 @@
 #include "base/logging.h"
 
 using v8::Arguments;
+using v8::Array;
 using v8::ExternalArrayType;
 using v8::FunctionTemplate;
 using v8::Handle;
@@ -317,6 +318,43 @@ static Handle<Value> CreateArrayBuffer(
       ReadOnly);
 
   return result;
+}
+
+// Implement the constructor with this signature:
+//
+//     TypedArray(type[] array)
+//
+template <typename T>
+static Handle<Value> CreateExternalArrayWithArrayArg(
+    ExternalArrayType element_type,
+    const Handle<Array>& array) {
+  CHECK(!array.IsEmpty());
+  TryCatch try_catch;
+
+  const size_t element_size = sizeof(T);
+  const uint32_t num_elements = array->Length();
+
+  // Create the underlying data.
+  T* const data =
+      static_cast<T*>(
+          calloc(num_elements, element_size));
+
+  const size_t offset = 0;
+
+  if (!data) {
+    return ThrowException(String::New("Memory allocation failed."));
+  }
+
+  // Convert each element.
+  for (uint32_t i = 0; i < num_elements; ++i) {
+    data[i] = array->Get(i)->ToInteger()->Value();
+  }
+
+  return CreateExternalArray(
+      data,
+      num_elements,
+      element_size,
+      element_type);
 }
 
 // Common constructor code for all typed arrays. The following signatures are
