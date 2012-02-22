@@ -297,7 +297,14 @@ static Handle<Value> CreateExternalArrayWithLengthArg(
 
 // Implement the ArrayBuffer constructor.
 static Handle<Value> CreateArrayBuffer(
-    const Handle<Value>& length_arg) {
+    const Arguments& args) {
+  // Check the number of arguments.
+  const size_t num_args = args.Length();
+  if (num_args != 1) {
+    return ThrowException(String::New("Expected exactly one argument."));
+  }
+
+  // Create the underlying array.
   const ExternalArrayType element_type = v8::kExternalByteArray;
   const size_t element_size = 1;
 
@@ -305,11 +312,7 @@ static Handle<Value> CreateArrayBuffer(
       CreateExternalArrayWithLengthArg(
           element_type,
           element_size,
-          length_arg);
-
-  if (!result->IsObject()) {
-    return result;
-  }
+          args[0]);
 
   // Mark this as an array buffer, for use by other code in this file.
   result->ToObject()->Set(
@@ -376,16 +379,6 @@ static Handle<Value> CreateExternalArray(
   const size_t element_size = sizeof(T);
   const size_t num_args = args.Length();
 
-  // Of the functions that defer to this one, the only one with element_size
-  // equal to zero is the constructor for ArrayBuffer.
-  if (element_size == 0) {
-    if (num_args != 1) {
-      return ThrowException(String::New("Expected exactly one argument."));
-    }
-
-    return CreateArrayBuffer(args[0]);
-  }
-
   // We only support these element sizes.
   CHECK(
       element_size == 1 ||
@@ -432,9 +425,7 @@ static Handle<Value> CreateExternalArray(
 }
 
 Handle<Value> ArrayBuffer(const Arguments& args) {
-  return CreateExternalArray<uint8_t>(
-      args,
-      kExternalByteArray);
+  return CreateArrayBuffer(args);
 }
 
 Handle<Value> Int8Array(const Arguments& args) {
