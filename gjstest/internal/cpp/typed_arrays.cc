@@ -294,8 +294,6 @@ static Handle<Value> CreateExternalArrayWithLengthArg(
 
   // Create the underlying data buffer.
   void* const data = calloc(length, element_size);
-  const size_t offset = 0;
-
   if (!data) {
     return ThrowException(String::New("Memory allocation failed."));
   }
@@ -349,8 +347,6 @@ static Handle<Value> CreateExternalArrayWithArrayArg(
   T* const data =
       static_cast<T*>(
           calloc(num_elements, element_size));
-
-  const size_t offset = 0;
 
   if (!data) {
     return ThrowException(String::New("Memory allocation failed."));
