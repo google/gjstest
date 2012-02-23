@@ -331,7 +331,17 @@ static Handle<Value> CreateArrayBuffer(
 
 template <typename T>
 static T Convert(const Handle<Value>& v) {
-  return v->ToInteger()->Value();
+  return v->IntegerValue();
+}
+
+template <>
+static float Convert<float>(const Handle<Value>& v) {
+  return v->NumberValue();
+}
+
+template <>
+static double Convert<double>(const Handle<Value>& v) {
+  return v->NumberValue();
 }
 
 // Implement the constructor with this signature:
