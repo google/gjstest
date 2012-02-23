@@ -496,7 +496,8 @@ TypedArraysTest.prototype.Float32Array = function() {
 };
 
 TypedArraysTest.prototype.Float64Array = function() {
-  var a = new Float64Array(2);
+  var kType = Float64Array;
+  var a = new kType(2);
 
   expectEq(8, a.BYTES_PER_ELEMENT);
   expectEq(2, a.length);
@@ -508,6 +509,36 @@ TypedArraysTest.prototype.Float64Array = function() {
   expectEq(17.5, a[0]);
   expectEq(-17.5, a[1]);
   expectThat(a, elementsAre([17.5, -17.5]));
+
+  // Convert from numbers.
+  var numberArray = [
+      -17.75,
+      0,
+      17.75,
+      NaN,
+      Infinity,
+      -Infinity,
+      -0,
+  ];
+
+  a = new kType(numberArray);
+  expectEq(-17.75, a[0]);
+  expectEq(0, a[1]);
+  expectEq(17.75, a[2]);
+  expectTrue(isNaN(a[3]))
+  expectEq(Infinity, a[4]);
+  expectEq(-Infinity, a[5]);
+  expectEq(-0, a[6]);
+
+  // Converted from non-numbers.
+  var nonNumberArray = ['', '17', 'foo', {}, true];
+
+  a = new kType(nonNumberArray);
+  expectEq(0, a[0]);
+  expectEq(17, a[1]);
+  expectTrue(isNaN(a[2]))
+  expectTrue(isNaN(a[3]))
+  expectEq(1, a[4]);
 };
 
 TypedArraysTest.prototype.ArrayBufferContructorErrors = function() {
