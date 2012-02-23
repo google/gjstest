@@ -111,15 +111,28 @@ static size_t ConvertToUint(
   return static_cast<size_t>(raw_value);
 }
 
-static void ExternalArrayWeakCallback(Persistent<Value> object, void* data) {
+// Called when a weak reference expires. If this is a weak reference to an array
+// buffer, we should delete its underlying data.
+static void ExternalArrayWeakCallback(
+    Persistent<Value> val,
+    void* data) {
   HandleScope scope;
-  Handle<String> prop_name = String::New(kArrayBufferReferencePropName);
-  Handle<Object> converted_object = object->ToObject();
-  Local<Value> prop_value = converted_object->Get(prop_name);
-  if (data != NULL && !prop_value->IsObject()) {
+  const Handle<Object> object = val->ToObject();
+
+  // Attempt to get the reference to this array's underlying array buffer.
+  const Local<Value> buffer_reference =
+      object->Get(
+          String::New(
+              kArrayBufferReferencePropName));
+
+  // Free the data if this is an array buffer, rather than a reference to the
+  // array buffer.
+  if (data != NULL && !buffer_reference->IsObject()) {
     free(data);
   }
-  object.Dispose();
+
+  // Dispose of the persistent reference.
+  val.Dispose();
 }
 
 // Create an external array from an underlying set of data. Takes ownership of
