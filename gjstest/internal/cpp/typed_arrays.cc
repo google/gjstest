@@ -329,6 +329,21 @@ static Handle<Value> CreateArrayBuffer(
   return result;
 }
 
+template <typename T>
+static T Convert(const Handle<Value>& v) {
+  return v->IntegerValue();
+}
+
+template <>
+static float Convert<float>(const Handle<Value>& v) {
+  return v->NumberValue();
+}
+
+template <>
+static double Convert<double>(const Handle<Value>& v) {
+  return v->NumberValue();
+}
+
 // Implement the constructor with this signature:
 //
 //     TypedArray(type[] array)
@@ -354,7 +369,7 @@ static Handle<Value> CreateExternalArrayWithArrayArg(
 
   // Convert each element.
   for (uint32_t i = 0; i < num_elements; ++i) {
-    data[i] = array->Get(i)->ToInteger()->Value();
+    data[i] = Convert<T>(array->Get(i));
   }
 
   return CreateExternalArray(
