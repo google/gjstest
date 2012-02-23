@@ -335,12 +335,12 @@ static T Convert(const Handle<Value>& v) {
 }
 
 template <>
-static float Convert<float>(const Handle<Value>& v) {
+float Convert<float>(const Handle<Value>& v) {
   return v->NumberValue();
 }
 
 template <>
-static double Convert<double>(const Handle<Value>& v) {
+double Convert<double>(const Handle<Value>& v) {
   return v->NumberValue();
 }
 
