@@ -541,6 +541,41 @@ TypedArraysTest.prototype.Float64Array = function() {
   expectEq(1, a[4]);
 };
 
+TypedArraysTest.prototype.ConstructFromOtherTypedArray = function() {
+  var a;
+  var b;
+
+  // Integer to larger integer.
+  a = new Int8Array([-128, 0, 127]);
+  b = new Int16Array(a);
+
+  expectThat(b, elementsAre([-128, 0, 127]));
+
+  // Integer to smaller integer.
+  a = new Int16Array([-129, -2, 0, 2, 128]);
+  b = new Int8Array(a);
+
+  expectThat(b, elementsAre([127, -2, 0, 2, -128]));
+
+  // Signed to unsigned.
+  a = new Int8Array([-128, -1, 0, 10, 127]);
+  b = new Uint8Array(a);
+
+  expectThat(b, elementsAre([128, 255, 0, 10, 127]));
+
+  // Unsigned to signed.
+  a = new Uint8Array([0, 17, 127, 128, 255]);
+  b = new Int8Array(a);
+
+  expectThat(b, elementsAre([0, 17, 127, -128, -1]));
+
+  // Float to integer.
+  a = new Float32Array([-129, -128, -1.7, 0, 1.7, 127, 128, NaN]);
+  b = new Int8Array(a);
+
+  expectThat(b, elementsAre([127, -128, -1, 0, 1, 127, -128, 0]));
+};
+
 TypedArraysTest.prototype.ArrayBufferContructorErrors = function() {
   var f;
 

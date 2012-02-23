@@ -49,7 +49,6 @@
 #include "base/logging.h"
 
 using v8::Arguments;
-using v8::Array;
 using v8::ExternalArrayType;
 using v8::FunctionTemplate;
 using v8::Handle;
@@ -77,6 +76,7 @@ namespace gjstest {
 
 static const char kArrayBufferReferencePropName[] = "_is_array_buffer_";
 static const char kArrayBufferMarkerPropName[] = "_array_buffer_ref_";
+static const char kTypedArrayMarkerPropName[] = "_is_typed_array_";
 
 static size_t ConvertToUint(
     const Handle<Value>& value_in,
@@ -141,7 +141,8 @@ static Handle<Object> CreateExternalArray(
     void* data,
     size_t num_elements,
     size_t element_size,
-    ExternalArrayType element_type) {
+    ExternalArrayType element_type,
+    bool is_typed_array) {
   Handle<Object> result = Object::New();
 
   // Create a weak reference to the handle that will delete the underlying data
@@ -166,12 +167,26 @@ static Handle<Object> CreateExternalArray(
       String::New("BYTES_PER_ELEMENT"),
       Int32::New(element_size));
 
+  // Mark this as a typed array object if it is one.
+  if (is_typed_array) {
+    result->Set(
+        String::New(kTypedArrayMarkerPropName),
+        True(),
+        ReadOnly);
+  }
+
   return result;
 }
 
 static bool IsArrayBuffer(const Handle<Value>& val) {
   return val->IsObject() &&
          val->ToObject()->Get(String::New(kArrayBufferMarkerPropName))->
+             IsTrue();
+}
+
+static bool IsTypedArray(const Handle<Value>& val) {
+  return val->IsObject() &&
+         val->ToObject()->Get(String::New(kTypedArrayMarkerPropName))->
              IsTrue();
 }
 
@@ -262,7 +277,8 @@ static Handle<Value> CreateExternalArrayFromArrayBuffer(
           static_cast<uint8_t*>(data) + byte_offset,
           length,
           element_size,
-          element_type);
+          element_type,
+          false);
 
   // Hold a reference to the ArrayBuffer so its buffer doesn't get collected.
   result->Set(
@@ -298,7 +314,12 @@ static Handle<Value> CreateExternalArrayWithLengthArg(
     return ThrowException(String::New("Memory allocation failed."));
   }
 
-  return CreateExternalArray(data, length, element_size, element_type);
+  return CreateExternalArray(
+      data,
+      length,
+      element_size,
+      element_type,
+      true);
 }
 
 // Implement the ArrayBuffer constructor.
@@ -351,12 +372,23 @@ double Convert<double>(const Handle<Value>& v) {
 template <typename T>
 static Handle<Value> CreateExternalArrayWithArrayArg(
     ExternalArrayType element_type,
-    const Handle<Array>& array) {
+    const Handle<Object>& array) {
   CHECK(!array.IsEmpty());
   TryCatch try_catch;
-
   const size_t element_size = sizeof(T);
-  const uint32_t num_elements = array->Length();
+
+  // Try to figure out the length of the array or typed array.
+  const Local<Value> length_property = array->Get(String::New("length"));
+  CHECK(!length_property.IsEmpty());
+
+  const size_t num_elements =
+      ConvertToUint(
+          length_property,
+          &try_catch);
+
+  if (try_catch.HasCaught()) {
+    return try_catch.Exception();
+  }
 
   // Create the underlying data.
   T* const data =
@@ -376,7 +408,8 @@ static Handle<Value> CreateExternalArrayWithArrayArg(
       data,
       num_elements,
       element_size,
-      element_type);
+      element_type,
+      true);
 }
 
 // Common constructor code for all typed arrays. The following signatures are
@@ -389,6 +422,7 @@ static Handle<Value> CreateExternalArrayWithArrayArg(
 //
 //     TypedArray(unsigned long length)
 //
+//     TypedArray(TypedArray array)
 //     TypedArray(type[] array)
 //
 template <typename T>
@@ -437,14 +471,15 @@ static Handle<Value> CreateExternalArray(
     return ThrowException(String::New("Expected exactly one argument."));
   }
 
-  // Is this the constructor with the following signature?
+  // Is this a constructor with one of the following signatures?
   //
+  //     TypedArray(TypedArray array)
   //     TypedArray(type[] array)
   //
-  if (args[0]->IsArray()) {
+  if (args[0]->IsArray() || IsTypedArray(args[0])) {
     return CreateExternalArrayWithArrayArg<T>(
         element_type,
-        Local<Array>::Cast(args[0]));
+        args[0]->ToObject());
   }
 
   // Otherwise, this is the constructor with the following signature:
