@@ -65,6 +65,9 @@ FailingTest.prototype.NumberExpectations = function() {
 FailingTest.prototype.UserErrors = function() {
   expectThat('taco', hasSubstr('burrito'), 'foo');
   expectEq('', 'a', 'foo');
+  expectNe('a', 'a', 'foo');
+  expectFalse(true, 'foo');
+  expectTrue(false, 'foo');
   expectGe(0, 1, 'foo');
   expectGt(0, 0, 'foo');
   expectLe(3, 2, 'foo');

@@ -90,21 +90,36 @@ Actual:   'a'
 foo
 
 failing_test.js:68
+Expected: does not equal: 'a'
+Actual:   'a'
+foo
+
+failing_test.js:69
+Expected: false
+Actual:   true
+foo
+
+failing_test.js:70
+Expected: true
+Actual:   false
+foo
+
+failing_test.js:71
 Expected: is greater than or equal to 1
 Actual:   0
 foo
 
-failing_test.js:69
+failing_test.js:72
 Expected: is greater than 0
 Actual:   0
 foo
 
-failing_test.js:70
+failing_test.js:73
 Expected: is less than or equal to 2
 Actual:   3
 foo
 
-failing_test.js:71
+failing_test.js:74
 Expected: is less than 2
 Actual:   2
 foo
