@@ -17,6 +17,8 @@
 [       OK ] TypedArraysTest.Float32Array (1 ms)
 [ RUN      ] TypedArraysTest.Float64Array
 [       OK ] TypedArraysTest.Float64Array (1 ms)
+[ RUN      ] TypedArraysTest.ConstructFromOtherTypedArray
+[       OK ] TypedArraysTest.ConstructFromOtherTypedArray (1 ms)
 [ RUN      ] TypedArraysTest.ArrayBufferContructorErrors
 [       OK ] TypedArraysTest.ArrayBufferContructorErrors (1 ms)
 [ RUN      ] TypedArraysTest.TypedArrayContructorErrors
