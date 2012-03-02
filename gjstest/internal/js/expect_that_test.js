@@ -89,9 +89,14 @@ ExpectThatTest.prototype.MatcherReturnsStringAndUserGivesErrorMessage =
     .willOnce(returnWith('burrito'));
 
   expectCall(this.reportFailure_)(
-      '"Grande Failure": Expected: desc\nActual:   burrito, which has too ' +
-      'few tacos');
+      'Expected: desc\n' +
+          'Actual:   burrito, which has too few tacos\n' +
+          'Grande Failure');
 
-  internalExpectThat(obj, this.matcher_, this.stringify_,
-                     this.reportFailure_, 'Grande Failure');
+  internalExpectThat(
+      obj,
+      this.matcher_,
+      this.stringify_,
+      this.reportFailure_,
+      'Grande Failure');
 };
