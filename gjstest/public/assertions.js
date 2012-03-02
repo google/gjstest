@@ -29,7 +29,10 @@
  *     An optional error message to report on a failed expectation.
  */
 gjstest.expectThat = function(obj, matcher, errorMessage) {
-  gjstest.internal.callInternalExpectThat_(obj, matcher, errorMessage);
+  gjstest.internal.callInternalExpectThat_(
+      obj,
+      matcher,
+      errorMessage);
 };
 
 /**
@@ -90,7 +93,10 @@ gjstest.expectLt = function(a, b, errorMessage) {
  *     An optional error message to report on a failed expectation.
  */
 gjstest.expectLe = function(a, b, errorMessage) {
-  gjstest.internal.callInternalExpectThat_(a, gjstest.lessOrEqual(b));
+  gjstest.internal.callInternalExpectThat_(
+      a,
+      gjstest.lessOrEqual(b),
+      errorMessage);
 };
 
 /**
@@ -119,7 +125,10 @@ gjstest.expectGt = function(a, b, errorMessage) {
  *     An optional error message to report on a failed expectation.
  */
 gjstest.expectGe = function(a, b, errorMessage) {
-  gjstest.internal.callInternalExpectThat_(a, gjstest.greaterOrEqual(b));
+  gjstest.internal.callInternalExpectThat_(
+      a,
+      gjstest.greaterOrEqual(b),
+      errorMessage);
 };
 
 /**
