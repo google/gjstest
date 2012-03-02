@@ -24,9 +24,15 @@
  *
  * @param {!gjstest.Matcher} matcher
  *     The matcher against which to verify the object.
+ *
+ * @param {string=} errorMessage
+ *     An optional error message to report on a failed expectation.
  */
-gjstest.expectThat = function(obj, matcher) {
-  gjstest.internal.callInternalExpectThat_(obj, matcher);
+gjstest.expectThat = function(obj, matcher, errorMessage) {
+  gjstest.internal.callInternalExpectThat_(
+      obj,
+      matcher,
+      errorMessage);
 };
 
 /**
@@ -35,9 +41,14 @@ gjstest.expectThat = function(obj, matcher) {
  *
  * @param {*} expected
  * @param {*} actual
+ * @param {string=} errorMessage
+ *     An optional error message to report on a failed expectation.
  */
-gjstest.expectEq = function(expected, actual) {
-  gjstest.internal.callInternalExpectThat_(actual, gjstest.equals(expected));
+gjstest.expectEq = function(expected, actual, errorMessage) {
+  gjstest.internal.callInternalExpectThat_(
+      actual,
+      gjstest.equals(expected),
+      errorMessage);
 };
 
 /**
@@ -46,11 +57,14 @@ gjstest.expectEq = function(expected, actual) {
  *
  * @param {*} expected
  * @param {*} actual
+ * @param {string=} errorMessage
+ *     An optional error message to report on a failed expectation.
  */
-gjstest.expectNe = function(expected, actual) {
+gjstest.expectNe = function(expected, actual, errorMessage) {
   gjstest.internal.callInternalExpectThat_(
       actual,
-      gjstest.not(gjstest.equals((expected))));
+      gjstest.not(gjstest.equals((expected))),
+      errorMessage);
 };
 
 /**
@@ -59,9 +73,14 @@ gjstest.expectNe = function(expected, actual) {
  *
  * @param {number} a
  * @param {number} b
+ * @param {string=} errorMessage
+ *     An optional error message to report on a failed expectation.
  */
-gjstest.expectLt = function(a, b) {
-  gjstest.internal.callInternalExpectThat_(a, gjstest.lessThan(b));
+gjstest.expectLt = function(a, b, errorMessage) {
+  gjstest.internal.callInternalExpectThat_(
+      a,
+      gjstest.lessThan(b),
+      errorMessage);
 };
 
 /**
@@ -70,9 +89,14 @@ gjstest.expectLt = function(a, b) {
  *
  * @param {number} a
  * @param {number} b
+ * @param {string=} errorMessage
+ *     An optional error message to report on a failed expectation.
  */
-gjstest.expectLe = function(a, b) {
-  gjstest.internal.callInternalExpectThat_(a, gjstest.lessOrEqual(b));
+gjstest.expectLe = function(a, b, errorMessage) {
+  gjstest.internal.callInternalExpectThat_(
+      a,
+      gjstest.lessOrEqual(b),
+      errorMessage);
 };
 
 /**
@@ -81,9 +105,14 @@ gjstest.expectLe = function(a, b) {
  *
  * @param {number} a
  * @param {number} b
+ * @param {string=} errorMessage
+ *     An optional error message to report on a failed expectation.
  */
-gjstest.expectGt = function(a, b) {
-  gjstest.internal.callInternalExpectThat_(a, gjstest.greaterThan(b));
+gjstest.expectGt = function(a, b, errorMessage) {
+  gjstest.internal.callInternalExpectThat_(
+      a,
+      gjstest.greaterThan(b),
+      errorMessage);
 };
 
 /**
@@ -92,9 +121,14 @@ gjstest.expectGt = function(a, b) {
  *
  * @param {number} a
  * @param {number} b
+ * @param {string=} errorMessage
+ *     An optional error message to report on a failed expectation.
  */
-gjstest.expectGe = function(a, b) {
-  gjstest.internal.callInternalExpectThat_(a, gjstest.greaterOrEqual(b));
+gjstest.expectGe = function(a, b, errorMessage) {
+  gjstest.internal.callInternalExpectThat_(
+      a,
+      gjstest.greaterOrEqual(b),
+      errorMessage);
 };
 
 /**
@@ -102,9 +136,14 @@ gjstest.expectGe = function(a, b) {
  *     expectThat(actual, equals(false))
  *
  * @param {*} actual
+ * @param {string=} errorMessage
+ *     An optional error message to report on a failed expectation.
  */
-gjstest.expectFalse = function(actual) {
-  gjstest.internal.callInternalExpectThat_(actual, gjstest.equals(false));
+gjstest.expectFalse = function(actual, errorMessage) {
+  gjstest.internal.callInternalExpectThat_(
+      actual,
+      gjstest.equals(false),
+      errorMessage);
 };
 
 /**
@@ -112,9 +151,14 @@ gjstest.expectFalse = function(actual) {
  *     expectThat(actual, equals(true))
  *
  * @param {*} actual
+ * @param {string=} errorMessage
+ *     An optional error message to report on a failed expectation.
  */
-gjstest.expectTrue = function(actual) {
-  gjstest.internal.callInternalExpectThat_(actual, gjstest.equals(true));
+gjstest.expectTrue = function(actual, errorMessage) {
+  gjstest.internal.callInternalExpectThat_(
+      actual,
+      gjstest.equals(true),
+      errorMessage);
 };
 
 ///////////////////////////
@@ -126,10 +170,16 @@ gjstest.expectTrue = function(actual) {
  *
  * @param {*} obj
  * @param {!gjstest.Matcher} matcher
+ * @param {string=} errorMessage
+ *     An optional error message to report on a failed expectation.
  *
  * @private
  */
-gjstest.internal.callInternalExpectThat_ = function(obj, matcher) {
+gjstest.internal.callInternalExpectThat_ =
+    function(
+        obj,
+        matcher,
+        errorMessage) {
   var testEnvironment = gjstest.internal.currentTestEnvironment;
   if (!testEnvironment) {
     throw new Error('No test environment registered');
@@ -147,7 +197,8 @@ gjstest.internal.callInternalExpectThat_ = function(obj, matcher) {
       obj,
       matcher,
       gjstest.stringify,
-      testEnvironment.reportFailure);
+      testEnvironment.reportFailure,
+      errorMessage);
 
   testEnvironment.clearUserStack();
 };

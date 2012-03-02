@@ -10,6 +10,8 @@ foo bar
 [       OK ] PassingTest.Logging (1 ms)
 [ RUN      ] PassingTest.NumberExpectations
 [       OK ] PassingTest.NumberExpectations (1 ms)
+[ RUN      ] PassingTest.UserErrors
+[       OK ] PassingTest.UserErrors (1 ms)
 [----------]
 
 [  PASSED  ]

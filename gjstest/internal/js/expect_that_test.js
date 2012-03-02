@@ -77,3 +77,26 @@ ExpectThatTest.prototype.MatcherReturnsString = function() {
 
   internalExpectThat(obj, this.matcher_, this.stringify_, this.reportFailure_);
 };
+
+ExpectThatTest.prototype.MatcherReturnsStringAndUserGivesErrorMessage =
+    function() {
+  var obj = {};
+
+  expectCall(this.predicate_)(_)
+    .willOnce(returnWith('which has too few tacos'));
+
+  expectCall(this.stringify_)(obj)
+    .willOnce(returnWith('burrito'));
+
+  expectCall(this.reportFailure_)(
+      'Expected: desc\n' +
+          'Actual:   burrito, which has too few tacos\n' +
+          'Grande Failure');
+
+  internalExpectThat(
+      obj,
+      this.matcher_,
+      this.stringify_,
+      this.reportFailure_,
+      'Grande Failure');
+};

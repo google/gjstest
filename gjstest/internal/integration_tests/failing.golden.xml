@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Google JS tests" failures="5" time="0.01">
+<testsuite name="Google JS tests" failures="6" time="0.01">
  <testcase name="FailingTest.PassingTest1" time="0.01"/>
  <testcase name="FailingTest.FailingTest1" time="0.01">
   <failure><![CDATA[failing_test.js:27
@@ -70,5 +70,36 @@ Actual:   7
 failing_test.js:62
 Expected: is greater than or equal to 9
 Actual:   7]]></failure>
+ </testcase>
+ <testcase name="FailingTest.UserErrors" time="0.01">
+  <failure><![CDATA[failing_test.js:66
+Expected: is a string containing the substring 'burrito'
+Actual:   'taco'
+foo
+
+failing_test.js:67
+Expected: ''
+Actual:   'a'
+foo
+
+failing_test.js:68
+Expected: is greater than or equal to 1
+Actual:   0
+foo
+
+failing_test.js:69
+Expected: is greater than 0
+Actual:   0
+foo
+
+failing_test.js:70
+Expected: is less than or equal to 2
+Actual:   3
+foo
+
+failing_test.js:71
+Expected: is less than 2
+Actual:   2
+foo]]></failure>
  </testcase>
 </testsuite>
