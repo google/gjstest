@@ -32,12 +32,15 @@
  *     A function that will be called with a descriptive error message in the
  *     event of failure.
  *
+ * @param {string|undefined} errorMessage
+ *     An optional error message to report with a failure.
  */
 gjstest.internal.expectThat = function(
     obj,
     matcher,
     stringify,
-    reportFailure) {
+    reportFailure,
+    errorMessage) {
   // Ask the matcher about the object.
   var predicateResult = matcher.predicate(obj);
 
@@ -53,6 +56,10 @@ gjstest.internal.expectThat = function(
   // Add a clause like "which has length 7" if one is available.
   if (typeof(predicateResult) == 'string') {
     failureMessage += ', ' + predicateResult;
+  }
+
+  if (errorMessage != null) {
+    failureMessage += '\n' + errorMessage;
   }
 
   // Report the failure.
