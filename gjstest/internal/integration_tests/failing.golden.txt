@@ -78,6 +78,36 @@ Expected: is greater than or equal to 9
 Actual:   7
 
 [  FAILED  ] FailingTest.NumberExpectations (1 ms)
+[ RUN      ] FailingTest.UserErrors
+failing_test.js:66
+Expected: is a string containing the substring 'burrito'
+Actual:   'taco'
+foo
+
+failing_test.js:67
+Expected: ''
+Actual:   'a'
+foo
+
+failing_test.js:68
+Expected: is greater than or equal to 1
+Actual:   0
+
+failing_test.js:69
+Expected: is greater than 0
+Actual:   0
+foo
+
+failing_test.js:70
+Expected: is less than or equal to 2
+Actual:   3
+
+failing_test.js:71
+Expected: is less than 2
+Actual:   2
+foo
+
+[  FAILED  ] FailingTest.UserErrors (1 ms)
 [----------]
 
 [  FAILED  ]

@@ -5,4 +5,5 @@
  <testcase name="PassingTest.StringMatchers" time="0.01"/>
  <testcase name="PassingTest.Logging" time="0.01"/>
  <testcase name="PassingTest.NumberExpectations" time="0.01"/>
+ <testcase name="PassingTest.UserErrors" time="0.01"/>
 </testsuite>
