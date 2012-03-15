@@ -137,10 +137,6 @@ class ArrayBuffer {
     }
 
     size_t num_bytes = args[0]->Uint32Value();
-    if (num_bytes > node::Buffer::kMaxLength) {
-      return ThrowRangeError("length > kMaxLength");
-    }
-
     void* buf = calloc(num_bytes, 1);
     if (!buf)
       return ThrowError("Unable to allocate ArrayBuffer.");
@@ -229,8 +225,7 @@ class TypedArray {
     unsigned int byte_offset = 0;
 
     // [m1k3] added support for Buffer constructor
-    if (node::Buffer::HasInstance(args[0])
-        || ArrayBuffer::HasInstance(args[0])) {  // ArrayBuffer constructor.
+    if (ArrayBuffer::HasInstance(args[0])) {  // ArrayBuffer constructor.
       buffer = v8::Local<v8::Object>::Cast(args[0]);
       unsigned int buflen =
           buffer->GetIndexedPropertiesExternalArrayDataLength();
@@ -862,5 +857,3 @@ void AttachBindings(v8::Handle<v8::Object> obj) {
 }
 
 }  // namespace v8_typed_array
-
-NODE_MODULE(node_typed_array, v8_typed_array::AttachBindings)
