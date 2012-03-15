@@ -831,7 +831,7 @@ class DataView {
 
 namespace gjstest {
 
-void ExportTypedArrays(const v8::Handle<v8::ObjectTemplate>& obj) {
+void ExportTypedArrays(const v8::Handle<v8::Object>& obj) {
   v8::HandleScope scope;
 
   obj->Set(v8::String::New("ArrayBuffer"),

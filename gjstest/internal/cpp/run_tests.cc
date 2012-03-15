@@ -215,11 +215,11 @@ bool RunTests(
 
   // Create a context in which to run scripts and ensure that it's used whenever
   // a context is needed below.
-  Handle<ObjectTemplate> global_template = ObjectTemplate::New();
-  ExportTypedArrays(global_template);
-
-  Persistent<Context> context = Context::New(NULL, global_template);
+  Persistent<Context> context = Context::New();
   Context::Scope context_scope(context);
+
+  // Add support for typed arrays.
+  ExportTypedArrays(context->Global());
 
   // Run all of the scripts.
   for (uint32 i = 0; i < scripts.script_size(); ++i) {
