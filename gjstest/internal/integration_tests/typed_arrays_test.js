@@ -14,7 +14,10 @@
 // limitations under the License.
 
 // A test file with test cases that use typed array types, for use by
-// integration_test.cc.
+// integration_test.cc. The reference when writing these tests is the spec:
+//
+//     http://www.khronos.org/registry/typedarray/specs/latest/
+//
 
 function TypedArraysTest() {}
 registerTestSuite(TypedArraysTest);
@@ -33,6 +36,17 @@ TypedArraysTest.prototype.ArrayBuffer = function() {
   bytes[3] = 0x78;
 
   expectEq(0x7856, last16[0]);
+}
+
+TypedArraysTest.prototype.ArrayBufferView = function() {
+  var buffer = new ArrayBuffer(100);
+  var view;
+
+  // Typed array classes implement the ArrayBufferView interface.
+  view = new Uint16Array(buffer, 10, 4);
+  expectEq(buffer, view.buffer);
+  expectEq(10, view.byteOffset);
+  expectEq(4 * 2, view.byteLength);
 }
 
 TypedArraysTest.prototype.Int8Array = function() {
