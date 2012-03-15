@@ -42,16 +42,9 @@
 #include <stdlib.h>  // calloc, etc
 #include <string.h>  // memmove
 
-#include "v8_typed_array.h"
-#include "node_buffer.h"
-#include "node.h"
-#include "v8.h"
+#include "gjstest/internal/cpp/typed_arrays.h"
 
 namespace {
-
-using node::ThrowRangeError;
-using node::ThrowTypeError;
-using node::ThrowError;
 
 struct BatchedMethods {
   const char* name;
