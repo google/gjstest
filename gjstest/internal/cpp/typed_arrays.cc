@@ -46,6 +46,39 @@
 
 namespace {
 
+namespace v8_typed_array {
+int SizeOfArrayElementForType(v8::ExternalArrayType type) {
+  switch (type) {
+    case v8::kExternalByteArray:
+    case v8::kExternalUnsignedByteArray:
+      return 1;
+    case v8::kExternalShortArray:
+    case v8::kExternalUnsignedShortArray:
+      return 2;
+    case v8::kExternalIntArray:
+    case v8::kExternalUnsignedIntArray:
+    case v8::kExternalFloatArray:
+      return 4;
+    case v8::kExternalDoubleArray:
+      return 8;
+    default:
+      return 0;
+  }
+}
+}
+
+inline static v8::Handle<v8::Value> ThrowError(const char* errmsg) {
+  return v8::ThrowException(v8::Exception::Error(v8::String::New(errmsg)));
+}
+
+inline static v8::Handle<v8::Value> ThrowTypeError(const char* errmsg) {
+  return v8::ThrowException(v8::Exception::TypeError(v8::String::New(errmsg)));
+}
+
+inline static v8::Handle<v8::Value> ThrowRangeError(const char* errmsg) {
+  return v8::ThrowException(v8::Exception::RangeError(v8::String::New(errmsg)));
+}
+
 struct BatchedMethods {
   const char* name;
   v8::Handle<v8::Value> (*func)(const v8::Arguments& args);
@@ -826,25 +859,6 @@ void AttachBindings(v8::Handle<v8::Object> obj) {
            Float64Array::GetTemplate()->GetFunction());
   obj->Set(v8::String::New("DataView"),
            DataView::GetTemplate()->GetFunction());
-}
-
-int SizeOfArrayElementForType(v8::ExternalArrayType type) {
-  switch (type) {
-    case v8::kExternalByteArray:
-    case v8::kExternalUnsignedByteArray:
-      return 1;
-    case v8::kExternalShortArray:
-    case v8::kExternalUnsignedShortArray:
-      return 2;
-    case v8::kExternalIntArray:
-    case v8::kExternalUnsignedIntArray:
-    case v8::kExternalFloatArray:
-      return 4;
-    case v8::kExternalDoubleArray:
-      return 8;
-    default:
-      return 0;
-  }
 }
 
 }  // namespace v8_typed_array
