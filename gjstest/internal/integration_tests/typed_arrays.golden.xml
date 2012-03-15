@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuite name="Google JS tests" failures="0" time="0.01">
  <testcase name="TypedArraysTest.ArrayBuffer" time="0.01"/>
+ <testcase name="TypedArraysTest.ArrayBufferView" time="0.01"/>
  <testcase name="TypedArraysTest.Int8Array" time="0.01"/>
  <testcase name="TypedArraysTest.Int16Array" time="0.01"/>
  <testcase name="TypedArraysTest.Int32Array" time="0.01"/>
