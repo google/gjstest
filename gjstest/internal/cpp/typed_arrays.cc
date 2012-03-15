@@ -829,9 +829,9 @@ class DataView {
 
 }  // namespace
 
-namespace v8_typed_array {
+namespace gjstest {
 
-void AttachBindings(v8::Handle<v8::Object> obj) {
+void ExportTypedArrays(const v8::Handle<v8::ObjectTemplate>& obj) {
   v8::HandleScope scope;
 
   obj->Set(v8::String::New("ArrayBuffer"),
@@ -856,4 +856,4 @@ void AttachBindings(v8::Handle<v8::Object> obj) {
            DataView::GetTemplate()->GetFunction());
 }
 
-}  // namespace v8_typed_array
+}  // namespace gjstest
