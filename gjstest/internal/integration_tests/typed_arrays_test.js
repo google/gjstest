@@ -626,17 +626,17 @@ TypedArraysTest.prototype.TypedArrayContructorErrors = function() {
   // Offset not a multiple of element size.
   buffer = new ArrayBuffer(6);
   f = function() { new Uint16Array(buffer, 1, 1) };
-  expectThat(f, throwsError(/INDEX_SIZE_ERR|multiple of/));
+  expectThat(f, throwsError(/INDEX_SIZE_ERR|offset.*not aligned/));
 
   // View runs off end of buffer.
   buffer = new ArrayBuffer(6);
   f = function() { new Uint16Array(buffer, 2, 3) };
-  expectThat(f, throwsError(/INDEX_SIZE_ERR|beyond the end/));
+  expectThat(f, throwsError(/INDEX_SIZE_ERR|Length.*out of range/));
 
   // Buffer length minus offset not multiple of element size.
   buffer = new ArrayBuffer(5);
   f = function() { new Uint16Array(buffer, 2) };
-  expectThat(f, throwsError(/INDEX_SIZE_ERR|minus.*multiple of/));
+  expectThat(f, throwsError(/INDEX_SIZE_ERR|not aligned/));
 
   // No arguments. This should be an error according to the spec, but Chrome
   // doesn't treat it as one. In order to make sure this test runs correctly in
