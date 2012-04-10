@@ -92,7 +92,6 @@ gjstest.internal.browser.runSoon_ = (function(win) {
   };
 })(this);  // Use 'this' as an alias to 'window': it makes the compiler happier.
 
-
 /**
  * Removes the suite name from the given test name, if it is present.
  * @param {string} suiteName
