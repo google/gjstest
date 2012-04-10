@@ -72,6 +72,16 @@ ExceptionTest.prototype.CustomExceptionClassWithToString = function() {
 ExceptionTest.prototype.PassingTest = function() {
 };
 
+ExceptionTest.prototype.ExceptionWithUnsatisfiedMockExpectations = function() {
+  var foo = createMockFunction();
+  expectCall(foo)(17);
+  expectCall(foo)(19);
+
+  // Call a non-function.
+  var bar = {};
+  bar();
+};
+
 // A test constructor that throws an error.
 function ThrowingConstructorTest() {
   throw new Error('taco');

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Google JS tests" failures="10" time="0.01">
+<testsuite name="Google JS tests" failures="11" time="0.01">
  <testcase name="ExceptionTest.ReferenceError" time="0.01">
   <failure><![CDATA[exception_test.js:23
 ReferenceError: fooBar is not defined]]></failure>
@@ -35,8 +35,22 @@ TypeError: Object function foo() {
   <failure><![CDATA[SomeException]]></failure>
  </testcase>
  <testcase name="ExceptionTest.PassingTest" time="0.01"/>
+ <testcase name="ExceptionTest.ExceptionWithUnsatisfiedMockExpectations" time="0.01">
+  <failure><![CDATA[exception_test.js:82
+TypeError: object is not a function
+
+Unsatisfied expectation at exception_test.js:77:
+    Arg 0: 17
+
+Expected 1 call; called 0 times.
+
+Unsatisfied expectation at exception_test.js:78:
+    Arg 0: 19
+
+Expected 1 call; called 0 times.]]></failure>
+ </testcase>
  <testcase name="ThrowingConstructorTest.SomeTest" time="0.01">
-  <failure><![CDATA[exception_test.js:77
+  <failure><![CDATA[exception_test.js:87
 Error: taco]]></failure>
  </testcase>
 </testsuite>
