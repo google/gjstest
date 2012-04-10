@@ -44,11 +44,16 @@ SomeException
 [  FAILED  ] ExceptionTest.CustomExceptionClassWithToString (1 ms)
 [ RUN      ] ExceptionTest.PassingTest
 [       OK ] ExceptionTest.PassingTest (1 ms)
+[ RUN      ] ExceptionTest.ExceptionWithUnsatisfiedMockExpectations
+exception_test.js:82
+TypeError: object is not a function
+
+[  FAILED  ] ExceptionTest.ExceptionWithUnsatisfiedMockExpectations (1 ms)
 [----------]
 
 [----------]
 [ RUN      ] ThrowingConstructorTest.SomeTest
-exception_test.js:77
+exception_test.js:87
 Error: taco
 
 [  FAILED  ] ThrowingConstructorTest.SomeTest (1 ms)
