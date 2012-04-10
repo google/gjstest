@@ -22,9 +22,6 @@
 gjstest.internal.runTestsInBrowser = function(pageTitle) {
   document.title = pageTitle;
 
-  // Grab hold of window.setTimeout in case a test mocks it out.
-  var setTimeout = window.setTimeout;
-
   // Iterate through the registered test suites to construct browser-specific
   // test suite and case objects.
   var testSuites = {};
@@ -59,7 +56,7 @@ gjstest.internal.runTestsInBrowser = function(pageTitle) {
     // Take one test off the list, returning immediately if there are none left.
     var testCase = allCases.shift();
     if (!testCase) return;
-    setTimeout(function() {
+    gjstest.internal.browser.runSoon_(function() {
       var passed = testCase.run();
       ++testsRun;
       if (passed) ++testsPassed;
@@ -68,7 +65,7 @@ gjstest.internal.runTestsInBrowser = function(pageTitle) {
                                          !allCases.length);
       // Start the next test.
       runOneTest();
-    }, 0);
+    });
   };
   runOneTest();
 };
@@ -78,6 +75,23 @@ gjstest.internal.runTestsInBrowser = function(pageTitle) {
  * The namespace for helper functions and classes for the browser runner.
  */
 gjstest.internal.browser = {};
+
+/**
+ * A wrapped version of window.setTimeout which always uses delay 0ms. We
+ * capture the value of window and setTimeout so that it still works even if the
+ * test code modifies/masks setTimeout.
+ *
+ * @param {Function} fn
+ * @private
+ */
+gjstest.internal.browser.runSoon_ = (function(win) {
+  /** @type {Window} */(win);
+  var setTimeout = win.setTimeout;
+  return function(fn) {
+    setTimeout.call(win, fn, 0);
+  };
+})(this);  // Use 'this' as an alias to 'window': it makes the compiler happier.
+
 
 /**
  * Removes the suite name from the given test name, if it is present.
