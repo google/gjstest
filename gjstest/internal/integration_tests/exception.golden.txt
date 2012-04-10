@@ -48,16 +48,6 @@ SomeException
 exception_test.js:82
 TypeError: object is not a function
 
-Unsatisfied expectation at exception_test.js:77:
-    Arg 0: 17
-
-Expected 1 call; called 0 times.
-
-Unsatisfied expectation at exception_test.js:78:
-    Arg 0: 19
-
-Expected 1 call; called 0 times.
-
 [  FAILED  ] ExceptionTest.ExceptionWithUnsatisfiedMockExpectations (1 ms)
 [----------]
 

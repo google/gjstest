@@ -37,17 +37,7 @@ TypeError: Object function foo() {
  <testcase name="ExceptionTest.PassingTest" time="0.01"/>
  <testcase name="ExceptionTest.ExceptionWithUnsatisfiedMockExpectations" time="0.01">
   <failure><![CDATA[exception_test.js:82
-TypeError: object is not a function
-
-Unsatisfied expectation at exception_test.js:77:
-    Arg 0: 17
-
-Expected 1 call; called 0 times.
-
-Unsatisfied expectation at exception_test.js:78:
-    Arg 0: 19
-
-Expected 1 call; called 0 times.]]></failure>
+TypeError: object is not a function]]></failure>
  </testcase>
  <testcase name="ThrowingConstructorTest.SomeTest" time="0.01">
   <failure><![CDATA[exception_test.js:87

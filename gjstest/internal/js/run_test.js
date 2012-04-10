@@ -26,6 +26,9 @@ gjstest.internal.runTest = function runTest(testFn, testEnvironment) {
   // Register the test environment and run the test.
   gjstest.internal.currentTestEnvironment = testEnvironment;
 
+  // Keep track of whether we reported an exception failure.
+  var threwException = false;
+
   try {
     testFn();
   } catch (error) {
@@ -72,6 +75,7 @@ gjstest.internal.runTest = function runTest(testFn, testEnvironment) {
     }
 
     testEnvironment.reportFailure(failureMessage);
+    threwException = true;
   }
 
   // Make sure each mock expectation was satisfied.
@@ -85,7 +89,9 @@ gjstest.internal.runTest = function runTest(testFn, testEnvironment) {
     var unsatisfiedMessage =
         gjstest.internal.checkExpectationSatisfied(expectation);
 
-    if (unsatisfiedMessage != null) {
+    // Don't bother reporting unsatisfied expectations if the test threw an
+    // exception; it just crowds the output.
+    if (unsatisfiedMessage != null && !threwException) {
       var stackFrame = expectation.stackFrame;
       var frameDesc = stackFrame.fileName + ':' + stackFrame.lineNumber;
       var failureLines = ['Unsatisfied expectation at ' + frameDesc + ':'];
