@@ -29,3 +29,13 @@ gjstest.internal.getCurrentStack = function() {
 
   return stackFrames;
 };
+
+/**
+ * Return a human-readable description of the supplied stack trace.
+ *
+ * @param {!Array.<!gjstest.internal.StackFrame>} stackFrames
+ * @return {!string}
+ */
+gjstest.internal.describeStack = function(stackFrames) {
+  return 'TODO';
+};
