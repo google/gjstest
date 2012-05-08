@@ -51,7 +51,6 @@ gjstest.internal.runTest = function runTest(testFn, testEnvironment) {
     var failureMessage = '' + gjstest.stringify(error);
     if (testEnvironment.userStack.length == 0) {
       var errorStack = gjstest.internal.getErrorStack(error);
-      var stackFrame = errorStack[0];
 
       // Sometimes v8 will put a weird entry like the following on the top of
       // the error stack:
@@ -62,15 +61,20 @@ gjstest.internal.runTest = function runTest(testFn, testEnvironment) {
       // was thrown, so skip the top frame if it doesn't have a line number but
       // the second one does.
       if (errorStack.length > 1 &&
-          stackFrame.lineNumber == null &&
+          errorStack[0].lineNumber == null &&
           errorStack[1].lineNumber != null) {
-        stackFrame = errorStack[1];
+        errorStack = errorStack.slice(1);
       }
 
-      // Modify the error message if we have a proper stack frame.
-      if (stackFrame) {
-        var frameDesc = stackFrame.fileName + ':' + stackFrame.lineNumber;
-        failureMessage = frameDesc + '\n' + failureMessage;
+      // Modify the error message if we have at least one stack frame available.
+      if (errorStack.length) {
+        function describeFrame(frame) {
+          return '    ' + frame.fileName + ':' + frame.lineNumber;
+        }
+
+        var stackLines = errorStack.map(describeFrame);
+        var formattedTrace = stackLines.join('\n');
+        failureMessage = failureMessage + '\n\nStack:\n' + formattedTrace;
       }
     }
 
