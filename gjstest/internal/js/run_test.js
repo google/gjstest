@@ -32,24 +32,16 @@ gjstest.internal.runTest = function runTest(testFn, testEnvironment) {
   try {
     testFn();
   } catch (error) {
-    // We want to print the exception that was thrown along with a line number.
-    // For example:
-    //
-    //     ReferenceError: bar is undefined.
-    //
-    //     Stack:
-    //         foo_test.js:73
-    //         ...
-    //
-    // However if this is an exception thrown from within gjstest public code,
-    // we want to use the *user* stack to give a better error. For example, even
-    // though the following error might be thrown from mocking.js:60, we want to
-    // use the user's test line as above.
-    //
-    // The test environment will do this latter part for us, so skip adding a
-    // stack trace if there is already a user stack present.
     var failureMessage = '' + gjstest.stringify(error);
 
+    // If the exception was thrown from within gjstest public code, the test
+    // environment has a user stack available and reportFailure will be able to
+    // automatically add the file name and line number of the user code at
+    // fault.
+    //
+    // Otherwise, this exception may have been thrown from deep within the code
+    // under test (for example in a file devoted to assertions). Add a stack
+    // trace to help with debugging.
     if (testEnvironment.userStack.length == 0) {
       var errorStack = gjstest.internal.getErrorStack(error);
 
