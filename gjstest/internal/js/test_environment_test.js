@@ -54,16 +54,11 @@ TestEnvironmentTest.prototype.ReportFailureWithoutUserStack = function() {
 };
 
 TestEnvironmentTest.prototype.ReportFailureWithUserStack = function() {
-  var userStack = this.testEnv_.userStack;
-  userStack.push({fileName: 'taco.js', lineNumber: 17});
-  userStack.push({fileName: 'burrito.js', lineNumber: 19});
+  var frame = {fileName: 'taco.js', lineNumber: 17};
+  this.testEnv_.userStack.push(frame);
 
-  expectCall(this.reportFailure_)(
-      'enchilada\n\nStack:\n' +
-          '    taco.js:17\n' +
-          '    burrito.js:19\n');
-
-  this.testEnv_.reportFailure('enchilada');
+  expectCall(this.reportFailure_)('taco.js:17\nburrito');
+  this.testEnv_.reportFailure('burrito');
 };
 
 TestEnvironmentTest.prototype.RecordAndClearUserStack = function() {
