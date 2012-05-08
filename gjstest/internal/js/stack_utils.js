@@ -31,7 +31,8 @@ gjstest.internal.getCurrentStack = function() {
 };
 
 /**
- * Return a human-readable description of the supplied stack trace.
+ * Return a human-readable description of the supplied stack trace. Each line of
+ * the description is indented, for convenient printing.
  *
  * @param {!Array.<!gjstest.internal.StackFrame>} stackFrames
  * @return {!string}
