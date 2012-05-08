@@ -35,20 +35,21 @@ gjstest.internal.runTest = function runTest(testFn, testEnvironment) {
     // We want to print the exception that was thrown along with a line number.
     // For example:
     //
-    //     foo_test.js:73
     //     ReferenceError: bar is undefined.
+    //
+    //     Stack:
+    //         foo_test.js:73
+    //         ...
     //
     // However if this is an exception thrown from within gjstest public code,
     // we want to use the *user* stack to give a better error. For example, even
     // though the following error might be thrown from mocking.js:60, we want to
-    // use the user's test line:
-    //
-    //     foo_test.js:93
-    //     TypeError: Supplied function is not a mock.
+    // use the user's test line as above.
     //
     // The test environment will do this latter part for us, so skip adding a
-    // stack frame if there is already a user stack frame present.
+    // stack trace if there is already a user stack present.
     var failureMessage = '' + gjstest.stringify(error);
+
     if (testEnvironment.userStack.length == 0) {
       var errorStack = gjstest.internal.getErrorStack(error);
 
@@ -66,16 +67,9 @@ gjstest.internal.runTest = function runTest(testFn, testEnvironment) {
         errorStack = errorStack.slice(1);
       }
 
-      // Modify the error message if we have at least one stack frame available.
-      if (errorStack.length) {
-        function describeFrame(frame) {
-          return '    ' + frame.fileName + ':' + frame.lineNumber;
-        }
-
-        var stackLines = errorStack.map(describeFrame);
-        var formattedTrace = stackLines.join('\n');
-        failureMessage = failureMessage + '\n\nStack:\n' + formattedTrace;
-      }
+      // Add a stack trace to the message.
+      var formattedTrace = gjstest.internal.describeStack(errorStack);
+      failureMessage = failureMessage + '\n\nStack:\n' + formattedTrace;
     }
 
     testEnvironment.reportFailure(failureMessage);
