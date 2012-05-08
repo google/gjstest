@@ -21,7 +21,10 @@ Stack:
 TypeError: isNearNumber requires two number arguments]]></failure>
  </testcase>
  <testcase name="ExceptionTest.StackOverflow" time="0.01">
-  <failure><![CDATA[RangeError: Maximum call stack size exceeded]]></failure>
+  <failure><![CDATA[RangeError: Maximum call stack size exceeded
+
+Stack:
+    (Empty)]]></failure>
  </testcase>
  <testcase name="ExceptionTest.UnknownPropertyOnLongFunction" time="0.01">
   <failure><![CDATA[TypeError: Object function foo() {
@@ -34,10 +37,16 @@ Stack:
     share/gjstest/internal/js/run_test.js:33]]></failure>
  </testcase>
  <testcase name="ExceptionTest.ObjectLiteralException" time="0.01">
-  <failure><![CDATA[{ name: 'SomeException' }]]></failure>
+  <failure><![CDATA[{ name: 'SomeException' }
+
+Stack:
+    (Empty)]]></failure>
  </testcase>
  <testcase name="ExceptionTest.CustomExceptionClassWithoutStack" time="0.01">
-  <failure><![CDATA[{}]]></failure>
+  <failure><![CDATA[{}
+
+Stack:
+    (Empty)]]></failure>
  </testcase>
  <testcase name="ExceptionTest.CustomExceptionClassWithStack" time="0.01">
   <failure><![CDATA[{}
@@ -48,7 +57,10 @@ Stack:
     share/gjstest/internal/js/run_test.js:33]]></failure>
  </testcase>
  <testcase name="ExceptionTest.CustomExceptionClassWithToString" time="0.01">
-  <failure><![CDATA[SomeException]]></failure>
+  <failure><![CDATA[SomeException
+
+Stack:
+    (Empty)]]></failure>
  </testcase>
  <testcase name="ExceptionTest.PassingTest" time="0.01"/>
  <testcase name="ExceptionTest.ExceptionWithUnsatisfiedMockExpectations" time="0.01">

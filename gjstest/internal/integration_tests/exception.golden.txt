@@ -25,6 +25,9 @@ TypeError: isNearNumber requires two number arguments
 [ RUN      ] ExceptionTest.StackOverflow
 RangeError: Maximum call stack size exceeded
 
+Stack:
+    (Empty)
+
 [  FAILED  ] ExceptionTest.StackOverflow (1 ms)
 [ RUN      ] ExceptionTest.UnknownPropertyOnLongFunction
 TypeError: Object function foo() {
@@ -40,9 +43,15 @@ Stack:
 [ RUN      ] ExceptionTest.ObjectLiteralException
 { name: 'SomeException' }
 
+Stack:
+    (Empty)
+
 [  FAILED  ] ExceptionTest.ObjectLiteralException (1 ms)
 [ RUN      ] ExceptionTest.CustomExceptionClassWithoutStack
 {}
+
+Stack:
+    (Empty)
 
 [  FAILED  ] ExceptionTest.CustomExceptionClassWithoutStack (1 ms)
 [ RUN      ] ExceptionTest.CustomExceptionClassWithStack
@@ -56,6 +65,9 @@ Stack:
 [  FAILED  ] ExceptionTest.CustomExceptionClassWithStack (1 ms)
 [ RUN      ] ExceptionTest.CustomExceptionClassWithToString
 SomeException
+
+Stack:
+    (Empty)
 
 [  FAILED  ] ExceptionTest.CustomExceptionClassWithToString (1 ms)
 [ RUN      ] ExceptionTest.PassingTest
