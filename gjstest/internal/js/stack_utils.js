@@ -29,3 +29,27 @@ gjstest.internal.getCurrentStack = function() {
 
   return stackFrames;
 };
+
+/**
+ * Return a human-readable description of the supplied stack trace. Each line of
+ * the description is indented, for convenient printing.
+ *
+ * @param {!Array.<!gjstest.internal.StackFrame>} stackFrames
+ * @return {!string}
+ */
+gjstest.internal.describeStack = function(stackFrames) {
+  // Special case: handle the empty array.
+  if (!stackFrames.length) {
+    return '    (Empty)';
+  }
+
+  // Describe each frame.
+  function describeFrame(frame) {
+    var fileName = frame.fileName || '(unknown)';
+    var lineNumber = '' + (frame.lineNumber || '(unknown)');
+
+    return '    ' + fileName + ':' + lineNumber;
+  }
+
+  return stackFrames.map(describeFrame).join('\n');
+};

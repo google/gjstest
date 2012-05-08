@@ -1,46 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuite name="Google JS tests" failures="11" time="0.01">
  <testcase name="ExceptionTest.ReferenceError" time="0.01">
-  <failure><![CDATA[exception_test.js:23
-ReferenceError: fooBar is not defined]]></failure>
+  <failure><![CDATA[ReferenceError: fooBar is not defined
+
+Stack:
+    exception_test.js:23
+    share/gjstest/public/register.js:78
+    share/gjstest/internal/js/run_test.js:33]]></failure>
  </testcase>
  <testcase name="ExceptionTest.NotAFunctionError" time="0.01">
-  <failure><![CDATA[exception_test.js:28
-TypeError: object is not a function]]></failure>
+  <failure><![CDATA[TypeError: object is not a function
+
+Stack:
+    exception_test.js:28
+    share/gjstest/public/register.js:78
+    share/gjstest/internal/js/run_test.js:33]]></failure>
  </testcase>
  <testcase name="ExceptionTest.ErrorInMatcherFactory" time="0.01">
   <failure><![CDATA[exception_test.js:32
 TypeError: isNearNumber requires two number arguments]]></failure>
  </testcase>
  <testcase name="ExceptionTest.StackOverflow" time="0.01">
-  <failure><![CDATA[RangeError: Maximum call stack size exceeded]]></failure>
+  <failure><![CDATA[RangeError: Maximum call stack size exceeded
+
+Stack:
+    (Empty)]]></failure>
  </testcase>
  <testcase name="ExceptionTest.UnknownPropertyOnLongFunction" time="0.01">
-  <failure><![CDATA[exception_test.js:45
-TypeError: Object function foo() {
+  <failure><![CDATA[TypeError: Object function foo() {
     return 'asd';
-  } has no method 'bar']]></failure>
+  } has no method 'bar'
+
+Stack:
+    exception_test.js:45
+    share/gjstest/public/register.js:78
+    share/gjstest/internal/js/run_test.js:33]]></failure>
  </testcase>
  <testcase name="ExceptionTest.ObjectLiteralException" time="0.01">
-  <failure><![CDATA[{ name: 'SomeException' }]]></failure>
+  <failure><![CDATA[{ name: 'SomeException' }
+
+Stack:
+    (Empty)]]></failure>
  </testcase>
  <testcase name="ExceptionTest.CustomExceptionClassWithoutStack" time="0.01">
-  <failure><![CDATA[{}]]></failure>
+  <failure><![CDATA[{}
+
+Stack:
+    (Empty)]]></failure>
  </testcase>
  <testcase name="ExceptionTest.CustomExceptionClassWithStack" time="0.01">
-  <failure><![CDATA[exception_test.js:63
-{}]]></failure>
+  <failure><![CDATA[{}
+
+Stack:
+    exception_test.js:63
+    share/gjstest/public/register.js:78
+    share/gjstest/internal/js/run_test.js:33]]></failure>
  </testcase>
  <testcase name="ExceptionTest.CustomExceptionClassWithToString" time="0.01">
-  <failure><![CDATA[SomeException]]></failure>
+  <failure><![CDATA[SomeException
+
+Stack:
+    (Empty)]]></failure>
  </testcase>
  <testcase name="ExceptionTest.PassingTest" time="0.01"/>
  <testcase name="ExceptionTest.ExceptionWithUnsatisfiedMockExpectations" time="0.01">
-  <failure><![CDATA[exception_test.js:82
-TypeError: object is not a function]]></failure>
+  <failure><![CDATA[TypeError: object is not a function
+
+Stack:
+    exception_test.js:82
+    share/gjstest/public/register.js:78
+    share/gjstest/internal/js/run_test.js:33]]></failure>
  </testcase>
  <testcase name="ThrowingConstructorTest.SomeTest" time="0.01">
-  <failure><![CDATA[exception_test.js:87
-Error: taco]]></failure>
+  <failure><![CDATA[Error: taco
+
+Stack:
+    exception_test.js:87
+    share/gjstest/public/register.js:77
+    share/gjstest/internal/js/run_test.js:33]]></failure>
  </testcase>
 </testsuite>

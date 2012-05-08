@@ -15,9 +15,9 @@
 
 var getCurrentStack = gjstest.internal.getCurrentStack;
 
-//////////////////////
+////////////////////////////////////////////////////////////////////////
 // getCurrentStack
-//////////////////////
+////////////////////////////////////////////////////////////////////////
 
 function GetCurrentStackTest() {}
 registerTestSuite(GetCurrentStackTest);
@@ -75,9 +75,9 @@ GetCurrentStackTest.prototype.AnonymousClass = function() {
   expectEq('stack_utils_test.js', frame.fileName);
 };
 
-//////////////////////
+////////////////////////////////////////////////////////////////////////
 // getErrorStack
-//////////////////////
+////////////////////////////////////////////////////////////////////////
 
 function GetErrorStackTest() {}
 registerTestSuite(GetErrorStackTest);
@@ -142,4 +142,47 @@ GetErrorStackTest.prototype.UnknownPropertyOnMultiLineFunction = function() {
 
   frame = frames[0];
   expectEq('stack_utils_test.js', frame.fileName);
+};
+
+////////////////////////////////////////////////////////////////////////
+// describeStack
+////////////////////////////////////////////////////////////////////////
+
+function DescribeStackTest() {
+  this.stack_ = [];
+};
+registerTestSuite(DescribeStackTest);
+
+DescribeStackTest.prototype.emptyArray = function() {
+  var result = gjstest.internal.describeStack(this.stack_);
+  expectEq('    (Empty)', result);
+};
+
+DescribeStackTest.prototype.oneFrame = function() {
+  this.stack_.push({fileName: 'taco.js', lineNumber: 17});
+
+  var result = gjstest.internal.describeStack(this.stack_);
+  expectEq('    taco.js:17', result);
+};
+
+DescribeStackTest.prototype.twoFrames = function() {
+  this.stack_.push({fileName: 'taco.js', lineNumber: 17});
+  this.stack_.push({fileName: 'burrito.js', lineNumber: 19});
+
+  var result = gjstest.internal.describeStack(this.stack_);
+  expectEq('    taco.js:17\n    burrito.js:19', result);
+};
+
+DescribeStackTest.prototype.missingFileName = function() {
+  this.stack_.push({lineNumber: 17});
+
+  var result = gjstest.internal.describeStack(this.stack_);
+  expectEq('    (unknown):17', result);
+};
+
+DescribeStackTest.prototype.missingLineNumber = function() {
+  this.stack_.push({fileName: 'taco.js'});
+
+  var result = gjstest.internal.describeStack(this.stack_);
+  expectEq('    taco.js:(unknown)', result);
 };

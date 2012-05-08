@@ -32,26 +32,18 @@ gjstest.internal.runTest = function runTest(testFn, testEnvironment) {
   try {
     testFn();
   } catch (error) {
-    // We want to print the exception that was thrown along with a line number.
-    // For example:
-    //
-    //     foo_test.js:73
-    //     ReferenceError: bar is undefined.
-    //
-    // However if this is an exception thrown from within gjstest public code,
-    // we want to use the *user* stack to give a better error. For example, even
-    // though the following error might be thrown from mocking.js:60, we want to
-    // use the user's test line:
-    //
-    //     foo_test.js:93
-    //     TypeError: Supplied function is not a mock.
-    //
-    // The test environment will do this latter part for us, so skip adding a
-    // stack frame if there is already a user stack frame present.
     var failureMessage = '' + gjstest.stringify(error);
+
+    // If the exception was thrown from within gjstest public code, the test
+    // environment has a user stack available and reportFailure will be able to
+    // automatically add the file name and line number of the user code at
+    // fault.
+    //
+    // Otherwise, this exception may have been thrown from deep within the code
+    // under test (for example in a file devoted to assertions). Add a stack
+    // trace to help with debugging.
     if (testEnvironment.userStack.length == 0) {
       var errorStack = gjstest.internal.getErrorStack(error);
-      var stackFrame = errorStack[0];
 
       // Sometimes v8 will put a weird entry like the following on the top of
       // the error stack:
@@ -62,16 +54,14 @@ gjstest.internal.runTest = function runTest(testFn, testEnvironment) {
       // was thrown, so skip the top frame if it doesn't have a line number but
       // the second one does.
       if (errorStack.length > 1 &&
-          stackFrame.lineNumber == null &&
+          errorStack[0].lineNumber == null &&
           errorStack[1].lineNumber != null) {
-        stackFrame = errorStack[1];
+        errorStack = errorStack.slice(1);
       }
 
-      // Modify the error message if we have a proper stack frame.
-      if (stackFrame) {
-        var frameDesc = stackFrame.fileName + ':' + stackFrame.lineNumber;
-        failureMessage = frameDesc + '\n' + failureMessage;
-      }
+      // Add a stack trace to the message.
+      var formattedTrace = gjstest.internal.describeStack(errorStack);
+      failureMessage = failureMessage + '\n\nStack:\n' + formattedTrace;
     }
 
     testEnvironment.reportFailure(failureMessage);
