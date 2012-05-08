@@ -38,5 +38,18 @@ gjstest.internal.getCurrentStack = function() {
  * @return {!string}
  */
 gjstest.internal.describeStack = function(stackFrames) {
-  return 'TODO';
+  // Special case: handle the empty array.
+  if (!stackFrames.length) {
+    return '    (Empty)';
+  }
+
+  // Describe each frame.
+  function describeFrame(frame) {
+    var fileName = frame.fileName || '(unknown)';
+    var lineNumber = '' + (frame.lineNumber || '(unknown)');
+
+    return '    ' + fileName + ':' + lineNumber;
+  }
+
+  return stackFrames.map(describeFrame).join('\n');
 };
