@@ -5,16 +5,16 @@
 
 Stack:
     exception_test.js:23
-    share/gjstest/public/register.js:78
-    share/gjstest/internal/js/run_test.js:33]]></failure>
+    register.js:78
+    run_test.js:33]]></failure>
  </testcase>
  <testcase name="ExceptionTest.NotAFunctionError" time="0.01">
   <failure><![CDATA[TypeError: object is not a function
 
 Stack:
     exception_test.js:28
-    share/gjstest/public/register.js:78
-    share/gjstest/internal/js/run_test.js:33]]></failure>
+    register.js:78
+    run_test.js:33]]></failure>
  </testcase>
  <testcase name="ExceptionTest.ErrorInMatcherFactory" time="0.01">
   <failure><![CDATA[exception_test.js:32
@@ -33,8 +33,8 @@ Stack:
 
 Stack:
     exception_test.js:45
-    share/gjstest/public/register.js:78
-    share/gjstest/internal/js/run_test.js:33]]></failure>
+    register.js:78
+    run_test.js:33]]></failure>
  </testcase>
  <testcase name="ExceptionTest.ObjectLiteralException" time="0.01">
   <failure><![CDATA[{ name: 'SomeException' }
@@ -53,8 +53,8 @@ Stack:
 
 Stack:
     exception_test.js:63
-    share/gjstest/public/register.js:78
-    share/gjstest/internal/js/run_test.js:33]]></failure>
+    register.js:78
+    run_test.js:33]]></failure>
  </testcase>
  <testcase name="ExceptionTest.CustomExceptionClassWithToString" time="0.01">
   <failure><![CDATA[SomeException
@@ -68,15 +68,15 @@ Stack:
 
 Stack:
     exception_test.js:82
-    share/gjstest/public/register.js:78
-    share/gjstest/internal/js/run_test.js:33]]></failure>
+    register.js:78
+    run_test.js:33]]></failure>
  </testcase>
  <testcase name="ThrowingConstructorTest.SomeTest" time="0.01">
   <failure><![CDATA[Error: taco
 
 Stack:
     exception_test.js:87
-    share/gjstest/public/register.js:77
-    share/gjstest/internal/js/run_test.js:33]]></failure>
+    register.js:77
+    run_test.js:33]]></failure>
  </testcase>
 </testsuite>

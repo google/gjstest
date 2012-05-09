@@ -4,8 +4,8 @@ ReferenceError: fooBar is not defined
 
 Stack:
     exception_test.js:23
-    share/gjstest/public/register.js:78
-    share/gjstest/internal/js/run_test.js:33
+    register.js:78
+    run_test.js:33
 
 [  FAILED  ] ExceptionTest.ReferenceError (1 ms)
 [ RUN      ] ExceptionTest.NotAFunctionError
@@ -13,8 +13,8 @@ TypeError: object is not a function
 
 Stack:
     exception_test.js:28
-    share/gjstest/public/register.js:78
-    share/gjstest/internal/js/run_test.js:33
+    register.js:78
+    run_test.js:33
 
 [  FAILED  ] ExceptionTest.NotAFunctionError (1 ms)
 [ RUN      ] ExceptionTest.ErrorInMatcherFactory
@@ -36,8 +36,8 @@ TypeError: Object function foo() {
 
 Stack:
     exception_test.js:45
-    share/gjstest/public/register.js:78
-    share/gjstest/internal/js/run_test.js:33
+    register.js:78
+    run_test.js:33
 
 [  FAILED  ] ExceptionTest.UnknownPropertyOnLongFunction (1 ms)
 [ RUN      ] ExceptionTest.ObjectLiteralException
@@ -59,8 +59,8 @@ Stack:
 
 Stack:
     exception_test.js:63
-    share/gjstest/public/register.js:78
-    share/gjstest/internal/js/run_test.js:33
+    register.js:78
+    run_test.js:33
 
 [  FAILED  ] ExceptionTest.CustomExceptionClassWithStack (1 ms)
 [ RUN      ] ExceptionTest.CustomExceptionClassWithToString
@@ -77,8 +77,8 @@ TypeError: object is not a function
 
 Stack:
     exception_test.js:82
-    share/gjstest/public/register.js:78
-    share/gjstest/internal/js/run_test.js:33
+    register.js:78
+    run_test.js:33
 
 [  FAILED  ] ExceptionTest.ExceptionWithUnsatisfiedMockExpectations (1 ms)
 [----------]
@@ -89,8 +89,8 @@ Error: taco
 
 Stack:
     exception_test.js:87
-    share/gjstest/public/register.js:77
-    share/gjstest/internal/js/run_test.js:33
+    register.js:77
+    run_test.js:33
 
 [  FAILED  ] ThrowingConstructorTest.SomeTest (1 ms)
 [----------]
