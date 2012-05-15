@@ -63,6 +63,10 @@ header.title h1 {
   margin-left: 6px;
 }
 
+.test-case li {
+  padding: 10px 0;
+}
+
 /* Expander classes */
 .expanded, .collapsed {
   cursor: pointer;
