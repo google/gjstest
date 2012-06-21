@@ -82,23 +82,27 @@ GetCurrentStackTest.prototype.AnonymousClass = function() {
 function GetErrorStackTest() {}
 registerTestSuite(GetErrorStackTest);
 
-GetErrorStackTest.prototype.NativeCode = function() {
-  var frames = null;
-  try {
-    ({})();
-  } catch (e) {
-    frames = gjstest.internal.getErrorStack(e);
-  }
-
-  var frame;
-
-  frame = frames[0];
-  expectEq(null, frame.fileName);
-  expectEq(null, frame.lineNumber);
-
-  frame = frames[1];
-  expectEq('stack_utils_test.js', frame.fileName);
-};
+// TODO(jacobsa): It seems something has changed in V8 that makes the code below
+// not generate a call site that returns true for isNative(). If another such
+// situation comes up, re-enable this test.
+//
+// GetErrorStackTest.prototype.NativeCode = function() {
+//   var frames = null;
+//   try {
+//     ({})();
+//   } catch (e) {
+//     frames = gjstest.internal.getErrorStack(e);
+//   }
+//
+//   var frame;
+//
+//   frame = frames[0];
+//   expectEq(null, frame.fileName);
+//   expectEq(null, frame.lineNumber);
+//
+//   frame = frames[1];
+//   expectEq('stack_utils_test.js', frame.fileName);
+// };
 
 GetErrorStackTest.prototype.StackOverflow = function() {
   var frames = null;
