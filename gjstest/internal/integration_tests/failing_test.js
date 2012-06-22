@@ -44,6 +44,16 @@ FailingTest.prototype.FailureWithLogOutput = function() {
   expectThat(3, evalsToFalse);
 };
 
+FailingTest.prototype.MissingArrayElementWithRecursivelyEquals = function() {
+  var a = [];
+  a[0] = 0;
+  a[2] = 2;
+
+  var b = [0, undefined, 2];
+
+  expectThat(a, recursivelyEquals(b));
+};
+
 FailingTest.prototype.PassingTest2 = function() {
   expectThat(undefined, evalsToFalse);
 };

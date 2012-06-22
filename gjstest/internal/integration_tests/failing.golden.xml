@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Google JS tests" failures="6" time="0.01">
+<testsuite name="Google JS tests" failures="7" time="0.01">
  <testcase name="FailingTest.PassingTest1" time="0.01"/>
  <testcase name="FailingTest.FailingTest1" time="0.01">
   <failure><![CDATA[failing_test.js:27
@@ -37,82 +37,87 @@ failing_test.js:44
 Expected: evaluates to false
 Actual:   3]]></failure>
  </testcase>
+ <testcase name="FailingTest.MissingArrayElementWithRecursivelyEquals" time="0.01">
+  <failure><![CDATA[failing_test.js:54
+Expected: recursively equals [ 0, undefined, 2 ]
+Actual:   [ 0, , 2 ], which differs in key 1]]></failure>
+ </testcase>
  <testcase name="FailingTest.PassingTest2" time="0.01"/>
  <testcase name="FailingTest.NumberExpectations" time="0.01">
-  <failure><![CDATA[failing_test.js:52
+  <failure><![CDATA[failing_test.js:62
 Expected: is less than 0
 Actual:   1
 
-failing_test.js:53
+failing_test.js:63
 Expected: is less than 1
 Actual:   1
 
-failing_test.js:55
+failing_test.js:65
 Expected: is less than or equal to -1
 Actual:   1
 
-failing_test.js:56
+failing_test.js:66
 Expected: is less than or equal to 0
 Actual:   1
 
-failing_test.js:58
+failing_test.js:68
 Expected: is greater than 7
 Actual:   7
 
-failing_test.js:59
+failing_test.js:69
 Expected: is greater than 9
 Actual:   7
 
-failing_test.js:61
+failing_test.js:71
 Expected: is greater than or equal to 8
 Actual:   7
 
-failing_test.js:62
+failing_test.js:72
 Expected: is greater than or equal to 9
 Actual:   7]]></failure>
  </testcase>
  <testcase name="FailingTest.UserErrors" time="0.01">
-  <failure><![CDATA[failing_test.js:66
+  <failure><![CDATA[failing_test.js:76
 Expected: is a string containing the substring 'burrito'
 Actual:   'taco'
 foo
 
-failing_test.js:67
+failing_test.js:77
 Expected: ''
 Actual:   'a'
 foo
 
-failing_test.js:68
+failing_test.js:78
 Expected: does not equal: 'a'
 Actual:   'a'
 foo
 
-failing_test.js:69
+failing_test.js:79
 Expected: false
 Actual:   true
 foo
 
-failing_test.js:70
+failing_test.js:80
 Expected: true
 Actual:   false
 foo
 
-failing_test.js:71
+failing_test.js:81
 Expected: is greater than or equal to 1
 Actual:   0
 foo
 
-failing_test.js:72
+failing_test.js:82
 Expected: is greater than 0
 Actual:   0
 foo
 
-failing_test.js:73
+failing_test.js:83
 Expected: is less than or equal to 2
 Actual:   3
 foo
 
-failing_test.js:74
+failing_test.js:84
 Expected: is less than 2
 Actual:   2
 foo]]></failure>

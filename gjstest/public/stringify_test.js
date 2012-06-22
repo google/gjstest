@@ -113,6 +113,16 @@ StringifyTest.prototype.Arrays = function() {
   expectEq('[ [ 1 ], { foo: 2 } ]', stringify([ [1], { foo: 2 } ]));
 };
 
+StringifyTest.prototype.ArrayWithMissingElements = function() {
+  // Cause indexes 1, 3, and 4 to be missing.
+  var a = [];
+  a[0] = 'foo';
+  a[2] = 'bar';
+  a.length = 5;
+
+  expectEq('[ \'foo\', , \'bar\', ,  ]', stringify(a));
+};
+
 StringifyTest.prototype.ArgumentObjects = function() {
   function grabArgs() { return arguments; }
 

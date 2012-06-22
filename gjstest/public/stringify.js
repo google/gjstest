@@ -37,6 +37,12 @@ gjstest.stringify = function(obj) {
 
     var descriptions = [];
     for (var i = 0; i < obj.length; ++i) {
+      // Leave a blank space for indexes where there's a missing element.
+      if (!obj.hasOwnProperty(i)) {
+        descriptions.push('');
+        continue;
+      }
+
       descriptions.push(gjstest.stringify(obj[i]));
     }
 

@@ -472,6 +472,36 @@ RecursivelyEqualsTest.prototype.Arrays = function() {
            pred(['taco', ['burrito', 'queso']]));
 
   expectTrue(pred(['taco', ['burrito', 'enchilada']]));
+
+  // Missing element vs. present element
+  obj = [];
+  obj[0] = 0;
+  obj[2] = 2;
+  pred = recursivelyEquals(obj).predicate;
+  expectEq('which differs in key 1', pred([0, 1, 2]));
+
+  // Missing elements vs. undefined
+  obj = [];
+  obj[0] = 0;
+  obj[2] = 2;
+  pred = recursivelyEquals(obj).predicate;
+  expectEq('which differs in key 1', pred([0, undefined, 2]));
+
+  // Missing elements vs. missing elements
+  obj = [];
+  obj[0] = 0;
+  obj[2] = 2;
+  obj.length = 4;
+
+  var otherArray = [];
+  otherArray = [];
+  otherArray[0] = 0;
+  otherArray[2] = 2;
+  otherArray.length = 4;
+
+
+  pred = recursivelyEquals(obj).predicate;
+  expectTrue(pred(otherArray));
 };
 
 RecursivelyEqualsTest.prototype.NestedMatchers = function() {
