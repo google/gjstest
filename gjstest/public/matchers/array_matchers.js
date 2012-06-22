@@ -16,7 +16,7 @@
 /**
  * Return true if the object can be iterated like an array.
  *
- * @param {!Object} obj
+ * @param {*} obj
  * @return {boolean}
  */
 gjstest.internal.isArrayLike = function(obj) {
