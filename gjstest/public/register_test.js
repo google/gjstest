@@ -128,17 +128,28 @@ AddTestTest.prototype.TestFuncHasNoName = function() {
 
   expectThat(function() {
     addTest(someSuite, function() {});
-  }, throwsError(/TypeError.*addTest.*function.*name/));
+  }, throwsError(/Error.*addTest.*function.*name/));
 };
 
-AddTestTest.prototype.TestFuncNameAlreadyPresent = function() {
+AddTestTest.prototype.TestFuncNameAlreadyPresentFromBareRegistration =
+    function() {
+  var someSuite = this.someSuite_;
+  someSuite.prototype.DoesFoo = function() {};
+  someSuite.prototype.DoesBar = function() {};
+
+  expectThat(function() {
+    addTest(someSuite, function DoesFoo() {});
+  }, throwsError(/SomeSuite.*DoesFoo.*already/));
+};
+
+AddTestTest.prototype.TestFuncNameAlreadyPresentFromAddTest = function() {
   var someSuite = this.someSuite_;
   addTest(someSuite, function DoesFoo() {});
   addTest(someSuite, function DoesBar() {});
 
   expectThat(function() {
-    addTest(someSuite, function() {});
-  }, throwsError(/TypeError.*addTest.*function.*name/));
+    addTest(someSuite, function DoesFoo() {});
+  }, throwsError(/SomeSuite.*DoesFoo.*already/));
 };
 
 AddTestTest.prototype.RegistersTestFunctionss = function() {
