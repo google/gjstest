@@ -82,7 +82,9 @@ AddTestTest.prototype.TestSuiteIsNull = function() {
 }
 
 AddTestTest.prototype.TestSuiteIsNotFunction = function() {
-  expectEq('TODO', '');
+  expectThat(function() {
+    addTest(17, function Foo() {});
+  }, throwsError(/TypeError.*addTest.*function/));
 }
 
 AddTestTest.prototype.TestSuiteNotRegistered = function() {
