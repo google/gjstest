@@ -17,7 +17,7 @@
 // Helpers
 ////////////////////////////////////////////////////////////////////////
 
-function getKeys(obj) {
+function getEnumerableKeys(obj) {
   var result = [];
   for (var name in obj) {
     result.push(name);
@@ -169,7 +169,19 @@ AddTestTest.prototype.TestFuncNameAlreadyPresentFromAddTest = function() {
 };
 
 AddTestTest.prototype.RegistersTestFunctions = function() {
-  expectEq('TODO', '');
+  var someSuite = this.someSuite_;
+  addTest(someSuite, function DoesFoo() {});
+  addTest(someSuite, function DoesBar() {});
+  addTest(someSuite, function constructor() {});
+  addTest(someSuite, function prototype() {});
+
+  expectThat(getEnumerableKeys(someSuite),
+             elementsAre([
+                 'DoesFoo',
+                 'DoesBar',
+                 'constructor',
+                 'prototype',
+             ]));
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -185,7 +197,7 @@ GetTestFunctionsTest.prototype.TestNames = function() {
   TestSuite.prototype.someOtherName = function() {};
 
   var result = gjstest.internal.getTestFunctions(TestSuite);
-  expectThat(getKeys(result),
+  expectThat(getEnumerableKeys(result),
              elementsAre([
                'TestSuite.someName',
                'TestSuite.someOtherName'
@@ -198,7 +210,8 @@ GetTestFunctionsTest.prototype.IgnoresTrailingUnderscores = function() {
   TestSuite.prototype.ignoredName_ = function() {};
 
   var result = gjstest.internal.getTestFunctions(TestSuite);
-  expectThat(getKeys(result), elementsAre(['TestSuite.harmless_underscores']));
+  expectThat(getEnumerableKeys(result),
+             elementsAre(['TestSuite.harmless_underscores']));
 };
 
 GetTestFunctionsTest.prototype.IgnoresTearDown = function() {
@@ -207,7 +220,7 @@ GetTestFunctionsTest.prototype.IgnoresTearDown = function() {
   TestSuite.prototype.tearDown = function() {};
 
   var result = gjstest.internal.getTestFunctions(TestSuite);
-  expectThat(getKeys(result), elementsAre(['TestSuite.someName']));
+  expectThat(getEnumerableKeys(result), elementsAre(['TestSuite.someName']));
 };
 
 GetTestFunctionsTest.prototype.IgnoresInheritedFunctions = function() {
@@ -220,7 +233,7 @@ GetTestFunctionsTest.prototype.IgnoresInheritedFunctions = function() {
   TestSuite.prototype.overridden = function() {};
 
   var result = gjstest.internal.getTestFunctions(TestSuite);
-  expectThat(getKeys(result), elementsAre(['TestSuite.overridden']));
+  expectThat(getEnumerableKeys(result), elementsAre(['TestSuite.overridden']));
 };
 
 GetTestFunctionsTest.prototype.IgnoresNonFunctions = function() {
@@ -230,7 +243,7 @@ GetTestFunctionsTest.prototype.IgnoresNonFunctions = function() {
   TestSuite.prototype.constructor = {};
 
   var result = gjstest.internal.getTestFunctions(TestSuite);
-  expectThat(getKeys(result), elementsAre(['TestSuite.someName']));
+  expectThat(getEnumerableKeys(result), elementsAre(['TestSuite.someName']));
 };
 
 GetTestFunctionsTest.prototype.TestConstructorName = function() {
@@ -238,7 +251,7 @@ GetTestFunctionsTest.prototype.TestConstructorName = function() {
   TestSuite.prototype.constructor = function() {};
 
   var result = gjstest.internal.getTestFunctions(TestSuite);
-  expectThat(getKeys(result), elementsAre(['TestSuite.constructor']));
+  expectThat(getEnumerableKeys(result), elementsAre(['TestSuite.constructor']));
 };
 
 GetTestFunctionsTest.prototype.Execution = function() {
