@@ -33,18 +33,18 @@
 /**
  * Register a test constructor to be executed by the test runner.
  *
- * Any enumerable property of ctor.prototype will be treated as a test function,
- * unless:
- *
- *  *  The property's value is not a function.
+ * Any enumerable property of ctor.prototype whose value is a function will be
+ * treated as a test function, unless:
  *
  *  *  The property's name ends with an underscore. Use this to create private
  *     helper functions.
  *
- *  *  The property's name is 'tearDown'.
+ *  *  The property's name is 'tearDown'. This name is reserved for tear-down
+ *     helpers. If you use leading-upper-case CamelCase for test names, you
+ *     don't need to worry about this exception.
  *
- * If you use the addTest function below to add test functions, you do not need
- * to worry about these constraints.
+ * Rather than attaching tests to ctor.prototype directly, consider using the
+ * addTest function below. See its documentation for the benefits of doing so.
  *
  * @param {!Function} ctor
  *     A constructor for the test suite class.
@@ -64,9 +64,29 @@ gjstest.registerTestSuite = function(ctor) {
 
 /**
  * Add a test function to the supplied test suite. The function's name is used
- * to decide on the test name, so it should have one (see the top of the file
- * for an example). The name may be any legal identifier, including 'tearDown'
- * and magic properties like 'constructor'.
+ * to decide on the test name, so it must have one (see the top of the file for
+ * an example).
+ *
+ * The function's name must not fit into one of the exceptions on test function
+ * names listed above; in this case addTest will throw an error to make sure
+ * that you realize your test will not be executed.
+ *
+ * Note that this function *does* correctly handle the case of magic property
+ * names like 'constructor'. JS adds a 'constructor' property to Foo.prototype
+ * for any function named Foo, but marks it as non-enumerable. The
+ * non-enumerable bit is sticky, which means that if you simply say
+ *
+ *     MyTest.prototype.constructor = function() {
+ *       expectTrue(false);
+ *     };
+ *
+ * then the test function will never be run. In contrast, saying
+ *
+ *     addTest(MyTest, function constructor() {
+ *       expectTrue(false);
+ *     });
+ *
+ * will work as expected.
  *
  * @param {!Function} testSuite
  *     The test suite class, which must have previously been registered with
