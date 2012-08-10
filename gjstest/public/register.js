@@ -140,7 +140,7 @@ gjstest.addTest = function(testSuite, testFunc) {
         value: testFunc,
         writable: true,
         configurable: true,
-        enumerable: true,
+        enumerable: true
       });
 };
 
