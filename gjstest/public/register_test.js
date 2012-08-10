@@ -124,7 +124,11 @@ AddTestTest.prototype.TestFuncNotFunction = function() {
 };
 
 AddTestTest.prototype.TestFuncHasNoName = function() {
-  expectEq('TODO', '');
+  var someSuite = this.someSuite_;
+
+  expectThat(function() {
+    addTest(someSuite, function() {});
+  }, throwsError(/TypeError.*addTest.*function.*name/));
 };
 
 AddTestTest.prototype.TestFuncNameAlreadyPresent = function() {
