@@ -120,6 +120,14 @@ gjstest.addTest = function(testSuite, testFunc) {
     throw new Error('Illegal test function name: ' + testFuncName);
   }
 
+  // Make sure the test name hasn't already been used. We must check both for
+  // the existence of the property and its enumerability because there may be a
+  // default non-emurable property (e.g. 'constructor' or 'prototype').
+  if (Object.prototype.hasOwnProperty.apply(testSuite, [testFuncName]) &&
+      Object.prototype.propertyIsEnumerable.apply(testSuite, [testFuncName])) {
+    throw new Error('Test fucntion already registered: ' + testFuncName);
+  }
+
   testSuite.prototype[testFunc.name] = testFunc;
 };
 
