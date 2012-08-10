@@ -13,13 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// A test file with a test case called 'constructor', for use by
-// integration_test.cc.
+// A test file that makes sure test registration works as it should.
 
-function ConstructorTest() {}
-registerTestSuite(ConstructorTest);
+function RegistrationTest() {}
+registerTestSuite(RegistrationTest);
 
-ConstructorTest.prototype.constructor = function() {
-  // Make sure that failures get reported, even for tests named 'constructor'.
+// Test cases called 'constructor' should be executed, even though this is a
+// magic property automatically created on Foo.prototype for any function Foo.
+RegistrationTest.prototype.constructor = function() {
   expectTrue(false);
 };

@@ -224,10 +224,10 @@ TEST_F(IntegrationTest, TypedArrays) {
   EXPECT_TRUE(CheckGoldenFile("typed_arrays.golden.xml", xml_));
 }
 
-TEST_F(IntegrationTest, TestCaseCalledConstructor) {
-  EXPECT_FALSE(RunBundleNamed("constructor")) << txt_;
-  EXPECT_TRUE(CheckGoldenFile("constructor.golden.txt", txt_));
-  EXPECT_TRUE(CheckGoldenFile("constructor.golden.xml", xml_));
+TEST_F(IntegrationTest, TestRegistration) {
+  EXPECT_FALSE(RunBundleNamed("registration")) << txt_;
+  EXPECT_TRUE(CheckGoldenFile("registration.golden.txt", txt_));
+  EXPECT_TRUE(CheckGoldenFile("registration.golden.xml", xml_));
 }
 
 TEST_F(IntegrationTest, FilteredFailingTest) {

@@ -1,0 +1,10 @@
+[----------]
+[ RUN      ] RegistrationTest.constructor
+registration_test.js:24
+Expected: true
+Actual:   false
+
+[  FAILED  ] RegistrationTest.constructor (1 ms)
+[----------]
+
+[  FAILED  ]
