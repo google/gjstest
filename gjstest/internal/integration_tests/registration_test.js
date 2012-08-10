@@ -15,9 +15,41 @@
 
 // A test file that makes sure test registration works as it should.
 
+
 ////////////////////////////////////////////////////////////////////////
 // Registration with helper
 ////////////////////////////////////////////////////////////////////////
+
+function HelperRegistrationTest() {}
+registerTestSuite(HelperRegistrationTest);
+
+// Functions without a trailing underscore should not be run as test cases.
+HelperRegistrationTest.prototype.helperFunction_ = function() {
+  throw new Error('I shouldn\'t have been run!');
+};
+
+// The one special name without a trailing underscore is 'tearDown'. It should
+// be executed after each test, but not as a test case itself.
+HelperRegistrationTest.prototype.tearDown = function() {
+  // Create some output to make sure tearDown is run after each case.
+  gjstest.log('tearDown has been run.');
+};
+
+// Explicitly adding a test case with the name 'tearDown' should work.
+addTest(HelperRegistrationTest, function tearDown() {
+  expectTrue(false);
+});
+
+// A test case with any old name should definitely be run.
+addTest(HelperRegistrationTest, function FooBar() {
+  expectTrue(false);
+});
+
+// Explicitly adding a test case with the name 'constructor' should work.
+addTest(HelperRegistrationTest, function constructor() {
+  expectTrue(false);
+});
+
 
 ////////////////////////////////////////////////////////////////////////
 // Registration without helper
