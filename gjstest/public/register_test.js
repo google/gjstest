@@ -258,14 +258,6 @@ GetTestFunctionsTest.prototype.IgnoresNonFunctions = function() {
   expectThat(getEnumerableKeys(result), elementsAre(['TestSuite.someName']));
 };
 
-GetTestFunctionsTest.prototype.TestConstructorName = function() {
-  function TestSuite() {}
-  TestSuite.prototype.constructor = function() {};
-
-  var result = gjstest.internal.getTestFunctions(TestSuite);
-  expectThat(getEnumerableKeys(result), elementsAre(['TestSuite.constructor']));
-};
-
 GetTestFunctionsTest.prototype.Execution = function() {
   // Create two test functions that record 'this'.
   var testAThis = null;

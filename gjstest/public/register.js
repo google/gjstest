@@ -211,14 +211,5 @@ gjstest.internal.getTestFunctions = function(ctor) {
     addTestFunction(name);
   }
 
-  // A test case called 'constructor' is not picked up in the for loop above
-  // because 'constructor' is a property automatically defined on ctor.prototype
-  // that is not enumerable. See http://b/4992467.
-  if (ctor.prototype['constructor'] != ctor &&
-      ctor.prototype.hasOwnProperty('constructor') &&
-      ctor.prototype['constructor'] instanceof Function) {
-    addTestFunction('constructor');
-  }
-
   return result;
 };
