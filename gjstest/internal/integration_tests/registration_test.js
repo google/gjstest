@@ -50,6 +50,16 @@ addTest(HelperRegistrationTest, function constructor() {
   expectTrue(false);
 });
 
+// Explicitly adding a test case with the name 'prototype' should work.
+addTest(HelperRegistrationTest, function prototype() {
+  expectTrue(false);
+});
+
+// Explicitly adding a test case with the name '__proto__' should work.
+addTest(HelperRegistrationTest, function __proto__() {
+  expectTrue(false);
+});
+
 
 ////////////////////////////////////////////////////////////////////////
 // Registration without helper
