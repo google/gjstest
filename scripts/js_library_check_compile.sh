@@ -35,5 +35,5 @@ done
 set -x
 
 # Run closure.
-closure "${CLOSURE_ARGS[@]}" --js_output_file=$OUTPUT_FILE ||
+closure-compiler "${CLOSURE_ARGS[@]}" --js_output_file=$OUTPUT_FILE ||
     (rm -f $OUTPUT_FILE; exit 1)
