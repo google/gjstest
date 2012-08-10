@@ -116,7 +116,11 @@ AddTestTest.prototype.TestFuncIsNull = function() {
 }
 
 AddTestTest.prototype.TestFuncNotFunction = function() {
-  expectEq('TODO', '');
+  var someSuite = this.someSuite_;
+
+  expectThat(function() {
+    addTest(someSuite, 17);
+  }, throwsError(/TypeError.*addTest.*function/));
 };
 
 AddTestTest.prototype.TestFuncHasNoName = function() {
