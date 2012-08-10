@@ -153,6 +153,10 @@ AddTestTest.prototype.TestFuncNameAlreadyPresentFromBareRegistration =
   someSuite.prototype.DoesFoo = function() {};
   someSuite.prototype.DoesBar = function() {};
 
+  // Make sure that the code doesn't use mucked-around-with properties.
+  someSuite.prototype.hasOwnProperty = null;
+  someSuite.prototype.propertyIsEnumerable = null;
+
   expectThat(function() {
     addTest(someSuite, function DoesFoo() {});
   }, throwsError(/already.*registered.*DoesFoo/));
