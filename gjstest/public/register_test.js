@@ -175,7 +175,7 @@ AddTestTest.prototype.RegistersTestFunctions = function() {
   addTest(someSuite, function constructor() {});
   addTest(someSuite, function prototype() {});
 
-  expectThat(getEnumerableKeys(someSuite),
+  expectThat(getEnumerableKeys(someSuite.prototype),
              elementsAre([
                  'DoesFoo',
                  'DoesBar',
