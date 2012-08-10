@@ -1,9 +1,13 @@
 [----------]
+[ RUN      ] RegistrationTest.FooBar
+tearDown has been run.
+[       OK ] RegistrationTest.FooBar (1 ms)
 [ RUN      ] RegistrationTest.constructor
-registration_test.js:24
+registration_test.js:40
 Expected: true
 Actual:   false
 
+tearDown has been run.
 [  FAILED  ] RegistrationTest.constructor (1 ms)
 [----------]
 

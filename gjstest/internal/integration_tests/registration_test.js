@@ -18,6 +18,22 @@
 function RegistrationTest() {}
 registerTestSuite(RegistrationTest);
 
+// Functions without a trailing underscore should not be run as test cases.
+RegistrationTest.prototype.helperFunction_ = function() {
+  throw new Error('I shouldn\'t have been run!');
+};
+
+// The one special name without a trailing underscore is 'tearDown'. It should
+// be executed after each test, but not as a test case itself.
+RegistrationTest.prototype.tearDown = function() {
+  // Create some output to make sure tearDown is run after each case.
+  gjstest.log('tearDown has been run.');
+};
+
+// A test case with any old name should definitely be run.
+RegistrationTest.prototype.FooBar = function() {
+};
+
 // Test cases called 'constructor' should be executed, even though this is a
 // magic property automatically created on Foo.prototype for any function Foo.
 RegistrationTest.prototype.constructor = function() {
