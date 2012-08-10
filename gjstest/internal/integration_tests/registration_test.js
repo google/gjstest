@@ -35,11 +35,6 @@ HelperRegistrationTest.prototype.tearDown = function() {
   gjstest.log('tearDown has been run.');
 };
 
-// Explicitly adding a test case with the name 'tearDown' should work.
-addTest(HelperRegistrationTest, function tearDown() {
-  expectTrue(false);
-});
-
 // A test case with any old name should definitely be run.
 addTest(HelperRegistrationTest, function FooBar() {
   expectTrue(false);
@@ -50,13 +45,19 @@ addTest(HelperRegistrationTest, function constructor() {
   expectTrue(false);
 });
 
-// Explicitly adding a test case with the name 'prototype' should work.
-addTest(HelperRegistrationTest, function prototype() {
+// Explicitly adding a test case with the name 'hasOwnProperty' should work.
+addTest(HelperRegistrationTest, function hasOwnProperty() {
   expectTrue(false);
 });
 
-// Explicitly adding a test case with the name '__proto__' should work.
-addTest(HelperRegistrationTest, function __proto__() {
+// Explicitly adding a test case with the name 'propertyIsEnumerable' should
+// work.
+addTest(HelperRegistrationTest, function propertyIsEnumerable() {
+  expectTrue(false);
+});
+
+// Explicitly adding a test case with the name 'prototype' should work.
+addTest(HelperRegistrationTest, function prototype() {
   expectTrue(false);
 });
 
@@ -84,8 +85,9 @@ BareRegistrationTest.prototype.tearDown = function() {
 BareRegistrationTest.prototype.FooBar = function() {
 };
 
-// Test cases called 'constructor' should be executed, even though this is a
-// magic property automatically created on Foo.prototype for any function Foo.
+// A non-enumerable function should not be called. This function is non-emurable
+// because BareRegistrationTest.prototype already automatically contains a
+// non-enumerable property called 'constructor'.
 BareRegistrationTest.prototype.constructor = function() {
-  expectTrue(false);
+  throw new Error('I shouldn\'t have been run!');
 };
