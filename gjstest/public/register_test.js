@@ -192,7 +192,7 @@ AddTestTest.prototype.RegistersTestFunctions = function() {
                  'propertyIsEnumerable',
                  'prototype',
                  'DoesFoo',
-                 'DoesBar',
+                 'DoesBar'
              ]));
 };
 
