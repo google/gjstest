@@ -68,6 +68,34 @@ RegisterTestSuiteTest.prototype.AlreadyRegistered = function() {
 };
 
 ////////////////////////////////////////////////////////////////////////
+// addTest
+////////////////////////////////////////////////////////////////////////
+
+function AddTestTest() {
+}
+registerTestSuite(AddTestTest);
+
+AddTestTest.prototype.TestSuiteNotRegistered = function() {
+  expectEq('TODO', '');
+};
+
+AddTestTest.prototype.TestFuncNotFunction = function() {
+  expectEq('TODO', '');
+};
+
+AddTestTest.prototype.TestFuncHasNoName = function() {
+  expectEq('TODO', '');
+};
+
+AddTestTest.prototype.TestFuncNameAlreadyPresent = function() {
+  expectEq('TODO', '');
+};
+
+AddTestTest.prototype.RegistersTestFunctionss = function() {
+  expectEq('TODO', '');
+};
+
+////////////////////////////////////////////////////////////////////////
 // getTestFunctions
 ////////////////////////////////////////////////////////////////////////
 
