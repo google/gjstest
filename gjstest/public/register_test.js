@@ -75,8 +75,20 @@ function AddTestTest() {
 }
 registerTestSuite(AddTestTest);
 
-AddTestTest.prototype.TestSuiteNotRegistered = function() {
+AddTestTest.prototype.TestSuiteIsNull = function() {
   expectEq('TODO', '');
+}
+
+AddTestTest.prototype.TestSuiteIsNotFunction = function() {
+  expectEq('TODO', '');
+}
+
+AddTestTest.prototype.TestSuiteNotRegistered = function() {
+  function UnregisteredSuite() {}
+
+  expectThat(function() {
+    addTest(UnregisteredSuite, function Foo() {});
+  }, throwsError(/not registered.*TestSuite/));
 };
 
 AddTestTest.prototype.TestFuncNotFunction = function() {
