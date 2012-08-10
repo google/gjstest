@@ -104,7 +104,7 @@ AddTestTest.prototype.TestSuiteNotRegistered = function() {
 
   expectThat(function() {
     addTest(UnregisteredSuite, function Foo() {});
-  }, throwsError(/not registered.*TestSuite/));
+  }, throwsError(/not.*registered.*UnregisteredSuite/));
 };
 
 AddTestTest.prototype.TestFuncIsNull = function() {
