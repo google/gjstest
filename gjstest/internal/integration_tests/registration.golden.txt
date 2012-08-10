@@ -1,9 +1,12 @@
 [----------]
+[----------]
+
+[----------]
 [ RUN      ] BareRegistrationTest.FooBar
 tearDown has been run.
 [       OK ] BareRegistrationTest.FooBar (1 ms)
 [ RUN      ] BareRegistrationTest.constructor
-registration_test.js:48
+registration_test.js:90
 Expected: true
 Actual:   false
 

@@ -2,7 +2,7 @@
 <testsuite name="Google JS tests" failures="1" time="0.01">
  <testcase name="BareRegistrationTest.FooBar" time="0.01"/>
  <testcase name="BareRegistrationTest.constructor" time="0.01">
-  <failure><![CDATA[registration_test.js:48
+  <failure><![CDATA[registration_test.js:90
 Expected: true
 Actual:   false]]></failure>
  </testcase>

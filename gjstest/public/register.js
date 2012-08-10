@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// A function for registering gjstest test cases. Use it as follows:
+// Helper functions for registering gjstest test cases. Use it as follows:
 //
 //     /** @constructor */
 //     function MyTestFixture() {
@@ -23,18 +23,31 @@
 //     }
 //     registerTestSuite(MyTestFixture);
 //
-//     MyTestFixture.prototype.returnsFalse = function() {
-//       assertFalse(this.objectUnderTest_.bar());
-//     };
+//     // Add a test case named ReturnsFalse to the fixture. The full name of
+//     // test, as reported in the test output, is MyTestFixture.ReturnsFalse.
+//     addTest(MyTestFixture, function ReturnsFalse() {
+//       expectFalse(this.objectUnderTest_.bar());
+//     });
 //
 
 /**
  * Register a test constructor to be executed by the test runner.
  *
+ * Any enumerable property of ctor.prototype will be treated as a test function,
+ * unless:
+ *
+ *  *  The property's value is not a function.
+ *
+ *  *  The property's name ends with an underscore. Use this to create private
+ *     helper functions.
+ *
+ *  *  The property's name is 'tearDown'.
+ *
+ * If you use the addTest function below to add test functions, you do not need
+ * to worry about these constraints.
+ *
  * @param {!Function} ctor
- *     A constructor for the test suite class. Any methods on ctor.prototype
- *     besides 'tearDown' whose names don't end in an underscore are considered
- *     test functions.
+ *     A constructor for the test suite class.
  */
 gjstest.registerTestSuite = function(ctor) {
   if (!(ctor instanceof Function)) {
@@ -49,9 +62,26 @@ gjstest.registerTestSuite = function(ctor) {
   gjstest.internal.testSuites.push(ctor);
 };
 
-///////////////////////////
+/**
+ * Add a test function to the supplied test suite. The function's name is used
+ * to decide on the test name, so it should have one (see the top of the file
+ * for an example). The name may be any legal identifier, including 'tearDown'
+ * and magic properties like 'constructor'.
+ *
+ * @param {!Function} testSuite
+ *     The test suite class, which must have previously been registered with
+ *     registerTestSuite.
+ *
+ * @param {!Function} testFunc
+ *     The test function.
+ */
+gjstest.addTest = function(testSuite, testFunc) {
+  // TODO
+};
+
+////////////////////////////////////////////////////////////////////////
 // Implementation details
-///////////////////////////
+////////////////////////////////////////////////////////////////////////
 
 /**
  * A list of test suites that have been registered.
