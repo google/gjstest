@@ -152,7 +152,7 @@ AddTestTest.prototype.TestFuncNameAlreadyPresentFromAddTest = function() {
   }, throwsError(/SomeSuite.*DoesFoo.*already/));
 };
 
-AddTestTest.prototype.RegistersTestFunctionss = function() {
+AddTestTest.prototype.RegistersTestFunctions = function() {
   expectEq('TODO', '');
 };
 
