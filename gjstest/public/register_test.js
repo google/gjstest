@@ -132,11 +132,19 @@ AddTestTest.prototype.TestFuncHasNoName = function() {
 };
 
 AddTestTest.prototype.TestFuncNameEndsInUnderscore = function() {
-  expectEq('TODO', '');
+  var someSuite = this.someSuite_;
+
+  expectThat(function() {
+    addTest(someSuite, function foo_() {});
+  }, throwsError(/Error.*Illegal.*name.*foo_/));
 };
 
 AddTestTest.prototype.TestFuncNameIstearDown = function() {
-  expectEq('TODO', '');
+  var someSuite = this.someSuite_;
+
+  expectThat(function() {
+    addTest(someSuite, function tearDown() {});
+  }, throwsError(/Error.*Illegal.*name.*tearDown/));
 };
 
 AddTestTest.prototype.TestFuncNameAlreadyPresentFromBareRegistration =
