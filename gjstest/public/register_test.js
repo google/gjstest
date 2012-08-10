@@ -72,8 +72,20 @@ RegisterTestSuiteTest.prototype.AlreadyRegistered = function() {
 ////////////////////////////////////////////////////////////////////////
 
 function AddTestTest() {
+  // Make a copy of the real object; we will replace it later. Then clear it for
+  // the duration of this test.
+  this.originalTestConstructors_ = gjstest.internal.testSuites;
+  gjstest.internal.testSuites = [];
+
+  // Register a fake test suite for use in our tests.
+  this.someSuite_ = function SomeSuite() {};
+  registerTestSuite(this.someSuite_);
 }
 registerTestSuite(AddTestTest);
+
+AddTestTest.prototype.tearDown = function() {
+  gjstest.internal.testSuites = this.originalTestConstructors_;
+};
 
 AddTestTest.prototype.TestSuiteIsNull = function() {
   expectThat(function() {
@@ -96,7 +108,11 @@ AddTestTest.prototype.TestSuiteNotRegistered = function() {
 };
 
 AddTestTest.prototype.TestFuncIsNull = function() {
-  expectEq('TODO', '');
+  var someSuite = this.someSuite_;
+
+  expectThat(function() {
+    addTest(someSuite, null);
+  }, throwsError(/TypeError.*addTest.*function/));
 }
 
 AddTestTest.prototype.TestFuncNotFunction = function() {
