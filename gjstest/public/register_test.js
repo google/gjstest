@@ -91,13 +91,13 @@ AddTestTest.prototype.TestSuiteIsNull = function() {
   expectThat(function() {
     addTest(null, function Foo() {});
   }, throwsError(/TypeError.*addTest.*function/));
-}
+};
 
 AddTestTest.prototype.TestSuiteIsNotFunction = function() {
   expectThat(function() {
     addTest(17, function Foo() {});
   }, throwsError(/TypeError.*addTest.*function/));
-}
+};
 
 AddTestTest.prototype.TestSuiteNotRegistered = function() {
   function UnregisteredSuite() {}
@@ -113,7 +113,7 @@ AddTestTest.prototype.TestFuncIsNull = function() {
   expectThat(function() {
     addTest(someSuite, null);
   }, throwsError(/TypeError.*addTest.*function/));
-}
+};
 
 AddTestTest.prototype.TestFuncNotFunction = function() {
   var someSuite = this.someSuite_;
