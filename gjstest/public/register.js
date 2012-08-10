@@ -198,18 +198,21 @@ gjstest.internal.getTestFunctions = function(ctor) {
     result[fullName] = gjstest.internal.makeTestFunction_(ctor, name);
   }
 
-  for (var name in ctor.prototype) {
+  // Consider each enumerable key belonging directly to the constructor's
+  // prototype.
+  Object.keys(ctor.prototype).forEach(function(key) {
     // Skip this property if it's private or the tearDown method.
-    if (/_$/.test(name) || name == 'tearDown') continue;
-
-    // Skip this property if it's inherited or not a function.
-    if (!ctor.prototype.hasOwnProperty(name) ||
-        !(ctor.prototype[name] instanceof Function)) {
-      continue;
+    if (/_$/.test(key) || key == 'tearDown') {
+      return;
     }
 
-    addTestFunction(name);
-  }
+    // Skip this property if it's not a function.
+    if (!(ctor.prototype[key] instanceof Function)) {
+      return;
+    }
+
+    addTestFunction(key);
+  });
 
   return result;
 };
