@@ -170,17 +170,21 @@ AddTestTest.prototype.TestFuncNameAlreadyPresentFromAddTest = function() {
 
 AddTestTest.prototype.RegistersTestFunctions = function() {
   var someSuite = this.someSuite_;
+  addTest(someSuite, function constructor() {});
+  addTest(someSuite, function hasOwnProperty() {});
+  addTest(someSuite, function propertyIsEnumerable() {});
+  addTest(someSuite, function prototype() {});
   addTest(someSuite, function DoesFoo() {});
   addTest(someSuite, function DoesBar() {});
-  addTest(someSuite, function constructor() {});
-  addTest(someSuite, function prototype() {});
 
   expectThat(getEnumerableKeys(someSuite.prototype),
              elementsAre([
+                 'constructor',
+                 'hasOwnProperty',
+                 'propertyIsEnumerable',
+                 'prototype',
                  'DoesFoo',
                  'DoesBar',
-                 'constructor',
-                 'prototype',
              ]));
 };
 
