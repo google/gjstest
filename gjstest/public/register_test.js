@@ -131,6 +131,14 @@ AddTestTest.prototype.TestFuncHasNoName = function() {
   }, throwsError(/Error.*addTest.*function.*name/));
 };
 
+AddTestTest.prototype.TestFuncNameEndsInUnderscore = function() {
+  expectEq('TODO', '');
+};
+
+AddTestTest.prototype.TestFuncNameIstearDown = function() {
+  expectEq('TODO', '');
+};
+
 AddTestTest.prototype.TestFuncNameAlreadyPresentFromBareRegistration =
     function() {
   var someSuite = this.someSuite_;
