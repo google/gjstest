@@ -132,7 +132,16 @@ gjstest.addTest = function(testSuite, testFunc) {
     throw new Error('Test function already registered: ' + testFuncName);
   }
 
-  testSuite.prototype[testFunc.name] = testFunc;
+  // Make sure the property is enumerable.
+  Object.defineProperty(
+      suitePrototype,
+      testFuncName,
+      {
+        value: testFunc,
+        writable: true,
+        configurable: true,
+        enumerable: true,
+      });
 };
 
 ////////////////////////////////////////////////////////////////////////
