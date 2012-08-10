@@ -96,6 +96,25 @@ gjstest.registerTestSuite = function(ctor) {
  *     The test function.
  */
 gjstest.addTest = function(testSuite, testFunc) {
+  // Check types.
+  if (!(testSuite instanceof Function)) {
+    throw new TypeError('addTest() requires a function for the test suite.');
+  }
+
+  if (!(testFunc instanceof Function)) {
+    throw new TypeError('addTest() requires a function for the test function.');
+  }
+
+  // Make sure the test function's name is legal.
+  var testFuncName = testFunc.name;
+  if (!testFuncName) {
+    throw new Error('Test functions must have names.');
+  }
+
+  if (/_$/.test(testFuncName) || testFuncName == 'tearDown') {
+    throw new Error('Illegal test function name: ' + testFuncName);
+  }
+
   testSuite.prototype[testFunc.name] = testFunc;
 };
 

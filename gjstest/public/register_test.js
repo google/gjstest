@@ -128,7 +128,7 @@ AddTestTest.prototype.TestFuncHasNoName = function() {
 
   expectThat(function() {
     addTest(someSuite, function() {});
-  }, throwsError(/Error.*addTest.*function.*name/));
+  }, throwsError(/function.*must have.*name/));
 };
 
 AddTestTest.prototype.TestFuncNameEndsInUnderscore = function() {
