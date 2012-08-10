@@ -17,7 +17,7 @@
 // Helpers
 ////////////////////////////////////////////////////////////////////////
 
-function getKeys(obj) {
+function getEnumerableKeys(obj) {
   var result = [];
   for (var name in obj) {
     result.push(name);
@@ -68,6 +68,135 @@ RegisterTestSuiteTest.prototype.AlreadyRegistered = function() {
 };
 
 ////////////////////////////////////////////////////////////////////////
+// addTest
+////////////////////////////////////////////////////////////////////////
+
+function AddTestTest() {
+  // Make a copy of the real object; we will replace it later. Then clear it for
+  // the duration of this test.
+  this.originalTestConstructors_ = gjstest.internal.testSuites;
+  gjstest.internal.testSuites = [];
+
+  // Register a fake test suite for use in our tests.
+  this.someSuite_ = function SomeSuite() {};
+  registerTestSuite(this.someSuite_);
+}
+registerTestSuite(AddTestTest);
+
+AddTestTest.prototype.tearDown = function() {
+  gjstest.internal.testSuites = this.originalTestConstructors_;
+};
+
+AddTestTest.prototype.TestSuiteIsNull = function() {
+  expectThat(function() {
+    addTest(null, function Foo() {});
+  }, throwsError(/TypeError.*addTest.*function/));
+}
+
+AddTestTest.prototype.TestSuiteIsNotFunction = function() {
+  expectThat(function() {
+    addTest(17, function Foo() {});
+  }, throwsError(/TypeError.*addTest.*function/));
+}
+
+AddTestTest.prototype.TestSuiteNotRegistered = function() {
+  function UnregisteredSuite() {}
+
+  expectThat(function() {
+    addTest(UnregisteredSuite, function Foo() {});
+  }, throwsError(/not.*registered.*UnregisteredSuite/));
+};
+
+AddTestTest.prototype.TestFuncIsNull = function() {
+  var someSuite = this.someSuite_;
+
+  expectThat(function() {
+    addTest(someSuite, null);
+  }, throwsError(/TypeError.*addTest.*function/));
+}
+
+AddTestTest.prototype.TestFuncNotFunction = function() {
+  var someSuite = this.someSuite_;
+
+  expectThat(function() {
+    addTest(someSuite, 17);
+  }, throwsError(/TypeError.*addTest.*function/));
+};
+
+AddTestTest.prototype.TestFuncHasNoName = function() {
+  var someSuite = this.someSuite_;
+
+  expectThat(function() {
+    addTest(someSuite, function() {});
+  }, throwsError(/function.*must have.*name/));
+};
+
+AddTestTest.prototype.TestFuncNameEndsInUnderscore = function() {
+  var someSuite = this.someSuite_;
+
+  expectThat(function() {
+    addTest(someSuite, function foo_() {});
+  }, throwsError(/Error.*Illegal.*name.*foo_/));
+};
+
+AddTestTest.prototype.TestFuncNameIstearDown = function() {
+  var someSuite = this.someSuite_;
+
+  expectThat(function() {
+    addTest(someSuite, function tearDown() {});
+  }, throwsError(/Error.*Illegal.*name.*tearDown/));
+};
+
+AddTestTest.prototype.TestFuncNameAlreadyPresentFromBareRegistration =
+    function() {
+  var someSuite = this.someSuite_;
+  someSuite.prototype.DoesFoo = function() {};
+  someSuite.prototype.DoesBar = function() {};
+
+  // Make sure that the code doesn't use mucked-around-with properties.
+  someSuite.prototype.hasOwnProperty = null;
+  someSuite.prototype.propertyIsEnumerable = null;
+
+  expectThat(function() {
+    addTest(someSuite, function DoesFoo() {});
+  }, throwsError(/already.*registered.*DoesFoo/));
+};
+
+AddTestTest.prototype.TestFuncNameAlreadyPresentFromAddTest = function() {
+  var someSuite = this.someSuite_;
+  addTest(someSuite, function DoesFoo() {});
+  addTest(someSuite, function DoesBar() {});
+
+  // Make sure that the code doesn't use mucked-around-with properties.
+  someSuite.prototype.hasOwnProperty = null;
+  someSuite.prototype.propertyIsEnumerable = null;
+
+  expectThat(function() {
+    addTest(someSuite, function DoesFoo() {});
+  }, throwsError(/already.*registered.*DoesFoo/));
+};
+
+AddTestTest.prototype.RegistersTestFunctions = function() {
+  var someSuite = this.someSuite_;
+  addTest(someSuite, function constructor() {});
+  addTest(someSuite, function hasOwnProperty() {});
+  addTest(someSuite, function propertyIsEnumerable() {});
+  addTest(someSuite, function prototype() {});
+  addTest(someSuite, function DoesFoo() {});
+  addTest(someSuite, function DoesBar() {});
+
+  expectThat(getEnumerableKeys(someSuite.prototype),
+             elementsAre([
+                 'constructor',
+                 'hasOwnProperty',
+                 'propertyIsEnumerable',
+                 'prototype',
+                 'DoesFoo',
+                 'DoesBar',
+             ]));
+};
+
+////////////////////////////////////////////////////////////////////////
 // getTestFunctions
 ////////////////////////////////////////////////////////////////////////
 
@@ -80,7 +209,7 @@ GetTestFunctionsTest.prototype.TestNames = function() {
   TestSuite.prototype.someOtherName = function() {};
 
   var result = gjstest.internal.getTestFunctions(TestSuite);
-  expectThat(getKeys(result),
+  expectThat(getEnumerableKeys(result),
              elementsAre([
                'TestSuite.someName',
                'TestSuite.someOtherName'
@@ -93,7 +222,8 @@ GetTestFunctionsTest.prototype.IgnoresTrailingUnderscores = function() {
   TestSuite.prototype.ignoredName_ = function() {};
 
   var result = gjstest.internal.getTestFunctions(TestSuite);
-  expectThat(getKeys(result), elementsAre(['TestSuite.harmless_underscores']));
+  expectThat(getEnumerableKeys(result),
+             elementsAre(['TestSuite.harmless_underscores']));
 };
 
 GetTestFunctionsTest.prototype.IgnoresTearDown = function() {
@@ -102,7 +232,7 @@ GetTestFunctionsTest.prototype.IgnoresTearDown = function() {
   TestSuite.prototype.tearDown = function() {};
 
   var result = gjstest.internal.getTestFunctions(TestSuite);
-  expectThat(getKeys(result), elementsAre(['TestSuite.someName']));
+  expectThat(getEnumerableKeys(result), elementsAre(['TestSuite.someName']));
 };
 
 GetTestFunctionsTest.prototype.IgnoresInheritedFunctions = function() {
@@ -115,7 +245,7 @@ GetTestFunctionsTest.prototype.IgnoresInheritedFunctions = function() {
   TestSuite.prototype.overridden = function() {};
 
   var result = gjstest.internal.getTestFunctions(TestSuite);
-  expectThat(getKeys(result), elementsAre(['TestSuite.overridden']));
+  expectThat(getEnumerableKeys(result), elementsAre(['TestSuite.overridden']));
 };
 
 GetTestFunctionsTest.prototype.IgnoresNonFunctions = function() {
@@ -125,15 +255,7 @@ GetTestFunctionsTest.prototype.IgnoresNonFunctions = function() {
   TestSuite.prototype.constructor = {};
 
   var result = gjstest.internal.getTestFunctions(TestSuite);
-  expectThat(getKeys(result), elementsAre(['TestSuite.someName']));
-};
-
-GetTestFunctionsTest.prototype.TestConstructorName = function() {
-  function TestSuite() {}
-  TestSuite.prototype.constructor = function() {};
-
-  var result = gjstest.internal.getTestFunctions(TestSuite);
-  expectThat(getKeys(result), elementsAre(['TestSuite.constructor']));
+  expectThat(getEnumerableKeys(result), elementsAre(['TestSuite.someName']));
 };
 
 GetTestFunctionsTest.prototype.Execution = function() {

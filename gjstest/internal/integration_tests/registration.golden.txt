@@ -1,0 +1,45 @@
+[----------]
+[ RUN      ] HelperRegistrationTest.constructor
+registration_test.js:45
+Expected: true
+Actual:   false
+
+tearDown has been run.
+[  FAILED  ] HelperRegistrationTest.constructor (1 ms)
+[ RUN      ] HelperRegistrationTest.FooBar
+registration_test.js:40
+Expected: true
+Actual:   false
+
+tearDown has been run.
+[  FAILED  ] HelperRegistrationTest.FooBar (1 ms)
+[ RUN      ] HelperRegistrationTest.hasOwnProperty
+registration_test.js:50
+Expected: true
+Actual:   false
+
+tearDown has been run.
+[  FAILED  ] HelperRegistrationTest.hasOwnProperty (1 ms)
+[ RUN      ] HelperRegistrationTest.propertyIsEnumerable
+registration_test.js:56
+Expected: true
+Actual:   false
+
+tearDown has been run.
+[  FAILED  ] HelperRegistrationTest.propertyIsEnumerable (1 ms)
+[ RUN      ] HelperRegistrationTest.prototype
+registration_test.js:61
+Expected: true
+Actual:   false
+
+tearDown has been run.
+[  FAILED  ] HelperRegistrationTest.prototype (1 ms)
+[----------]
+
+[----------]
+[ RUN      ] BareRegistrationTest.FooBar
+tearDown has been run.
+[       OK ] BareRegistrationTest.FooBar (1 ms)
+[----------]
+
+[  FAILED  ]

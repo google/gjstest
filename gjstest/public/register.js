@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// A function for registering gjstest test cases. Use it as follows:
+// Helper functions for registering gjstest test cases. Use it as follows:
 //
 //     /** @constructor */
 //     function MyTestFixture() {
@@ -23,18 +23,31 @@
 //     }
 //     registerTestSuite(MyTestFixture);
 //
-//     MyTestFixture.prototype.returnsFalse = function() {
-//       assertFalse(this.objectUnderTest_.bar());
-//     };
+//     // Add a test case named ReturnsFalse to the fixture. The full name of
+//     // test, as reported in the test output, is MyTestFixture.ReturnsFalse.
+//     addTest(MyTestFixture, function ReturnsFalse() {
+//       expectFalse(this.objectUnderTest_.bar());
+//     });
 //
 
 /**
  * Register a test constructor to be executed by the test runner.
  *
+ * Any enumerable property of ctor.prototype whose value is a function will be
+ * treated as a test function, unless:
+ *
+ *  *  The property's name ends with an underscore. Use this to create private
+ *     helper functions.
+ *
+ *  *  The property's name is 'tearDown'. This name is reserved for tear-down
+ *     helpers. If you use leading-upper-case CamelCase for test names, you
+ *     don't need to worry about this exception.
+ *
+ * Rather than attaching tests to ctor.prototype directly, consider using the
+ * addTest function below. See its documentation for the benefits of doing so.
+ *
  * @param {!Function} ctor
- *     A constructor for the test suite class. Any methods on ctor.prototype
- *     besides 'tearDown' whose names don't end in an underscore are considered
- *     test functions.
+ *     A constructor for the test suite class.
  */
 gjstest.registerTestSuite = function(ctor) {
   if (!(ctor instanceof Function)) {
@@ -49,9 +62,91 @@ gjstest.registerTestSuite = function(ctor) {
   gjstest.internal.testSuites.push(ctor);
 };
 
-///////////////////////////
+/**
+ * Add a test function to the supplied test suite. The function's name is used
+ * to decide on the test name, so it must have one (see the top of the file for
+ * an example).
+ *
+ * The function's name must not fit into one of the exceptions on test function
+ * names listed above; in this case addTest will throw an error to make sure
+ * that you realize your test will not be executed.
+ *
+ * Note that this function *does* correctly handle the case of magic property
+ * names like 'constructor'. JS adds a 'constructor' property to Foo.prototype
+ * for any function named Foo, but marks it as non-enumerable. The
+ * non-enumerable bit is sticky, which means that if you simply say
+ *
+ *     MyTest.prototype.constructor = function() {
+ *       expectTrue(false);
+ *     };
+ *
+ * then the test function will never be run. In contrast, saying
+ *
+ *     addTest(MyTest, function constructor() {
+ *       expectTrue(false);
+ *     });
+ *
+ * will work as expected.
+ *
+ * @param {!Function} testSuite
+ *     The test suite class, which must have previously been registered with
+ *     registerTestSuite.
+ *
+ * @param {!Function} testFunc
+ *     The test function.
+ */
+gjstest.addTest = function(testSuite, testFunc) {
+  // Check types.
+  if (!(testSuite instanceof Function)) {
+    throw new TypeError('addTest() requires a function for the test suite.');
+  }
+
+  if (!(testFunc instanceof Function)) {
+    throw new TypeError('addTest() requires a function for the test function.');
+  }
+
+  // Make sure the suite has been registered.
+  if (gjstest.internal.testSuites.indexOf(testSuite) == -1) {
+    throw new Error('Test suite has not been registered: ' + testSuite.name);
+  }
+
+  // Make sure the test function's name is legal.
+  var testFuncName = testFunc.name;
+  if (!testFuncName) {
+    throw new Error('Test functions must have names.');
+  }
+
+  if (/_$/.test(testFuncName) || testFuncName == 'tearDown') {
+    throw new Error('Illegal test function name: ' + testFuncName);
+  }
+
+  // Make sure the test name hasn't already been used. We must check both for
+  // the existence of the property and its enumerability because there may be a
+  // default non-emurable property (e.g. 'constructor' or 'prototype').
+  var suitePrototype = testSuite.prototype;
+  var hasOwnProperty = Object.prototype.hasOwnProperty;
+  var propertyIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+  if (hasOwnProperty.apply(suitePrototype, [testFuncName]) &&
+      propertyIsEnumerable.apply(suitePrototype, [testFuncName])) {
+    throw new Error('Test function already registered: ' + testFuncName);
+  }
+
+  // Make sure the property is enumerable.
+  Object.defineProperty(
+      suitePrototype,
+      testFuncName,
+      {
+        value: testFunc,
+        writable: true,
+        configurable: true,
+        enumerable: true,
+      });
+};
+
+////////////////////////////////////////////////////////////////////////
 // Implementation details
-///////////////////////////
+////////////////////////////////////////////////////////////////////////
 
 /**
  * A list of test suites that have been registered.
@@ -103,27 +198,21 @@ gjstest.internal.getTestFunctions = function(ctor) {
     result[fullName] = gjstest.internal.makeTestFunction_(ctor, name);
   }
 
-  for (var name in ctor.prototype) {
+  // Consider each enumerable key belonging directly to the constructor's
+  // prototype.
+  Object.keys(ctor.prototype).forEach(function(key) {
     // Skip this property if it's private or the tearDown method.
-    if (/_$/.test(name) || name == 'tearDown') continue;
-
-    // Skip this property if it's inherited or not a function.
-    if (!ctor.prototype.hasOwnProperty(name) ||
-        !(ctor.prototype[name] instanceof Function)) {
-      continue;
+    if (/_$/.test(key) || key == 'tearDown') {
+      return;
     }
 
-    addTestFunction(name);
-  }
+    // Skip this property if it's not a function.
+    if (!(ctor.prototype[key] instanceof Function)) {
+      return;
+    }
 
-  // A test case called 'constructor' is not picked up in the for loop above
-  // because 'constructor' is a property automatically defined on ctor.prototype
-  // that is not enumerable. See http://b/4992467.
-  if (ctor.prototype['constructor'] != ctor &&
-      ctor.prototype.hasOwnProperty('constructor') &&
-      ctor.prototype['constructor'] instanceof Function) {
-    addTestFunction('constructor');
-  }
+    addTestFunction(key);
+  });
 
   return result;
 };
