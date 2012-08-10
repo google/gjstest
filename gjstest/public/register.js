@@ -123,9 +123,13 @@ gjstest.addTest = function(testSuite, testFunc) {
   // Make sure the test name hasn't already been used. We must check both for
   // the existence of the property and its enumerability because there may be a
   // default non-emurable property (e.g. 'constructor' or 'prototype').
-  if (Object.prototype.hasOwnProperty.apply(testSuite, [testFuncName]) &&
-      Object.prototype.propertyIsEnumerable.apply(testSuite, [testFuncName])) {
-    throw new Error('Test fucntion already registered: ' + testFuncName);
+  var suitePrototype = testSuite.prototype;
+  var hasOwnProperty = Object.prototype.hasOwnProperty;
+  var propertyIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+  if (hasOwnProperty.apply(suitePrototype, [testFuncName]) &&
+      propertyIsEnumerable.apply(suitePrototype, [testFuncName])) {
+    throw new Error('Test function already registered: ' + testFuncName);
   }
 
   testSuite.prototype[testFunc.name] = testFunc;

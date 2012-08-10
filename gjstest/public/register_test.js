@@ -155,7 +155,7 @@ AddTestTest.prototype.TestFuncNameAlreadyPresentFromBareRegistration =
 
   expectThat(function() {
     addTest(someSuite, function DoesFoo() {});
-  }, throwsError(/SomeSuite.*DoesFoo.*already/));
+  }, throwsError(/already.*registered.*DoesFoo/));
 };
 
 AddTestTest.prototype.TestFuncNameAlreadyPresentFromAddTest = function() {
@@ -165,7 +165,7 @@ AddTestTest.prototype.TestFuncNameAlreadyPresentFromAddTest = function() {
 
   expectThat(function() {
     addTest(someSuite, function DoesFoo() {});
-  }, throwsError(/SomeSuite.*DoesFoo.*already/));
+  }, throwsError(/already.*registered.*DoesFoo/));
 };
 
 AddTestTest.prototype.RegistersTestFunctions = function() {
