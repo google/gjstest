@@ -105,6 +105,11 @@ gjstest.addTest = function(testSuite, testFunc) {
     throw new TypeError('addTest() requires a function for the test function.');
   }
 
+  // Make sure the suite has been registered.
+  if (gjstest.internal.testSuites.indexOf(testSuite) == -1) {
+    throw new Error('Test suite has not been registered: ' + testSuite.name);
+  }
+
   // Make sure the test function's name is legal.
   var testFuncName = testFunc.name;
   if (!testFuncName) {
