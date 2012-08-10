@@ -1,14 +1,14 @@
 [----------]
-[ RUN      ] RegistrationTest.FooBar
+[ RUN      ] BareRegistrationTest.FooBar
 tearDown has been run.
-[       OK ] RegistrationTest.FooBar (1 ms)
-[ RUN      ] RegistrationTest.constructor
-registration_test.js:40
+[       OK ] BareRegistrationTest.FooBar (1 ms)
+[ RUN      ] BareRegistrationTest.constructor
+registration_test.js:48
 Expected: true
 Actual:   false
 
 tearDown has been run.
-[  FAILED  ] RegistrationTest.constructor (1 ms)
+[  FAILED  ] BareRegistrationTest.constructor (1 ms)
 [----------]
 
 [  FAILED  ]
