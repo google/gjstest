@@ -96,7 +96,7 @@ gjstest.registerTestSuite = function(ctor) {
  *     The test function.
  */
 gjstest.addTest = function(testSuite, testFunc) {
-  // TODO
+  testSuite.prototype[testFunc.name] = testFunc;
 };
 
 ////////////////////////////////////////////////////////////////////////
