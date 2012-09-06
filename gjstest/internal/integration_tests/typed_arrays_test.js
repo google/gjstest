@@ -37,7 +37,7 @@ TypedArraysTest.prototype.ArrayBuffer = function() {
   bytes[3] = 0x78;
 
   expectEq(0x7856, last16[0]);
-}
+};
 
 TypedArraysTest.prototype.ArrayBufferSlices = function() {
   var slice;

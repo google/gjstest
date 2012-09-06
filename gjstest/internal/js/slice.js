@@ -23,12 +23,21 @@
  *     http://www.khronos.org/registry/typedarray/specs/latest/
  *
  * @param {number} start
+ *     The start index, inclusive. If negative, this is interpreted as an index
+ *     from the end of the array.
+ *
  * @param {number=} opt_end
+ *     The end index, exclusive. If negative, this is interpreted as an index
+ *     from the end of the array. If missing, this defaults to the length of the
+ *     array.
+ *
+ * @return {!ArrayBuffer}
+ *     A copy of the sliced data.
  */
 ArrayBuffer.prototype.slice = function(start, opt_end) {
   // Handle missing start arguments.
   if (start === undefined) {
-    throw new Error("Not enough arguments.");
+    throw new Error('Not enough arguments.');
   }
 
   // Handle missing end arguments.
