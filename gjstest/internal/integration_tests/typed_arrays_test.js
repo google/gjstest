@@ -59,6 +59,10 @@ TypedArraysTest.prototype.ArrayBufferSlices = function() {
   expectEq(4, slice.byteLength);
   expectThat(bytes, elementsAre([0x12, 0x34, 0x56, 0x78]));
 
+  // The slice should be a copy of the original.
+  bytes[1] = 0xff;
+  expectEq(0x34, (new Uint8Array(buffer))[1]);
+
   // Full slice without end index.
   slice = buffer.slice(0);
   bytes = new Uint8Array(slice);
