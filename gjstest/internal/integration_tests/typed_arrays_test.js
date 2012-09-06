@@ -70,6 +70,13 @@ TypedArraysTest.prototype.ArrayBufferSlices = function() {
   expectEq(4, slice.byteLength);
   expectThat(bytes, elementsAre([0x12, 0x34, 0x56, 0x78]));
 
+  // Partial slice without end index.
+  slice = buffer.slice(1);
+  bytes = new Uint8Array(slice);
+
+  expectEq(3, slice.byteLength);
+  expectThat(bytes, elementsAre([0x34, 0x56, 0x78]));
+
   // Partial slice with positive indices.
   slice = buffer.slice(1, 3);
   bytes = new Uint8Array(slice);
