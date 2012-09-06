@@ -27,6 +27,7 @@ TypedArraysTest.prototype.ArrayBuffer = function() {
   var bytes = new Uint8Array(buffer);
   var last16 = new Uint16Array(buffer, 2, 1);
 
+  expectEq(4, buffer.byteLength);
   expectEq(4, bytes.length);
   expectEq(1, last16.length);
 
