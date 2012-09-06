@@ -33,6 +33,8 @@
  *
  * @return {!ArrayBuffer}
  *     A copy of the sliced data.
+ *
+ * @suppress {duplicate}
  */
 ArrayBuffer.prototype.slice = function(start, opt_end) {
   // Handle missing start arguments.
