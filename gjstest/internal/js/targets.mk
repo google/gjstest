@@ -50,6 +50,10 @@ $(eval $(call compiled_js_library, \
 ))
 
 $(eval $(call compiled_js_library, \
+    gjstest/internal/js/slice, \
+))
+
+$(eval $(call compiled_js_library, \
     gjstest/internal/js/stack_frame, \
         gjstest/internal/js/namespace \
 ))
@@ -71,6 +75,7 @@ $(eval $(call compiled_js_library, \
 $(eval $(call compiled_js_library, \
     gjstest/internal/js/use_global_namespace, \
         gjstest/internal/js/run_test \
+        gjstest/internal/js/slice \
         gjstest/internal/js/stack_utils \
         gjstest/internal/js/browser/run_tests \
         gjstest/public/actions \

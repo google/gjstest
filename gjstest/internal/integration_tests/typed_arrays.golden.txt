@@ -1,6 +1,8 @@
 [----------]
 [ RUN      ] TypedArraysTest.ArrayBuffer
 [       OK ] TypedArraysTest.ArrayBuffer (1 ms)
+[ RUN      ] TypedArraysTest.ArrayBufferSlices
+[       OK ] TypedArraysTest.ArrayBufferSlices (1 ms)
 [ RUN      ] TypedArraysTest.ArrayBufferView
 [       OK ] TypedArraysTest.ArrayBufferView (1 ms)
 [ RUN      ] TypedArraysTest.Int8Array

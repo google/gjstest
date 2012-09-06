@@ -39,6 +39,77 @@ TypedArraysTest.prototype.ArrayBuffer = function() {
   expectEq(0x7856, last16[0]);
 }
 
+TypedArraysTest.prototype.ArrayBufferSlices = function() {
+  var slice;
+  var f;
+
+  // Create a buffer and put some data in it.
+  var buffer = new ArrayBuffer(4);
+  var bytes = new Uint8Array(buffer);
+
+  bytes[0] = 0x12;
+  bytes[1] = 0x34;
+  bytes[2] = 0x56;
+  bytes[3] = 0x78;
+
+  // Full slice with end index.
+  slice = buffer.slice(0, 4);
+  bytes = new Uint8Array(slice);
+
+  expectEq(4, slice.byteLength);
+  expectThat(bytes, elementsAre([0x12, 0x34, 0x56, 0x78]));
+
+  // The slice should be a copy of the original.
+  bytes[1] = 0xff;
+  expectEq(0x34, (new Uint8Array(buffer))[1]);
+
+  // Full slice without end index.
+  slice = buffer.slice(0);
+  bytes = new Uint8Array(slice);
+
+  expectEq(4, slice.byteLength);
+  expectThat(bytes, elementsAre([0x12, 0x34, 0x56, 0x78]));
+
+  // Partial slice without end index.
+  slice = buffer.slice(1);
+  bytes = new Uint8Array(slice);
+
+  expectEq(3, slice.byteLength);
+  expectThat(bytes, elementsAre([0x34, 0x56, 0x78]));
+
+  // Partial slice with positive indices.
+  slice = buffer.slice(1, 3);
+  bytes = new Uint8Array(slice);
+
+  expectEq(2, slice.byteLength);
+  expectThat(bytes, elementsAre([0x34, 0x56]));
+
+  // Partial slice with negative indices.
+  slice = buffer.slice(-3, -1);
+  bytes = new Uint8Array(slice);
+
+  expectEq(2, slice.byteLength);
+  expectThat(bytes, elementsAre([0x34, 0x56]));
+
+  // Slice with negative length.
+  slice = buffer.slice(3, 1);
+  bytes = new Uint8Array(slice);
+
+  expectEq(0, slice.byteLength);
+  expectThat(bytes, elementsAre([]));
+
+  // Indices out of bounds.
+  slice = buffer.slice(-10, 17);
+  bytes = new Uint8Array(slice);
+
+  expectEq(4, slice.byteLength);
+  expectThat(bytes, elementsAre([0x12, 0x34, 0x56, 0x78]));
+
+  // No arguments.
+  f = function() { buffer.slice(); };
+  expectThat(f, throwsError(/enough arguments/));
+}
+
 TypedArraysTest.prototype.ArrayBufferView = function() {
   var buffer = new ArrayBuffer(100);
   var view;
