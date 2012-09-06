@@ -18,14 +18,50 @@
 // fast.
 
 /**
- * Verify an expectation, reporting failure when appropriate.
+ * Slice an array buffer, as defined here:
+ *
+ *     http://www.khronos.org/registry/typedarray/specs/latest/
  *
  * @param {number} start
- *     TODO
- *
  * @param {number=} opt_end
- *     TODO
  */
 ArrayBuffer.prototype.slice = function(start, opt_end) {
-  throw new Error(/TODO/);
+  // Handle missing start arguments.
+  if (start === undefined) {
+    throw new Error("Not enough arguments.");
+  }
+
+  // Handle missing end arguments.
+  var end = opt_end || this.byteLength;
+
+  // Interpret negative values as indices from the end of the array. Convert
+  // them to indices from the beginning.
+  if (start < 0) { start = this.byteLength + start; }
+  if (end < 0) { end = this.byteLength + end; }
+
+  // Handle negative-length slices.
+  if (end < start) {
+    start = 0;
+    end = 0;
+  }
+
+  // Clamp the range.
+  if (start < 0) { start = 0; }
+  if (end < 0) { end = 0; }
+
+  if (start > this.byteLength) { start = this.byteLength; }
+  if (end > this.byteLength) { end = this.byteLength; }
+
+  // Create a new buffer, and copy data into it.
+  var result = new ArrayBuffer(end - start);
+  var inBytes = new Uint8Array(this);
+  var outBytes = new Uint8Array(result);
+
+  for (var inIndex = start, outIndex = 0;
+       inIndex < end;
+       ++inIndex, ++outIndex) {
+    outBytes[outIndex] = inBytes[inIndex];
+  }
+
+  return result;
 };
