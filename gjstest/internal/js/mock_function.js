@@ -131,7 +131,8 @@ gjstest.internal.createMockFunction =
     // Check the arguments against each expectation. Iterate in reverse order to
     // match most recent expectations first.
     for (var i = callExpectations.length - 1; i >= 0; --i) {
-      var expectation = callExpectations[i];
+      var expectation = /** @type {!gjstest.internal.CallExpectation} */ (
+          callExpectations[i]);
 
       // Does this expectation match?
       var expectationFailureMessage = checkArgs(arguments, expectation);
@@ -161,7 +162,8 @@ gjstest.internal.createMockFunction =
     }
 
     // Take the appropriate action.
-    var actionFunc = gjstest.internal.consumeAction_(expectation);
+    var actionFunc = gjstest.internal.consumeAction_(
+        /** @type {!gjstest.internal.CallExpectation} */ (expectation));
     return actionFunc.apply(this, arguments);
   };
 
