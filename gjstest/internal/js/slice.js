@@ -17,6 +17,12 @@
 // have one. A JS version is much easier to implement, though it won't be as
 // fast.
 
+// Make sure we haven't updated our C++ implementation and forgotten to delete
+// this file.
+if ('slice' in ArrayBuffer.prototype) {
+  throw new Error("ArrayBuffer.prototype.slice is already defined.");
+}
+
 /**
  * Slice an array buffer, as defined here:
  *
