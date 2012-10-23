@@ -125,23 +125,22 @@ TypedArraysTest.prototype.DataViewReading = function() {
   var bytes = new Uint8Array(6);
   var view = new DataView(bytes.buffer, 1, 4);
 
-  // Uint8
+  ////////////////////////////////////////////////////////////////////////
+  // Unsigned integers
+  ////////////////////////////////////////////////////////////////////////
+
   bytes[1] = 0x12;
   bytes[2] = 0x34;
   bytes[3] = 0xcd;
   bytes[4] = 0xef;
 
+  // Uint8
   expectEq(0x12, view.getUint8(0));
   expectEq(0x34, view.getUint8(1));
   expectEq(0xcd, view.getUint8(2));
   expectEq(0xef, view.getUint8(3));
 
   // Uint16
-  bytes[1] = 0x12;
-  bytes[2] = 0x34;
-  bytes[3] = 0xcd;
-  bytes[4] = 0xef;
-
   expectEq(0x1234, view.getUint16(0));
   expectEq(0x34cd, view.getUint16(1));
   expectEq(0xcdef, view.getUint16(2));
@@ -155,16 +154,42 @@ TypedArraysTest.prototype.DataViewReading = function() {
   expectEq(0xefcd, view.getUint16(2, true));
 
   // Uint32
+  expectEq(0x1234cdef, view.getUint32(0));
+  expectEq(0x1234cdef, view.getUint32(0, false));
+  expectEq(0xefcd3412, view.getUint32(0, true));
+
+  ////////////////////////////////////////////////////////////////////////
+  // Signed integers
+  ////////////////////////////////////////////////////////////////////////
+
   bytes[1] = 0x12;
   bytes[2] = 0x34;
   bytes[3] = 0xcd;
   bytes[4] = 0xef;
 
-  expectEq(0x1234cdef, view.getUint32(0));
-  expectEq(0x1234cdef, view.getUint32(0, false));
-  expectEq(0xefcd3412, view.getUint32(0, true));
+  // Int8
+  expectEq(0x12, view.getInt8(0));
+  expectEq(0x34, view.getInt8(1));
+  expectEq(-(0x100 - 0xcd), view.getInt8(2));
+  expectEq(-(0x100 - 0xef), view.getInt8(3));
 
-  expectEq("TODO", "");
+  // Int16
+  expectEq(0x1234, view.getInt16(0));
+  expectEq(0x34cd, view.getInt16(1));
+  expectEq(-(0x10000 - 0xcdef), view.getInt16(2));
+
+  expectEq(0x1234, view.getInt16(0, false));
+  expectEq(0x34cd, view.getInt16(1, false));
+  expectEq(-(0x10000 - 0xcdef), view.getInt16(2, false));
+
+  expectEq(0x3412, view.getInt16(0, true));
+  expectEq(-(0x10000 - 0xcd34), view.getInt16(1, true));
+  expectEq(-(0x10000 - 0xefcd), view.getInt16(2, true));
+
+  // Int32
+  expectEq(0x1234cdef, view.getInt32(0));
+  expectEq(0x1234cdef, view.getInt32(0, false));
+  expectEq(-(0x100000000 - 0xefcd3412), view.getInt32(0, true));
 };
 
 TypedArraysTest.prototype.DataViewWriting = function() {
