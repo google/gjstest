@@ -122,8 +122,8 @@ TypedArraysTest.prototype.ArrayBufferView = function() {
 }
 
 TypedArraysTest.prototype.DataViewReading = function() {
-  var bytes = new Uint8Array(6);
-  var view = new DataView(bytes.buffer, 1, 4);
+  var bytes = new Uint8Array(10);
+  var view = new DataView(bytes.buffer, 1, 8);
 
   ////////////////////////////////////////////////////////////////////////
   // Unsigned integers
@@ -190,6 +190,36 @@ TypedArraysTest.prototype.DataViewReading = function() {
   expectEq(0x1234cdef, view.getInt32(0));
   expectEq(0x1234cdef, view.getInt32(0, false));
   expectEq(-(0x100000000 - 0xefcd3412), view.getInt32(0, true));
+
+  ////////////////////////////////////////////////////////////////////////
+  // 32-bit floating point
+  ////////////////////////////////////////////////////////////////////////
+
+  bytes[1] = 0x47;
+  bytes[2] = 0x1b;
+  bytes[3] = 0xcf;
+  bytes[4] = 0x90;
+
+  expectEq(39887.5625, view.getFloat32(0));
+  expectEq(39887.5625, view.getFloat32(0, false));
+  expectEq(-8.16891310928799e-29, view.getFloat32(0, true));
+
+  ////////////////////////////////////////////////////////////////////////
+  // 64-bit floating point
+  ////////////////////////////////////////////////////////////////////////
+
+  bytes[1] = 0x47;
+  bytes[2] = 0x1b;
+  bytes[3] = 0xcf;
+  bytes[4] = 0x90;
+  bytes[5] = 0x12;
+  bytes[6] = 0x34;
+  bytes[7] = 0x56;
+  bytes[8] = 0x78;
+
+  expectEq(3.610047211445024e+34, view.getFloat64(0));
+  expectEq(3.610047211445024e+34, view.getFloat64(0, false));
+  expectEq(4.691975668764521e+271, view.getFloat64(0, true));
 };
 
 TypedArraysTest.prototype.DataViewWriting = function() {
