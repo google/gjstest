@@ -119,7 +119,7 @@ TypedArraysTest.prototype.ArrayBufferView = function() {
   expectEq(buffer, view.buffer);
   expectEq(10, view.byteOffset);
   expectEq(4 * 2, view.byteLength);
-}
+};
 
 TypedArraysTest.prototype.DataViewReading = function() {
   var bytes = new Uint8Array(10);
@@ -390,24 +390,24 @@ TypedArraysTest.prototype.DataViewErrors = function() {
 
   // Construct with offset out of bounds.
   bytes = new Uint8Array(4);
-  f = function() { new DataView(bytes.buffer, 4, 1); }
+  f = function() { new DataView(bytes.buffer, 4, 1); };
   expectThat(f, throwsError(/INDEX_SIZE_ERR|RangeError.*byteOffset/));
 
   // Construct with length too long.
   bytes = new Uint8Array(4);
-  f = function() { new DataView(bytes.buffer, 2, 3); }
+  f = function() { new DataView(bytes.buffer, 2, 3); };
   expectThat(f, throwsError(/INDEX_SIZE_ERR|RangeError.*byteLength/));
 
   // Read off end of view.
   bytes = new Uint8Array(100);
   view = new DataView(bytes.buffer, 10, 17);
-  f = function() { view.getUint16(16); }
+  f = function() { view.getUint16(16); };
   expectThat(f, throwsError(/INDEX_SIZE_ERR|Index.*range/));
 
   // Write off end of view.
   bytes = new Uint8Array(100);
   view = new DataView(bytes.buffer, 10, 17);
-  f = function() { view.setUint16(16, 10); }
+  f = function() { view.setUint16(16, 10); };
   expectThat(f, throwsError(/INDEX_SIZE_ERR|Index.*range/));
 };
 
