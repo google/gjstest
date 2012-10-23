@@ -223,7 +223,59 @@ TypedArraysTest.prototype.DataViewReading = function() {
 };
 
 TypedArraysTest.prototype.DataViewWriting = function() {
-  expectEq("TODO", "");
+  var bytes = new Uint8Array(10);
+  var view = new DataView(bytes.buffer, 1, 8);
+
+  function clearBytes() {
+    for (var i = 0; i < bytes.length; ++i) {
+      bytes[i] = 0x00;
+    }
+  };
+
+  function sliceBytes(start, end) {
+    var result = [];
+    for (var i = start; i < end; ++i) {
+      result[i - start] = bytes[i];
+    }
+
+    return result;
+  };
+
+  ////////////////////////////////////////////////////////////////////////
+  // Unsigned integers
+  ////////////////////////////////////////////////////////////////////////
+
+  // Uint8
+  clearBytes();
+  view.setUint8(1, 0x12);
+  view.setUint8(2, 0x34);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0x12, 0x34]));
+
+  // Uint16
+  clearBytes();
+  view.setUint16(1, 0x1234);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0x12, 0x34]));
+
+  clearBytes();
+  view.setUint16(1, 0x1234, false);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0x12, 0x34]));
+
+  clearBytes();
+  view.setUint16(1, 0x1234, true);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0x34, 0x12]));
+
+  // Uint32
+  clearBytes();
+  view.setUint32(1, 0x1234cdef);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x12, 0x34, 0xcd, 0xef]));
+
+  clearBytes();
+  view.setUint32(1, 0x1234cdef, false);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x12, 0x34, 0xcd, 0xef]));
+
+  clearBytes();
+  view.setUint32(1, 0x1234cdef, true);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0xef, 0xcd, 0x34, 0x12]));
 };
 
 TypedArraysTest.prototype.DataViewErrors = function() {
