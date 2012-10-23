@@ -123,7 +123,7 @@ TypedArraysTest.prototype.ArrayBufferView = function() {
 
 TypedArraysTest.prototype.DataViewReading = function() {
   var bytes = new Uint8Array(10);
-  var view = new DataView(bytes.buffer, 1, 8);
+  var view = new DataView(bytes.buffer, 1, 9);
 
   ////////////////////////////////////////////////////////////////////////
   // Unsigned integers
@@ -224,7 +224,7 @@ TypedArraysTest.prototype.DataViewReading = function() {
 
 TypedArraysTest.prototype.DataViewWriting = function() {
   var bytes = new Uint8Array(10);
-  var view = new DataView(bytes.buffer, 1, 8);
+  var view = new DataView(bytes.buffer, 1, 9);
 
   function clearBytes() {
     for (var i = 0; i < bytes.length; ++i) {
@@ -344,6 +344,44 @@ TypedArraysTest.prototype.DataViewWriting = function() {
   clearBytes();
   view.setInt32(1, -(0x100000000 - 0xcdef1234), true);
   expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x34, 0x12, 0xef, 0xcd]));
+
+  ////////////////////////////////////////////////////////////////////////
+  // 32-bit floating point
+  ////////////////////////////////////////////////////////////////////////
+
+  clearBytes();
+  view.setFloat32(1, 39887.5625);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x47, 0x1b, 0xcf, 0x90]));
+
+  clearBytes();
+  view.setFloat32(1, 39887.5625, false);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x47, 0x1b, 0xcf, 0x90]));
+
+  clearBytes();
+  view.setFloat32(1, 39887.5625, true);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x90, 0xcf, 0x1b, 0x47]));
+
+  ////////////////////////////////////////////////////////////////////////
+  // 64-bit floating point
+  ////////////////////////////////////////////////////////////////////////
+
+  clearBytes();
+  view.setFloat64(1, 3.610047211445024e+34);
+  expectThat(
+      sliceBytes(1, 10),
+      elementsAre([0x00, 0x47, 0x1b, 0xcf, 0x90, 0x12, 0x34, 0x56, 0x78]));
+
+  clearBytes();
+  view.setFloat64(1, 3.610047211445024e+34, false);
+  expectThat(
+      sliceBytes(1, 10),
+      elementsAre([0x00, 0x47, 0x1b, 0xcf, 0x90, 0x12, 0x34, 0x56, 0x78]));
+
+  clearBytes();
+  view.setFloat64(1, 3.610047211445024e+34, true);
+  expectThat(
+      sliceBytes(1, 10),
+      elementsAre([0x00, 0x78, 0x56, 0x34, 0x12, 0x90, 0xcf, 0x1b, 0x47]));
 };
 
 TypedArraysTest.prototype.DataViewErrors = function() {
