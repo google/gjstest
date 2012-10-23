@@ -276,6 +276,74 @@ TypedArraysTest.prototype.DataViewWriting = function() {
   clearBytes();
   view.setUint32(1, 0x1234cdef, true);
   expectThat(sliceBytes(1, 6), elementsAre([0x00, 0xef, 0xcd, 0x34, 0x12]));
+
+  ////////////////////////////////////////////////////////////////////////
+  // Signed integers
+  ////////////////////////////////////////////////////////////////////////
+
+  // Positive Int8
+  clearBytes();
+  view.setInt8(1, 0x12);
+  view.setInt8(2, 0x34);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0x12, 0x34]));
+
+  // Negative Int8
+  clearBytes();
+  view.setInt8(1, -1);
+  view.setInt8(2, -2);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0xff, 0xfe]));
+
+  // Positive Int16
+  clearBytes();
+  view.setInt16(1, 0x1234);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0x12, 0x34]));
+
+  clearBytes();
+  view.setInt16(1, 0x1234, false);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0x12, 0x34]));
+
+  clearBytes();
+  view.setInt16(1, 0x1234, true);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0x34, 0x12]));
+
+  // Negative Int16
+  clearBytes();
+  view.setInt16(1, -(0x10000 - 0xcdef));
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0xcd, 0xef]));
+
+  clearBytes();
+  view.setInt16(1, -(0x10000 - 0xcdef));
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0xcd, 0xef]));
+
+  clearBytes();
+  view.setInt16(1, -(0x10000 - 0xcdef), true);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0xef, 0xcd]));
+
+  // Positive Int32
+  clearBytes();
+  view.setInt32(1, 0x12345678);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x12, 0x34, 0x56, 0x78]));
+
+  clearBytes();
+  view.setInt32(1, 0x12345678, false);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x12, 0x34, 0x56, 0x78]));
+
+  clearBytes();
+  view.setInt32(1, 0x12345678, true);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x78, 0x56, 0x34, 0x12]));
+
+  // Negative Int32
+  clearBytes();
+  view.setInt32(1, -(0x100000000 - 0xcdef1234));
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0xcd, 0xef, 0x12, 0x34]));
+
+  clearBytes();
+  view.setInt32(1, -(0x100000000 - 0xcdef1234), false);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0xcd, 0xef, 0x12, 0x34]));
+
+  clearBytes();
+  view.setInt32(1, -(0x100000000 - 0xcdef1234), true);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x34, 0x12, 0xef, 0xcd]));
 };
 
 TypedArraysTest.prototype.DataViewErrors = function() {
