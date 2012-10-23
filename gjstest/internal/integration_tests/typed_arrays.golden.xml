@@ -3,6 +3,9 @@
  <testcase name="TypedArraysTest.ArrayBuffer" time="0.01"/>
  <testcase name="TypedArraysTest.ArrayBufferSlices" time="0.01"/>
  <testcase name="TypedArraysTest.ArrayBufferView" time="0.01"/>
+ <testcase name="TypedArraysTest.DataViewReading" time="0.01"/>
+ <testcase name="TypedArraysTest.DataViewWriting" time="0.01"/>
+ <testcase name="TypedArraysTest.DataViewErrors" time="0.01"/>
  <testcase name="TypedArraysTest.Int8Array" time="0.01"/>
  <testcase name="TypedArraysTest.Int16Array" time="0.01"/>
  <testcase name="TypedArraysTest.Int32Array" time="0.01"/>

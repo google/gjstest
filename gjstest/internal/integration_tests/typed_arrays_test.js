@@ -121,6 +121,296 @@ TypedArraysTest.prototype.ArrayBufferView = function() {
   expectEq(4 * 2, view.byteLength);
 }
 
+TypedArraysTest.prototype.DataViewReading = function() {
+  var bytes = new Uint8Array(10);
+  var view = new DataView(bytes.buffer, 1, 9);
+
+  ////////////////////////////////////////////////////////////////////////
+  // Unsigned integers
+  ////////////////////////////////////////////////////////////////////////
+
+  bytes[1] = 0x12;
+  bytes[2] = 0x34;
+  bytes[3] = 0xcd;
+  bytes[4] = 0xef;
+
+  // Uint8
+  expectEq(0x12, view.getUint8(0));
+  expectEq(0x34, view.getUint8(1));
+  expectEq(0xcd, view.getUint8(2));
+  expectEq(0xef, view.getUint8(3));
+
+  // Uint16
+  expectEq(0x1234, view.getUint16(0));
+  expectEq(0x34cd, view.getUint16(1));
+  expectEq(0xcdef, view.getUint16(2));
+
+  expectEq(0x1234, view.getUint16(0, false));
+  expectEq(0x34cd, view.getUint16(1, false));
+  expectEq(0xcdef, view.getUint16(2, false));
+
+  expectEq(0x3412, view.getUint16(0, true));
+  expectEq(0xcd34, view.getUint16(1, true));
+  expectEq(0xefcd, view.getUint16(2, true));
+
+  // Uint32
+  expectEq(0x1234cdef, view.getUint32(0));
+  expectEq(0x1234cdef, view.getUint32(0, false));
+  expectEq(0xefcd3412, view.getUint32(0, true));
+
+  ////////////////////////////////////////////////////////////////////////
+  // Signed integers
+  ////////////////////////////////////////////////////////////////////////
+
+  bytes[1] = 0x12;
+  bytes[2] = 0x34;
+  bytes[3] = 0xcd;
+  bytes[4] = 0xef;
+
+  // Int8
+  expectEq(0x12, view.getInt8(0));
+  expectEq(0x34, view.getInt8(1));
+  expectEq(-(0x100 - 0xcd), view.getInt8(2));
+  expectEq(-(0x100 - 0xef), view.getInt8(3));
+
+  // Int16
+  expectEq(0x1234, view.getInt16(0));
+  expectEq(0x34cd, view.getInt16(1));
+  expectEq(-(0x10000 - 0xcdef), view.getInt16(2));
+
+  expectEq(0x1234, view.getInt16(0, false));
+  expectEq(0x34cd, view.getInt16(1, false));
+  expectEq(-(0x10000 - 0xcdef), view.getInt16(2, false));
+
+  expectEq(0x3412, view.getInt16(0, true));
+  expectEq(-(0x10000 - 0xcd34), view.getInt16(1, true));
+  expectEq(-(0x10000 - 0xefcd), view.getInt16(2, true));
+
+  // Int32
+  expectEq(0x1234cdef, view.getInt32(0));
+  expectEq(0x1234cdef, view.getInt32(0, false));
+  expectEq(-(0x100000000 - 0xefcd3412), view.getInt32(0, true));
+
+  ////////////////////////////////////////////////////////////////////////
+  // 32-bit floating point
+  ////////////////////////////////////////////////////////////////////////
+
+  bytes[1] = 0x47;
+  bytes[2] = 0x1b;
+  bytes[3] = 0xcf;
+  bytes[4] = 0x90;
+
+  expectEq(39887.5625, view.getFloat32(0));
+  expectEq(39887.5625, view.getFloat32(0, false));
+  expectEq(-8.16891310928799e-29, view.getFloat32(0, true));
+
+  ////////////////////////////////////////////////////////////////////////
+  // 64-bit floating point
+  ////////////////////////////////////////////////////////////////////////
+
+  bytes[1] = 0x47;
+  bytes[2] = 0x1b;
+  bytes[3] = 0xcf;
+  bytes[4] = 0x90;
+  bytes[5] = 0x12;
+  bytes[6] = 0x34;
+  bytes[7] = 0x56;
+  bytes[8] = 0x78;
+
+  expectEq(3.610047211445024e+34, view.getFloat64(0));
+  expectEq(3.610047211445024e+34, view.getFloat64(0, false));
+  expectEq(4.691975668764521e+271, view.getFloat64(0, true));
+};
+
+TypedArraysTest.prototype.DataViewWriting = function() {
+  var bytes = new Uint8Array(10);
+  var view = new DataView(bytes.buffer, 1, 9);
+
+  function clearBytes() {
+    for (var i = 0; i < bytes.length; ++i) {
+      bytes[i] = 0x00;
+    }
+  };
+
+  function sliceBytes(start, end) {
+    var result = [];
+    for (var i = start; i < end; ++i) {
+      result[i - start] = bytes[i];
+    }
+
+    return result;
+  };
+
+  ////////////////////////////////////////////////////////////////////////
+  // Unsigned integers
+  ////////////////////////////////////////////////////////////////////////
+
+  // Uint8
+  clearBytes();
+  view.setUint8(1, 0x12);
+  view.setUint8(2, 0x34);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0x12, 0x34]));
+
+  // Uint16
+  clearBytes();
+  view.setUint16(1, 0x1234);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0x12, 0x34]));
+
+  clearBytes();
+  view.setUint16(1, 0x1234, false);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0x12, 0x34]));
+
+  clearBytes();
+  view.setUint16(1, 0x1234, true);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0x34, 0x12]));
+
+  // Uint32
+  clearBytes();
+  view.setUint32(1, 0x1234cdef);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x12, 0x34, 0xcd, 0xef]));
+
+  clearBytes();
+  view.setUint32(1, 0x1234cdef, false);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x12, 0x34, 0xcd, 0xef]));
+
+  clearBytes();
+  view.setUint32(1, 0x1234cdef, true);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0xef, 0xcd, 0x34, 0x12]));
+
+  ////////////////////////////////////////////////////////////////////////
+  // Signed integers
+  ////////////////////////////////////////////////////////////////////////
+
+  // Positive Int8
+  clearBytes();
+  view.setInt8(1, 0x12);
+  view.setInt8(2, 0x34);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0x12, 0x34]));
+
+  // Negative Int8
+  clearBytes();
+  view.setInt8(1, -1);
+  view.setInt8(2, -2);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0xff, 0xfe]));
+
+  // Positive Int16
+  clearBytes();
+  view.setInt16(1, 0x1234);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0x12, 0x34]));
+
+  clearBytes();
+  view.setInt16(1, 0x1234, false);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0x12, 0x34]));
+
+  clearBytes();
+  view.setInt16(1, 0x1234, true);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0x34, 0x12]));
+
+  // Negative Int16
+  clearBytes();
+  view.setInt16(1, -(0x10000 - 0xcdef));
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0xcd, 0xef]));
+
+  clearBytes();
+  view.setInt16(1, -(0x10000 - 0xcdef));
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0xcd, 0xef]));
+
+  clearBytes();
+  view.setInt16(1, -(0x10000 - 0xcdef), true);
+  expectThat(sliceBytes(1, 4), elementsAre([0x00, 0xef, 0xcd]));
+
+  // Positive Int32
+  clearBytes();
+  view.setInt32(1, 0x12345678);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x12, 0x34, 0x56, 0x78]));
+
+  clearBytes();
+  view.setInt32(1, 0x12345678, false);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x12, 0x34, 0x56, 0x78]));
+
+  clearBytes();
+  view.setInt32(1, 0x12345678, true);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x78, 0x56, 0x34, 0x12]));
+
+  // Negative Int32
+  clearBytes();
+  view.setInt32(1, -(0x100000000 - 0xcdef1234));
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0xcd, 0xef, 0x12, 0x34]));
+
+  clearBytes();
+  view.setInt32(1, -(0x100000000 - 0xcdef1234), false);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0xcd, 0xef, 0x12, 0x34]));
+
+  clearBytes();
+  view.setInt32(1, -(0x100000000 - 0xcdef1234), true);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x34, 0x12, 0xef, 0xcd]));
+
+  ////////////////////////////////////////////////////////////////////////
+  // 32-bit floating point
+  ////////////////////////////////////////////////////////////////////////
+
+  clearBytes();
+  view.setFloat32(1, 39887.5625);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x47, 0x1b, 0xcf, 0x90]));
+
+  clearBytes();
+  view.setFloat32(1, 39887.5625, false);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x47, 0x1b, 0xcf, 0x90]));
+
+  clearBytes();
+  view.setFloat32(1, 39887.5625, true);
+  expectThat(sliceBytes(1, 6), elementsAre([0x00, 0x90, 0xcf, 0x1b, 0x47]));
+
+  ////////////////////////////////////////////////////////////////////////
+  // 64-bit floating point
+  ////////////////////////////////////////////////////////////////////////
+
+  clearBytes();
+  view.setFloat64(1, 3.610047211445024e+34);
+  expectThat(
+      sliceBytes(1, 10),
+      elementsAre([0x00, 0x47, 0x1b, 0xcf, 0x90, 0x12, 0x34, 0x56, 0x78]));
+
+  clearBytes();
+  view.setFloat64(1, 3.610047211445024e+34, false);
+  expectThat(
+      sliceBytes(1, 10),
+      elementsAre([0x00, 0x47, 0x1b, 0xcf, 0x90, 0x12, 0x34, 0x56, 0x78]));
+
+  clearBytes();
+  view.setFloat64(1, 3.610047211445024e+34, true);
+  expectThat(
+      sliceBytes(1, 10),
+      elementsAre([0x00, 0x78, 0x56, 0x34, 0x12, 0x90, 0xcf, 0x1b, 0x47]));
+};
+
+TypedArraysTest.prototype.DataViewErrors = function() {
+  var bytes;
+  var view;
+
+  // Construct with offset out of bounds.
+  bytes = new Uint8Array(4);
+  f = function() { new DataView(bytes.buffer, 4, 1); }
+  expectThat(f, throwsError(/INDEX_SIZE_ERR|RangeError.*byteOffset/));
+
+  // Construct with length too long.
+  bytes = new Uint8Array(4);
+  f = function() { new DataView(bytes.buffer, 2, 3); }
+  expectThat(f, throwsError(/INDEX_SIZE_ERR|RangeError.*byteLength/));
+
+  // Read off end of view.
+  bytes = new Uint8Array(100);
+  view = new DataView(bytes.buffer, 10, 17);
+  f = function() { view.getUint16(16); }
+  expectThat(f, throwsError(/INDEX_SIZE_ERR|Index.*range/));
+
+  // Write off end of view.
+  bytes = new Uint8Array(100);
+  view = new DataView(bytes.buffer, 10, 17);
+  f = function() { view.setUint16(16, 10); }
+  expectThat(f, throwsError(/INDEX_SIZE_ERR|Index.*range/));
+};
+
 TypedArraysTest.prototype.Int8Array = function() {
   var kType = Int8Array;
   var kBitWidth = 8;
