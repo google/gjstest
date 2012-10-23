@@ -121,6 +121,60 @@ TypedArraysTest.prototype.ArrayBufferView = function() {
   expectEq(4 * 2, view.byteLength);
 }
 
+TypedArraysTest.prototype.DataViewReading = function() {
+  var bytes = new Uint8Array(6);
+  var view = new DataView(bytes.buffer, 1, 4);
+
+  // Uint8
+  bytes[1] = 0x12;
+  bytes[2] = 0x34;
+  bytes[3] = 0xcd;
+  bytes[4] = 0xef;
+
+  expectEq(0x12, view.getUint8(0));
+  expectEq(0x34, view.getUint8(1));
+  expectEq(0xcd, view.getUint8(2));
+  expectEq(0xef, view.getUint8(3));
+
+  // Uint16
+  bytes[1] = 0x12;
+  bytes[2] = 0x34;
+  bytes[3] = 0xcd;
+  bytes[4] = 0xef;
+
+  expectEq(0x1234, view.getUint16(0));
+  expectEq(0x34cd, view.getUint16(1));
+  expectEq(0xcdef, view.getUint16(2));
+
+  expectEq(0x1234, view.getUint16(0, false));
+  expectEq(0x34cd, view.getUint16(1, false));
+  expectEq(0xcdef, view.getUint16(2, false));
+
+  expectEq(0x3412, view.getUint16(0, true));
+  expectEq(0xcd34, view.getUint16(1, true));
+  expectEq(0xefcd, view.getUint16(2, true));
+
+  // Uint32
+  bytes[1] = 0x12;
+  bytes[2] = 0x34;
+  bytes[3] = 0xcd;
+  bytes[4] = 0xef;
+
+  expectEq(0x1234cdef, view.getUint32(0));
+  expectEq(0x1234cdef, view.getUint32(0, false));
+  expectEq(0xefcd3412, view.getUint32(0, true));
+
+  expectEq("TODO", "");
+};
+
+TypedArraysTest.prototype.DataViewWriting = function() {
+  expectEq("TODO", "");
+};
+
+TypedArraysTest.prototype.DataViewErrors = function() {
+  expectEq("TODO", "");
+};
+
 TypedArraysTest.prototype.Int8Array = function() {
   var kType = Int8Array;
   var kBitWidth = 8;
