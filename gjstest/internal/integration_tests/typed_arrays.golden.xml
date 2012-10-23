@@ -1,27 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Google JS tests" failures="1" time="0.01">
+<testsuite name="Google JS tests" failures="0" time="0.01">
  <testcase name="TypedArraysTest.ArrayBuffer" time="0.01"/>
  <testcase name="TypedArraysTest.ArrayBufferSlices" time="0.01"/>
  <testcase name="TypedArraysTest.ArrayBufferView" time="0.01"/>
  <testcase name="TypedArraysTest.DataViewReading" time="0.01"/>
  <testcase name="TypedArraysTest.DataViewWriting" time="0.01"/>
- <testcase name="TypedArraysTest.DataViewErrors" time="0.01">
-  <failure><![CDATA[typed_arrays_test.js:394
-Expected: is a function that throws an error matching /INDEX_SIZE_ERR/
-Actual:   function (), which threw the wrong error: RangeError: byteOffset out of range.
-
-typed_arrays_test.js:399
-Expected: is a function that throws an error matching /INDEX_SIZE_ERR/
-Actual:   function (), which threw the wrong error: RangeError: byteOffset/byteLength out of range.
-
-typed_arrays_test.js:405
-Expected: is a function that throws an error matching /INDEX_SIZE_ERR/
-Actual:   function (), which threw the wrong error: Error: Index out of range.
-
-typed_arrays_test.js:411
-Expected: is a function that throws an error matching /INDEX_SIZE_ERR/
-Actual:   function (), which threw the wrong error: Error: Index out of range.]]></failure>
- </testcase>
+ <testcase name="TypedArraysTest.DataViewErrors" time="0.01"/>
  <testcase name="TypedArraysTest.Int8Array" time="0.01"/>
  <testcase name="TypedArraysTest.Int16Array" time="0.01"/>
  <testcase name="TypedArraysTest.Int32Array" time="0.01"/>

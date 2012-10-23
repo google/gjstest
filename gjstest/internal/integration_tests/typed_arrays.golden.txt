@@ -10,23 +10,7 @@
 [ RUN      ] TypedArraysTest.DataViewWriting
 [       OK ] TypedArraysTest.DataViewWriting (1 ms)
 [ RUN      ] TypedArraysTest.DataViewErrors
-typed_arrays_test.js:394
-Expected: is a function that throws an error matching /INDEX_SIZE_ERR/
-Actual:   function (), which threw the wrong error: RangeError: byteOffset out of range.
-
-typed_arrays_test.js:399
-Expected: is a function that throws an error matching /INDEX_SIZE_ERR/
-Actual:   function (), which threw the wrong error: RangeError: byteOffset/byteLength out of range.
-
-typed_arrays_test.js:405
-Expected: is a function that throws an error matching /INDEX_SIZE_ERR/
-Actual:   function (), which threw the wrong error: Error: Index out of range.
-
-typed_arrays_test.js:411
-Expected: is a function that throws an error matching /INDEX_SIZE_ERR/
-Actual:   function (), which threw the wrong error: Error: Index out of range.
-
-[  FAILED  ] TypedArraysTest.DataViewErrors (1 ms)
+[       OK ] TypedArraysTest.DataViewErrors (1 ms)
 [ RUN      ] TypedArraysTest.Int8Array
 [       OK ] TypedArraysTest.Int8Array (1 ms)
 [ RUN      ] TypedArraysTest.Int16Array
@@ -51,4 +35,4 @@ Actual:   function (), which threw the wrong error: Error: Index out of range.
 [       OK ] TypedArraysTest.TypedArrayContructorErrors (1 ms)
 [----------]
 
-[  FAILED  ]
+[  PASSED  ]
