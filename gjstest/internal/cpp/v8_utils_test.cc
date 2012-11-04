@@ -24,6 +24,7 @@
 #include "base/logging.h"
 #include "base/macros.h"
 
+using testing::ContainsRegex;
 using testing::ElementsAre;
 using testing::HasSubstr;
 
@@ -160,7 +161,7 @@ TEST_F(ConvertToStringTest, StackWithoutFilename) {
       "2+2\n"
       "new Error().stack";
 
-  EXPECT_THAT(GetResultAsString(js), HasSubstr("at unknown"));
+  EXPECT_THAT(GetResultAsString(js), ContainsRegex("at (unknown|<anonymous>)"));
 }
 
 ////////////////////////////////////////////////////////////////////////
