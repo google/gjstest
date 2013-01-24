@@ -85,7 +85,7 @@ gjstest.internal.browser = {};
  * @private
  */
 gjstest.internal.browser.runSoon_ = (function(win) {
-  var setTimeout =  /** @type {Window} */ (win).setTimeout;
+  var setTimeout = /** @type {Window} */(win).setTimeout;
   return function(fn) {
     setTimeout.call(win, fn, 0);
   };
