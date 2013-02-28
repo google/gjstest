@@ -14,6 +14,23 @@
 // limitations under the License.
 
 /**
+ * Sets Error.prepareStackTrace to a function that returns the structured stack
+ * trace instead of a formatted one. See here for more info:
+ *
+ *     http://code.google.com/p/v8/wiki/JavaScriptStackTraceApi
+ *
+ * Error.prepareStackTrace must be installed before any errors are thrown. See:
+ * 
+ *     https://code.google.com/p/v8/issues/detail?id=2559
+ */
+gjstest.internal.installPrepareStackTrace = function() {
+  Error.prepareStackTrace =
+      function(error, structuredStack) {
+        return structuredStack;
+      };
+};
+
+/**
  * Return an array of stack frames representing the stack attached to the
  * supplied error object, or an empty array if there is no stack. The returned
  * array is in order from the top of the stack to the bottom.
@@ -24,22 +41,8 @@
  * @suppress {missingProperties}
  */
 gjstest.internal.getErrorStack = function(error) {
-  // Temporarily replace Error.prepareStackTrace with a function that returns
-  // the structured stack trace instead of a formatted one. See here for more
-  // info:
-  //
-  //     http://code.google.com/p/v8/wiki/JavaScriptStackTraceApi
-  //
-  var originalPrepareStackTrace = Error.prepareStackTrace;
-
-  Error.prepareStackTrace =
-      function(error, structuredStack) {
-        return structuredStack;
-      };
-
-  // Grab the structured stack, then replace the prepareStackTrace function.
+  // Grab the structured stack.
   var structuredStack = error.stack;
-  Error.prepareStackTrace = originalPrepareStackTrace;
 
   // Some errors, e.g. stack overflows, don't return a stack. Some browsers
   // always supply the stack property as a string, without calling the

@@ -26,6 +26,10 @@ gjstest.internal.runTest = function runTest(testFn, testEnvironment) {
   // Register the test environment and run the test.
   gjstest.internal.currentTestEnvironment = testEnvironment;
 
+  // Install Error.prepareStackTrace before any errors are thrown, so that when
+  // an error is thrown, we can obtain the structured stack trace.
+  gjstest.internal.installPrepareStackTrace();
+
   // Keep track of whether we reported an exception failure.
   var threwException = false;
 
