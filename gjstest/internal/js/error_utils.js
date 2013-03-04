@@ -20,7 +20,7 @@
  *     http://code.google.com/p/v8/wiki/JavaScriptStackTraceApi
  *
  * Error.prepareStackTrace must be installed before any errors are thrown. See:
- * 
+ *
  *     https://code.google.com/p/v8/issues/detail?id=2559
  */
 gjstest.internal.installPrepareStackTrace = function() {
