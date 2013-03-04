@@ -44,9 +44,10 @@ gjstest.internal.getErrorStack = function(error) {
   // Grab the structured stack.
   var structuredStack = error.stack;
 
-  // Some errors, e.g. stack overflows, don't return a stack. Some browsers
-  // always supply the stack property as a string, without calling the
-  // Error.prepareStackTrace installed above.
+  // Some errors don't return a stack. (This was true of stack overflows in
+  // earlier versions of v8, for example.) Some browsers always supply the stack
+  // property as a string, without calling the Error.prepareStackTrace function
+  // installed earlier.
   if (!structuredStack || typeof structuredStack == 'string') {
     return [];
   }
