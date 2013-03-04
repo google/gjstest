@@ -6,7 +6,7 @@
 Stack:
     exception_test.js:23
     register.js:173
-    run_test.js:33]]></failure>
+    run_test.js:37]]></failure>
  </testcase>
  <testcase name="ExceptionTest.NotAFunctionError" time="0.01">
   <failure><![CDATA[TypeError: object is not a function
@@ -14,7 +14,7 @@ Stack:
 Stack:
     exception_test.js:28
     register.js:173
-    run_test.js:33]]></failure>
+    run_test.js:37]]></failure>
  </testcase>
  <testcase name="ExceptionTest.ErrorInMatcherFactory" time="0.01">
   <failure><![CDATA[exception_test.js:32
@@ -43,7 +43,7 @@ Stack:
 Stack:
     exception_test.js:45
     register.js:173
-    run_test.js:33]]></failure>
+    run_test.js:37]]></failure>
  </testcase>
  <testcase name="ExceptionTest.ObjectLiteralException" time="0.01">
   <failure><![CDATA[{ name: 'SomeException' }
@@ -63,7 +63,7 @@ Stack:
 Stack:
     exception_test.js:63
     register.js:173
-    run_test.js:33]]></failure>
+    run_test.js:37]]></failure>
  </testcase>
  <testcase name="ExceptionTest.CustomExceptionClassWithToString" time="0.01">
   <failure><![CDATA[SomeException
@@ -78,7 +78,7 @@ Stack:
 Stack:
     exception_test.js:82
     register.js:173
-    run_test.js:33]]></failure>
+    run_test.js:37]]></failure>
  </testcase>
  <testcase name="ThrowingConstructorTest.SomeTest" time="0.01">
   <failure><![CDATA[Error: taco
@@ -86,6 +86,6 @@ Stack:
 Stack:
     exception_test.js:87
     register.js:172
-    run_test.js:33]]></failure>
+    run_test.js:37]]></failure>
  </testcase>
 </testsuite>
