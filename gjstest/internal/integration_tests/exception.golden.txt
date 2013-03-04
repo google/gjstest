@@ -26,7 +26,16 @@ TypeError: isNearNumber requires two number arguments
 RangeError: Maximum call stack size exceeded
 
 Stack:
-    (Empty)
+    exception_test.js:36
+    exception_test.js:36
+    exception_test.js:36
+    exception_test.js:36
+    exception_test.js:36
+    exception_test.js:36
+    exception_test.js:36
+    exception_test.js:36
+    exception_test.js:36
+    exception_test.js:36
 
 [  FAILED  ] ExceptionTest.StackOverflow (1 ms)
 [ RUN      ] ExceptionTest.UnknownPropertyOnLongFunction

@@ -24,7 +24,16 @@ TypeError: isNearNumber requires two number arguments]]></failure>
   <failure><![CDATA[RangeError: Maximum call stack size exceeded
 
 Stack:
-    (Empty)]]></failure>
+    exception_test.js:36
+    exception_test.js:36
+    exception_test.js:36
+    exception_test.js:36
+    exception_test.js:36
+    exception_test.js:36
+    exception_test.js:36
+    exception_test.js:36
+    exception_test.js:36
+    exception_test.js:36]]></failure>
  </testcase>
  <testcase name="ExceptionTest.UnknownPropertyOnLongFunction" time="0.01">
   <failure><![CDATA[TypeError: Object function foo() {

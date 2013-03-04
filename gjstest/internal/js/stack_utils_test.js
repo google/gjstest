@@ -113,7 +113,13 @@ GetErrorStackTest.prototype.StackOverflow = function() {
     frames = gjstest.internal.getErrorStack(e);
   }
 
-  expectThat(frames, elementsAre([]));
+  // Older versions of v8 give an empty list of stack frames. Newer versions
+  // seem to repeat the stack frame up to a certain count.
+  expectThat(frames.length, anyOf([0, greaterOrEqual(8)]));
+  for (var i = 0; i < frames.length; ++i) {
+    var frame = frames[i];
+    expectEq('stack_utils_test.js', frame.fileName);
+  }
 };
 
 GetErrorStackTest.prototype.UnknownPropertyOnSingleLineFunction = function() {
