@@ -10,6 +10,8 @@ DEFAULT_DATA_DIR = $(PREFIX)/share/gjstest
 
 # Preprocessor flags.
 CPPFLAGS += -I.
+CPPFLAGS += -I./third_party/gmock/include
+CPPFLAGS += -I./third_party/gmock/gtest/include
 CPPFLAGS += -I/usr/include/libxml2
 CPPFLAGS += -DDEFAULT_DATA_DIR=$(DEFAULT_DATA_DIR)
 
