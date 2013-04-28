@@ -47,14 +47,21 @@ MockFunctionTest.prototype.NoExpectationsRegistered = function() {
   var messages = this.failureMessages_;
   expectEq(2, messages.length);
 
-  expectEq('Call matches no expectation.\n' +
-               '    Arg 0: stringified: taco\n' +
-               '    Arg 1: stringified: 2',
-           messages[0]);
+  expectThat(messages[0], containsRegExp(/^mock_function_test\.js:\d+/));
+  expectThat(messages[1], containsRegExp(/^mock_function_test\.js:\d+/));
 
-  expectEq('Call matches no expectation.\n' +
-               '    (No arguments.)',
-           messages[1]);
+  expectThat(
+      messages[0],
+      hasSubstr(
+          'Call matches no expectation.\n' +
+              '    Arg 0: stringified: taco\n' +
+              '    Arg 1: stringified: 2'));
+
+  expectThat(
+      messages[1],
+      hasSubstr(
+          'Call matches no expectation.\n' +
+              '    (No arguments.)'));
 };
 
 MockFunctionTest.prototype.CallsCheckArgs = function() {
@@ -105,17 +112,21 @@ MockFunctionTest.prototype.CheckArgsSaysNo = function() {
   var messages = this.failureMessages_;
   expectEq(1, messages.length);
 
-  expectEq('Call matches no expectation.\n' +
-               '    Arg 0: stringified: a\n' +
-               '    Arg 1: stringified: b\n' +
-               '\n' +
-               'Tried expectation at foo.js:19, but burrito:\n' +
-               '    Arg 0: 2\n' +
-               '    Arg 1: 7\n' +
-               '\n' +
-               'Tried expectation at foo.js:17, but taco:\n' +
-               '    Arg 0: 2',
-           messages[0]);
+  expectThat(messages[0], containsRegExp(/^mock_function_test\.js:\d+/));
+
+  expectThat(
+      messages[0],
+      hasSubstr(
+          'Call matches no expectation.\n' +
+              '    Arg 0: stringified: a\n' +
+              '    Arg 1: stringified: b\n' +
+              '\n' +
+              'Tried expectation at foo.js:19, but burrito:\n' +
+              '    Arg 0: 2\n' +
+              '    Arg 1: 7\n' +
+              '\n' +
+              'Tried expectation at foo.js:17, but taco:\n' +
+              '    Arg 0: 2'));
 };
 
 MockFunctionTest.prototype.NoMatchingExpectationsWithNamedFunction =
@@ -135,10 +146,17 @@ MockFunctionTest.prototype.NoMatchingExpectationsWithNamedFunction =
   this.mockFunction_('taco', 2);
 
   expectEq(1, this.failureMessages_.length);
-  expectEq('Call to some name matches no expectation.\n' +
-               '    Arg 0: stringified: taco\n' +
-               '    Arg 1: stringified: 2',
-           this.failureMessages_[0]);
+
+  expectThat(
+      this.failureMessages_[0],
+      containsRegExp(/^mock_function_test\.js:\d+/));
+
+  expectThat(
+      this.failureMessages_[0],
+      hasSubstr(
+          'Call to some name matches no expectation.\n' +
+              '    Arg 0: stringified: taco\n' +
+              '    Arg 1: stringified: 2'));
 };
 
 MockFunctionTest.prototype.SecondExpectationMatches = function() {

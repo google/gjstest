@@ -117,11 +117,21 @@ gjstest.internal.createMockFunction =
   // Create a function that checks its arguments against the expectations that
   // have been registered.
   var result = function() {
+    // Grab the calling stack frame.
+    var stackFrames = gjstest.internal.getCurrentStack();
+    var callingFrame = stackFrames[1];
+    var frameDesc = callingFrame.fileName + ':' + callingFrame.lineNumber;
+
     // Build a failure message iteratively, assuming we won't match.
-    var failureLines = ['Call matches no expectation.'];
+    var failureLines = [];
 
     if (opt_name) {
-      failureLines = ['Call to ' + opt_name + ' matches no expectation.'];
+      failureLines.push(
+          frameDesc + ': ' + 'Call to ' + opt_name +
+          ' matches no expectation.');
+    } else {
+      failureLines.push(
+          frameDesc + ': ' + 'Call matches no expectation.');
     }
 
     // Describe the arguments we were called with.
