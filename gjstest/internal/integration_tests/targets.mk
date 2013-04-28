@@ -10,7 +10,7 @@ $(eval $(call cc_binary, \
         file/file_utils \
         strings/strutil \
         , \
-        -lgtest -lgflags -lglog -lre2 -lgmock \
+        -lgflags -lglog -lre2 ./third_party/gmock/make/gmock.a \
 ))
 
 ######################################################

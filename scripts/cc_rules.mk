@@ -124,10 +124,10 @@ $(eval $(call cc_object_deps,$(1),$(2),$(1).cc))
 # Create a rule for building the binary. Make sure it's rebuilt when any of the
 # transitive dependencies change.
 #
-# HACK: Make sure the gmock_main library is built before any other cc_binary,
-# for the sake of test binaries.
+# HACK: Make sure the gmock libraries are built before any other cc_binary, for
+# the sake of test binaries.
 $(1).bin : $(1).object_deps $(1).header_deps scripts/cc_binary_build.sh
-	$(MAKE) -C third_party/gmock/make gmock_main.a
+	$(MAKE) -C third_party/gmock/make gmock.a gmock_main.a
 	./scripts/cc_binary_build.sh $(1) $(3) -lglog -lv8 $(CXXFLAGS) $(CPPFLAGS)
 
 CC_BINARIES += $(1).bin
