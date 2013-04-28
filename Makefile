@@ -103,6 +103,7 @@ install : gjstest/internal/cpp/gjstest.bin share
 ######################################################
 
 clean :
+	$(MAKE) -C third_party/gmock/make clean
 	find . -name '*.bin' -delete
 	find . -name '*.compile' -delete
 	find . -name '*.deps' -delete
