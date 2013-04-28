@@ -1,4 +1,5 @@
 # Things built by make.
+*.a
 *.bin
 *.compile
 *.deps
