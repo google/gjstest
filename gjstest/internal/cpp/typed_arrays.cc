@@ -42,6 +42,7 @@
 #include <stdlib.h>  // calloc, etc
 #include <string.h>  // memmove
 
+#include "base/logging.h"
 #include "gjstest/internal/cpp/typed_arrays.h"
 
 namespace {
@@ -136,10 +137,15 @@ class ArrayBuffer {
                              "positive integer.");
     }
 
+    // Allocate the buffer.
     size_t num_bytes = args[0]->Uint32Value();
     void* buf = calloc(num_bytes, 1);
     if (!buf)
       return ThrowError("Unable to allocate ArrayBuffer.");
+
+    // SetAlignedPointerInInternalField requires 2-byte aligned buffers.
+    CHECK_EQ(reinterpret_cast<uint64_t>(buf) % 2, 0)
+        << "Expected calloc to return a 2-byte aligned pointer.";
 
     args.This()->SetAlignedPointerInInternalField(0, buf);
 
