@@ -143,7 +143,8 @@ class ArrayBuffer {
     if (!buf)
       return ThrowError("Unable to allocate ArrayBuffer.");
 
-    // SetAlignedPointerInInternalField requires 2-byte aligned buffers.
+    // SetAlignedPointerInInternalField requires 2-byte aligned buffers. The man
+    // page for calloc on Linux and OS X implies that this will be the case.
     CHECK_EQ(reinterpret_cast<uint64_t>(buf) % 2, 0)
         << "Expected calloc to return a 2-byte aligned pointer.";
 
