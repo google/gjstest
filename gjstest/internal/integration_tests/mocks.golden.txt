@@ -5,7 +5,7 @@
 [       OK ] MocksTest.MockActions (1 ms)
 [ RUN      ] MocksTest.MockInstance
 [       OK ] MocksTest.MockInstance (1 ms)
-[ RUN      ] MocksTest.UnexpectedFunctionCall
+[ RUN      ] MocksTest.UnexpectedFunctionCall_Simple
 mocks_test.js:71: Call matches no expectation.
     Arg 0: 19
 
@@ -18,24 +18,38 @@ Tried expectation at mocks_test.js:67, but arg 0 didn't match:
 mocks_test.js:74: Call to bar matches no expectation.
     Arg 0: 29
 
-[  FAILED  ] MocksTest.UnexpectedFunctionCall (1 ms)
+[  FAILED  ] MocksTest.UnexpectedFunctionCall_Simple (1 ms)
+[ RUN      ] MocksTest.UnexpectedFunctionCall_RecursivelyEquals
+mocks_test.js:85: Call matches no expectation.
+    Arg 0: 0
+
+Tried expectation at mocks_test.js:81, but arg 0 didn't match:
+    Arg 0: recursively equals [ 17, 23 ]
+
+mocks_test.js:88: Call to bar matches no expectation.
+    Arg 0: 0
+
+Tried expectation at mocks_test.js:82, but arg 0 didn't match:
+    Arg 0: recursively equals [ 17, 23 ]
+
+[  FAILED  ] MocksTest.UnexpectedFunctionCall_RecursivelyEquals (1 ms)
 [ RUN      ] MocksTest.UnexpectedMethodCall
-mocks_test.js:82: Call to MyClass.doSomething matches no expectation.
+mocks_test.js:96: Call to MyClass.doSomething matches no expectation.
     Arg 0: 17
 
 [  FAILED  ] MocksTest.UnexpectedMethodCall (1 ms)
 [ RUN      ] MocksTest.UnsatisfiedExpectations
-Unsatisfied expectation at mocks_test.js:91:
+Unsatisfied expectation at mocks_test.js:105:
     Arg 0: 19
 
 Expected 1 call; called 0 times.
 
-Unsatisfied expectation at mocks_test.js:94:
+Unsatisfied expectation at mocks_test.js:108:
     Arg 0: 23
 
 Expected 2 calls; called 1 time.
 
-Unsatisfied expectation at mocks_test.js:99:
+Unsatisfied expectation at mocks_test.js:113:
     Arg 0: 29
 
 Expected 3 calls; called 4 times.
@@ -44,97 +58,97 @@ Expected 3 calls; called 4 times.
 [ RUN      ] MocksTest.AnotherTest
 [       OK ] MocksTest.AnotherTest (1 ms)
 [ RUN      ] MocksTest.UnsatisfiedExpectationsWithReferences
-Unsatisfied expectation at mocks_test.js:130:
+Unsatisfied expectation at mocks_test.js:144:
     Arg 0: is a reference to: { name: 'obj_1' }
 
 Expected 1 call; called 0 times.
 
-Unsatisfied expectation at mocks_test.js:133:
+Unsatisfied expectation at mocks_test.js:147:
     Arg 0: is a reference to: { name: 'obj_2' }
 
 Expected 2 calls; called 1 time.
 
-Unsatisfied expectation at mocks_test.js:138:
+Unsatisfied expectation at mocks_test.js:152:
     Arg 0: is a reference to: { name: 'obj_3' }
 
 Expected 3 calls; called 4 times.
 
 [  FAILED  ] MocksTest.UnsatisfiedExpectationsWithReferences (1 ms)
 [ RUN      ] MocksTest.PrecedingExpectThat
-mocks_test.js:158: Call matches no expectation.
+mocks_test.js:172: Call matches no expectation.
     Arg 0: 23
 
-Tried expectation at mocks_test.js:156, but arg 0 didn't match:
+Tried expectation at mocks_test.js:170, but arg 0 didn't match:
     Arg 0: 19
 
-Unsatisfied expectation at mocks_test.js:156:
+Unsatisfied expectation at mocks_test.js:170:
     Arg 0: 19
 
 Expected 1 call; called 0 times.
 
 [  FAILED  ] MocksTest.PrecedingExpectThat (1 ms)
 [ RUN      ] MocksTest.ExpectCallWithNonMockFunction
-mocks_test.js:162
+mocks_test.js:176
 TypeError: Supplied function is not a mock.
 
 [  FAILED  ] MocksTest.ExpectCallWithNonMockFunction (1 ms)
 [ RUN      ] MocksTest.MissingArguments
-mocks_test.js:176: Call matches no expectation.
+mocks_test.js:190: Call matches no expectation.
     (No arguments.)
 
-Tried expectation at mocks_test.js:169, but number of arguments didn't match:
+Tried expectation at mocks_test.js:183, but number of arguments didn't match:
     Arg 0: is anything
 
 [  FAILED  ] MocksTest.MissingArguments (1 ms)
 [ RUN      ] MocksTest.TooManyArguments
-mocks_test.js:190: Call matches no expectation.
+mocks_test.js:204: Call matches no expectation.
     Arg 0: undefined
     Arg 1: 17
 
-Tried expectation at mocks_test.js:183, but number of arguments didn't match:
+Tried expectation at mocks_test.js:197, but number of arguments didn't match:
     Arg 0: is anything
 
-mocks_test.js:191: Call matches no expectation.
+mocks_test.js:205: Call matches no expectation.
     Arg 0: undefined
     Arg 1: undefined
 
-Tried expectation at mocks_test.js:183, but number of arguments didn't match:
+Tried expectation at mocks_test.js:197, but number of arguments didn't match:
     Arg 0: is anything
 
 [  FAILED  ] MocksTest.TooManyArguments (1 ms)
 [ RUN      ] MocksTest.OptionalArgument
 [       OK ] MocksTest.OptionalArgument (1 ms)
 [ RUN      ] MocksTest.OptionalOrExactValueArgument
-mocks_test.js:219: Call matches no expectation.
+mocks_test.js:233: Call matches no expectation.
     Arg 0: undefined
     Arg 1: undefined
 
-Tried expectation at mocks_test.js:211, but arg 1 didn't match:
+Tried expectation at mocks_test.js:225, but arg 1 didn't match:
     Arg 0: is anything
     Arg 1: is not present, or 23
 
-mocks_test.js:220: Call matches no expectation.
+mocks_test.js:234: Call matches no expectation.
     Arg 0: undefined
     Arg 1: 24
 
-Tried expectation at mocks_test.js:211, but arg 1 didn't match:
+Tried expectation at mocks_test.js:225, but arg 1 didn't match:
     Arg 0: is anything
     Arg 1: is not present, or 23
 
-mocks_test.js:221: Call matches no expectation.
+mocks_test.js:235: Call matches no expectation.
     Arg 0: undefined
     Arg 1: 'taco'
 
-Tried expectation at mocks_test.js:211, but arg 1 didn't match:
+Tried expectation at mocks_test.js:225, but arg 1 didn't match:
     Arg 0: is anything
     Arg 1: is not present, or 23
 
 [  FAILED  ] MocksTest.OptionalOrExactValueArgument (1 ms)
 [ RUN      ] MocksTest.SentinelMatcher
-mocks_test.js:236: Call matches no expectation.
+mocks_test.js:250: Call matches no expectation.
     (No arguments.)
 
-Tried expectation at mocks_test.js:229, but number of arguments didn't match:
+Tried expectation at mocks_test.js:243, but number of arguments didn't match:
     Arg 0: is the missing arg sentinel
 
 [  FAILED  ] MocksTest.SentinelMatcher (1 ms)

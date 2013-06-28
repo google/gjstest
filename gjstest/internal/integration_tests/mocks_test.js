@@ -60,7 +60,7 @@ MocksTest.prototype.MockInstance = function() {
   expectEq(17, mockInstance.doSomething());
 };
 
-MocksTest.prototype.UnexpectedFunctionCall = function() {
+MocksTest.prototype.UnexpectedFunctionCall_Simple = function() {
   var foo = createMockFunction();       // Not named
   var bar = createMockFunction('bar');  // Named
 
@@ -72,6 +72,20 @@ MocksTest.prototype.UnexpectedFunctionCall = function() {
   foo(23);
 
   bar(29);
+};
+
+MocksTest.prototype.UnexpectedFunctionCall_RecursivelyEquals = function() {
+  var foo = createMockFunction();       // Not named
+  var bar = createMockFunction('bar');  // Named
+
+  expectCall(foo)(recursivelyEquals([17, 23]));
+  expectCall(bar)(recursivelyEquals([17, 23]));
+
+  foo([17, 23]);
+  foo(0);
+
+  bar([17, 23]);
+  bar(0);
 };
 
 MocksTest.prototype.UnexpectedMethodCall = function() {
