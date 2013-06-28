@@ -257,9 +257,11 @@ CheckArgsTest.prototype.MatcherReturnsString = function() {
     .willOnce(returnWith(true));
 
   expectCall(this.predicateB_)(_)
-    .willOnce(returnWith('error'));
+    .willOnce(returnWith('which is foo'));
 
-  expectEq("arg 1 didn't match", this.checkArgs_('taco', 'burrito'));
+  expectEq(
+      "arg 1 (which is foo) didn't match",
+      this.checkArgs_('taco', 'burrito'));
 };
 
 CheckArgsTest.prototype.AllMatchersSayOkay = function() {

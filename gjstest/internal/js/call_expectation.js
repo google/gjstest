@@ -193,8 +193,10 @@ gjstest.internal.checkArgsAgainstExpectation = function(args, expectation) {
 
     // Check the argument (or missing argument sentinel) against the matcher.
     var predicateResult = matcher.predicate(arg);
-    if (predicateResult === false || typeof(predicateResult) === 'string') {
+    if (predicateResult === false) {
       return "arg " + i + " didn't match";
+    } else if (typeof(predicateResult) === 'string') {
+      return "arg " + i + " (" + predicateResult + ") didn't match";
     }
   }
 
