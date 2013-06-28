@@ -23,13 +23,13 @@ mocks_test.js:74: Call to bar matches no expectation.
 mocks_test.js:85: Call matches no expectation.
     Arg 0: 0
 
-Tried expectation at mocks_test.js:81, but arg 0 didn't match:
+Tried expectation at mocks_test.js:81, but arg 0 (which is not an Array) didn't match:
     Arg 0: recursively equals [ 17, 23 ]
 
 mocks_test.js:88: Call to bar matches no expectation.
     Arg 0: 0
 
-Tried expectation at mocks_test.js:82, but arg 0 didn't match:
+Tried expectation at mocks_test.js:82, but arg 0 (which is not an Array) didn't match:
     Arg 0: recursively equals [ 17, 23 ]
 
 [  FAILED  ] MocksTest.UnexpectedFunctionCall_RecursivelyEquals (1 ms)
