@@ -29,7 +29,6 @@
 #include "base/stringprintf.h"
 #include "base/timer.h"
 #include "gjstest/internal/cpp/test_case.h"
-#include "gjstest/internal/cpp/typed_arrays.h"
 #include "gjstest/internal/cpp/v8_utils.h"
 #include "gjstest/internal/proto/named_scripts.pb.h"
 #include "strings/strutil.h"
@@ -221,9 +220,6 @@ bool RunTests(
           CHECK_NOTNULL(Isolate::GetCurrent())));
 
   const Context::Scope context_scope(context);
-
-  // Add support for typed arrays.
-  ExportTypedArrays(context->Global());
 
   // Run all of the scripts.
   for (uint32 i = 0; i < scripts.script_size(); ++i) {

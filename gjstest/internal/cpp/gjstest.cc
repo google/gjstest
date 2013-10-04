@@ -39,6 +39,7 @@
 #include "file/file_utils.h"
 #include "gjstest/internal/cpp/builtin_data.h"
 #include "gjstest/internal/cpp/run_tests.h"
+#include "gjstest/internal/cpp/typed_arrays.h"
 #include "gjstest/internal/proto/named_scripts.pb.h"
 #include "strings/strutil.h"
 
@@ -195,6 +196,9 @@ static bool Run() {
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   google::ParseCommandLineFlags(&argc, &argv, true);
+
+  // Add support for typed arrays.
+  gjstest::EnableTypedArrays();
 
   return gjstest::Run() ? 0 : 1;
 }

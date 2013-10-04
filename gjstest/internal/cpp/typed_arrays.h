@@ -26,9 +26,8 @@
 
 namespace gjstest {
 
-// Export the functions necessary for typed array support to the supplied
-// object.
-void ExportTypedArrays(const v8::Handle<v8::Object>& obj);
+// Export the functions necessary for typed array support.
+void EnableTypedArrays();
 
 }  // namespace gjstest
 

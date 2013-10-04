@@ -23,7 +23,6 @@ $(eval $(call cc_library, \
         base/stringprintf \
         base/timer \
         gjstest/internal/cpp/test_case \
-        gjstest/internal/cpp/typed_arrays \
         gjstest/internal/cpp/v8_utils \
         gjstest/internal/proto/named_scripts.pb \
         strings/strutil \
@@ -82,10 +81,11 @@ $(eval $(call cc_binary, \
         file/file_utils \
         gjstest/internal/cpp/builtin_data \
         gjstest/internal/cpp/run_tests \
+        gjstest/internal/cpp/typed_arrays \
         gjstest/internal/proto/named_scripts.pb \
         strings/strutil \
         , \
-        -lprotobuf -lglog -lgflags -lxml2 -lre2 \
+        -lprotobuf -lglog -lgflags -lxml2 -lre2 /usr/local/lib/libv8_base.x64.a /usr/local/lib/libv8_snapshot.a \
 ))
 
 ######################################################
