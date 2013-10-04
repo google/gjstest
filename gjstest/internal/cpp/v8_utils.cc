@@ -144,7 +144,6 @@ void RegisterFunction(
       *tmpl);
 
   weak_ref.MakeWeak(
-      CHECK_NOTNULL(Isolate::GetCurrent()),
       callback,
       &DeleteCallback);
 }
@@ -170,7 +169,6 @@ Local<Function> MakeFunction(
       result);
 
   weak_ref.MakeWeak(
-      CHECK_NOTNULL(Isolate::GetCurrent()),
       callback,
       &DeleteCallback);
 
