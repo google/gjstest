@@ -85,7 +85,7 @@ $(eval $(call cc_binary, \
         gjstest/internal/proto/named_scripts.pb \
         strings/strutil \
         , \
-        -lprotobuf -lglog -lgflags -lxml2 -lre2 /usr/local/lib/libv8_base.x64.a /usr/local/lib/libv8_snapshot.a \
+        -lprotobuf -lglog -lgflags -lxml2 -lre2 \
 ))
 
 ######################################################

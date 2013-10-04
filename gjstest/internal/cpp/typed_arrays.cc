@@ -14,7 +14,8 @@
 // limitations under the License.
 
 
-// This file implements the nasty hack described here:
+// This file implements the hack described here in a slightly nicer way (using
+// V8::SetFlagsFromString):
 //
 //     http://engineering.prezi.com/blog/2013/08/27/embedding-v8/
 //
@@ -22,13 +23,6 @@
 #include <v8.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-namespace v8 {
-namespace internal {
-extern bool FLAG_harmony_array_buffer;
-extern bool FLAG_harmony_typed_arrays;
-}
-}
 
 namespace gjstest {
 
@@ -41,8 +35,8 @@ public:
 }  // namespace
 
 void EnableTypedArrays() {
-  v8::internal::FLAG_harmony_array_buffer = true;
-  v8::internal::FLAG_harmony_typed_arrays = true;
+  static const char kFlag[] = "--harmony_typed_arrays";
+  v8::V8::SetFlagsFromString(kFlag, sizeof(kFlag) - 1);
   v8::V8::SetArrayBufferAllocator(new MallocArrayBufferAllocator);
 }
 
