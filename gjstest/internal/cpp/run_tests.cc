@@ -43,6 +43,7 @@ using v8::Context;
 using v8::Function;
 using v8::Handle;
 using v8::HandleScope;
+using v8::Isolate;
 using v8::Local;
 using v8::Object;
 using v8::ObjectTemplate;
@@ -215,8 +216,11 @@ bool RunTests(
 
   // Create a context in which to run scripts and ensure that it's used whenever
   // a context is needed below.
-  Persistent<Context> context = Context::New();
-  Context::Scope context_scope(context);
+  const Handle<Context> context(
+      Context::New(
+          CHECK_NOTNULL(Isolate::GetCurrent())));
+
+  const Context::Scope context_scope(context);
 
   // Add support for typed arrays.
   ExportTypedArrays(context->Global());
