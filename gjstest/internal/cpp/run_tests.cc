@@ -32,7 +32,7 @@
 #include "gjstest/internal/cpp/v8_utils.h"
 #include "gjstest/internal/proto/named_scripts.pb.h"
 #include "strings/strutil.h"
-#include "util/gtl/map-util.h"
+#include "util/gtl/map_util.h"
 #include "util/hash/hash.h"
 #include "webutil/xml/xml_writer.h"
 

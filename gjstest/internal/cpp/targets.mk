@@ -26,7 +26,7 @@ $(eval $(call cc_library, \
         gjstest/internal/cpp/v8_utils \
         gjstest/internal/proto/named_scripts.pb \
         strings/strutil \
-        util/gtl/map-util \
+        util/gtl/map_util \
         util/hash/hash \
         webutil/xml/xml_writer \
 ))
