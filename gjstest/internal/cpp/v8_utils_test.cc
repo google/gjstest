@@ -34,6 +34,7 @@ using v8::Function;
 using v8::Handle;
 using v8::HandleScope;
 using v8::Integer;
+using v8::Isolate;
 using v8::Local;
 using v8::Number;
 using v8::ObjectTemplate;
@@ -49,29 +50,21 @@ namespace gjstest {
 // the context on the the object template before calling V8UtilsTest::SetUp.
 class V8UtilsTest : public ::testing::Test {
  protected:
-  V8UtilsTest() {
-    HandleScope scope;
-    const Local<ObjectTemplate> tmp = ObjectTemplate::New();
-    global_template_ = Persistent<ObjectTemplate>::New(tmp);
+  V8UtilsTest()
+      : handle_scope_(CHECK_NOTNULL(Isolate::GetCurrent())),
+        global_template_(ObjectTemplate::New()),
+        context_(
+            Context::New(
+                CHECK_NOTNULL(Isolate::GetCurrent()),
+                NULL,  // No extensions
+                global_template_)),
+        context_scope_(context_) {
   }
 
-  ~V8UtilsTest() {
-    global_template_.Dispose();
-  }
-
-  virtual void SetUp() {
-    HandleScope scope;
-    context_ = Context::New(NULL, global_template_);
-    context_->Enter();
-  }
-
-  virtual void TearDown() {
-    context_->Exit();
-    context_.Dispose();
-  }
-
-  Persistent<ObjectTemplate> global_template_;
-  Persistent<Context> context_;
+  const HandleScope handle_scope_;
+  const Handle<ObjectTemplate> global_template_;
+  const Handle<Context> context_;
+  const Context::Scope context_scope_;
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -249,10 +242,6 @@ TEST_F(ConvertToStringVectorTest, NonEmptyArray) {
 }
 
 ////////////////////////////////////////////////////////////////////////
-// RegisterFunction
-////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////
 // Helpers
 ////////////////////////////////////////////////////////////////////////
 
@@ -277,7 +266,7 @@ class WatchForDeletionCallback : public V8FunctionCallback {
 };
 
 ////////////////////////////////////////////////////////////////////////
-// Tests
+// RegisterFunction
 ////////////////////////////////////////////////////////////////////////
 
 TEST(RegisterFunctionTest, CallsAppropriateCallback) {
@@ -301,8 +290,13 @@ TEST(RegisterFunctionTest, CallsAppropriateCallback) {
 
   // Create a context in which to run scripts and ensure that it's used whenever
   // a context is needed below. Export the global functions configured above.
-  Persistent<Context> context = Context::New(NULL, global_template);
-  Context::Scope context_scope(context);
+  const Handle<Context> context(
+      Context::New(
+          CHECK_NOTNULL(Isolate::GetCurrent()),
+          NULL,  // No extensions
+          global_template));
+
+  const Context::Scope context_scope(context);
 
   // Add different amounts to the two counters.
   const std::string js = "addToCounter1(3); addToCounter2(7)";
@@ -310,8 +304,6 @@ TEST(RegisterFunctionTest, CallsAppropriateCallback) {
 
   EXPECT_EQ(3, counter_1);
   EXPECT_EQ(7, counter_2);
-
-  context.Dispose();
 }
 
 TEST(RegisterFunctionTest, GarbageCollectsCallbacks) {
@@ -396,15 +388,15 @@ TEST_F(MakeFunctionTest, GarbageCollectsCallback) {
   bool callback_deleted = false;
 
   {
-    HandleScope handle_owner;
-    Persistent<Context> context = Context::New();
-    context->Enter();
+    const HandleScope handle_owner;
+    const Handle<Context> context(
+        Context::New(
+            CHECK_NOTNULL(Isolate::GetCurrent())));
+
+    const Context::Scope context_scope(context);
 
     const Local<Function> function =
         MakeFunction("taco", new WatchForDeletionCallback(&callback_deleted));
-
-    context->Exit();
-    context.Dispose();
   }  // No more references to function
 
   // Force a garbage collection run. See the comments in v8.h and this thread

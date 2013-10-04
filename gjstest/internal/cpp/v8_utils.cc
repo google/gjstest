@@ -25,6 +25,7 @@ using v8::External;
 using v8::Function;
 using v8::FunctionTemplate;
 using v8::Handle;
+using v8::Isolate;
 using v8::Local;
 using v8::Message;
 using v8::ObjectTemplate;
@@ -113,9 +114,13 @@ static Handle<Value> RunAssociatedCallback(const Arguments& args) {
   return callback->Run(args);
 }
 
-static void DeleteCallback(Persistent<Value> ref, void* callback) {
-  ref.ClearWeak();
-  delete static_cast<V8FunctionCallback*>(callback);
+template <typename T, typename C>
+static void DeleteCallback(
+    Isolate* isolate,
+    Persistent<T>* ref,
+    C* callback) {
+  ref->Dispose();
+  delete callback;
 }
 
 void RegisterFunction(
@@ -134,8 +139,14 @@ void RegisterFunction(
       FunctionTemplate::New(RunAssociatedCallback, data));
 
   // Dispose of the callback when the object template goes away.
-  Persistent<ObjectTemplate> weak_ref = Persistent<ObjectTemplate>::New(*tmpl);
-  weak_ref.MakeWeak(callback, DeleteCallback);
+  Persistent<ObjectTemplate> weak_ref(
+      CHECK_NOTNULL(Isolate::GetCurrent()),
+      *tmpl);
+
+  weak_ref.MakeWeak(
+      CHECK_NOTNULL(Isolate::GetCurrent()),
+      callback,
+      &DeleteCallback);
 }
 
 Local<Function> MakeFunction(
@@ -154,8 +165,14 @@ Local<Function> MakeFunction(
   result->SetName(String::New(name.data(), name.size()));
 
   // Dispose of the callback when the function is garbage collected.
-  Persistent<Function> weak_ref = Persistent<Function>::New(result);
-  weak_ref.MakeWeak(callback, DeleteCallback);
+  Persistent<Function> weak_ref(
+      CHECK_NOTNULL(Isolate::GetCurrent()),
+      result);
+
+  weak_ref.MakeWeak(
+      CHECK_NOTNULL(Isolate::GetCurrent()),
+      callback,
+      &DeleteCallback);
 
   return result;
 }

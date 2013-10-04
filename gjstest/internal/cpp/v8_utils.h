@@ -14,8 +14,8 @@
 // limitations under the License.
 
 // Utility functions to make dealing with v8 a bit nicer. Each of these
-// functions assumes that they are called with an existing context and handle
-// scope configured.
+// functions assumes that they are called with an existing isolate, context, and
+// handle scope configured.
 
 #ifndef GJSTEST_INTERNAL_CPP_V8_UTILS_H_
 #define GJSTEST_INTERNAL_CPP_V8_UTILS_H_
