@@ -55,22 +55,11 @@ using std::multimap;
 using std::priority_queue;
 
 #include <stack>
-#include <bits/stl_tempbuf.h>
-#include <ext/functional>
-#include <ext/hash_fun.h>
-#include <ext/hashtable.h>
 #include <ios>
 #include <string>
 using std::string;
 
-#include <ext/hash_set>
-#include <ext/hash_map>
-
 using namespace std;
-using __gnu_cxx::hash;
-using __gnu_cxx::hash_set;
-using __gnu_cxx::hash_map;
-using __gnu_cxx::select1st;
 
 /* On Linux (and gdrive on OSX), this comes from places like
    google3/third_party/stl/gcc3/new.  On OSX using "builtin"
