@@ -33,6 +33,8 @@
 
 #include <limits>
 #include <stack>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include <libxml/xmlwriter.h>
@@ -43,7 +45,6 @@
 #include "base/stl_decl.h"
 #include "base/stringprintf.h"
 #include "base/logging.h"
-#include "util/hash/hash.h"
 
 namespace webutil_xml {
 
@@ -85,8 +86,8 @@ class XmlWriter::PrefixMapper {
   size_t stack_depth() const { return uri_stack_->size(); }
 
  private:
-  typedef hash_map<string, string> StringStringMap;
-  typedef hash_set<string> StringSet;
+  typedef std::unordered_map<string, string> StringStringMap;
+  typedef std::unordered_set<string> StringSet;
   typedef vector<string> StringVector;
   typedef stack<StringVector *> StringVectorStack;
 
@@ -740,7 +741,7 @@ void XmlWriter::PrefixMapper::Pop() {
 
   // each element in the vector at the top of the stack is a URI who's
   // URI-prefix mapping is going out of scope. For each, remove it
-  // from the uri-prefix hash_map.
+  // from the uri-prefix std::unordered_map.
   for (StringVector::const_iterator uri_out_of_scope_iter =
          v->begin();
        uri_out_of_scope_iter != v->end();
