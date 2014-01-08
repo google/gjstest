@@ -6,7 +6,6 @@ $(eval $(call cc_library, \
         base/scoped_ptr \
         base/stl_decl \
         base/stringprintf \
-        util/hash/hash \
 ))
 
 ######################################################

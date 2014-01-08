@@ -50,7 +50,6 @@ include gjstest/public/targets.mk
 include strings/targets.mk
 include third_party/cityhash/targets.mk
 include util/gtl/targets.mk
-include util/hash/targets.mk
 include webutil/xml/targets.mk
 
 ######################################################

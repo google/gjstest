@@ -16,6 +16,7 @@
 #include "gjstest/internal/cpp/run_tests.h"
 
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include <re2/re2.h>
@@ -33,7 +34,6 @@
 #include "gjstest/internal/proto/named_scripts.pb.h"
 #include "strings/strutil.h"
 #include "util/gtl/map_util.h"
-#include "util/hash/hash.h"
 #include "webutil/xml/xml_writer.h"
 
 using v8::Array;
@@ -80,8 +80,8 @@ static const char kCoverageExtractionJs[] =
 static string MakeXml(
     uint32 duration_ms,
     const vector<string>& tests_run,
-    const hash_map<string, double>& test_durations,
-    const hash_map<string, string>& test_failure_messages) {
+    const std::unordered_map<string, double>& test_durations,
+    const std::unordered_map<string, string>& test_failure_messages) {
   webutil_xml::XmlWriter xml_writer("UTF-8", true);
   xml_writer.StartDocument("UTF-8");
 
@@ -134,8 +134,8 @@ static void ProcessTestCase(
     const Handle<Function>& test_function,
     bool* success,
     string* output,
-    hash_map<string, string>* test_failure_messages,
-    hash_map<string, double>* test_durations) {
+    std::unordered_map<string, string>* test_failure_messages,
+    std::unordered_map<string, double>* test_durations) {
   // Run the test.
   TestCase test_case(test_function);
   test_case.Run();
@@ -175,8 +175,8 @@ static void ProcessTestSuite(
     bool* success,
     string* output,
     vector<string>* tests_run,
-    hash_map<string, string>* test_failure_messages,
-    hash_map<string, double>* test_durations) {
+    std::unordered_map<string, string>* test_failure_messages,
+    std::unordered_map<string, double>* test_durations) {
   StringAppendF(output, "[----------]\n");
 
   const Local<Array> test_names = test_functions->GetPropertyNames();
@@ -239,8 +239,8 @@ bool RunTests(
 
   // Keep maps from test name to failure message (if the test failed) and
   // duration in seconds.
-  hash_map<string, string> test_failure_messages;
-  hash_map<string, double> test_durations;
+  std::unordered_map<string, string> test_failure_messages;
+  std::unordered_map<string, double> test_durations;
   vector<string> tests_run;
 
   // Keep track of how long the whole process takes, and whether there are any
