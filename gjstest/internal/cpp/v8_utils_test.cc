@@ -30,7 +30,6 @@ using testing::HasSubstr;
 
 using v8::Context;
 using v8::Function;
-using v8::FunctionCallbackInfo;
 using v8::Handle;
 using v8::HandleScope;
 using v8::Integer;
@@ -247,7 +246,7 @@ TEST_F(ConvertToStringVectorTest, NonEmptyArray) {
 
 static Handle<Value> AddToCounter(
     uint32* counter,
-    const FunctionCallbackInfo<Value>& cb_info) {
+    const v8::FunctionCallbackInfo<Value>& cb_info) {
   CHECK_EQ(1, cb_info.Length());
   *counter += cb_info[0]->ToUint32()->Value();
   return v8::Undefined();
@@ -260,7 +259,7 @@ class WatchForDeletionCallback : public V8FunctionCallback {
   explicit WatchForDeletionCallback(bool* deleted) : deleted_(deleted) {}
   ~WatchForDeletionCallback() { *deleted_ = true; }
   virtual bool IsRepeatable() const { return true; }
-  virtual Handle<Value> Run(const FunctionCallbackInfo<Value>& cb_info) {
+  virtual Handle<Value> Run(const v8::FunctionCallbackInfo<Value>& cb_info) {
     return v8::Undefined();
   }
 
