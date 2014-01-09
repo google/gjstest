@@ -95,4 +95,5 @@ header.title h1 {
 /* Base colours for statuses */
 .pass { color: #298206 !important; }
 .fail { color: #802626 !important; }
+.skip { color: #808080 !important; }
 .running { color: #425280 !important; }

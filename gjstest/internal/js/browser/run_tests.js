@@ -22,6 +22,8 @@
 gjstest.internal.runTestsInBrowser = function(pageTitle) {
   document.title = pageTitle;
 
+  var filter = gjstest.internal.browser.filterFromUrlParams_();
+
   // Iterate through the registered test suites to construct browser-specific
   // test suite and case objects.
   var testSuites = {};
@@ -39,8 +41,9 @@ gjstest.internal.runTestsInBrowser = function(pageTitle) {
       var testFn = testFunctions[fullName];
       var caseName = gjstest.internal.browser.subtractSuiteName_(suiteName,
                                                               fullName);
-      var testCase = new gjstest.internal.browser.TestCase(caseName, testFn);
-
+      var enabled = !filter || caseName.match(filter);
+      var testCase = new gjstest.internal.browser.TestCase(
+          caseName, testFn, enabled);
       browserSuite.addTestCase(testCase);
       allCases.push(testCase);
     }
@@ -105,6 +108,19 @@ gjstest.internal.browser.subtractSuiteName_ =
   }
   return fullTestName;
 };
+
+
+/**
+ * Returns the first value of <x> for 'filter=<x>' in the Url paramters,
+ * or undefined if no such parameter is present.
+ * @return {?RegExp} The filter.
+ * @private
+ */
+gjstest.internal.browser.filterFromUrlParams_ = function() {
+  var match = window.location.search.match(/[&?]filter=([^&]*)/);
+  return match && new RegExp(decodeURIComponent(match[1]), 'i');
+};
+
 
 /**
  * Construct the core HTML for the page.
@@ -193,12 +209,16 @@ gjstest.internal.browser.addToLog =
  * @param {function()} testFn
  *     The test function for this case, as returned by
  *     gjstest.internal.getTestFunctions.
+ * @param {boolean} enabled
+ *     True if the function is intended to be run (e.g. not disabled by the
+ *     ?filter= URL parameter.
  *
  * @constructor
  */
-gjstest.internal.browser.TestCase = function(testName, testFn) {
+gjstest.internal.browser.TestCase = function(testName, testFn, enabled) {
   this.testName_ = testName;
   this.testFn_ = testFn;
+  this.enabled_ = enabled;
   this.logElem_ = null;
   this.headerElem_ = null;
 };
@@ -227,6 +247,10 @@ gjstest.internal.browser.TestCase.prototype.renderDom = function() {
  */
 gjstest.internal.browser.TestCase.prototype.run = function() {
   var $ = gjstest.internal.HtmlBuilder;
+  if (!this.enabled_) {
+    this.headerElem_.addClass('skip');
+    return true;
+  }
   this.headerElem_.addClass('running');
 
   // Set up a test environment that knows how to log and report failures.
