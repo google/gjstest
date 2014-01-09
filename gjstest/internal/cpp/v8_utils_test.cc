@@ -28,9 +28,9 @@ using testing::ContainsRegex;
 using testing::ElementsAre;
 using testing::HasSubstr;
 
-using v8::Arguments;
 using v8::Context;
 using v8::Function;
+using v8::FunctionCallbackInfo;
 using v8::Handle;
 using v8::HandleScope;
 using v8::Integer;
@@ -74,12 +74,12 @@ class V8UtilsTest : public ::testing::Test {
 typedef V8UtilsTest ConvertToStringTest;
 
 TEST_F(ConvertToStringTest, Empty) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
   EXPECT_EQ("", ConvertToString(Local<Value>()));
 }
 
 TEST_F(ConvertToStringTest, Strings) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
 
   EXPECT_EQ("", ConvertToString(String::New("")));
   EXPECT_EQ("taco", ConvertToString(String::New("taco")));
@@ -90,7 +90,7 @@ TEST_F(ConvertToStringTest, Strings) {
 }
 
 TEST_F(ConvertToStringTest, Numbers) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
 
   EXPECT_EQ("-3", ConvertToString(Number::New(-3)));
   EXPECT_EQ("4", ConvertToString(Number::New(4)));
@@ -110,25 +110,25 @@ static std::string GetResultAsString(
 }
 
 TEST_F(ConvertToStringTest, EmptyString) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
   EXPECT_EQ("undefined", GetResultAsString(""));
 }
 
 TEST_F(ConvertToStringTest, BadSyntax) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
 
   const Local<Value> result = ExecuteJs("(2", "");
   EXPECT_TRUE(result.IsEmpty());
 }
 
 TEST_F(ConvertToStringTest, SingleValue) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
   EXPECT_EQ("2", GetResultAsString("2"));
   EXPECT_EQ("foo", GetResultAsString("'foo'"));
 }
 
 TEST_F(ConvertToStringTest, FunctionReturnValue) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
 
   const std::string js =
       "var addTwo = function(a, b) { return a + b; };\n"
@@ -138,7 +138,7 @@ TEST_F(ConvertToStringTest, FunctionReturnValue) {
 }
 
 TEST_F(ConvertToStringTest, StackWithFilename) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
 
   const std::string js =
       "2+2\n"
@@ -148,7 +148,7 @@ TEST_F(ConvertToStringTest, StackWithFilename) {
 }
 
 TEST_F(ConvertToStringTest, StackWithoutFilename) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
 
   const std::string js =
       "2+2\n"
@@ -164,14 +164,14 @@ TEST_F(ConvertToStringTest, StackWithoutFilename) {
 typedef V8UtilsTest DescribeErrorTest;
 
 TEST_F(DescribeErrorTest, NoError) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
 
   TryCatch try_catch;
   EXPECT_EQ("", DescribeError(try_catch));
 }
 
 TEST_F(DescribeErrorTest, NoMessage) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
 
   const std::string js = "throw new Error();";
 
@@ -182,7 +182,7 @@ TEST_F(DescribeErrorTest, NoMessage) {
 }
 
 TEST_F(DescribeErrorTest, WithMessage) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
 
   const std::string js = "throw new Error('foo');";
 
@@ -193,7 +193,7 @@ TEST_F(DescribeErrorTest, WithMessage) {
 }
 
 TEST_F(DescribeErrorTest, NoLineNumber) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
 
   // Missing end curly brace.
   const std::string js = "var foo = {\n  'taco': 1\n";
@@ -219,24 +219,24 @@ static std::vector<std::string> ConvertToStringVector(
 }
 
 TEST_F(ConvertToStringVectorTest, EmptyValue) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
   std::vector<std::string> result;
 
   EXPECT_DEATH(ConvertToStringVector(Local<Value>(), &result), "non-empty");
 }
 
 TEST_F(ConvertToStringVectorTest, NonArray) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
   EXPECT_DEATH(ConvertToStringVector("'foo'"), "must be an array");
 }
 
 TEST_F(ConvertToStringVectorTest, EmptyArray) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
   EXPECT_THAT(ConvertToStringVector("[]"), ElementsAre());
 }
 
 TEST_F(ConvertToStringVectorTest, NonEmptyArray) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
   EXPECT_THAT(ConvertToStringVector("['', 'foo', 2]"),
               ElementsAre("", "foo", "2"));
 }
@@ -247,9 +247,9 @@ TEST_F(ConvertToStringVectorTest, NonEmptyArray) {
 
 static Handle<Value> AddToCounter(
     uint32* counter,
-    const Arguments& args) {
-  CHECK_EQ(1, args.Length());
-  *counter += args[0]->ToUint32()->Value();
+    const FunctionCallbackInfo<Value>& cb_info) {
+  CHECK_EQ(1, cb_info.Length());
+  *counter += cb_info[0]->ToUint32()->Value();
   return v8::Undefined();
 }
 
@@ -260,7 +260,9 @@ class WatchForDeletionCallback : public V8FunctionCallback {
   explicit WatchForDeletionCallback(bool* deleted) : deleted_(deleted) {}
   ~WatchForDeletionCallback() { *deleted_ = true; }
   virtual bool IsRepeatable() const { return true; }
-  virtual Handle<Value> Run(const Arguments& args) { return v8::Undefined(); }
+  virtual Handle<Value> Run(const FunctionCallbackInfo<Value>& cb_info) {
+    return v8::Undefined();
+  }
 
   bool* deleted_;
 };
@@ -270,7 +272,7 @@ class WatchForDeletionCallback : public V8FunctionCallback {
 ////////////////////////////////////////////////////////////////////////
 
 TEST(RegisterFunctionTest, CallsAppropriateCallback) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
 
   uint32 counter_1 = 0;
   uint32 counter_2 = 0;
@@ -314,7 +316,7 @@ TEST(RegisterFunctionTest, GarbageCollectsCallbacks) {
   bool callback_2_deleted = false;
 
   {
-    HandleScope handle_owner;
+    HandleScope handle_owner(Isolate::GetCurrent());
     Handle<ObjectTemplate> tmpl = ObjectTemplate::New();
 
     RegisterFunction(
@@ -361,7 +363,7 @@ class MakeFunctionTest : public V8UtilsTest {
 };
 
 TEST_F(MakeFunctionTest, Name) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
   SetUpFunction();
   ASSERT_FALSE(func_.IsEmpty());
 
@@ -369,7 +371,7 @@ TEST_F(MakeFunctionTest, Name) {
 }
 
 TEST_F(MakeFunctionTest, CallsCallback) {
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
   SetUpFunction();
   ASSERT_FALSE(func_.IsEmpty());
 
@@ -388,7 +390,7 @@ TEST_F(MakeFunctionTest, GarbageCollectsCallback) {
   bool callback_deleted = false;
 
   {
-    const HandleScope handle_owner;
+    const HandleScope handle_owner(Isolate::GetCurrent());
     const Handle<Context> context(
         Context::New(
             CHECK_NOTNULL(Isolate::GetCurrent())));
@@ -398,6 +400,10 @@ TEST_F(MakeFunctionTest, GarbageCollectsCallback) {
     const Local<Function> function =
         MakeFunction("taco", new WatchForDeletionCallback(&callback_deleted));
   }  // No more references to function
+
+  // Notify V8 that a context has been disposed. On OS X this seems to be
+  // necessary since at least V8 3.21.17.
+  v8::V8::ContextDisposedNotification();
 
   // Force a garbage collection run. See the comments in v8.h and this thread
   // (which has a bug in its advice):

@@ -52,10 +52,12 @@ v8::Local<v8::Value> ExecuteJs(
 // try-catch block.
 std::string DescribeError(const v8::TryCatch& try_catch);
 
-// C++ functions exported by v8 must accept an Arguments object and return a
-// handle to a Value.
-typedef ResultCallback1<v8::Handle<v8::Value>, const v8::Arguments&>
-    V8FunctionCallback;
+// C++ functions exported by v8 must accept a FunctionCallbackInfo<Value> object
+// and return a handle to a Value.
+typedef ResultCallback1<
+    v8::Handle<v8::Value>,
+    const v8::FunctionCallbackInfo<v8::Value>&>
+        V8FunctionCallback;
 
 // Export a JS function with the given name in the supplied template, invoking
 // the supplied callback whenever it is called. Ownership of the callback is

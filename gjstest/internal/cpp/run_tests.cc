@@ -37,7 +37,6 @@
 #include "webutil/xml/xml_writer.h"
 
 using v8::Array;
-using v8::Arguments;
 using v8::Context;
 using v8::Function;
 using v8::Handle;
@@ -211,7 +210,7 @@ bool RunTests(
   const RE2 test_filter(test_filter_string.empty() ? ".*" : test_filter_string);
 
   // Take ownership of all handles created.
-  HandleScope handle_owner;
+  HandleScope handle_owner(Isolate::GetCurrent());
 
   // Create a context in which to run scripts and ensure that it's used whenever
   // a context is needed below.

@@ -19,10 +19,10 @@
 #include "base/logging.h"
 #include "base/stringprintf.h"
 
-using v8::Arguments;
 using v8::Array;
 using v8::External;
 using v8::Function;
+using v8::FunctionCallbackInfo;
 using v8::FunctionTemplate;
 using v8::Handle;
 using v8::Isolate;
@@ -102,16 +102,17 @@ std::string DescribeError(const TryCatch& try_catch) {
   return StringPrintf("%s:%i: %s", filename.c_str(), line, exception.c_str());
 }
 
-static Handle<Value> RunAssociatedCallback(const Arguments& args) {
+static void RunAssociatedCallback(
+    const FunctionCallbackInfo<Value>& cb_info) {
   // Unwrap the callback that was associated with this function.
-  const Local<Value> data = args.Data();
+  const Local<Value> data = cb_info.Data();
   CHECK(data->IsExternal());
 
   const External* external = External::Cast(*data);
   V8FunctionCallback* callback =
       static_cast<V8FunctionCallback*>(external->Value());
 
-  return callback->Run(args);
+  cb_info.GetReturnValue().Set(callback->Run(cb_info));
 }
 
 template <typename T, typename C>
