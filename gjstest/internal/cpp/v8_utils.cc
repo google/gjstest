@@ -22,7 +22,6 @@
 using v8::Array;
 using v8::External;
 using v8::Function;
-using v8::FunctionCallbackInfo;
 using v8::FunctionTemplate;
 using v8::Handle;
 using v8::Isolate;
@@ -103,7 +102,7 @@ std::string DescribeError(const TryCatch& try_catch) {
 }
 
 static void RunAssociatedCallback(
-    const FunctionCallbackInfo<Value>& cb_info) {
+    const v8::FunctionCallbackInfo<Value>& cb_info) {
   // Unwrap the callback that was associated with this function.
   const Local<Value> data = cb_info.Data();
   CHECK(data->IsExternal());

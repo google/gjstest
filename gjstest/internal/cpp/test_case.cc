@@ -23,7 +23,6 @@
 
 using v8::Context;
 using v8::Function;
-using v8::FunctionCallbackInfo;
 using v8::Handle;
 using v8::Local;
 using v8::Object;
@@ -42,7 +41,7 @@ static Local<Function> GetFunctionNamed(const string& name) {
 // Log the supplied string to the test's output.
 static Handle<Value> LogString(
     TestCase* test_case,
-    const FunctionCallbackInfo<Value>& cb_info) {
+    const v8::FunctionCallbackInfo<Value>& cb_info) {
   CHECK_EQ(1, cb_info.Length());
   const string message = ConvertToString(cb_info[0]);
   StringAppendF(&test_case->output, "%s\n", message.c_str());
@@ -54,7 +53,7 @@ static Handle<Value> LogString(
 // arguments and append it to the existing messages, if any.
 static Handle<Value> RecordFailure(
     TestCase* test_case,
-    const FunctionCallbackInfo<Value>& cb_info) {
+    const v8::FunctionCallbackInfo<Value>& cb_info) {
   CHECK_EQ(1, cb_info.Length());
   const string message = ConvertToString(cb_info[0]);
 
