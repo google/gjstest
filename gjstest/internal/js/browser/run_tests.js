@@ -235,6 +235,10 @@ gjstest.internal.browser.TestCase.prototype.renderDom = function() {
   article.addClass('test-case');
 
   this.logElem_ = $.elem('ol').addClass('test-log');
+  var runOnlyLink = $.elem('a').text('re-run only this test').attr('href',
+      window.location.href.replace(
+      /(\?.*$|$)/, '?filter=^' + this.testName_ + '$'));
+  this.logElem_.append(runOnlyLink);
   article.append(this.logElem_);
 
   this.headerElem_.makeToggleForElem(this.logElem_);
