@@ -39,7 +39,11 @@ using v8::Value;
 namespace gjstest {
 
 static Local<String> ConvertString(const std::string& s) {
-  return String::New(s.data(), s.size());
+  return String::NewFromUtf8(
+      Isolate::GetCurrent(),
+      s.data(),
+      String::kNormalString,
+      s.size());
 }
 
 std::string ConvertToString(const Handle<Value>& value) {
@@ -135,7 +139,7 @@ void RegisterFunction(
   // Create a function template with the wrapped callback as associated data,
   // and export it.
   (*tmpl)->Set(
-      String::New(name.c_str(), name.size()),
+      ConvertString(name),
       FunctionTemplate::New(RunAssociatedCallback, data));
 
   // Dispose of the callback when the object template goes away.
@@ -161,7 +165,7 @@ Local<Function> MakeFunction(
   const Local<Function> result =
       FunctionTemplate::New(RunAssociatedCallback, data)->GetFunction();
 
-  result->SetName(String::New(name.data(), name.size()));
+  result->SetName(ConvertString(name));
 
   // Dispose of the callback when the function is garbage collected.
   Persistent<Function> weak_ref(
