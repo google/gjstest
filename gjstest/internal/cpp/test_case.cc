@@ -24,6 +24,7 @@
 using v8::Context;
 using v8::Function;
 using v8::Handle;
+using v8::Isolate;
 using v8::Local;
 using v8::Object;
 using v8::TryCatch;
@@ -46,7 +47,7 @@ static Handle<Value> LogString(
   const string message = ConvertToString(cb_info[0]);
   StringAppendF(&test_case->output, "%s\n", message.c_str());
 
-  return v8::Undefined();
+  return v8::Undefined(Isolate::GetCurrent());
 }
 
 // Record the test as having failed, and extract a failure message from the JS
@@ -61,7 +62,7 @@ static Handle<Value> RecordFailure(
   StringAppendF(&test_case->output, "%s\n\n", message.c_str());
   StringAppendF(&test_case->failure_output, "%s\n\n", message.c_str());
 
-  return v8::Undefined();
+  return v8::Undefined(Isolate::GetCurrent());
 }
 
 TestCase::TestCase(
@@ -110,7 +111,10 @@ void TestCase::Run() {
   TryCatch try_catch;
   Handle<Value> args[] = { test_function_, test_env };
   const Local<Value> result =
-      run_test->Call(Context::GetCurrent()->Global(), arraysize(args), args);
+      run_test->Call(
+          Isolate::GetCurrent()->GetCurrentContext()->Global(),
+          arraysize(args),
+          args);
 
   // Was there an exception while running the test?
   if (result.IsEmpty()) {
