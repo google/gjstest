@@ -137,10 +137,33 @@ static void RunAssociatedCallback(
   cb_info.GetReturnValue().Set(callback->Run(cb_info));
 }
 
-template <typename T, typename P>
-static void DeleteParameter(
-    const WeakCallbackData<T, P>& data) {
-  delete data.GetParameter();
+namespace {
+template <typename T, typename O>
+struct PersistentAndOwned {
+  Persistent<T> persistent;
+  O* owned;
+};
+}  // namespace
+
+template <typename T, typename O>
+static void CleanUpWeakRef(
+    const WeakCallbackData<T, PersistentAndOwned<T, O> >& data) {
+  PersistentAndOwned<T, O>* p_and_o = data.GetParameter();
+
+  // Delete the owned object.
+  delete p_and_o->owned;
+
+  // Clear the persistent handle. Apparently we need to do this, though there is
+  // zero documentation as of 2014-06. If we don't, v8 will crash with an error
+  // like this:
+  //
+  //     Fatal error in ../src/global-handles.cc, line 276
+  //     CHECK(state() != NEAR_DEATH) failed
+  //
+  p_and_o->persistent.Reset();
+
+  // Delete the PersistentAndOwned object itself.
+  delete p_and_o;
 }
 
 void RegisterFunction(
@@ -162,13 +185,17 @@ void RegisterFunction(
           data));
 
   // Dispose of the callback when the object template goes away.
-  Persistent<ObjectTemplate> weak_ref(
+  PersistentAndOwned<ObjectTemplate, V8FunctionCallback>* p_and_o =
+      new PersistentAndOwned<ObjectTemplate, V8FunctionCallback>;
+
+  p_and_o->owned = callback;
+  p_and_o->persistent.Reset(
       CHECK_NOTNULL(Isolate::GetCurrent()),
       *tmpl);
 
-  weak_ref.SetWeak(
-      callback,
-      &DeleteParameter);
+  p_and_o->persistent.SetWeak(
+      p_and_o,
+      &CleanUpWeakRef);
 }
 
 Local<Function> MakeFunction(
@@ -194,13 +221,17 @@ Local<Function> MakeFunction(
   result->SetName(ConvertString(name));
 
   // Dispose of the callback when the function is garbage collected.
-  Persistent<Function> weak_ref(
+  PersistentAndOwned<Function, V8FunctionCallback>* p_and_o =
+      new PersistentAndOwned<Function, V8FunctionCallback>;
+
+  p_and_o->owned = callback;
+  p_and_o->persistent.Reset(
       CHECK_NOTNULL(Isolate::GetCurrent()),
       result);
 
-  weak_ref.SetWeak(
-      callback,
-      &DeleteParameter);
+  p_and_o->persistent.SetWeak(
+      p_and_o,
+      &CleanUpWeakRef);
 
   return result;
 }
