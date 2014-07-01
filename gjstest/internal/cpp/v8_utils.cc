@@ -29,11 +29,13 @@ using v8::Local;
 using v8::Message;
 using v8::ObjectTemplate;
 using v8::Persistent;
-using v8::Script;
+using v8::ScriptCompiler;
+using v8::ScriptOrigin;
 using v8::StackFrame;
 using v8::StackTrace;
 using v8::String;
 using v8::TryCatch;
+using v8::UnboundScript;
 using v8::Value;
 
 namespace gjstest {
@@ -65,21 +67,37 @@ void ConvertToStringVector(
   }
 }
 
+static Local<UnboundScript> Compile(
+    const std::string& js,
+    const std::string& filename) {
+  if (filename.empty()) {
+    ScriptCompiler::Source source(ConvertString(js));
+    return ScriptCompiler::CompileUnbound(
+        Isolate::GetCurrent(),
+        &source);
+  }
+
+  ScriptCompiler::Source source(
+      ConvertString(js),
+      ScriptOrigin(ConvertString(filename)));
+
+  return ScriptCompiler::CompileUnbound(
+      Isolate::GetCurrent(),
+      &source);
+}
+
 Local<Value> ExecuteJs(
     const std::string& js,
     const std::string& filename) {
-  // Attempt to parse the script.
-  const Local<Script> script =
-      filename.empty() ?
-          Script::New(ConvertString(js)) :
-          Script::New(ConvertString(js), ConvertString(filename));
+  // Attempt to compile the script.
+  const Local<UnboundScript> script = Compile(js, filename);
 
   if (script.IsEmpty()) {
     return Local<Value>();
   }
 
   // Run the script.
-  return script->Run();
+  return script->BindToCurrentContext()->Run();
 }
 
 std::string DescribeError(const TryCatch& try_catch) {
