@@ -19,6 +19,9 @@ CPPFLAGS += -DDEFAULT_DATA_DIR=$(DEFAULT_DATA_DIR)
 # Compiler flags.
 CXXFLAGS += -DHASH_NAMESPACE=__gnu_cxx
 
+# Linker flags.
+LDFLAGS += -L/usr/local/lib
+
 # Fix clock_gettime in timer.cc.
 UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)

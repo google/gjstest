@@ -128,7 +128,7 @@ $(eval $(call cc_object_deps,$(1),$(2),$(1).cc))
 # the sake of test binaries.
 $(1).bin : $(1).object_deps $(1).header_deps scripts/cc_binary_build.sh
 	$(MAKE) -C third_party/gmock/make gmock.a gmock_main.a
-	./scripts/cc_binary_build.sh $(1) $(3) -lglog -lv8 $(CXXFLAGS) $(CPPFLAGS)
+	./scripts/cc_binary_build.sh $(1) $(3) -lglog -lv8 $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS)
 
 CC_BINARIES += $(1).bin
 
