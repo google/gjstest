@@ -44,6 +44,29 @@ using v8::Value;
 
 namespace gjstest {
 
+static Local<Number> MakeNumber(
+    double v) {
+  return Number::New(
+      Isolate::GetCurrent(),
+      v);
+}
+
+static Local<Integer> MakeInteger(
+    int32 v) {
+  return Integer::New(
+      Isolate::GetCurrent(),
+      v);
+}
+
+static Local<String> MakeUtf8String(
+    std::string s) {
+  return String::NewFromUtf8(
+      Isolate::GetCurrent(),
+      s.data(),
+      String::kNormalString,
+      s.size());
+}
+
 // A test case that automatically creates and enters a context before the test
 // body. Subclasses should set any properties they want globally exposed through
 // the context on the the object template before calling V8UtilsTest::SetUp.
@@ -80,20 +103,26 @@ TEST_F(ConvertToStringTest, Empty) {
 TEST_F(ConvertToStringTest, Strings) {
   HandleScope handle_owner(Isolate::GetCurrent());
 
-  EXPECT_EQ("", ConvertToString(String::New("")));
-  EXPECT_EQ("taco", ConvertToString(String::New("taco")));
+  EXPECT_EQ("", ConvertToString(MakeUtf8String("")));
+  EXPECT_EQ("taco", ConvertToString(MakeUtf8String("taco")));
 
   const uint16 kUtf16Chars[] = { 0xd0c0, 0xcf54 };
-  EXPECT_EQ("타코",
-            ConvertToString(String::New(kUtf16Chars, 2)));
+  EXPECT_EQ(
+      "타코",
+      ConvertToString(
+          String::NewFromTwoByte(
+              Isolate::GetCurrent(),
+              kUtf16Chars,
+              String::kNormalString,
+              2)));
 }
 
 TEST_F(ConvertToStringTest, Numbers) {
   HandleScope handle_owner(Isolate::GetCurrent());
 
-  EXPECT_EQ("-3", ConvertToString(Number::New(-3)));
-  EXPECT_EQ("4", ConvertToString(Number::New(4)));
-  EXPECT_EQ("3.14", ConvertToString(Number::New(3.14)));
+  EXPECT_EQ("-3", ConvertToString(MakeNumber(-3)));
+  EXPECT_EQ("4", ConvertToString(MakeNumber(4)));
+  EXPECT_EQ("3.14", ConvertToString(MakeNumber(3.14)));
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -249,7 +278,7 @@ static Handle<Value> AddToCounter(
     const v8::FunctionCallbackInfo<Value>& cb_info) {
   CHECK_EQ(1, cb_info.Length());
   *counter += cb_info[0]->ToUint32()->Value();
-  return v8::Undefined();
+  return v8::Undefined(Isolate::GetCurrent());
 }
 
 // An implementation of V8FunctionCallback that sets a bool when it is
@@ -260,7 +289,7 @@ class WatchForDeletionCallback : public V8FunctionCallback {
   ~WatchForDeletionCallback() { *deleted_ = true; }
   virtual bool IsRepeatable() const { return true; }
   virtual Handle<Value> Run(const v8::FunctionCallbackInfo<Value>& cb_info) {
-    return v8::Undefined();
+    return v8::Undefined(Isolate::GetCurrent());
   }
 
   bool* deleted_;
@@ -374,11 +403,18 @@ TEST_F(MakeFunctionTest, CallsCallback) {
   SetUpFunction();
   ASSERT_FALSE(func_.IsEmpty());
 
-  Handle<Value> one_args[] = { Integer::New(1) };
-  Handle<Value> seventeen_args[] = { Integer::New(17) };
+  Handle<Value> one_args[] = { MakeInteger(1) };
+  Handle<Value> seventeen_args[] = { MakeInteger(17) };
 
-  func_->Call(Context::GetCurrent()->Global(), 1, one_args);
-  func_->Call(Context::GetCurrent()->Global(), 1, seventeen_args);
+  func_->Call(
+      Isolate::GetCurrent()->GetCurrentContext()->Global(),
+      1,
+      one_args);
+
+  func_->Call(
+      Isolate::GetCurrent()->GetCurrentContext()->Global(),
+      1,
+      seventeen_args);
 
   EXPECT_EQ(18, counter_);
 }
