@@ -36,9 +36,7 @@ Stack:
     exception_test.js:36]]></failure>
  </testcase>
  <testcase name="ExceptionTest.UnknownPropertyOnLongFunction" time="0.01">
-  <failure><![CDATA[TypeError: Object function foo() {
-    return 'asd';
-  } has no method 'bar'
+  <failure><![CDATA[TypeError: undefined is not a function
 
 Stack:
     exception_test.js:45
