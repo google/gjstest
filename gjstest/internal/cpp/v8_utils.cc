@@ -29,17 +29,24 @@ using v8::Local;
 using v8::Message;
 using v8::ObjectTemplate;
 using v8::Persistent;
-using v8::Script;
+using v8::ScriptCompiler;
+using v8::ScriptOrigin;
 using v8::StackFrame;
 using v8::StackTrace;
 using v8::String;
 using v8::TryCatch;
+using v8::UnboundScript;
 using v8::Value;
+using v8::WeakCallbackData;
 
 namespace gjstest {
 
 static Local<String> ConvertString(const std::string& s) {
-  return String::New(s.data(), s.size());
+  return String::NewFromUtf8(
+      Isolate::GetCurrent(),
+      s.data(),
+      String::kNormalString,
+      s.size());
 }
 
 std::string ConvertToString(const Handle<Value>& value) {
@@ -61,21 +68,37 @@ void ConvertToStringVector(
   }
 }
 
+static Local<UnboundScript> Compile(
+    const std::string& js,
+    const std::string& filename) {
+  if (filename.empty()) {
+    ScriptCompiler::Source source(ConvertString(js));
+    return ScriptCompiler::CompileUnbound(
+        Isolate::GetCurrent(),
+        &source);
+  }
+
+  ScriptCompiler::Source source(
+      ConvertString(js),
+      ScriptOrigin(ConvertString(filename)));
+
+  return ScriptCompiler::CompileUnbound(
+      Isolate::GetCurrent(),
+      &source);
+}
+
 Local<Value> ExecuteJs(
     const std::string& js,
     const std::string& filename) {
-  // Attempt to parse the script.
-  const Local<Script> script =
-      filename.empty() ?
-          Script::New(ConvertString(js)) :
-          Script::New(ConvertString(js), ConvertString(filename));
+  // Attempt to compile the script.
+  const Local<UnboundScript> script = Compile(js, filename);
 
   if (script.IsEmpty()) {
     return Local<Value>();
   }
 
   // Run the script.
-  return script->Run();
+  return script->BindToCurrentContext()->Run();
 }
 
 std::string DescribeError(const TryCatch& try_catch) {
@@ -114,13 +137,33 @@ static void RunAssociatedCallback(
   cb_info.GetReturnValue().Set(callback->Run(cb_info));
 }
 
-template <typename T, typename C>
-static void DeleteCallback(
-    Isolate* isolate,
-    Persistent<T>* ref,
-    C* callback) {
-  ref->Dispose();
-  delete callback;
+namespace {
+template <typename T, typename O>
+struct PersistentAndOwned {
+  Persistent<T> persistent;
+  O* owned;
+};
+}  // namespace
+
+template <typename T, typename O>
+static void CleanUpWeakRef(
+    const WeakCallbackData<T, PersistentAndOwned<T, O> >& data) {
+  PersistentAndOwned<T, O>* p_and_o = data.GetParameter();
+
+  // Delete the owned object.
+  delete p_and_o->owned;
+
+  // Clear the persistent handle. Apparently we need to do this, though there is
+  // zero documentation as of 2014-06. If we don't, v8 will crash with an error
+  // like this:
+  //
+  //     Fatal error in ../src/global-handles.cc, line 276
+  //     CHECK(state() != NEAR_DEATH) failed
+  //
+  p_and_o->persistent.Reset();
+
+  // Delete the PersistentAndOwned object itself.
+  delete p_and_o;
 }
 
 void RegisterFunction(
@@ -130,22 +173,29 @@ void RegisterFunction(
   CHECK(callback->IsRepeatable());
 
   // Wrap up the callback in an External that can be decoded later.
-  const Local<Value> data = External::New(callback);
+  const Local<Value> data = External::New(Isolate::GetCurrent(), callback);
 
   // Create a function template with the wrapped callback as associated data,
   // and export it.
   (*tmpl)->Set(
-      String::New(name.c_str(), name.size()),
-      FunctionTemplate::New(RunAssociatedCallback, data));
+      ConvertString(name),
+      FunctionTemplate::New(
+          Isolate::GetCurrent(),
+          RunAssociatedCallback,
+          data));
 
   // Dispose of the callback when the object template goes away.
-  Persistent<ObjectTemplate> weak_ref(
+  PersistentAndOwned<ObjectTemplate, V8FunctionCallback>* p_and_o =
+      new PersistentAndOwned<ObjectTemplate, V8FunctionCallback>;
+
+  p_and_o->owned = callback;
+  p_and_o->persistent.Reset(
       CHECK_NOTNULL(Isolate::GetCurrent()),
       *tmpl);
 
-  weak_ref.MakeWeak(
-      callback,
-      &DeleteCallback);
+  p_and_o->persistent.SetWeak(
+      p_and_o,
+      &CleanUpWeakRef);
 }
 
 Local<Function> MakeFunction(
@@ -154,23 +204,34 @@ Local<Function> MakeFunction(
   CHECK(callback->IsRepeatable());
 
   // Wrap up the callback in an External that can be decoded later.
-  const Local<Value> data = External::New(callback);
+  const Local<Value> data =
+      External::New(
+          Isolate::GetCurrent(),
+          callback);
 
   // Create a function template with the wrapped callback as associated data,
   // and instantiate it.
   const Local<Function> result =
-      FunctionTemplate::New(RunAssociatedCallback, data)->GetFunction();
+      FunctionTemplate::New(
+          Isolate::GetCurrent(),
+          RunAssociatedCallback,
+          data)
+      ->GetFunction();
 
-  result->SetName(String::New(name.data(), name.size()));
+  result->SetName(ConvertString(name));
 
   // Dispose of the callback when the function is garbage collected.
-  Persistent<Function> weak_ref(
+  PersistentAndOwned<Function, V8FunctionCallback>* p_and_o =
+      new PersistentAndOwned<Function, V8FunctionCallback>;
+
+  p_and_o->owned = callback;
+  p_and_o->persistent.Reset(
       CHECK_NOTNULL(Isolate::GetCurrent()),
       result);
 
-  weak_ref.MakeWeak(
-      callback,
-      &DeleteCallback);
+  p_and_o->persistent.SetWeak(
+      p_and_o,
+      &CleanUpWeakRef);
 
   return result;
 }

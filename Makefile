@@ -12,12 +12,15 @@ DEFAULT_DATA_DIR = $(PREFIX)/share/gjstest
 CPPFLAGS += -I.
 CPPFLAGS += -I./third_party/gmock/include
 CPPFLAGS += -I./third_party/gmock/gtest/include
-CPPFLAGS += -I/usr/include/libxml2
+CPPFLAGS += -I/usr/local/opt/libxml2/include/libxml2
 CPPFLAGS += -I/usr/local/include
 CPPFLAGS += -DDEFAULT_DATA_DIR=$(DEFAULT_DATA_DIR)
 
 # Compiler flags.
 CXXFLAGS += -DHASH_NAMESPACE=__gnu_cxx
+
+# Linker flags.
+LDFLAGS += -L/usr/local/lib
 
 # Fix clock_gettime in timer.cc.
 UNAME := $(shell uname)

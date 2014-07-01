@@ -39,9 +39,7 @@ Stack:
 
 [  FAILED  ] ExceptionTest.StackOverflow (1 ms)
 [ RUN      ] ExceptionTest.UnknownPropertyOnLongFunction
-TypeError: Object function foo() {
-    return 'asd';
-  } has no method 'bar'
+TypeError: undefined is not a function
 
 Stack:
     exception_test.js:45
