@@ -37,6 +37,7 @@ using v8::String;
 using v8::TryCatch;
 using v8::UnboundScript;
 using v8::Value;
+using v8::WeakCallbackData;
 
 namespace gjstest {
 
@@ -136,13 +137,10 @@ static void RunAssociatedCallback(
   cb_info.GetReturnValue().Set(callback->Run(cb_info));
 }
 
-template <typename T, typename C>
-static void DeleteCallback(
-    Isolate* isolate,
-    Persistent<T>* ref,
-    C* callback) {
-  ref->Dispose();
-  delete callback;
+template <typename T, typename P>
+static void DeleteParameter(
+    const WeakCallbackData<T, P>& data) {
+  delete data.GetParameter();
 }
 
 void RegisterFunction(
@@ -168,9 +166,9 @@ void RegisterFunction(
       CHECK_NOTNULL(Isolate::GetCurrent()),
       *tmpl);
 
-  weak_ref.MakeWeak(
+  weak_ref.SetWeak(
       callback,
-      &DeleteCallback);
+      &DeleteParameter);
 }
 
 Local<Function> MakeFunction(
@@ -200,9 +198,9 @@ Local<Function> MakeFunction(
       CHECK_NOTNULL(Isolate::GetCurrent()),
       result);
 
-  weak_ref.MakeWeak(
+  weak_ref.SetWeak(
       callback,
-      &DeleteCallback);
+      &DeleteParameter);
 
   return result;
 }
