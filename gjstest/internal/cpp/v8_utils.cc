@@ -152,13 +152,16 @@ void RegisterFunction(
   CHECK(callback->IsRepeatable());
 
   // Wrap up the callback in an External that can be decoded later.
-  const Local<Value> data = External::New(callback);
+  const Local<Value> data = External::New(Isolate::GetCurrent(), callback);
 
   // Create a function template with the wrapped callback as associated data,
   // and export it.
   (*tmpl)->Set(
       ConvertString(name),
-      FunctionTemplate::New(RunAssociatedCallback, data));
+      FunctionTemplate::New(
+          Isolate::GetCurrent(),
+          RunAssociatedCallback,
+          data));
 
   // Dispose of the callback when the object template goes away.
   Persistent<ObjectTemplate> weak_ref(
@@ -176,12 +179,19 @@ Local<Function> MakeFunction(
   CHECK(callback->IsRepeatable());
 
   // Wrap up the callback in an External that can be decoded later.
-  const Local<Value> data = External::New(callback);
+  const Local<Value> data =
+      External::New(
+          Isolate::GetCurrent(),
+          callback);
 
   // Create a function template with the wrapped callback as associated data,
   // and instantiate it.
   const Local<Function> result =
-      FunctionTemplate::New(RunAssociatedCallback, data)->GetFunction();
+      FunctionTemplate::New(
+          Isolate::GetCurrent(),
+          RunAssociatedCallback,
+          data)
+      ->GetFunction();
 
   result->SetName(ConvertString(name));
 
