@@ -21,7 +21,6 @@
 //
 
 #include <v8.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 namespace gjstest {
@@ -36,8 +35,6 @@ public:
 }  // namespace
 
 void EnableTypedArrays() {
-  static const char kFlag[] = "--harmony_typed_arrays";
-  v8::V8::SetFlagsFromString(kFlag, sizeof(kFlag) - 1);
   v8::V8::SetArrayBufferAllocator(new MallocArrayBufferAllocator);
 }
 
