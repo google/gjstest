@@ -63,28 +63,49 @@ gjstest.Predicate;
  * @constructor
  */
 gjstest.Matcher = function(description, negativeDescription, predicate) {
-  this.description = description;
-  this.negativeDescription = negativeDescription;
+  this.getDescription = function() { return description; };
+  this.getNegativeDescription = function() { return negativeDescription; };
   this.predicate = predicate;
+
+  // TODO(b/18146974): Delete these two statements when the properties are
+  // deleted.
+  this.description = this.getDescription();
+  this.negativeDescription = this.getNegativeDescription();
 };
 
 /**
- * The description of objects matched by this matcher.
- * @type {string}
+ * A function that returns a description of objects matched by this matcher.
+ * @type {function():string}
  */
-gjstest.Matcher.prototype.description;
+gjstest.Matcher.prototype.getDescription;
 
 /**
- * The description of objects not matched by this matcher.
- * @type {string}
+ * A function that returns a description of objects not matched by this matcher.
+ * @type {function():string}
  */
-gjstest.Matcher.prototype.negativeDescription;
+gjstest.Matcher.prototype.getNegativeDescription;
 
 /**
  * The predicate that defines the set of objects matched by this matcher.
  * @type {!gjstest.Predicate}
  */
 gjstest.Matcher.prototype.predicate;
+
+/**
+ * DEPRECATED: Do not use.
+ * TODO(b/18146974): Delete this when it's no longer used.
+ *
+ * @type {string}
+ */
+gjstest.Matcher.prototype.description;
+
+/**
+ * DEPRECATED: Do not use.
+ * TODO(b/18146974): Delete this when it's no longer used.
+ *
+ * @type {string}
+ */
+gjstest.Matcher.prototype.negativeDescription;
 
 /**
  * Does this matcher understand missing arguments?
