@@ -46,9 +46,8 @@ StringifyTest.prototype.Errors = function() {
 };
 
 StringifyTest.prototype.Dates = function() {
-  expectThat(
-      stringify(new Date(1985, 2, 18)),
-      containsRegExp(/^Mon Mar 18 1985 00:00:00 GMT[+-]\d{4} \(\w{3}\)$/))
+  var date = new Date(1985, 2, 18);
+  expectEq(date.toString(), stringify(date));
 };
 
 StringifyTest.prototype.Functions = function() {
