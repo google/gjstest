@@ -93,8 +93,8 @@ GreaterThanTest.prototype.Numbers = function() {
 
 GreaterThanTest.prototype.Descriptions = function() {
   var matcher = greaterThan(7.01);
-  expectEq('is greater than 7.01', matcher.description);
-  expectEq('is less than or equal to 7.01', matcher.negativeDescription);
+  expectEq('is greater than 7.01', matcher.getDescription());
+  expectEq('is less than or equal to 7.01', matcher.getNegativeDescription());
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -177,8 +177,8 @@ GreaterOrEqualTest.prototype.Numbers = function() {
 
 GreaterOrEqualTest.prototype.Descriptions = function() {
   var matcher = greaterOrEqual(7.01);
-  expectEq('is greater than or equal to 7.01', matcher.description);
-  expectEq('is less than 7.01', matcher.negativeDescription);
+  expectEq('is greater than or equal to 7.01', matcher.getDescription());
+  expectEq('is less than 7.01', matcher.getNegativeDescription());
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -261,8 +261,8 @@ LessThanTest.prototype.Numbers = function() {
 
 LessThanTest.prototype.Descriptions = function() {
   var matcher = lessThan(7.01);
-  expectEq('is less than 7.01', matcher.description);
-  expectEq('is greater than or equal to 7.01', matcher.negativeDescription);
+  expectEq('is less than 7.01', matcher.getDescription());
+  expectEq('is greater than or equal to 7.01', matcher.getNegativeDescription());
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -345,8 +345,8 @@ LessOrEqualTest.prototype.Numbers = function() {
 
 LessOrEqualTest.prototype.Descriptions = function() {
   var matcher = lessOrEqual(7.01);
-  expectEq('is less than or equal to 7.01', matcher.description);
-  expectEq('is greater than 7.01', matcher.negativeDescription);
+  expectEq('is less than or equal to 7.01', matcher.getDescription());
+  expectEq('is greater than 7.01', matcher.getNegativeDescription());
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -432,6 +432,8 @@ IsNearNumberTest.prototype.DegenerateNumbers = function() {
 IsNearNumberTest.prototype.Descriptions = function() {
   var matcher = isNearNumber(-17, 19);
 
-  expectEq('is a number within 19 of -17', matcher.description);
-  expectEq('is not a number within 19 of -17', matcher.negativeDescription);
+  expectEq('is a number within 19 of -17', matcher.getDescription());
+  expectEq(
+      'is not a number within 19 of -17',
+      matcher.getNegativeDescription());
 };

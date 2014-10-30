@@ -66,11 +66,6 @@ gjstest.Matcher = function(description, negativeDescription, predicate) {
   this.getDescription = function() { return description; };
   this.getNegativeDescription = function() { return negativeDescription; };
   this.predicate = predicate;
-
-  // TODO(b/18146974): Delete these two statements when the properties are
-  // deleted.
-  this.description = this.getDescription();
-  this.negativeDescription = this.getNegativeDescription();
 };
 
 /**
@@ -90,22 +85,6 @@ gjstest.Matcher.prototype.getNegativeDescription;
  * @type {!gjstest.Predicate}
  */
 gjstest.Matcher.prototype.predicate;
-
-/**
- * DEPRECATED: Do not use.
- * TODO(b/18146974): Delete this when it's no longer used.
- *
- * @type {string}
- */
-gjstest.Matcher.prototype.description;
-
-/**
- * DEPRECATED: Do not use.
- * TODO(b/18146974): Delete this when it's no longer used.
- *
- * @type {string}
- */
-gjstest.Matcher.prototype.negativeDescription;
 
 /**
  * Does this matcher understand missing arguments?

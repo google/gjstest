@@ -46,8 +46,8 @@ NotPresentTest.prototype.DoesntMatchAnythingElse = function() {
 };
 
 NotPresentTest.prototype.Description = function() {
-  expectEq('is not present', notPresent.description);
-  expectEq('is present', notPresent.negativeDescription);
+  expectEq('is not present', notPresent.getDescription());
+  expectEq('is present', notPresent.getNegativeDescription());
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -76,5 +76,5 @@ MaybePresentTest.prototype.MatchesEverything = function() {
 };
 
 MaybePresentTest.prototype.Description = function() {
-  expectEq('is anything, or is not present', maybePresent.description);
+  expectEq('is anything, or is not present', maybePresent.getDescription());
 };

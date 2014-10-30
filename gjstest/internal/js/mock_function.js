@@ -79,7 +79,7 @@ gjstest.internal.describeExpectation = function(expectation) {
   var matchers = expectation.argMatchers;
 
   for (var i = 0; i < matchers.length; ++i) {
-    var description = matchers[i].description;
+    var description = matchers[i].getDescription();
     result.push('    Arg ' + i + ': ' + description);
   }
 

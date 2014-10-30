@@ -68,7 +68,7 @@ gjstest.elementsAre = function(matchers) {
 
     // Is this actually a matcher?
     if (val && val instanceof gjstest.Matcher) {
-      matcherDescriptions.push(val.description);
+      matcherDescriptions.push(val.getDescription());
       transformedMatchers.push(val);
       continue;
     }
@@ -142,7 +142,7 @@ gjstest.contains = function(x) {
   var nounPhrase;
   if (x && x instanceof gjstest.Matcher) {
     matcher = x;
-    nounPhrase = 'an element that ' + matcher.description;
+    nounPhrase = 'an element that ' + matcher.getDescription();
   } else {
     matcher = gjstest.equals(x);
     nounPhrase = gjstest.stringify(x);
@@ -188,8 +188,8 @@ gjstest.whenSorted = function(matcher) {
   }
 
   return new gjstest.Matcher(
-      'when sorted, ' + matcher.description,
-      'when sorted, ' + matcher.negativeDescription,
+      'when sorted, ' + matcher.getDescription(),
+      'when sorted, ' + matcher.getNegativeDescription(),
       function(candidate) {
         if (!(candidate instanceof Array)) {
           return 'which isn\'t an array';

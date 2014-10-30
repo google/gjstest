@@ -50,7 +50,7 @@ gjstest.internal.expectThat = function(
   // Describe the failure.
   var failureMessage = '';
 
-  failureMessage += 'Expected: ' + matcher.description + '\n';
+  failureMessage += 'Expected: ' + matcher.getDescription() + '\n';
   failureMessage += 'Actual:   ' + stringify(obj);
 
   // Add a clause like "which has length 7" if one is available.

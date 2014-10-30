@@ -78,9 +78,9 @@ EvalsToTrueFalseTest.prototype.Objects = function() {
 };
 
 EvalsToTrueFalseTest.prototype.Descriptions = function() {
-  expectEq('evaluates to true', gjstest.evalsToTrue.description);
-  expectEq('evaluates to false', gjstest.evalsToTrue.negativeDescription);
+  expectEq('evaluates to true', gjstest.evalsToTrue.getDescription());
+  expectEq('evaluates to false', gjstest.evalsToTrue.getNegativeDescription());
 
-  expectEq('evaluates to false', gjstest.evalsToFalse.description);
-  expectEq('evaluates to true', gjstest.evalsToFalse.negativeDescription);
+  expectEq('evaluates to false', gjstest.evalsToFalse.getDescription());
+  expectEq('evaluates to true', gjstest.evalsToFalse.getNegativeDescription());
 };

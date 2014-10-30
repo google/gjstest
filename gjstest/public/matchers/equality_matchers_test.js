@@ -41,7 +41,7 @@ AnythingTest.prototype.MatchesEverything = function() {
 };
 
 AnythingTest.prototype.Description = function() {
-  expectEq('is anything', _.description);
+  expectEq('is anything', _.getDescription());
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -137,38 +137,38 @@ EqualsTest.prototype.Description = function() {
   var matcher;
 
   matcher = equals(null)
-  expectEq('null', matcher.description);
-  expectEq('does not equal: null', matcher.negativeDescription);
+  expectEq('null', matcher.getDescription());
+  expectEq('does not equal: null', matcher.getNegativeDescription());
 
   matcher = equals(112);
-  expectEq('112', matcher.description);
-  expectEq('does not equal: 112', matcher.negativeDescription);
+  expectEq('112', matcher.getDescription());
+  expectEq('does not equal: 112', matcher.getNegativeDescription());
 
   matcher = equals('taco\nburrito');
-  expectEq('\'taco\\nburrito\'', matcher.description);
-  expectEq('does not equal: \'taco\\nburrito\'', matcher.negativeDescription);
+  expectEq('\'taco\\nburrito\'', matcher.getDescription());
+  expectEq('does not equal: \'taco\\nburrito\'', matcher.getNegativeDescription());
 
   matcher = equals([1, 2]);
-  expectEq('is a reference to: [ 1, 2 ]', matcher.description);
+  expectEq('is a reference to: [ 1, 2 ]', matcher.getDescription());
   expectEq('is not a reference to: [ 1, 2 ]',
-           matcher.negativeDescription);
+           matcher.getNegativeDescription());
 
   matcher = equals({foo: 2, bar: 3});
-  expectEq('is a reference to: { foo: 2, bar: 3 }', matcher.description);
+  expectEq('is a reference to: { foo: 2, bar: 3 }', matcher.getDescription());
   expectEq('is not a reference to: { foo: 2, bar: 3 }',
-           matcher.negativeDescription);
+           matcher.getNegativeDescription());
 
   matcher = equals(function fooBar(baz) {});
-  expectEq('is a reference to: function fooBar(baz)', matcher.description);
+  expectEq('is a reference to: function fooBar(baz)', matcher.getDescription());
   expectEq('is not a reference to: function fooBar(baz)',
-           matcher.negativeDescription);
+           matcher.getNegativeDescription());
 
   function MyClass() {}
   MyClass.prototype.gjstestEquals = function() { return true; };
   matcher = equals(new MyClass);
-  expectEq('{ gjstestEquals: function () }', matcher.description);
+  expectEq('{ gjstestEquals: function () }', matcher.getDescription());
   expectEq('does not equal: { gjstestEquals: function () }',
-           matcher.negativeDescription);
+           matcher.getNegativeDescription());
 };
 
 EqualsTest.prototype.GjstestEqualsWithSameType = function() {
@@ -224,8 +224,8 @@ IsNullTest.prototype.NonMatches = function() {
 };
 
 IsNullTest.prototype.Description = function() {
-  expectEq('is null', isNull.description);
-  expectEq('is not null', isNull.negativeDescription);
+  expectEq('is null', isNull.getDescription());
+  expectEq('is not null', isNull.getNegativeDescription());
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -250,8 +250,8 @@ IsUndefinedTest.prototype.NonMatches = function() {
 };
 
 IsUndefinedTest.prototype.Description = function() {
-  expectEq('is undefined', isUndefined.description);
-  expectEq('is not undefined', isUndefined.negativeDescription);
+  expectEq('is undefined', isUndefined.getDescription());
+  expectEq('is not undefined', isUndefined.getNegativeDescription());
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -531,10 +531,10 @@ RecursivelyEqualsTest.prototype.Descriptions = function() {
   var matcher = recursivelyEquals({foo: ['taco'], bar: 17});
 
   expectEq("recursively equals { foo: [ 'taco' ], bar: 17 }",
-           matcher.description);
+           matcher.getDescription());
 
   expectEq("does not recursively equal { foo: [ 'taco' ], bar: 17 }",
-           matcher.negativeDescription);
+           matcher.getNegativeDescription());
 };
 
 RecursivelyEqualsTest.prototype.GjstestEqualsWithSameType = function() {

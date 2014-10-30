@@ -245,7 +245,7 @@ gjstest.internal.compareRecursively_ = function(lhs, rhs, keyPrefix) {
       var matches = lhsValue.predicate(rhsValue);
       if (matches == true) continue;
       return 'which does not satisfy matcher for key ' + keyPath +
-          ' (' + (matches || lhsValue.negativeDescription) + ')';
+          ' (' + (matches || lhsValue.getNegativeDescription()) + ')';
     }
 
     if (!lhsValue ||

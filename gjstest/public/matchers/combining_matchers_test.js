@@ -31,7 +31,7 @@ AllOfTest.prototype.NonArrayArguments = function() {
 AllOfTest.prototype.EmptyArray = function() {
   var matcher = allOf([]);
 
-  expectEq('is anything', matcher.description);
+  expectEq('is anything', matcher.getDescription());
 
   expectTrue(matcher.predicate(null));
   expectTrue(matcher.predicate(undefined));
@@ -52,8 +52,8 @@ AllOfTest.prototype.SingleMatcherArray = function() {
 
   var matcher = allOf([wrapped]);
 
-  expectEq('is a taco', matcher.description);
-  expectEq('is not a taco', matcher.negativeDescription);
+  expectEq('is a taco', matcher.getDescription());
+  expectEq('is not a taco', matcher.getNegativeDescription());
 
   expectFalse(matcher.predicate(null));
   expectFalse(matcher.predicate(17));
@@ -65,8 +65,8 @@ AllOfTest.prototype.SingleMatcherArray = function() {
 AllOfTest.prototype.SingleValueArray = function() {
   var matcher = allOf(['taco']);
 
-  expectEq('\'taco\'', matcher.description);
-  expectEq('does not equal: \'taco\'', matcher.negativeDescription);
+  expectEq('\'taco\'', matcher.getDescription());
+  expectEq('does not equal: \'taco\'', matcher.getNegativeDescription());
 
   expectFalse(matcher.predicate(null));
   expectFalse(matcher.predicate(17));
@@ -79,11 +79,11 @@ AllOfTest.prototype.MultipleMatcherArray = function() {
   var matcher = allOf([greaterThan(2), lessThan(10), not(isNull)]);
 
   expectEq('is greater than 2, and is less than 10, and is not null',
-           matcher.description);
+           matcher.getDescription());
 
   expectEq('is less than or equal to 2, or is greater than or equal to 10, ' +
                'or is null',
-           matcher.negativeDescription);
+           matcher.getNegativeDescription());
 
   expectEq('which is not a number', matcher.predicate(null));
   expectEq('which is not a number', matcher.predicate('taco'));
@@ -97,9 +97,9 @@ AllOfTest.prototype.MultipleMatcherArray = function() {
 AllOfTest.prototype.ValueInMultipleElementArray = function() {
   var matcher = allOf([greaterThan(2), 3]);
 
-  expectEq('is greater than 2, and 3', matcher.description);
+  expectEq('is greater than 2, and 3', matcher.getDescription());
   expectEq('is less than or equal to 2, or does not equal: 3',
-           matcher.negativeDescription);
+           matcher.getNegativeDescription());
 
   expectEq('which is not a number', matcher.predicate(null));
   expectEq('which is not a number', matcher.predicate('taco'));
@@ -175,8 +175,8 @@ AnyOfTest.prototype.NonArrayArguments = function() {
 AnyOfTest.prototype.EmptyArray = function() {
   var matcher = anyOf([]);
 
-  expectEq('is a unicorn', matcher.description);
-  expectEq('is anything', matcher.negativeDescription);
+  expectEq('is a unicorn', matcher.getDescription());
+  expectEq('is anything', matcher.getNegativeDescription());
 
   expectFalse(matcher.predicate(null));
   expectFalse(matcher.predicate(undefined));
@@ -197,8 +197,8 @@ AnyOfTest.prototype.SingleMatcherArray = function() {
 
   var matcher = anyOf([wrapped]);
 
-  expectEq('is a taco', matcher.description);
-  expectEq('is not a taco', matcher.negativeDescription);
+  expectEq('is a taco', matcher.getDescription());
+  expectEq('is not a taco', matcher.getNegativeDescription());
 
   expectFalse(matcher.predicate(null));
   expectFalse(matcher.predicate(17));
@@ -210,8 +210,8 @@ AnyOfTest.prototype.SingleMatcherArray = function() {
 AnyOfTest.prototype.SingleValueArray = function() {
   var matcher = anyOf(['taco']);
 
-  expectEq('\'taco\'', matcher.description);
-  expectEq('does not equal: \'taco\'', matcher.negativeDescription);
+  expectEq('\'taco\'', matcher.getDescription());
+  expectEq('does not equal: \'taco\'', matcher.getNegativeDescription());
 
   expectFalse(matcher.predicate(null));
   expectFalse(matcher.predicate(17));
@@ -224,11 +224,11 @@ AnyOfTest.prototype.MultipleMatcherArray = function() {
   var matcher = anyOf([greaterThan(20), lessThan(10), isNull]);
 
   expectEq('is greater than 20, or is less than 10, or is null',
-           matcher.description);
+           matcher.getDescription());
 
   expectEq('is less than or equal to 20, and is greater than or equal to 10, ' +
                'and is not null',
-           matcher.negativeDescription);
+           matcher.getNegativeDescription());
 
   expectFalse(matcher.predicate(undefined));
   expectFalse(matcher.predicate('taco'));
@@ -244,10 +244,10 @@ AnyOfTest.prototype.MultipleMatcherArray = function() {
 AnyOfTest.prototype.ValueInMultipleElementArray = function() {
   var matcher = anyOf([greaterThan(20), 'taco']);
 
-  expectEq('is greater than 20, or \'taco\'', matcher.description);
+  expectEq('is greater than 20, or \'taco\'', matcher.getDescription());
 
   expectEq('is less than or equal to 20, and does not equal: \'taco\'',
-           matcher.negativeDescription);
+           matcher.getNegativeDescription());
 
   expectFalse(matcher.predicate(undefined));
 
@@ -299,8 +299,8 @@ registerTestSuite(NotTest);
 NotTest.prototype.NonMatcher = function() {
   var matcher = not(17);
 
-  expectEq('does not equal: 17', matcher.description);
-  expectEq('17', matcher.negativeDescription);
+  expectEq('does not equal: 17', matcher.getDescription());
+  expectEq('17', matcher.getNegativeDescription());
 
   expectTrue(matcher.predicate(null));
   expectTrue(matcher.predicate(undefined));
@@ -328,6 +328,6 @@ NotTest.prototype.Description = function() {
     new gjstest.Matcher('taco', 'burrito', function() { return true; });
 
   var matcher = not(innerMatcher);
-  expectEq('burrito', matcher.description);
-  expectEq('taco', matcher.negativeDescription);
+  expectEq('burrito', matcher.getDescription());
+  expectEq('taco', matcher.getNegativeDescription());
 };

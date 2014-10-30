@@ -73,9 +73,9 @@ ContainsRegExpTest.prototype.AnchoredToEdges = function() {
 
 ContainsRegExpTest.prototype.Description = function() {
   var matcher = containsRegExp(/.+taco.*/);
-  expectEq('partially matches regex: /.+taco.*/', matcher.description);
+  expectEq('partially matches regex: /.+taco.*/', matcher.getDescription());
   expectEq('doesn\'t partially match regex: /.+taco.*/',
-           matcher.negativeDescription);
+           matcher.getNegativeDescription());
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -135,8 +135,8 @@ HasSubstrTest.prototype.Description = function() {
   var matcher = hasSubstr('taco');
 
   expectEq('is a string containing the substring \'taco\'',
-           matcher.description);
+           matcher.getDescription());
 
   expectEq('is not a string containing the substring \'taco\'',
-           matcher.negativeDescription);
+           matcher.getNegativeDescription());
 };
