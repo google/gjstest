@@ -47,20 +47,27 @@ gjstest._ = new gjstest.Matcher(
  * @return {!gjstest.Matcher}
  */
 gjstest.equals = function(rhs) {
-  // Use the stringified object as the description, special casing types that
-  // will be compared by reference.
-  var stringified = gjstest.stringify(rhs);
+  var getDescription = function() {
+    // Use the stringified object as the description, special casing types that
+    // will be compared by reference.
+    if (rhs instanceof Object && !rhs['gjstestEquals']) {
+      return 'is a reference to: ' + gjstest.stringify(rhs);
+    }
 
-  var description = stringified;
-  var negativeDescription = 'does not equal: ' + stringified;
-  if (rhs instanceof Object && !rhs['gjstestEquals']) {
-    description = 'is a reference to: ' + stringified;
-    negativeDescription = 'is not a reference to: ' + stringified;
-  }
+    return gjstest.stringify(rhs);
+  };
+
+  var getNegativeDescription = function() {
+    if (rhs instanceof Object && !rhs['gjstestEquals']) {
+      return 'is not a reference to: ' + gjstest.stringify(rhs);
+    }
+
+    return 'does not equal: ' + gjstest.stringify(rhs);
+  };
 
   return new gjstest.Matcher(
-      description,
-      negativeDescription,
+      getDescription,
+      getNegativeDescription,
       function(obj) {
         if (obj === rhs) return true;
 
@@ -165,9 +172,17 @@ gjstest.recursivelyEquals = function(expected) {
     return compareResult || true;
   };
 
+  var getDescription = function() {
+    return 'recursively equals ' + gjstest.stringify(expected);
+  };
+
+  var getNegativeDescription = function() {
+    return 'does not recursively equal ' + gjstest.stringify(expected);
+  };
+
   return new gjstest.Matcher(
-      'recursively equals ' + gjstest.stringify(expected),
-      'does not recursively equal ' + gjstest.stringify(expected),
+      getDescription,
+      getNegativeDescription,
       predicate);
 };
 
