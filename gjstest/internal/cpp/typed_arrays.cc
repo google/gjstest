@@ -13,17 +13,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <v8.h>
 #include <stdlib.h>
+#include <string.h>
+#include <v8.h>
 
 namespace gjstest {
 
 namespace {
 class MallocArrayBufferAllocator : public v8::ArrayBuffer::Allocator {
 public:
-  virtual void* Allocate(size_t length) { return malloc(length); }
-  virtual void* AllocateUninitialized(size_t length) { return malloc(length); }
-  virtual void Free(void* data, size_t length) { free(data); }
+  virtual void* Allocate(size_t length) {
+    void* const result = malloc(length);
+    if (result) {
+      memset(result, 0, length);
+    }
+
+    return result;
+  }
+
+  virtual void* AllocateUninitialized(size_t length) {
+    return malloc(length);
+  }
+
+  virtual void Free(void* data, size_t length) {
+    free(data);
+  }
 };
 }  // namespace
 
