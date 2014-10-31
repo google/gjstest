@@ -15,7 +15,6 @@
 
 #include "gjstest/internal/cpp/test_case.h"
 
-#include "base/callback.h"
 #include "base/logging.h"
 #include "base/stringprintf.h"
 #include "base/timer.h"
@@ -33,8 +32,8 @@ using v8::Value;
 namespace gjstest {
 
 // Get a reference to the function of the supplied name.
-static Local<Function> GetFunctionNamed(const string& name) {
-  const Local<Value> result = ExecuteJs(name, "");
+Local<Function> TestCase::GetFunctionNamed(const string& name) const {
+  const Local<Value> result = ExecuteJs(isolate_, name, "");
   CHECK(result->IsFunction()) << "Error getting reference to " << name;
   return Local<Function>::Cast(result);
 }
@@ -66,9 +65,9 @@ static Handle<Value> RecordFailure(
 }
 
 TestCase::TestCase(
+    v8::Isolate* const isolate,
     const Handle<Function>& test_function)
-    : succeeded(false),
-      duration_ms(kuint32max),
+    : isolate_(CHECK_NOTNULL(isolate)),
       test_function_(test_function) {
   CHECK(test_function_->IsFunction());
 }
@@ -91,13 +90,29 @@ void TestCase::Run() {
       GetFunctionNamed("gjstest.internal.TestEnvironment");
 
   // Create log and reportFailure functions.
+  V8FunctionCallback log_cb =
+      std::bind(
+          &LogString,
+          this,
+          std::placeholders::_1);
+
   const Local<Function> log =
-      MakeFunction("log", NewPermanentCallback(&LogString, this));
+      MakeFunction(
+          isolate_,
+          "log",
+          &log_cb);
+
+  V8FunctionCallback report_failure_cb =
+      std::bind(
+          &RecordFailure,
+          this,
+          std::placeholders::_1);
 
   const Local<Function> report_failure =
       MakeFunction(
+          isolate_,
           "reportFailure",
-          NewPermanentCallback(&RecordFailure, this));
+          &report_failure_cb);
 
   // Create a test environment.
   Handle<Value> test_env_args[] = { log, report_failure, get_current_stack };

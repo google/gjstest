@@ -20,12 +20,12 @@
 #ifndef GJSTEST_INTERNAL_CPP_V8_UTILS_H_
 #define GJSTEST_INTERNAL_CPP_V8_UTILS_H_
 
+#include <functional>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include <v8.h>
-
-#include "base/callback-types.h"
 
 namespace gjstest {
 
@@ -34,6 +34,7 @@ std::string ConvertToString(const v8::Handle<v8::Value>& value);
 
 // Convert the supplied value, which must be an array, into a vector of strings.
 void ConvertToStringVector(
+    v8::Isolate* isolate,
     const v8::Handle<v8::Value>& value,
     std::vector<std::string>* result);
 
@@ -45,6 +46,7 @@ void ConvertToStringVector(
 // If filename is non-empty, it will be given to v8 to improve stack traces for
 // errors.
 v8::Local<v8::Value> ExecuteJs(
+    v8::Isolate* isolate,
     const std::string& js,
     const std::string& filename);
 
@@ -54,24 +56,41 @@ std::string DescribeError(const v8::TryCatch& try_catch);
 
 // C++ functions exported by v8 must accept a FunctionCallbackInfo<Value> object
 // and return a handle to a Value.
-typedef ResultCallback1<
-    v8::Handle<v8::Value>,
-    const v8::FunctionCallbackInfo<v8::Value>&>
+typedef std::function<
+    v8::Handle<v8::Value>(const v8::FunctionCallbackInfo<v8::Value>&)>
         V8FunctionCallback;
 
 // Export a JS function with the given name in the supplied template, invoking
-// the supplied callback whenever it is called. Ownership of the callback is
-// transferred.
+// the supplied callback whenever it is called. The callback must continue to
+// exist for as long as the function may be called in JS, and must not be
+// modified.
 void RegisterFunction(
+    v8::Isolate* isolate,
     const std::string& name,
     V8FunctionCallback* callback,
     v8::Handle<v8::ObjectTemplate>* tmpl);
 
 // Create a JS function with the supplied name that calls the given callback
-// when invoked. Ownership of the callback is transferred.
+// when invoked. The callback must continue to exist for as long as the function
+// may be called in JS, and must not be modified.
 v8::Local<v8::Function> MakeFunction(
+    v8::Isolate* isolate,
     const std::string& name,
     V8FunctionCallback* callback);
+
+// An RAII handle for an isolate.
+struct IsolateDisposer;
+typedef std::unique_ptr<v8::Isolate, IsolateDisposer> IsolateHandle;
+
+////////////////////////////////////////////////////////////////////////
+// Implementation details
+////////////////////////////////////////////////////////////////////////
+
+struct IsolateDisposer {
+  void operator()(v8::Isolate* const i) const {
+    i->Dispose();
+  }
+};
 
 }  // namespace gjstest
 

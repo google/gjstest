@@ -32,7 +32,9 @@ class TestCase {
  public:
   // Create a test case that wraps the supplied test function, as created by
   // gjstest.registerTestCase.
-  explicit TestCase(const v8::Handle<v8::Function>& test_function);
+  TestCase(
+      v8::Isolate* isolate,
+      const v8::Handle<v8::Function>& test_function);
 
   // Run the test case and fill in the properties below. It is assumed that a
   // context is currently active in which all of the test's dependencies have
@@ -42,7 +44,7 @@ class TestCase {
   void Run();
 
   // Did the test succeed or fail?
-  bool succeeded;
+  bool succeeded = false;
 
   // All output from the test.
   string output;
@@ -51,10 +53,18 @@ class TestCase {
   string failure_output;
 
   // The duration of the test run, in milliseconds.
-  uint32 duration_ms;
+  uint32 duration_ms = kuint32max;
 
  private:
+  v8::Isolate* const isolate_;
   const v8::Handle<v8::Function> test_function_;
+
+  ///////////////////////////////////
+  // Helpers
+  ///////////////////////////////////
+
+  v8::Local<v8::Function> GetFunctionNamed(
+      const string& name) const;
 
   DISALLOW_COPY_AND_ASSIGN(TestCase);
 };

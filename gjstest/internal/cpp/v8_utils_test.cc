@@ -19,7 +19,6 @@
 
 #include "gjstest/internal/cpp/v8_utils.h"
 
-#include "base/callback.h"
 #include "base/integral_types.h"
 #include "base/logging.h"
 #include "base/macros.h"
@@ -72,21 +71,57 @@ static Local<String> MakeUtf8String(
 // the context on the the object template before calling V8UtilsTest::SetUp.
 class V8UtilsTest : public ::testing::Test {
  protected:
-  V8UtilsTest()
-      : handle_scope_(CHECK_NOTNULL(Isolate::GetCurrent())),
-        global_template_(ObjectTemplate::New()),
-        context_(
-            Context::New(
-                CHECK_NOTNULL(Isolate::GetCurrent()),
-                NULL,  // No extensions
-                global_template_)),
-        context_scope_(context_) {
+  void ConvertToStringVector(
+      const v8::Handle<v8::Value>& value,
+      std::vector<std::string>* const result) {
+    return ::gjstest::ConvertToStringVector(
+        isolate_.get(),
+        value,
+        result);
   }
 
-  const HandleScope handle_scope_;
-  const Handle<ObjectTemplate> global_template_;
-  const Handle<Context> context_;
-  const Context::Scope context_scope_;
+  v8::Local<v8::Value> ExecuteJs(
+      const std::string& js,
+      const std::string& filename) {
+    return ::gjstest::ExecuteJs(isolate_.get(), js, filename);
+  }
+
+  void RegisterFunction(
+      const std::string& name,
+      V8FunctionCallback* const callback,
+      v8::Handle<v8::ObjectTemplate>* const tmpl) {
+    return ::gjstest::RegisterFunction(
+        isolate_.get(),
+        name,
+        callback,
+        tmpl);
+  }
+
+  v8::Local<v8::Function> MakeFunction(
+      const std::string& name,
+      V8FunctionCallback* const callback) {
+    return ::gjstest::MakeFunction(
+        isolate_.get(),
+        name,
+        callback);
+  }
+
+  const IsolateHandle isolate_{ Isolate::New() };
+  const v8::Isolate::Scope isolate_scope_{ isolate_.get() };
+
+  const HandleScope handle_scope_{ isolate_.get() };
+  const Handle<ObjectTemplate> global_template_{
+    ObjectTemplate::New(isolate_.get()),
+  };
+
+  const Handle<Context> context_{
+    Context::New(
+        isolate_.get(),
+        nullptr,  // No extensions
+        global_template_),
+  };
+
+  const Context::Scope context_scope_{ context_ };
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -96,12 +131,12 @@ class V8UtilsTest : public ::testing::Test {
 typedef V8UtilsTest ConvertToStringTest;
 
 TEST_F(ConvertToStringTest, Empty) {
-  HandleScope handle_owner(Isolate::GetCurrent());
+  HandleScope handle_owner(isolate_.get());
   EXPECT_EQ("", ConvertToString(Local<Value>()));
 }
 
 TEST_F(ConvertToStringTest, Strings) {
-  HandleScope handle_owner(Isolate::GetCurrent());
+  HandleScope handle_owner(isolate_.get());
 
   EXPECT_EQ("", ConvertToString(MakeUtf8String("")));
   EXPECT_EQ("taco", ConvertToString(MakeUtf8String("taco")));
@@ -111,14 +146,14 @@ TEST_F(ConvertToStringTest, Strings) {
       "타코",
       ConvertToString(
           String::NewFromTwoByte(
-              Isolate::GetCurrent(),
+              isolate_.get(),
               kUtf16Chars,
               String::kNormalString,
               2)));
 }
 
 TEST_F(ConvertToStringTest, Numbers) {
-  HandleScope handle_owner(Isolate::GetCurrent());
+  HandleScope handle_owner(isolate_.get());
 
   EXPECT_EQ("-3", ConvertToString(MakeNumber(-3)));
   EXPECT_EQ("4", ConvertToString(MakeNumber(4)));
@@ -129,34 +164,35 @@ TEST_F(ConvertToStringTest, Numbers) {
 // ExecuteJs
 ////////////////////////////////////////////////////////////////////////
 
-typedef V8UtilsTest ExecuteJsTest;
+class ExecuteJsTest : public V8UtilsTest {
+ public:
+  std::string GetResultAsString(
+      const std::string& js,
+      std::string filename = "") {
+    return ConvertToString(ExecuteJs(js, filename));
+  }
+};
 
-static std::string GetResultAsString(
-    const std::string& js,
-    std::string filename = "") {
-  return ConvertToString(ExecuteJs(js, filename));
-}
-
-TEST_F(ConvertToStringTest, EmptyString) {
-  HandleScope handle_owner(Isolate::GetCurrent());
+TEST_F(ExecuteJsTest, EmptyString) {
+  HandleScope handle_owner(isolate_.get());
   EXPECT_EQ("undefined", GetResultAsString(""));
 }
 
-TEST_F(ConvertToStringTest, BadSyntax) {
-  HandleScope handle_owner(Isolate::GetCurrent());
+TEST_F(ExecuteJsTest, BadSyntax) {
+  HandleScope handle_owner(isolate_.get());
 
   const Local<Value> result = ExecuteJs("(2", "");
   EXPECT_TRUE(result.IsEmpty());
 }
 
-TEST_F(ConvertToStringTest, SingleValue) {
-  HandleScope handle_owner(Isolate::GetCurrent());
+TEST_F(ExecuteJsTest, SingleValue) {
+  HandleScope handle_owner(isolate_.get());
   EXPECT_EQ("2", GetResultAsString("2"));
   EXPECT_EQ("foo", GetResultAsString("'foo'"));
 }
 
-TEST_F(ConvertToStringTest, FunctionReturnValue) {
-  HandleScope handle_owner(Isolate::GetCurrent());
+TEST_F(ExecuteJsTest, FunctionReturnValue) {
+  HandleScope handle_owner(isolate_.get());
 
   const std::string js =
       "var addTwo = function(a, b) { return a + b; };\n"
@@ -165,8 +201,8 @@ TEST_F(ConvertToStringTest, FunctionReturnValue) {
   EXPECT_EQ("5", GetResultAsString(js));
 }
 
-TEST_F(ConvertToStringTest, StackWithFilename) {
-  HandleScope handle_owner(Isolate::GetCurrent());
+TEST_F(ExecuteJsTest, StackWithFilename) {
+  HandleScope handle_owner(isolate_.get());
 
   const std::string js =
       "2+2\n"
@@ -175,8 +211,8 @@ TEST_F(ConvertToStringTest, StackWithFilename) {
   EXPECT_THAT(GetResultAsString(js, "taco.js"), HasSubstr("at taco.js:2"));
 }
 
-TEST_F(ConvertToStringTest, StackWithoutFilename) {
-  HandleScope handle_owner(Isolate::GetCurrent());
+TEST_F(ExecuteJsTest, StackWithoutFilename) {
+  HandleScope handle_owner(isolate_.get());
 
   const std::string js =
       "2+2\n"
@@ -192,14 +228,14 @@ TEST_F(ConvertToStringTest, StackWithoutFilename) {
 typedef V8UtilsTest DescribeErrorTest;
 
 TEST_F(DescribeErrorTest, NoError) {
-  HandleScope handle_owner(Isolate::GetCurrent());
+  HandleScope handle_owner(isolate_.get());
 
   TryCatch try_catch;
   EXPECT_EQ("", DescribeError(try_catch));
 }
 
 TEST_F(DescribeErrorTest, NoMessage) {
-  HandleScope handle_owner(Isolate::GetCurrent());
+  HandleScope handle_owner(isolate_.get());
 
   const std::string js = "throw new Error();";
 
@@ -210,7 +246,7 @@ TEST_F(DescribeErrorTest, NoMessage) {
 }
 
 TEST_F(DescribeErrorTest, WithMessage) {
-  HandleScope handle_owner(Isolate::GetCurrent());
+  HandleScope handle_owner(isolate_.get());
 
   const std::string js = "throw new Error('foo');";
 
@@ -221,7 +257,7 @@ TEST_F(DescribeErrorTest, WithMessage) {
 }
 
 TEST_F(DescribeErrorTest, NoLineNumber) {
-  HandleScope handle_owner(Isolate::GetCurrent());
+  HandleScope handle_owner(isolate_.get());
 
   // Missing end curly brace.
   const std::string js = "var foo = {\n  'taco': 1\n";
@@ -237,92 +273,90 @@ TEST_F(DescribeErrorTest, NoLineNumber) {
 // ConvertToStringVector
 ////////////////////////////////////////////////////////////////////////
 
-typedef V8UtilsTest ConvertToStringVectorTest;
-
-static std::vector<std::string> ConvertToStringVector(
-    const std::string& js) {
-  std::vector<std::string> result;
-  ConvertToStringVector(ExecuteJs(js, ""), &result);
-  return result;
-}
+class ConvertToStringVectorTest : public V8UtilsTest {
+ public:
+  std::vector<std::string> EvaluateAndConvertToStringVector(
+      const std::string& js) {
+    std::vector<std::string> result;
+    ConvertToStringVector(ExecuteJs(js, ""), &result);
+    return result;
+  }
+};
 
 TEST_F(ConvertToStringVectorTest, EmptyValue) {
-  HandleScope handle_owner(Isolate::GetCurrent());
+  HandleScope handle_owner(isolate_.get());
   std::vector<std::string> result;
 
   EXPECT_DEATH(ConvertToStringVector(Local<Value>(), &result), "non-empty");
 }
 
 TEST_F(ConvertToStringVectorTest, NonArray) {
-  HandleScope handle_owner(Isolate::GetCurrent());
-  EXPECT_DEATH(ConvertToStringVector("'foo'"), "must be an array");
+  HandleScope handle_owner(isolate_.get());
+  EXPECT_DEATH(EvaluateAndConvertToStringVector("'foo'"), "must be an array");
 }
 
 TEST_F(ConvertToStringVectorTest, EmptyArray) {
-  HandleScope handle_owner(Isolate::GetCurrent());
-  EXPECT_THAT(ConvertToStringVector("[]"), ElementsAre());
+  HandleScope handle_owner(isolate_.get());
+  EXPECT_THAT(EvaluateAndConvertToStringVector("[]"), ElementsAre());
 }
 
 TEST_F(ConvertToStringVectorTest, NonEmptyArray) {
-  HandleScope handle_owner(Isolate::GetCurrent());
-  EXPECT_THAT(ConvertToStringVector("['', 'foo', 2]"),
+  HandleScope handle_owner(isolate_.get());
+  EXPECT_THAT(EvaluateAndConvertToStringVector("['', 'foo', 2]"),
               ElementsAre("", "foo", "2"));
 }
-
-////////////////////////////////////////////////////////////////////////
-// Helpers
-////////////////////////////////////////////////////////////////////////
-
-static Handle<Value> AddToCounter(
-    uint32* counter,
-    const v8::FunctionCallbackInfo<Value>& cb_info) {
-  CHECK_EQ(1, cb_info.Length());
-  *counter += cb_info[0]->ToUint32()->Value();
-  return v8::Undefined(Isolate::GetCurrent());
-}
-
-// An implementation of V8FunctionCallback that sets a bool when it is
-// destructed.
-class WatchForDeletionCallback : public V8FunctionCallback {
- public:
-  explicit WatchForDeletionCallback(bool* deleted) : deleted_(deleted) {}
-  ~WatchForDeletionCallback() { *deleted_ = true; }
-  virtual bool IsRepeatable() const { return true; }
-  virtual Handle<Value> Run(const v8::FunctionCallbackInfo<Value>& cb_info) {
-    return v8::Undefined(Isolate::GetCurrent());
-  }
-
-  bool* deleted_;
-};
 
 ////////////////////////////////////////////////////////////////////////
 // RegisterFunction
 ////////////////////////////////////////////////////////////////////////
 
-TEST(RegisterFunctionTest, CallsAppropriateCallback) {
-  HandleScope handle_owner(Isolate::GetCurrent());
+static Handle<Value> AddToCounter(
+    Isolate* const isolate,
+    uint32* counter,
+    const v8::FunctionCallbackInfo<Value>& cb_info) {
+  CHECK_EQ(1, cb_info.Length());
+  *counter += cb_info[0]->ToUint32()->Value();
+  return v8::Undefined(isolate);
+}
 
+typedef V8UtilsTest RegisterFunctionTest;
+
+TEST_F(RegisterFunctionTest, CallsAppropriateCallback) {
   uint32 counter_1 = 0;
   uint32 counter_2 = 0;
 
+  V8FunctionCallback add_to_counter_1 =
+      std::bind(
+          &AddToCounter,
+          isolate_.get(),
+          &counter_1,
+          std::placeholders::_1);
+
+  V8FunctionCallback add_to_counter_2 =
+      std::bind(
+          &AddToCounter,
+          isolate_.get(),
+          &counter_2,
+          std::placeholders::_1);
+
   // Create a template that exports two functions to add to the two counters.
-  Handle<ObjectTemplate> global_template = ObjectTemplate::New();
+  Handle<ObjectTemplate> global_template = ObjectTemplate::New(isolate_.get());
 
   RegisterFunction(
       "addToCounter1",
-      NewPermanentCallback(&AddToCounter, &counter_1),
+      &add_to_counter_1,
       &global_template);
 
   RegisterFunction(
       "addToCounter2",
-      NewPermanentCallback(&AddToCounter, &counter_2),
+      &add_to_counter_2,
       &global_template);
 
   // Create a context in which to run scripts and ensure that it's used whenever
   // a context is needed below. Export the global functions configured above.
   const Handle<Context> context(
       Context::New(
-          CHECK_NOTNULL(Isolate::GetCurrent()),
+          CHECK_NOTNULL(isolate_.get()),
           NULL,  // No extensions
           global_template));
 
@@ -336,124 +370,46 @@ TEST(RegisterFunctionTest, CallsAppropriateCallback) {
   EXPECT_EQ(7, counter_2);
 }
 
-TEST(RegisterFunctionTest, GarbageCollectsCallbacks) {
-  // Create a handle scope and a template within that scope, and register a
-  // couple of callbacks allocated on the heap. Have the callbacks keep track of
-  // whether they were deleted.
-  bool callback_1_deleted = false;
-  bool callback_2_deleted = false;
-
-  {
-    HandleScope handle_owner(Isolate::GetCurrent());
-    Handle<ObjectTemplate> tmpl = ObjectTemplate::New();
-
-    RegisterFunction(
-        "taco",
-        new WatchForDeletionCallback(&callback_1_deleted),
-        &tmpl);
-
-    RegisterFunction(
-        "burrito",
-        new WatchForDeletionCallback(&callback_2_deleted),
-        &tmpl);
-  }  // No more references to tmpl
-
-  // Force a garbage collection run. See the comments in v8.h and this thread
-  // (which has a bug in its advice):
-  //
-  //     http://www.mail-archive.com/v8-users@googlegroups.com/msg01789.html
-  //
-  while (!v8::V8::IdleNotification());
-
-  // The two callbacks should have been deleted when the template was garbage
-  // collected.
-  EXPECT_TRUE(callback_1_deleted);
-  EXPECT_TRUE(callback_2_deleted);
-}
-
 ////////////////////////////////////////////////////////////////////////
 // MakeFunction
 ////////////////////////////////////////////////////////////////////////
 
 class MakeFunctionTest : public V8UtilsTest {
  protected:
-  MakeFunctionTest()
-      : counter_(0) {
-  }
+  uint32 counter_ = 0;
+  V8FunctionCallback callback_ =
+      std::bind(
+          &AddToCounter,
+          isolate_.get(),
+          &counter_,
+          std::placeholders::_1);
 
-  void SetUpFunction() {
-    func_ =
-        MakeFunction("taco", NewPermanentCallback(&AddToCounter, &counter_));
-  }
-
-  uint32 counter_;
-  Local<Function> func_;
+  Local<Function> func_ = MakeFunction("taco", &callback_);
 };
 
 TEST_F(MakeFunctionTest, Name) {
-  HandleScope handle_owner(Isolate::GetCurrent());
-  SetUpFunction();
   ASSERT_FALSE(func_.IsEmpty());
 
   EXPECT_EQ("taco", ConvertToString(func_->GetName()));
 }
 
 TEST_F(MakeFunctionTest, CallsCallback) {
-  HandleScope handle_owner(Isolate::GetCurrent());
-  SetUpFunction();
   ASSERT_FALSE(func_.IsEmpty());
 
   Handle<Value> one_args[] = { MakeInteger(1) };
   Handle<Value> seventeen_args[] = { MakeInteger(17) };
 
   func_->Call(
-      Isolate::GetCurrent()->GetCurrentContext()->Global(),
+      isolate_.get()->GetCurrentContext()->Global(),
       1,
       one_args);
 
   func_->Call(
-      Isolate::GetCurrent()->GetCurrentContext()->Global(),
+      isolate_.get()->GetCurrentContext()->Global(),
       1,
       seventeen_args);
 
   EXPECT_EQ(18, counter_);
-}
-
-TEST_F(MakeFunctionTest, GarbageCollectsCallback) {
-  // Create a handle scope and make a function using a callback allocated on the
-  // heap. Have the callback keep track of when it's deleted.
-  bool callback_deleted = false;
-
-  {
-    const HandleScope handle_owner(Isolate::GetCurrent());
-    const Handle<Context> context(
-        Context::New(
-            CHECK_NOTNULL(Isolate::GetCurrent())));
-
-    const Context::Scope context_scope(context);
-
-    const Local<Function> function =
-        MakeFunction("taco", new WatchForDeletionCallback(&callback_deleted));
-  }  // No more references to function
-
-  // Notify V8 that a context has been disposed. On OS X this seems to be
-  // necessary since at least V8 3.21.17.
-  v8::V8::ContextDisposedNotification();
-
-  // Force a garbage collection run. See the comments in v8.h and this thread
-  // (which has a bug in its advice):
-  //
-  //     http://www.mail-archive.com/v8-users@googlegroups.com/msg01789.html
-  //
-  while (!v8::V8::IdleNotification());
-
-  // On Linux, it seems we also need to send a low-memory notification to make
-  // sure the garbage collection run happens.
-  v8::V8::LowMemoryNotification();
-
-  // The callback should have been deleted when the function was garbage
-  // collected.
-  EXPECT_TRUE(callback_deleted);
 }
 
 }  // namespace gjstest

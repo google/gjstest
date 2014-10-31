@@ -120,8 +120,10 @@ static string MakeXml(
 }
 
 // Get a reference to the function of the supplied name.
-static Local<Function> GetFunctionNamed(const string& name) {
-  const Local<Value> result = ExecuteJs(name, "");
+static Local<Function> GetFunctionNamed(
+    v8::Isolate* const isolate,
+    const string& name) {
+  const Local<Value> result = ExecuteJs(isolate, name, "");
   CHECK(!result.IsEmpty());
   CHECK(result->IsFunction());
 
@@ -129,6 +131,7 @@ static Local<Function> GetFunctionNamed(const string& name) {
 }
 
 static void ProcessTestCase(
+    v8::Isolate* const isolate,
     const string& name,
     const Handle<Function>& test_function,
     bool* success,
@@ -136,7 +139,7 @@ static void ProcessTestCase(
     std::unordered_map<std::string, string>* test_failure_messages,
     std::unordered_map<std::string, double>* test_durations) {
   // Run the test.
-  TestCase test_case(test_function);
+  TestCase test_case(isolate, test_function);
   test_case.Run();
 
   // Append the appropriate stuff to our output.
@@ -169,6 +172,7 @@ static void ProcessTestCase(
 // Iterate over a map from test names to test functions, running each test
 // function.
 static void ProcessTestSuite(
+    v8::Isolate* const isolate,
     const RE2& test_filter,
     const Handle<Object>& test_functions,
     bool* success,
@@ -190,6 +194,7 @@ static void ProcessTestSuite(
 
     tests_run->push_back(string_name);
     ProcessTestCase(
+        isolate,
         string_name,
         Local<Function>::Cast(test_function),
         success,
@@ -209,15 +214,16 @@ bool RunTests(
     string* coverage_info) {
   const RE2 test_filter(test_filter_string.empty() ? ".*" : test_filter_string);
 
+  // Set up an isolate to host all of the test execution.
+  const IsolateHandle isolate(v8::Isolate::New());
+  const v8::Isolate::Scope isolate_scope(isolate.get());
+
   // Take ownership of all handles created.
-  HandleScope handle_owner(Isolate::GetCurrent());
+  HandleScope handle_owner(isolate.get());
 
   // Create a context in which to run scripts and ensure that it's used whenever
   // a context is needed below.
-  const Handle<Context> context(
-      Context::New(
-          CHECK_NOTNULL(Isolate::GetCurrent())));
-
+  const Handle<Context> context(Context::New(isolate.get()));
   const Context::Scope context_scope(context);
 
   // Run all of the scripts.
@@ -225,7 +231,12 @@ bool RunTests(
     const NamedScript& script = scripts.script(i);
 
     TryCatch try_catch;
-    const Local<Value> result = ExecuteJs(script.source(), script.name());
+    const Local<Value> result =
+        ExecuteJs(
+            isolate.get(),
+            script.source(),
+            script.name());
+
     if (result.IsEmpty()) {
       *output += DescribeError(try_catch) + "\n";
       return false;
@@ -234,7 +245,9 @@ bool RunTests(
 
   // Get a reference to gjstest.internal.getTestFunctions for later.
   const Local<Function> get_test_functions =
-      GetFunctionNamed("gjstest.internal.getTestFunctions");
+      GetFunctionNamed(
+          isolate.get(),
+          "gjstest.internal.getTestFunctions");
 
   // Keep maps from test name to failure message (if the test failed) and
   // duration in seconds.
@@ -250,7 +263,11 @@ bool RunTests(
 
   // Iterate over all of the registered test suites.
   const Local<Value> test_suites_value =
-      ExecuteJs("gjstest.internal.testSuites", "");
+      ExecuteJs(
+          isolate.get(),
+          "gjstest.internal.testSuites",
+          "");
+
   CHECK(test_suites_value->IsArray());
   const Local<Array> test_suites = Local<Array>::Cast(test_suites_value);
 
@@ -271,6 +288,7 @@ bool RunTests(
 
     // Process this test suite.
     ProcessTestSuite(
+        isolate.get(),
         test_filter,
         test_functions,
         &success,
@@ -303,7 +321,12 @@ bool RunTests(
 
   // Extract coverage info if requested.
   if (coverage_info) {
-    const Local<Value> coverage_result = ExecuteJs(kCoverageExtractionJs, "");
+    const Local<Value> coverage_result =
+        ExecuteJs(
+            isolate.get(),
+            kCoverageExtractionJs,
+            "");
+
     CHECK(coverage_result->IsString());
 
     *coverage_info += ConvertToString(coverage_result);
