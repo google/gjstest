@@ -39,29 +39,27 @@ Local<Function> TestCase::GetFunctionNamed(const string& name) const {
 }
 
 // Log the supplied string to the test's output.
-static Handle<Value> LogString(
-    TestCase* test_case,
-    const v8::FunctionCallbackInfo<Value>& cb_info) {
+v8::Handle<v8::Value> TestCase::LogString(
+    const v8::FunctionCallbackInfo<v8::Value>& cb_info) {
   CHECK_EQ(1, cb_info.Length());
   const string message = ConvertToString(cb_info[0]);
-  StringAppendF(&test_case->output, "%s\n", message.c_str());
+  StringAppendF(&this->output, "%s\n", message.c_str());
 
-  return v8::Undefined(Isolate::GetCurrent());
+  return v8::Undefined(isolate_);
 }
 
 // Record the test as having failed, and extract a failure message from the JS
 // arguments and append it to the existing messages, if any.
-static Handle<Value> RecordFailure(
-    TestCase* test_case,
-    const v8::FunctionCallbackInfo<Value>& cb_info) {
+v8::Handle<v8::Value> TestCase::RecordFailure(
+    const v8::FunctionCallbackInfo<v8::Value>& cb_info) {
   CHECK_EQ(1, cb_info.Length());
   const string message = ConvertToString(cb_info[0]);
 
-  test_case->succeeded = false;
-  StringAppendF(&test_case->output, "%s\n\n", message.c_str());
-  StringAppendF(&test_case->failure_output, "%s\n\n", message.c_str());
+  this->succeeded = false;
+  StringAppendF(&this->output, "%s\n\n", message.c_str());
+  StringAppendF(&this->failure_output, "%s\n\n", message.c_str());
 
-  return v8::Undefined(Isolate::GetCurrent());
+  return v8::Undefined(isolate_);
 }
 
 TestCase::TestCase(
@@ -92,7 +90,7 @@ void TestCase::Run() {
   // Create log and reportFailure functions.
   V8FunctionCallback log_cb =
       std::bind(
-          &LogString,
+          &TestCase::LogString,
           this,
           std::placeholders::_1);
 
@@ -104,7 +102,7 @@ void TestCase::Run() {
 
   V8FunctionCallback report_failure_cb =
       std::bind(
-          &RecordFailure,
+          &TestCase::RecordFailure,
           this,
           std::placeholders::_1);
 
@@ -127,7 +125,7 @@ void TestCase::Run() {
   Handle<Value> args[] = { test_function_, test_env };
   const Local<Value> result =
       run_test->Call(
-          Isolate::GetCurrent()->GetCurrentContext()->Global(),
+          isolate_->GetCurrentContext()->Global(),
           arraysize(args),
           args);
 

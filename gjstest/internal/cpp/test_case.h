@@ -66,6 +66,12 @@ class TestCase {
   v8::Local<v8::Function> GetFunctionNamed(
       const string& name) const;
 
+  v8::Handle<v8::Value> LogString(
+      const v8::FunctionCallbackInfo<v8::Value>& cb_info);
+
+  v8::Handle<v8::Value> RecordFailure(
+      const v8::FunctionCallbackInfo<v8::Value>& cb_info);
+
   DISALLOW_COPY_AND_ASSIGN(TestCase);
 };
 

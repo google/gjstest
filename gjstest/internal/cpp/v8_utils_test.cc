@@ -43,29 +43,6 @@ using v8::Value;
 
 namespace gjstest {
 
-static Local<Number> MakeNumber(
-    double v) {
-  return Number::New(
-      Isolate::GetCurrent(),
-      v);
-}
-
-static Local<Integer> MakeInteger(
-    int32 v) {
-  return Integer::New(
-      Isolate::GetCurrent(),
-      v);
-}
-
-static Local<String> MakeUtf8String(
-    std::string s) {
-  return String::NewFromUtf8(
-      Isolate::GetCurrent(),
-      s.data(),
-      String::kNormalString,
-      s.size());
-}
-
 // A test case that automatically creates and enters a context before the test
 // body. Subclasses should set any properties they want globally exposed through
 // the context on the the object template before calling V8UtilsTest::SetUp.
@@ -78,6 +55,22 @@ class V8UtilsTest : public ::testing::Test {
         isolate_.get(),
         value,
         result);
+  }
+
+  Local<Number> MakeNumber(double v) {
+    return Number::New(isolate_.get(), v);
+  }
+
+  Local<Integer> MakeInteger(int32 v) {
+    return Integer::New(isolate_.get(), v);
+  }
+
+  Local<String> MakeUtf8String(std::string s) {
+    return String::NewFromUtf8(
+        isolate_.get(),
+        s.data(),
+        String::kNormalString,
+        s.size());
   }
 
   v8::Local<v8::Value> ExecuteJs(
