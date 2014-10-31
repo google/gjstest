@@ -89,8 +89,8 @@ ThrowsErrorTest.prototype.Descriptions = function() {
   var matcher = throwsError(/taco/);
 
   expectEq('is a function that throws an error matching /taco/',
-           matcher.description);
+           matcher.getDescription());
 
   expectEq('is not a function that throws an error matching /taco/',
-           matcher.negativeDescription);
+           matcher.getNegativeDescription());
 };

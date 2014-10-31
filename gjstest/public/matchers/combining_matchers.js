@@ -70,8 +70,8 @@ gjstest.allOf = function(matchers) {
   var understandsMissingArgs = true;
 
   for (var i = 0; i < matchers.length; ++i) {
-    descriptions[i] = matchers[i].description;
-    negativeDescriptions[i] = matchers[i].negativeDescription;
+    descriptions[i] = matchers[i].getDescription();
+    negativeDescriptions[i] = matchers[i].getNegativeDescription();
     understandsMissingArgs =
         understandsMissingArgs && matchers[i].understandsMissingArgs;
   }
@@ -151,8 +151,8 @@ gjstest.anyOf = function(matchers) {
   var negativeDescriptions = [];
 
   for (var i = 0; i < matchers.length; ++i) {
-    descriptions[i] = matchers[i].description;
-    negativeDescriptions[i] = matchers[i].negativeDescription;
+    descriptions[i] = matchers[i].getDescription();
+    negativeDescriptions[i] = matchers[i].getNegativeDescription();
   }
 
   var result = new gjstest.Matcher(
@@ -198,8 +198,8 @@ gjstest.not = function(x) {
   }
 
   return new gjstest.Matcher(
-      matcher.negativeDescription,
-      matcher.description,
+      matcher.getNegativeDescription(),
+      matcher.getDescription(),
       function(obj) {
         // Ask the inner matcher.
         var innerResult = matcher.predicate(obj);

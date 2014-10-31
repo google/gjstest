@@ -17,6 +17,14 @@
  * Given an abitrary object, return a human-readble, 1-line description of that
  * object for use in messages about expectations.
  *
+ * This function makes use of toString methods on the objects it sees, if any.
+ * The display of user-defined types may therefore be customised by defining
+ * such methods.
+ *
+ * Note that stringifying very large objects without toString methods (or with
+ * expensive toString methods) can be quite slow. Call this function lazily if
+ * you can get away with it.
+ *
  * @param {*} obj
  * @return {!string}
  */

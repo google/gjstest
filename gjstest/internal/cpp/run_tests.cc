@@ -149,7 +149,7 @@ static void ProcessTestCase(
 
     // Record the failure output for use in the XML later. Strip any
     // surrounding whitespace first.
-    StripWhiteSpace(&test_case.failure_output);
+    StripWhitespace(&test_case.failure_output);
     InsertOrDie(test_failure_messages, name, test_case.failure_output);
   }
 

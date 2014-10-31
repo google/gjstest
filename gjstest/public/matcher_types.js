@@ -47,15 +47,17 @@ gjstest.Predicate;
  * primarily consists of a predicate, but has other properties as internal
  * implementation details.
  *
- * @param {string} description
+ * @param {(string|function():string)} description
  *     A verb phrase describing the property a value matching this matcher
  *     should have, where the subject is the value. For example, "is greater
- *     than 7", or "has 7 elements".
+ *     than 7", or "has 7 elements". Alternatively, a function that computes
+ *     such a description.
  *
- * @param {string} negativeDescription
+ * @param {(string|function():string)} negativeDescription
  *     A verb phrase describing the negation of the property a value matching
  *     this matcher should have, where the subject is the value. For example,
  *     "is less than or equal to 7", or "doesn't have 7 elements".
+ *     Alternatively, a function that computes such a description.
  *
  * @param {!gjstest.Predicate} predicate
  *     A predicate defining the set of values that should be matched.
@@ -63,22 +65,32 @@ gjstest.Predicate;
  * @constructor
  */
 gjstest.Matcher = function(description, negativeDescription, predicate) {
-  this.description = description;
-  this.negativeDescription = negativeDescription;
   this.predicate = predicate;
+
+  if (description instanceof Function) {
+    this.getDescription = description;
+  } else {
+    this.getDescription = function() { return description; };
+  }
+
+  if (negativeDescription instanceof Function) {
+    this.getNegativeDescription = negativeDescription;
+  } else {
+    this.getNegativeDescription = function() { return negativeDescription; };
+  }
 };
 
 /**
- * The description of objects matched by this matcher.
- * @type {string}
+ * A function that returns a description of objects matched by this matcher.
+ * @type {function():string}
  */
-gjstest.Matcher.prototype.description;
+gjstest.Matcher.prototype.getDescription;
 
 /**
- * The description of objects not matched by this matcher.
- * @type {string}
+ * A function that returns a description of objects not matched by this matcher.
+ * @type {function():string}
  */
-gjstest.Matcher.prototype.negativeDescription;
+gjstest.Matcher.prototype.getNegativeDescription;
 
 /**
  * The predicate that defines the set of objects matched by this matcher.

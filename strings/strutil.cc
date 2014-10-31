@@ -1167,7 +1167,7 @@ double NoLocaleStrtod(const char* text, char** original_endptr) {
   return result;
 }
 
-void StripWhiteSpace(string* str) {
+void StripWhitespace(string* str) {
   int str_length = str->length();
 
   // Strip off leading whitespace.

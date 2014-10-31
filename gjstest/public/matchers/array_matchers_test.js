@@ -120,9 +120,9 @@ ElementsAreTest.prototype.Description = function() {
 
   // Empty
   matcher = elementsAre([]);
-  expectEq('is an empty array or Arguments object', matcher.description);
+  expectEq('is an empty array or Arguments object', matcher.getDescription());
   expectEq('is not an empty array or Arguments object',
-           matcher.negativeDescription);
+           matcher.getNegativeDescription());
 
   // Length 2
   matcher = elementsAre(['taco', containsRegExp(/t/)]);
@@ -130,12 +130,12 @@ ElementsAreTest.prototype.Description = function() {
   expectEq('is an array or Arguments object of length 2 with elements ' +
                'matching: ' +
                '[ \'taco\', partially matches regex: /t/ ]',
-           matcher.description);
+           matcher.getDescription());
 
   expectEq('is not an array or Arguments object of length 2 with elements ' +
                'matching: ' +
                '[ \'taco\', partially matches regex: /t/ ]',
-           matcher.negativeDescription);
+           matcher.getNegativeDescription());
 };
 
 ElementsAreTest.prototype.ArrayLikeObjects = function() {
@@ -159,7 +159,7 @@ ElementsAreTest.prototype.ArrayLikeObjects = function() {
   expectEq(
       'is an array or Arguments object of length 2 with elements ' +
           'matching: [ 17, partially matches regex: /taco/ ]',
-      matcher.description);
+      matcher.getDescription());
 
   expectEq('whose element 1 doesn\'t match', pred(candidate));
 };
@@ -268,21 +268,21 @@ ContainsTest.prototype.DescriptionWithMatcher = function() {
 
   expectEq('is an array or Arguments object containing an element that ' +
                'partially matches regex: /t/',
-           matcher.description);
+           matcher.getDescription());
 
   expectEq('is not an array or Arguments object containing an element that ' +
                'partially matches regex: /t/',
-           matcher.negativeDescription);
+           matcher.getNegativeDescription());
 };
 
 ContainsTest.prototype.DescriptionWithRawValue = function() {
   var matcher = contains('taco');
 
   expectEq('is an array or Arguments object containing \'taco\'',
-           matcher.description);
+           matcher.getDescription());
 
   expectEq('is not an array or Arguments object containing \'taco\'',
-           matcher.negativeDescription);
+           matcher.getNegativeDescription());
 };
 
 ContainsTest.prototype.ArrayLikeObjects = function() {
@@ -317,9 +317,9 @@ WhenSortedTest.prototype.Description = function() {
 
   var matcher = whenSorted(wrapped);
 
-  expectEq('when sorted, has elements [1, 2]', matcher.description);
+  expectEq('when sorted, has elements [1, 2]', matcher.getDescription());
   expectEq('when sorted, does not have elements [1, 2]',
-           matcher.negativeDescription);
+           matcher.getNegativeDescription());
 };
 
 WhenSortedTest.prototype.NonArrayCandidate = function() {

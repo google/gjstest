@@ -79,7 +79,7 @@ gjstest.internal.describeExpectation = function(expectation) {
   var matchers = expectation.argMatchers;
 
   for (var i = 0; i < matchers.length; ++i) {
-    var description = matchers[i].description;
+    var description = matchers[i].getDescription();
     result.push('    Arg ' + i + ': ' + description);
   }
 
@@ -117,12 +117,37 @@ gjstest.internal.createMockFunction =
   // Create a function that checks its arguments against the expectations that
   // have been registered.
   var result = function() {
-    // Grab the calling stack frame.
+    // Check the arguments against each expectation, building up information
+    // about why each didn't match. Each element of nonMatchInfo is an array
+    // whose first element is the expectation that didn't match, and whose
+    // second element is the failure message for that expectation.
+    //
+    // If some expectation does match, perform an action and return early.
+    var nonMatchInfo = [];
+
+    for (var i = callExpectations.length - 1; i >= 0; --i) {
+      var expectation = /** @type {!gjstest.internal.CallExpectation} */ (
+          callExpectations[i]);
+
+      // Does this expectation match?
+      var expectationFailureMessage = checkArgs(arguments, expectation);
+      if (expectationFailureMessage === null) {
+        ++expectation.numMatches;
+
+        // Take the appropriate action.
+        var actionFunc = gjstest.internal.consumeAction_(expectation);
+        return actionFunc.apply(this, arguments);
+      }
+
+      nonMatchInfo.push([expectation, expectationFailureMessage]);
+    }
+
+    // We failed to match an expectation. Grab the calling stack frame.
     var stackFrames = gjstest.internal.getCurrentStack();
     var callingFrame = stackFrames[1];
     var frameDesc = callingFrame.fileName + ':' + callingFrame.lineNumber;
 
-    // Build a failure message iteratively, assuming we won't match.
+    // Build a failure message.
     var failureLines = [];
 
     if (opt_name) {
@@ -138,21 +163,10 @@ gjstest.internal.createMockFunction =
     failureLines = failureLines.concat(
         gjstest.internal.describeArgs_(arguments, stringify));
 
-    // Check the arguments against each expectation. Iterate in reverse order to
-    // match most recent expectations first.
-    for (var i = callExpectations.length - 1; i >= 0; --i) {
-      var expectation = /** @type {!gjstest.internal.CallExpectation} */ (
-          callExpectations[i]);
-
-      // Does this expectation match?
-      var expectationFailureMessage = checkArgs(arguments, expectation);
-      if (expectationFailureMessage === null) {
-        failureLines = [];
-        ++expectation.numMatches;
-        break;
-      }
-
-      // Describe the failure.
+    // Add expectation descriptions.
+    for (var i = 0; i < nonMatchInfo.length; ++i) {
+      var expectation = nonMatchInfo[i][0];
+      var expectationFailureMessage = nonMatchInfo[i][1];
       var stackFrame = expectation.stackFrame;
 
       failureLines.push('');
@@ -165,16 +179,8 @@ gjstest.internal.createMockFunction =
           gjstest.internal.describeExpectation(expectation));
     }
 
-    // If there was a failure, report it and return.
-    if (failureLines.length > 0) {
-      reportFailure(failureLines.join('\n'));
-      return;
-    }
-
-    // Take the appropriate action.
-    var actionFunc = gjstest.internal.consumeAction_(
-        /** @type {!gjstest.internal.CallExpectation} */ (expectation));
-    return actionFunc.apply(this, arguments);
+    // Report the failure.
+    reportFailure(failureLines.join('\n'));
   };
 
   // Add a reference to the list of expectations.

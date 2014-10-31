@@ -450,6 +450,6 @@ static const int kFloatToBufferSize = 24;
 LIBPROTOBUF_EXPORT double NoLocaleStrtod(const char* text, char** endptr);
 
 // Remove whitespace from both sides of a string.
-void StripWhiteSpace(string* s);
+void StripWhitespace(string* s);
 
 #endif  // STRINGS_STRUTIL_H_
