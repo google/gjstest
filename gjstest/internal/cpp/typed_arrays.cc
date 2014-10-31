@@ -13,13 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
-// This file implements the hack described here in a slightly nicer way (using
-// V8::SetFlagsFromString):
-//
-//     http://engineering.prezi.com/blog/2013/08/27/embedding-v8/
-//
-
 #include <v8.h>
 #include <stdlib.h>
 
