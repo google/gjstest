@@ -17,4 +17,5 @@
  <testcase name="TypedArraysTest.ConstructFromOtherTypedArray" time="0.01"/>
  <testcase name="TypedArraysTest.ArrayBufferContructorErrors" time="0.01"/>
  <testcase name="TypedArraysTest.TypedArrayContructorErrors" time="0.01"/>
+ <testcase name="TypedArraysTest.ZeroInitialization" time="0.01"/>
 </testsuite>

@@ -33,6 +33,8 @@
 [       OK ] TypedArraysTest.ArrayBufferContructorErrors (1 ms)
 [ RUN      ] TypedArraysTest.TypedArrayContructorErrors
 [       OK ] TypedArraysTest.TypedArrayContructorErrors (1 ms)
+[ RUN      ] TypedArraysTest.ZeroInitialization
+[       OK ] TypedArraysTest.ZeroInitialization (1 ms)
 [----------]
 
 [  PASSED  ]

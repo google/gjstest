@@ -1041,3 +1041,20 @@ TypedArraysTest.prototype.TypedArrayContructorErrors = function() {
   } catch (e) {
   }
 };
+
+TypedArraysTest.prototype.ZeroInitialization = function() {
+  // Created via array buffer.
+  var buffer = new ArrayBuffer(8192);
+  var bytes = new Uint8Array(buffer);
+
+  for (var i = 0; i < bytes.length; ++i) {
+    expectEq(0, bytes[i]);
+  }
+
+  // Created directly.
+  bytes = new Uint8Array(8192);
+
+  for (var i = 0; i < bytes.length; ++i) {
+    expectEq(0, bytes[i]);
+  }
+};
