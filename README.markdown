@@ -41,7 +41,7 @@ function UserInfoTest() {
 }
 registerTestSuite(UserInfoTest);
 
-UserInfoTest.prototype.formatsUSPhoneNumber = function() {
+addTest(UserInfoTest, function formatsUSPhoneNumber() {
   // Expect a call to the database function with the argument 0xdeadbeef. When
   // the call is received, return the supplied string.
   expectCall(this.getInfoFromDb_)(0xdeadbeef)
@@ -49,15 +49,15 @@ UserInfoTest.prototype.formatsUSPhoneNumber = function() {
 
   // Make sure that our class returns correctly formatted output.
   expectEq('(650) 253-0000', this.userInfo_.getPhoneForId(0xdeadbeef));
-};
+});
 
-UserInfoTest.prototype.returnsLastNameFirst = function() {
+addTest(UserInfoTest, function returnsLastNameFirst() {
   expectCall(this.getInfoFromDb_)(0xdeadbeef)
     .willOnce(returnWith('given_name: "John" family_name: "Doe"'));
 
   // Make sure that our class puts the last name first.
   expectEq('Doe, John', this.userInfo_.getNameForId(0xdeadbeef));
-};
+});
 ```
 
 The test's output is clean and readable:
