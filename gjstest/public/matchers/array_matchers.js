@@ -41,10 +41,10 @@ gjstest.internal.isArrayLike = function(obj) {
  *     foo('bar', [1, 3, null]);   // Doesn't match
  *     foo('bar', [1, 2, 'baz']);  // Doesn't match
  *
- * @param {!Array} matchers
- *     An array of matchers that the elements of the array must satisfy. If an
- *     element x is not a gjstest.Matcher, it is treated as the matcher
- *     equals(x).
+ * @param {!Array|{length:number}} matchers
+ *     An array-like list of matchers that the elements of the array must
+ *     satisfy. If an element x is not a gjstest.Matcher, it is treated as the
+ *     matcher equals(x).
  *
  * @return {!gjstest.Matcher}
  */
