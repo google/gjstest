@@ -16,7 +16,7 @@
 /**
  * A matcher for objects that evaluate to true.
  *
- * @type {gjstest.Matcher}
+ * @type {!gjstest.Matcher}
  */
 gjstest.evalsToTrue = new gjstest.Matcher(
     'evaluates to true',
@@ -27,7 +27,7 @@ gjstest.evalsToTrue = new gjstest.Matcher(
 /**
  * A matcher for objects that evaluate to false.
  *
- * @type {gjstest.Matcher}
+ * @type {!gjstest.Matcher}
  */
 gjstest.evalsToFalse = new gjstest.Matcher(
     'evaluates to false',

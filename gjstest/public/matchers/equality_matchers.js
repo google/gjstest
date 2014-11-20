@@ -93,7 +93,7 @@ gjstest.equals = function(rhs) {
 /**
  * Match null (but not undefined or anything else null-ish).
  *
- * @type {gjstest.Matcher}
+ * @type {!gjstest.Matcher}
  */
 gjstest.isNull = new gjstest.Matcher(
     'is null',
@@ -104,7 +104,7 @@ gjstest.isNull = new gjstest.Matcher(
 /**
  * Match undefined (but not null or anything else undefined-ish).
  *
- * @type {gjstest.Matcher}
+ * @type {!gjstest.Matcher}
  */
 gjstest.isUndefined = new gjstest.Matcher(
     'is undefined',

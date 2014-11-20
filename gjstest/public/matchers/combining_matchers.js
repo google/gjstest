@@ -185,7 +185,7 @@ gjstest.anyOf = function(matchers) {
  * Invert the meaning of a matcher. If the argument is not a gjstest.Matcher, it
  * will be treated as the matcher equals(x).
  *
- * @param {Object} x
+ * @param {*} x
  *     A matcher, or an object to be treated as the matcher equals(x).
  *
  * @return {!gjstest.Matcher}
