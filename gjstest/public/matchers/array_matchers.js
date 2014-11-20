@@ -130,7 +130,7 @@ gjstest.elementsAre = function(matchers) {
  *     foo('bar', [null, 2]);   // Matches
  *     foo('bar', [null, 3]);   // Doesn't match
  *
- * @param {!Object} x
+ * @param {*} x
  *     A matcher that an element of the array must satisfy. If this is not a
  *     gjstest.Matcher, it is treated as the matcher equals(x).
  *
