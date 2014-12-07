@@ -114,9 +114,9 @@ TypedArraysTest.prototype.ArrayBufferSlices = function() {
   f = function() { buffer.slice(); };
   try {
     f();
-  } catch(e) {
+  } catch (e) {
   }
-}
+};
 
 TypedArraysTest.prototype.ArrayBufferView = function() {
   var buffer = new ArrayBuffer(100);
@@ -460,7 +460,7 @@ TypedArraysTest.prototype.Int8Array = function() {
       NaN,
       Infinity,
       -Infinity,
-      -0,
+      -0
   ];
 
   a = new kType(numberArray);
@@ -479,7 +479,7 @@ TypedArraysTest.prototype.Int8Array = function() {
           0,
           0,
           0,
-          0,
+          0
       ]));
 
   // Converted from non-numbers.
@@ -530,7 +530,7 @@ TypedArraysTest.prototype.Int16Array = function() {
       NaN,
       Infinity,
       -Infinity,
-      -0,
+      -0
   ];
 
   a = new kType(numberArray);
@@ -549,7 +549,7 @@ TypedArraysTest.prototype.Int16Array = function() {
           0,
           0,
           0,
-          0,
+          0
       ]));
 
   // Converted from non-numbers.
@@ -600,7 +600,7 @@ TypedArraysTest.prototype.Int32Array = function() {
       NaN,
       Infinity,
       -Infinity,
-      -0,
+      -0
   ];
 
   a = new kType(numberArray);
@@ -619,7 +619,7 @@ TypedArraysTest.prototype.Int32Array = function() {
           0,
           0,
           0,
-          0,
+          0
       ]));
 
   // Converted from non-numbers.
@@ -669,7 +669,7 @@ TypedArraysTest.prototype.Uint8Array = function() {
       NaN,
       Infinity,
       -Infinity,
-      -0,
+      -0
   ];
 
   a = new kType(numberArray);
@@ -687,7 +687,7 @@ TypedArraysTest.prototype.Uint8Array = function() {
           0,
           0,
           0,
-          0,
+          0
       ]));
 
   // Converted from non-numbers.
@@ -737,7 +737,7 @@ TypedArraysTest.prototype.Uint16Array = function() {
       NaN,
       Infinity,
       -Infinity,
-      -0,
+      -0
   ];
 
   a = new kType(numberArray);
@@ -755,7 +755,7 @@ TypedArraysTest.prototype.Uint16Array = function() {
           0,
           0,
           0,
-          0,
+          0
       ]));
 
   // Converted from non-numbers.
@@ -805,7 +805,7 @@ TypedArraysTest.prototype.Uint32Array = function() {
       NaN,
       Infinity,
       -Infinity,
-      -0,
+      -0
   ];
 
   a = new kType(numberArray);
@@ -823,7 +823,7 @@ TypedArraysTest.prototype.Uint32Array = function() {
           0,
           0,
           0,
-          0,
+          0
       ]));
 
   // Converted from non-numbers.
@@ -841,7 +841,7 @@ TypedArraysTest.prototype.Float32Array = function() {
   expectEq(2, a.length);
 
   a[0] = 17.5;
-  a[1] = -17.5
+  a[1] = -17.5;
 
 
   expectEq(17.5, a[0]);
@@ -856,14 +856,14 @@ TypedArraysTest.prototype.Float32Array = function() {
       NaN,
       Infinity,
       -Infinity,
-      -0,
+      -0
   ];
 
   a = new kType(numberArray);
   expectEq(-17.75, a[0]);
   expectEq(0, a[1]);
   expectEq(17.75, a[2]);
-  expectTrue(isNaN(a[3]))
+  expectTrue(isNaN(a[3]));
   expectEq(Infinity, a[4]);
   expectEq(-Infinity, a[5]);
   expectEq(-0, a[6]);
@@ -874,8 +874,8 @@ TypedArraysTest.prototype.Float32Array = function() {
   a = new kType(nonNumberArray);
   expectEq(0, a[0]);
   expectEq(17, a[1]);
-  expectTrue(isNaN(a[2]))
-  expectTrue(isNaN(a[3]))
+  expectTrue(isNaN(a[2]));
+  expectTrue(isNaN(a[3]));
   expectEq(1, a[4]);
 };
 
@@ -887,7 +887,7 @@ TypedArraysTest.prototype.Float64Array = function() {
   expectEq(2, a.length);
 
   a[0] = 17.5;
-  a[1] = -17.5
+  a[1] = -17.5;
 
 
   expectEq(17.5, a[0]);
@@ -902,14 +902,14 @@ TypedArraysTest.prototype.Float64Array = function() {
       NaN,
       Infinity,
       -Infinity,
-      -0,
+      -0
   ];
 
   a = new kType(numberArray);
   expectEq(-17.75, a[0]);
   expectEq(0, a[1]);
   expectEq(17.75, a[2]);
-  expectTrue(isNaN(a[3]))
+  expectTrue(isNaN(a[3]));
   expectEq(Infinity, a[4]);
   expectEq(-Infinity, a[5]);
   expectEq(-0, a[6]);
@@ -920,8 +920,8 @@ TypedArraysTest.prototype.Float64Array = function() {
   a = new kType(nonNumberArray);
   expectEq(0, a[0]);
   expectEq(17, a[1]);
-  expectTrue(isNaN(a[2]))
-  expectTrue(isNaN(a[3]))
+  expectTrue(isNaN(a[2]));
+  expectTrue(isNaN(a[3]));
   expectEq(1, a[4]);
 };
 
@@ -972,7 +972,7 @@ TypedArraysTest.prototype.ArrayBufferContructorErrors = function() {
   f = function() { new ArrayBuffer(-1) };
   try {
     f();
-  } catch(e) {
+  } catch (e) {
   }
 
   // No arguments. This should be an error according to the spec, but Chrome
@@ -1006,7 +1006,7 @@ TypedArraysTest.prototype.TypedArrayContructorErrors = function() {
   f = function() { new Uint16Array(-1) };
   try {
     f();
-  } catch(e) {
+  } catch (e) {
   }
 
   // Offset not a multiple of element size.
