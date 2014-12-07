@@ -24,8 +24,8 @@ if (!!globalContext['gjstest']) {
           'Did you include namespace.js twice?');
 }
 
-/** @type Object */
+/** @const */
 var gjstest = {};
 
-/** @type Object */
+/** @const */
 gjstest.internal = {};
