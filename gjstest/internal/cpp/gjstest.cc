@@ -32,6 +32,7 @@
 #include <vector>
 
 #include <gflags/gflags.h>
+#include <v8.h>
 
 #include "base/integral_types.h"
 #include "base/logging.h"
@@ -196,6 +197,10 @@ static bool Run() {
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   google::ParseCommandLineFlags(&argc, &argv, true);
+
+  // Initialize v8.
+  v8::V8::InitializePlatform(v8::platform::CreateDefaultPlatform());
+  v8::V8::Initialize();
 
   // Add support for typed arrays.
   gjstest::EnableTypedArrays();

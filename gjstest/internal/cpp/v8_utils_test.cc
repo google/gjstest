@@ -47,6 +47,18 @@ namespace gjstest {
 // body. Subclasses should set any properties they want globally exposed through
 // the context on the the object template before calling V8UtilsTest::SetUp.
 class V8UtilsTest : public ::testing::Test {
+ public:
+  static void SetUpTestCase() {
+    // Initialize v8 once.
+    static const int g_dummy = [] {
+      // Initialize v8.
+      v8::V8::InitializePlatform(v8::platform::CreateDefaultPlatform());
+      v8::V8::Initialize();
+
+      return 0;
+    }();
+  }
+
  protected:
   void ConvertToStringVector(
       const v8::Handle<v8::Value>& value,
