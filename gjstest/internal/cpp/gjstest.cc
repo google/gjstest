@@ -32,6 +32,7 @@
 #include <vector>
 
 #include <gflags/gflags.h>
+#include <libplatform.h>
 #include <v8.h>
 
 #include "base/integral_types.h"

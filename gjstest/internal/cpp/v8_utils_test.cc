@@ -15,6 +15,7 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <libplatform.h>
 #include <v8.h>
 
 #include "gjstest/internal/cpp/v8_utils.h"
