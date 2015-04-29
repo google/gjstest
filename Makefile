@@ -19,6 +19,7 @@ CPPFLAGS += -DDEFAULT_DATA_DIR=$(DEFAULT_DATA_DIR)
 
 # Compiler flags.
 CXXFLAGS += -DHASH_NAMESPACE=__gnu_cxx
+CXXFLAGS += -std=c++11
 
 # Linker flags.
 LDFLAGS += -L/usr/local/lib
