@@ -9,7 +9,7 @@ Stack:
     run_test.js:37]]></failure>
  </testcase>
  <testcase name="ExceptionTest.NotAFunctionError" time="0.01">
-  <failure><![CDATA[TypeError: object is not a function
+  <failure><![CDATA[TypeError: foo is not a function
 
 Stack:
     exception_test.js:28
@@ -36,7 +36,7 @@ Stack:
     exception_test.js:36]]></failure>
  </testcase>
  <testcase name="ExceptionTest.UnknownPropertyOnLongFunction" time="0.01">
-  <failure><![CDATA[TypeError: undefined is not a function
+  <failure><![CDATA[TypeError: foo.bar is not a function
 
 Stack:
     exception_test.js:45
@@ -71,7 +71,7 @@ Stack:
  </testcase>
  <testcase name="ExceptionTest.PassingTest" time="0.01"/>
  <testcase name="ExceptionTest.ExceptionWithUnsatisfiedMockExpectations" time="0.01">
-  <failure><![CDATA[TypeError: object is not a function
+  <failure><![CDATA[TypeError: bar is not a function
 
 Stack:
     exception_test.js:82

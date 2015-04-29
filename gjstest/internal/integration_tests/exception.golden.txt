@@ -9,7 +9,7 @@ Stack:
 
 [  FAILED  ] ExceptionTest.ReferenceError (1 ms)
 [ RUN      ] ExceptionTest.NotAFunctionError
-TypeError: object is not a function
+TypeError: foo is not a function
 
 Stack:
     exception_test.js:28
@@ -39,7 +39,7 @@ Stack:
 
 [  FAILED  ] ExceptionTest.StackOverflow (1 ms)
 [ RUN      ] ExceptionTest.UnknownPropertyOnLongFunction
-TypeError: undefined is not a function
+TypeError: foo.bar is not a function
 
 Stack:
     exception_test.js:45
@@ -80,7 +80,7 @@ Stack:
 [ RUN      ] ExceptionTest.PassingTest
 [       OK ] ExceptionTest.PassingTest (1 ms)
 [ RUN      ] ExceptionTest.ExceptionWithUnsatisfiedMockExpectations
-TypeError: object is not a function
+TypeError: bar is not a function
 
 Stack:
     exception_test.js:82
