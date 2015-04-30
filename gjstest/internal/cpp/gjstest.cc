@@ -32,7 +32,6 @@
 #include <vector>
 
 #include <gflags/gflags.h>
-#include <libplatform.h>
 #include <v8.h>
 
 #include "base/integral_types.h"
@@ -68,6 +67,16 @@ DEFINE_string(html_title, "", "The title to use on the output HTML page.");
 DEFINE_string(html_script_path_prefix, "",
               "A string to prepend to scripts referenced by the generated HTML "
               "file, useful if you're doing funny things with paths.");
+
+// HACK(jacobsa): Manually-declare CreateDefaultPlatform instead of including
+// libplatform.h because the intended use of the latter is crazy confusing.
+// Cf. https://groups.google.com/d/msg/v8-users/ru0NaeXUxMo/w_WixFs6JxYJ
+#include <v8-platform.h>
+namespace v8 {
+namespace platform {
+v8::Platform* CreateDefaultPlatform(int thread_pool_size = 0);
+}  // namespace platform
+}  // namespace v8
 
 namespace gjstest {
 
