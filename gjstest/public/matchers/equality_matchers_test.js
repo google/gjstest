@@ -163,9 +163,9 @@ EqualsTest.prototype.Description = function() {
   expectEq('is not a reference to: function fooBar(baz)',
            matcher.getNegativeDescription());
 
-  function MyClass() {}
-  MyClass.prototype.gjstestEquals = function() { return true; };
-  matcher = equals(new MyClass);
+  matcher = equals({
+    gjstestEquals: function() { return true; }
+  });
   expectEq('{ gjstestEquals: function () }', matcher.getDescription());
   expectEq('does not equal: { gjstestEquals: function () }',
            matcher.getNegativeDescription());

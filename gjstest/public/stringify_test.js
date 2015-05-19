@@ -72,38 +72,67 @@ StringifyTest.prototype.Objects = function() {
   expectEq('{ foo: 1, bar: { baz: 2 } }', stringify(multiLevelObj));
 };
 
-StringifyTest.prototype.SelfReferences = function() {
+StringifyTest.prototype.RecursiveReferences = function() {
   // Object
-  var selfReferentialObject = {foo: 1, bar: [17]};
-  selfReferentialObject.bar.push(selfReferentialObject);
-
-  expectEq('{ foo: 1, bar: [ 17, (cyclic reference) ] }',
-           stringify(selfReferentialObject));
+  var obj = { foo: 1 };
+  obj.bar = obj;
+  expectEq('{ foo: 1, bar: {...} }', stringify(obj));
 
   // Array
-  var selfReferentialArray = [1, {foo: 17}];
-  selfReferentialArray[1].bar = selfReferentialArray;
-
-  expectEq('[ 1, { foo: 17, bar: (cyclic reference) } ]',
-           stringify(selfReferentialArray));
+  var arr = [1];
+  arr.push(arr);
+  expectEq('[ 1, [...] ]', stringify(arr));
 };
 
-StringifyTest.prototype.SelfReferencePropertyCleared = function() {
+StringifyTest.prototype.RepeatedReferences = function() {
+  // Object
+  var childObject = { foo: 1 };
+  var parentObject = { x: childObject, y: childObject };
+  expectEq('{ x: { foo: 1 }, y: {...} }', stringify(parentObject));
+
+  // Array
+  var childArray = [1];
+  var parentArray = [childArray, childArray];
+
+  expectEq('[ [ 1 ], [...] ]', stringify(parentArray));
+
+  // In a DOM, each node may refer to the document. We don't want to expand the
+  // document on each reference.
+  var document = {};
+  var head = { document: document, tag: 'HEAD', children: [] };
+  var body = { document: document, tag: 'BODY', children: [] };
+  var html = { document: document, tag: 'HTML', children: [head, body] };
+  document.root = html;
+  expectEq(
+      "{ root: { document: {...}, tag: 'HTML', children: [ " +
+           "{ document: {...}, tag: 'HEAD', children: [] }, " +
+           "{ document: {...}, tag: 'BODY', children: [] } ] } }",
+      stringify(document));
+};
+
+StringifyTest.prototype.MaximumDepth = function() {
+  // Object
+  var obj = { a: { b: { c: { d: { e: null, f: 1, g: {}, h: { i: 1 } } } } } };
+  expectEq('{ a: { b: { c: { d: { e: null, f: 1, g: {}, h: {...} } } } } }',
+      stringify(obj));
+
+  // Array
+  var arr = [ [ [ [ [ null, 1, [], [ 1 ] ] ] ] ] ];
+  expectEq('[ [ [ [ [ null, 1, [], [...] ] ] ] ] ]', stringify(arr));
+};
+
+StringifyTest.prototype.PropertiesNotChanged = function() {
   // Object
   var obj = {foo: 1, bar: {baz: 19}};
-
+  var objectPropertiesBeforeStringify = Object.keys(obj).toString();
   stringify(obj);
-
-  expectFalse('__gjstest_stringify_already_seen' in obj);
-  expectFalse('__gjstest_stringify_already_seen' in obj.bar);
+  expectEq(objectPropertiesBeforeStringify, Object.keys(obj).toString());
 
   // Array
   var arr = [0, [1, 2]];
-
+  var arrayPropertiesBeforeStringify = Object.keys(arr).toString();
   stringify(arr);
-
-  expectFalse('__gjstest_stringify_already_seen' in arr);
-  expectFalse('__gjstest_stringify_already_seen' in arr[1]);
+  expectEq(arrayPropertiesBeforeStringify, Object.keys(arr).toString());
 };
 
 StringifyTest.prototype.Arrays = function() {
@@ -135,5 +164,32 @@ StringifyTest.prototype.UserDefinedClass = function() {
   MyClass.prototype.toString = function() { return 'MyClass: taco'; };
   var instance = new MyClass;
 
+  // User defined classes can override the toString method.
   expectEq('MyClass: taco', stringify(instance));
+
+  function OtherClass() {}
+  OtherClass.prototype.method = function() {};
+  var instance = new OtherClass;
+
+  // Methods are not printed.
+  expectEq('{}', stringify(instance));
+};
+
+StringifyTest.prototype.Inheritance = function() {
+  function Parent() {}
+  var parent = new Parent();
+  function Child() {}
+  Child.prototype = parent;
+  var child = new Child;
+  child.a = 1;
+  Child.prototype.b = 2;
+  parent.c = 3;
+  Parent.prototype.d = 4;
+
+  // Inherited properties are not included.
+  expectEq(child.a, 1);
+  expectEq(child.b, 2);
+  expectEq(child.c, 3);
+  expectEq(child.d, 4);
+  expectEq('{ a: 1 }', stringify(child));
 };
