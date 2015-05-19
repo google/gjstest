@@ -35,7 +35,7 @@
  */
 gjstest.stringify = function(obj) {
   return gjstest.internal.stringifyToDepth(obj, 5);
-}
+};
 
 
 /**
@@ -134,7 +134,7 @@ gjstest.internal.ObjectDescriptionBuilder = function(parent, depth) {
 gjstest.internal.ObjectDescriptionBuilder.prototype.addArrayElement =
     function(index) {
   this.addKeyWithPrefix('' + index, '');
-}
+};
 
 
 /**
@@ -145,7 +145,7 @@ gjstest.internal.ObjectDescriptionBuilder.prototype.addArrayElement =
  */
 gjstest.internal.ObjectDescriptionBuilder.prototype.addKey = function(key) {
   this.addKeyWithPrefix(key, key + ': ');
-}
+};
 
 
 /**
@@ -215,6 +215,7 @@ gjstest.internal.ObjectDescriptionBuilder.prototype.addRawText =
  *
  * @param {string} prefix
  * @param {string} suffix
+ * @return {!string}
  */
 gjstest.internal.ObjectDescriptionBuilder.prototype.finish =
     function(prefix, suffix) {
