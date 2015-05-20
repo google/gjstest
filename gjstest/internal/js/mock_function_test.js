@@ -55,13 +55,19 @@ MockFunctionTest.prototype.NoExpectationsRegistered = function() {
       hasSubstr(
           'Call matches no expectation.\n' +
               '    Arg 0: stringified: taco\n' +
-              '    Arg 1: stringified: 2'));
+              '    Arg 1: stringified: 2\n' +
+              '\n' +
+              'Stack:\n' +
+              '    mock_function_test.js:'));
 
   expectThat(
       messages[1],
       hasSubstr(
           'Call matches no expectation.\n' +
-              '    (No arguments.)'));
+              '    (No arguments.)\n' +
+              '\n' +
+              'Stack:\n' +
+              '    mock_function_test.js:'));
 };
 
 MockFunctionTest.prototype.CallsCheckArgs = function() {
@@ -126,7 +132,10 @@ MockFunctionTest.prototype.CheckArgsSaysNo = function() {
               '    Arg 1: 7\n' +
               '\n' +
               'Tried expectation at foo.js:17, but taco:\n' +
-              '    Arg 0: 2'));
+              '    Arg 0: 2\n' +
+              '\n' +
+              'Stack:\n' +
+              '    mock_function_test.js:'));
 };
 
 MockFunctionTest.prototype.NoMatchingExpectationsWithNamedFunction =
@@ -156,7 +165,10 @@ MockFunctionTest.prototype.NoMatchingExpectationsWithNamedFunction =
       hasSubstr(
           'Call to some name matches no expectation.\n' +
               '    Arg 0: stringified: taco\n' +
-              '    Arg 1: stringified: 2'));
+              '    Arg 1: stringified: 2\n' +
+              '\n' +
+              'Stack:\n' +
+              '    mock_function_test.js:'));
 };
 
 MockFunctionTest.prototype.SecondExpectationMatches = function() {

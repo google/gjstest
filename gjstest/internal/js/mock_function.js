@@ -179,6 +179,12 @@ gjstest.internal.createMockFunction =
           gjstest.internal.describeExpectation(expectation));
     }
 
+    // Add the stack trace, skipping the unexpected call itself.
+    var errorStack = gjstest.internal.getCurrentStack().slice(1);
+    failureLines.push('');
+    failureLines.push('Stack:');
+    failureLines.push(gjstest.internal.describeStack(errorStack));
+
     // Report the failure.
     reportFailure(failureLines.join('\n'));
   };
