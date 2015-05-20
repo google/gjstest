@@ -82,16 +82,22 @@ gjstest.internal.stringifyToDepth = function(obj, depth) {
     return '\'' + obj.replace(/\n/g, '\\n') + '\'';
   }
 
-  // Special-case: functions should have their names (if any) printed:
-  //     function: fooBar
-  //     function: (anonymous)
+  // Special-case: functions should have their names and arguments (if any)
+  // printed, but leave off the bodies:
+  //     function fooBar()     (named function)
+  //     function ()           (anonymous function)
   //
-  // Function.prototype.toString returns things like:
-  //     function fooBar(asd) { return 17; }
-  //     function (asd) {}
-  var match;
-  if (match = /^(function (\S+)?\([^()]*\)) {[\s\S]*}$/.exec(naiveResult)) {
-    return match[1];
+  // Function.prototype.toString returns the exact source of the function, from
+  // the 'f' in 'function' to the closing brace of the function body. We'll need
+  // to account for potential whitespace around the function name and arguments.
+  //     function fooBar(foo, bar) { return 17; }
+  //     function() {}
+  var functionRegex = /^function(\s+(\w+))?\s*\(\s*(\w+(\s*,\s*\w+)*)?\s*\)/;
+  var match, functionName, functionArgs;
+  if (match = functionRegex.exec(naiveResult)) {
+    functionName = match[2] || '';
+    functionArgs = (match[3] || '').replace(/\s*,\s*/g, ', ');
+    return 'function ' + functionName + '(' + functionArgs + ')';
   }
 
   return '' + obj;

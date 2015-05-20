@@ -58,7 +58,7 @@ StringifyTest.prototype.Functions = function() {
 
   expectEq('function fooBar(baz)', stringify(fooBar));
   expectEq('function ()', stringify(function() {}));
-  expectEq('function (foo, bar)', stringify(function(foo, bar) {}));
+  expectEq('function (foo, bar)', stringify(function(  foo  ,  bar  ) {}));
 };
 
 StringifyTest.prototype.Objects = function() {
