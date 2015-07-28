@@ -29,6 +29,10 @@
 
 namespace gjstest {
 
+// Do all of the junk necessary to initialize v8. This should be called once,
+// before using v8 for the first time.
+void InitializeV8();
+
 // Convert the supplied value to a UTF-8 string.
 std::string ConvertToString(const v8::Handle<v8::Value>& value);
 

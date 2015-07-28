@@ -18,6 +18,8 @@
 #include "base/integral_types.h"
 #include "base/logging.h"
 #include "base/stringprintf.h"
+#include "third_party/gjstest/internal/cpp/typed_arrays.h"
+#include "third_party/v8/include_security_critical/libplatform/libplatform.h"
 
 using v8::Array;
 using v8::External;
@@ -38,6 +40,12 @@ using v8::UnboundScript;
 using v8::Value;
 
 namespace gjstest {
+
+void InitializeV8() {
+  v8::V8::InitializePlatform(v8::platform::CreateDefaultPlatform());
+  v8::V8::Initialize();
+  EnableTypedArrays();
+}
 
 static Local<String> ConvertString(
     Isolate* const isolate,

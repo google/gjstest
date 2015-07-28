@@ -32,7 +32,6 @@
 #include <vector>
 
 #include <gflags/gflags.h>
-#include <libplatform.h>
 #include <v8.h>
 
 #include "base/integral_types.h"
@@ -42,6 +41,7 @@
 #include "gjstest/internal/cpp/builtin_data.h"
 #include "gjstest/internal/cpp/run_tests.h"
 #include "gjstest/internal/cpp/typed_arrays.h"
+#include "gjstest/internal/cpp/v8_utils.h"
 #include "gjstest/internal/proto/named_scripts.pb.h"
 #include "strings/strutil.h"
 
@@ -200,11 +200,8 @@ int main(int argc, char** argv) {
   google::ParseCommandLineFlags(&argc, &argv, true);
 
   // Initialize v8.
-  v8::V8::InitializePlatform(v8::platform::CreateDefaultPlatform());
-  v8::V8::Initialize();
+  gjstest::InitializeV8();
 
-  // Add support for typed arrays.
-  gjstest::EnableTypedArrays();
-
+  // Run tests.
   return gjstest::Run() ? 0 : 1;
 }

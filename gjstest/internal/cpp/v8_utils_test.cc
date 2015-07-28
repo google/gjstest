@@ -15,7 +15,6 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <libplatform.h>
 #include <v8.h>
 
 #include "gjstest/internal/cpp/v8_utils.h"
@@ -52,10 +51,7 @@ class V8UtilsTest : public ::testing::Test {
   static void SetUpTestCase() {
     // Initialize v8 once.
     static const int g_dummy = [] {
-      // Initialize v8.
-      v8::V8::InitializePlatform(v8::platform::CreateDefaultPlatform());
-      v8::V8::Initialize();
-
+      InitializeV8();
       return 0;
     }();
   }
