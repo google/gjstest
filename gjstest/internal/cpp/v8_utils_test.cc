@@ -258,19 +258,6 @@ TEST_F(DescribeErrorTest, WithMessage) {
   EXPECT_EQ("taco.js:1: Error: foo", DescribeError(try_catch));
 }
 
-TEST_F(DescribeErrorTest, NoLineNumber) {
-  HandleScope handle_owner(isolate_.get());
-
-  // Missing end curly brace.
-  const std::string js = "var foo = {\n  'taco': 1\n";
-
-  TryCatch try_catch;
-  ASSERT_TRUE(ExecuteJs(js, "taco.js").IsEmpty());
-
-  EXPECT_EQ("taco.js: SyntaxError: Unexpected end of input",
-            DescribeError(try_catch));
-}
-
 ////////////////////////////////////////////////////////////////////////
 // ConvertToStringVector
 ////////////////////////////////////////////////////////////////////////
