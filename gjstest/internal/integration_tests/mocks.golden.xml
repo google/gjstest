@@ -109,8 +109,8 @@ Unsatisfied expectation at mocks_test.js:170:
 Expected 1 call; called 0 times.]]></failure>
  </testcase>
  <testcase name="MocksTest.ExpectCallWithNonMockFunction" time="0.01">
-  <failure><![CDATA[mocks_test.js:176
-TypeError: Supplied function is not a mock.]]></failure>
+  <failure><![CDATA[TypeError: Supplied function is not a mock.
+        at mocks_test.js:176]]></failure>
  </testcase>
  <testcase name="MocksTest.MissingArguments" time="0.01">
   <failure><![CDATA[mocks_test.js:190: Call matches no expectation.

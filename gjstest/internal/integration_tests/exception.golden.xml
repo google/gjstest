@@ -17,8 +17,8 @@ Stack:
     run_test.js:37]]></failure>
  </testcase>
  <testcase name="ExceptionTest.ErrorInMatcherFactory" time="0.01">
-  <failure><![CDATA[exception_test.js:32
-TypeError: isNearNumber requires two number arguments]]></failure>
+  <failure><![CDATA[TypeError: isNearNumber requires two number arguments
+        at exception_test.js:32]]></failure>
  </testcase>
  <testcase name="ExceptionTest.StackOverflow" time="0.01">
   <failure><![CDATA[RangeError: Maximum call stack size exceeded

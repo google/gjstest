@@ -60,9 +60,11 @@ gjstest.internal.TestEnvironment =
   var me = this;
   this.reportFailure = function(message) {
     var userStack = me.userStack;
-    if (userStack.length != 0) {
-      var frame = userStack[0];
-      message = frame.fileName + ':' + frame.lineNumber + '\n' + message;
+    // Don't print out the last 2 frames, as they're always the same
+    // and internal to gjstest.
+    for (var i = 0; i < userStack.length - 2; i++) {
+      var frame = userStack[i];
+      message += '\n        at ' + frame.fileName + ':' + frame.lineNumber;
     }
 
     // Report the modified message.

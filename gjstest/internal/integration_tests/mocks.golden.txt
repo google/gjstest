@@ -118,8 +118,8 @@ Expected 1 call; called 0 times.
 
 [  FAILED  ] MocksTest.PrecedingExpectThat (1 ms)
 [ RUN      ] MocksTest.ExpectCallWithNonMockFunction
-mocks_test.js:176
 TypeError: Supplied function is not a mock.
+        at mocks_test.js:176
 
 [  FAILED  ] MocksTest.ExpectCallWithNonMockFunction (1 ms)
 [ RUN      ] MocksTest.MissingArguments

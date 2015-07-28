@@ -18,8 +18,8 @@ Stack:
 
 [  FAILED  ] ExceptionTest.NotAFunctionError (1 ms)
 [ RUN      ] ExceptionTest.ErrorInMatcherFactory
-exception_test.js:32
 TypeError: isNearNumber requires two number arguments
+        at exception_test.js:32
 
 [  FAILED  ] ExceptionTest.ErrorInMatcherFactory (1 ms)
 [ RUN      ] ExceptionTest.StackOverflow
