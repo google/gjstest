@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuite name="Google JS tests" failures="5" time="0.01">
  <testcase name="HelperRegistrationTest.constructor" time="0.01">
-  <failure><![CDATA[registration_test.js:45
-Expected: true
-Actual:   false]]></failure>
+  <failure><![CDATA[Expected: true
+Actual:   false
+        at registration_test.js:45]]></failure>
  </testcase>
  <testcase name="HelperRegistrationTest.FooBar" time="0.01">
-  <failure><![CDATA[registration_test.js:40
-Expected: true
-Actual:   false]]></failure>
+  <failure><![CDATA[Expected: true
+Actual:   false
+        at registration_test.js:40]]></failure>
  </testcase>
  <testcase name="HelperRegistrationTest.hasOwnProperty" time="0.01">
-  <failure><![CDATA[registration_test.js:50
-Expected: true
-Actual:   false]]></failure>
+  <failure><![CDATA[Expected: true
+Actual:   false
+        at registration_test.js:50]]></failure>
  </testcase>
  <testcase name="HelperRegistrationTest.propertyIsEnumerable" time="0.01">
-  <failure><![CDATA[registration_test.js:56
-Expected: true
-Actual:   false]]></failure>
+  <failure><![CDATA[Expected: true
+Actual:   false
+        at registration_test.js:56]]></failure>
  </testcase>
  <testcase name="HelperRegistrationTest.prototype" time="0.01">
-  <failure><![CDATA[registration_test.js:61
-Expected: true
-Actual:   false]]></failure>
+  <failure><![CDATA[Expected: true
+Actual:   false
+        at registration_test.js:61]]></failure>
  </testcase>
  <testcase name="BareRegistrationTest.FooBar" time="0.01"/>
 </testsuite>

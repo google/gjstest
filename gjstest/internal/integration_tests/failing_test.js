@@ -83,3 +83,15 @@ FailingTest.prototype.UserErrors = function() {
   expectLe(3, 2, 'foo');
   expectLt(2, 2, 'foo');
 };
+
+FailingTest.prototype.FailingTestWithStack = function() {
+  helper1();
+};
+
+function helper1() {
+  helper2();
+}
+
+function helper2() {
+  expectThat('a', evalsToFalse);
+}

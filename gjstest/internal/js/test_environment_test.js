@@ -54,10 +54,16 @@ TestEnvironmentTest.prototype.ReportFailureWithoutUserStack = function() {
 };
 
 TestEnvironmentTest.prototype.ReportFailureWithUserStack = function() {
-  var frame = {fileName: 'taco.js', lineNumber: 17};
-  this.testEnv_.userStack.push(frame);
+  this.testEnv_.userStack.push({fileName: 'taco.js', lineNumber: 17});
+  this.testEnv_.userStack.push({fileName: 'taco.js', lineNumber: 27});
+  // Shouldn't print out the last 2 frames, as they're always the same
+  // and internal to gjstest.
+  this.testEnv_.userStack.push({fileName: 'register.js', lineNumber: 173});
+  this.testEnv_.userStack.push({fileName: 'run_test.js', lineNumber: 37});
 
-  expectCall(this.reportFailure_)('taco.js:17\nburrito');
+  expectCall(this.reportFailure_)('burrito\n' +
+      '        at taco.js:17\n' +
+      '        at taco.js:27');
   this.testEnv_.reportFailure('burrito');
 };
 
