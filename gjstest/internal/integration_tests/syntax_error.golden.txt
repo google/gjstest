@@ -1,1 +1,1 @@
-syntax_error.js: SyntaxError: Unexpected end of input
+syntax_error.js:21: SyntaxError: Unexpected end of input
