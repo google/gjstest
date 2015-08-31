@@ -15,7 +15,6 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <libplatform.h>
 #include <v8.h>
 
 #include "gjstest/internal/cpp/v8_utils.h"
@@ -41,6 +40,16 @@ using v8::Persistent;
 using v8::String;
 using v8::TryCatch;
 using v8::Value;
+
+// HACK(jacobsa): Manually-declare CreateDefaultPlatform instead of including
+// libplatform.h because the intended use of the latter is crazy confusing.
+// Cf. https://groups.google.com/d/msg/v8-users/ru0NaeXUxMo/w_WixFs6JxYJ
+#include <v8-platform.h>
+namespace v8 {
+namespace platform {
+v8::Platform* CreateDefaultPlatform(int thread_pool_size = 0);
+}  // namespace platform
+}  // namespace v8
 
 namespace gjstest {
 

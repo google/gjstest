@@ -66,6 +66,8 @@ $(eval $(call cc_test, \
         base/logging \
         base/macros \
         gjstest/internal/cpp/v8_utils \
+        , \
+        -lv8_libbase -lv8_libplatform \
 ))
 
 ######################################################
