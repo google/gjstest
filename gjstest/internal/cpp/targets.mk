@@ -67,6 +67,8 @@ $(eval $(call cc_test, \
         base/logging \
         base/macros \
         gjstest/internal/cpp/v8_utils \
+        , \
+        -lv8_libbase -lv8_libplatform \
 ))
 
 ######################################################
@@ -85,7 +87,7 @@ $(eval $(call cc_binary, \
         gjstest/internal/proto/named_scripts.pb \
         strings/strutil \
         , \
-        -lprotobuf -lglog -lgflags -lxml2 -lre2 \
+        -lprotobuf -lglog -lgflags -lxml2 -lre2 -lv8_libbase -lv8_libplatform \
 ))
 
 ######################################################

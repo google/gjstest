@@ -18,8 +18,7 @@
 #include "base/integral_types.h"
 #include "base/logging.h"
 #include "base/stringprintf.h"
-#include "third_party/gjstest/internal/cpp/typed_arrays.h"
-#include "third_party/v8/include_security_critical/libplatform/libplatform.h"
+#include "gjstest/internal/cpp/typed_arrays.h"
 
 using v8::Array;
 using v8::External;
@@ -38,6 +37,16 @@ using v8::String;
 using v8::TryCatch;
 using v8::UnboundScript;
 using v8::Value;
+
+// HACK(jacobsa): Manually-declare CreateDefaultPlatform instead of including
+// libplatform.h because the intended use of the latter is crazy confusing.
+// Cf. https://groups.google.com/d/msg/v8-users/ru0NaeXUxMo/w_WixFs6JxYJ
+#include <v8-platform.h>
+namespace v8 {
+namespace platform {
+v8::Platform* CreateDefaultPlatform(int thread_pool_size = 0);
+}  // namespace platform
+}  // namespace v8
 
 namespace gjstest {
 
