@@ -47,15 +47,6 @@ namespace gjstest {
 // body. Subclasses should set any properties they want globally exposed through
 // the context on the the object template before calling V8UtilsTest::SetUp.
 class V8UtilsTest : public ::testing::Test {
- public:
-  static void SetUpTestCase() {
-    // Initialize v8 once.
-    static const int g_dummy = [] {
-      InitializeV8();
-      return 0;
-    }();
-  }
-
  protected:
   void ConvertToStringVector(
       const v8::Handle<v8::Value>& value,
@@ -108,7 +99,7 @@ class V8UtilsTest : public ::testing::Test {
         callback);
   }
 
-  const IsolateHandle isolate_{ Isolate::New() };
+  const IsolateHandle isolate_ = CreateIsolate();
   const v8::Isolate::Scope isolate_scope_{ isolate_.get() };
 
   const HandleScope handle_scope_{ isolate_.get() };

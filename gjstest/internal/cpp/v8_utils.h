@@ -29,9 +29,11 @@
 
 namespace gjstest {
 
-// Do all of the junk necessary to initialize v8. This should be called once,
-// before using v8 for the first time.
-void InitializeV8();
+// An RAII handle for an isolate.
+typedef std::shared_ptr<v8::Isolate> IsolateHandle;
+
+// Create an initialized v8 isolate, with support for array buffers.
+IsolateHandle CreateIsolate();
 
 // Convert the supplied value to a UTF-8 string.
 std::string ConvertToString(const v8::Handle<v8::Value>& value);
@@ -81,20 +83,6 @@ v8::Local<v8::Function> MakeFunction(
     v8::Isolate* isolate,
     const std::string& name,
     V8FunctionCallback* callback);
-
-// An RAII handle for an isolate.
-struct IsolateDisposer;
-typedef std::unique_ptr<v8::Isolate, IsolateDisposer> IsolateHandle;
-
-////////////////////////////////////////////////////////////////////////
-// Implementation details
-////////////////////////////////////////////////////////////////////////
-
-struct IsolateDisposer {
-  void operator()(v8::Isolate* const i) const {
-    i->Dispose();
-  }
-};
 
 }  // namespace gjstest
 

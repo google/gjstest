@@ -22,12 +22,14 @@
 #ifndef GJSTEST_INTERNAL_CPP_TYPED_ARRAYS_H_
 #define GJSTEST_INTERNAL_CPP_TYPED_ARRAYS_H_
 
+#include <memory>
+
 #include <v8.h>
 
 namespace gjstest {
 
-// Export the functions necessary for typed array support.
-void EnableTypedArrays();
+// Create a straightforward array buffer allocator for v8.
+std::unique_ptr<v8::ArrayBuffer::Allocator> NewArrayBufferAllocator();
 
 }  // namespace gjstest
 

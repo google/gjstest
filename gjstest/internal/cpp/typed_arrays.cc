@@ -17,6 +17,8 @@
 #include <string.h>
 #include <v8.h>
 
+#include "gjstest/internal/cpp/typed_arrays.h"
+
 namespace gjstest {
 
 namespace {
@@ -41,8 +43,9 @@ public:
 };
 }  // namespace
 
-void EnableTypedArrays() {
-  v8::V8::SetArrayBufferAllocator(new MallocArrayBufferAllocator);
+std::unique_ptr<v8::ArrayBuffer::Allocator> NewArrayBufferAllocator() {
+  return std::unique_ptr<v8::ArrayBuffer::Allocator>(
+      new MallocArrayBufferAllocator);
 }
 
 }  // namespace gjstest

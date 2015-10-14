@@ -50,10 +50,32 @@ v8::Platform* CreateDefaultPlatform(int thread_pool_size = 0);
 
 namespace gjstest {
 
-void InitializeV8() {
-  v8::V8::InitializePlatform(v8::platform::CreateDefaultPlatform());
-  v8::V8::Initialize();
-  EnableTypedArrays();
+IsolateHandle CreateIsolate() {
+  // Initialize v8 once.
+  static const int g_dummy = []{
+    v8::V8::InitializePlatform(v8::platform::CreateDefaultPlatform());
+    v8::V8::Initialize();
+    return 0;
+  }();
+
+  (void)g_dummy;  // Silence "unused variable" errors.
+
+  // Create an array buffer allocator.
+  const std::shared_ptr<v8::ArrayBuffer::Allocator> allocator =
+      NewArrayBufferAllocator();
+
+  // Set up an appropriate isolate, ensuring that it is disposed of when the
+  // handle goes away. Also make sure the allocator sticks around as long as
+  // needed.
+  v8::Isolate::CreateParams params;
+  params.array_buffer_allocator = allocator.get();
+
+  return {
+    v8::Isolate::New(params),
+    [allocator] (v8::Isolate* const isolate) {
+      isolate->Dispose();
+    },
+  };
 }
 
 static Local<String> ConvertString(

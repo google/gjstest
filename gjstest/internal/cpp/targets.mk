@@ -83,7 +83,6 @@ $(eval $(call cc_binary, \
         file/file_utils \
         gjstest/internal/cpp/builtin_data \
         gjstest/internal/cpp/run_tests \
-        gjstest/internal/cpp/v8_utils \
         gjstest/internal/proto/named_scripts.pb \
         strings/strutil \
         , \

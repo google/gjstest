@@ -215,7 +215,7 @@ bool RunTests(
   const RE2 test_filter(test_filter_string.empty() ? ".*" : test_filter_string);
 
   // Set up an isolate to host all of the test execution.
-  const IsolateHandle isolate(v8::Isolate::New());
+  const IsolateHandle isolate = CreateIsolate();
   const v8::Isolate::Scope isolate_scope(isolate.get());
 
   // Take ownership of all handles created.
