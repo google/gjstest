@@ -27,6 +27,7 @@
 
 #include <string.h>
 #include <algorithm>
+#include <cstddef>
 #include <iosfwd>
 #include <string>
 
