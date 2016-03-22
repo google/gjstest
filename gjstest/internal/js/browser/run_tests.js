@@ -194,7 +194,6 @@ gjstest.internal.browser.addToLog =
       logElem.append($.elem('a')
                       .attr('href', matches[1] + matches[2])
                       .text(matches[2] + matches[3] || ''));
-      window.console.log(matches);
     } else if (part) {
       logElem.append($.text(part));
     }
