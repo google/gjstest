@@ -161,8 +161,8 @@ gjstest.internal.browser.updateStatus = function(testsRun, testsPassed, done) {
     status.text(testsPassed + '/' + testsRun + ' tests passed');
   } else {
     var failed = testsRun - testsPassed;
-    var text = testsRun + ' test' + (testsRun == 1 ? '' : 's') + 'run';
-    text += failed ? (' (' + failed + ' failed)') : '(all passing)';
+    var text = testsRun + ' test' + (testsRun == 1 ? '' : 's') + ' run';
+    text += failed ? (' (' + failed + ' failed)') : ' (all passing)';
     status.text(text);
   }
 };
