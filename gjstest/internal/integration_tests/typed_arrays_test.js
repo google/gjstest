@@ -399,12 +399,12 @@ TypedArraysTest.prototype.DataViewErrors = function() {
   // Construct with offset out of bounds.
   bytes = new Uint8Array(4);
   f = function() { new DataView(bytes.buffer, 4, 1); };
-  expectThat(f, throwsError(/INDEX_SIZE_ERR|RangeError.*Invalid data view/));
+  expectThat(f, throwsError(/INDEX_SIZE_ERR|RangeError.*Invalid (data view|DataView)/));
 
   // Construct with length too long.
   bytes = new Uint8Array(4);
   f = function() { new DataView(bytes.buffer, 2, 3); };
-  expectThat(f, throwsError(/INDEX_SIZE_ERR|RangeError.*Invalid data view/));
+  expectThat(f, throwsError(/INDEX_SIZE_ERR|RangeError.*Invalid (data view|DataView)/));
 
   // Read off end of view.
   bytes = new Uint8Array(100);
