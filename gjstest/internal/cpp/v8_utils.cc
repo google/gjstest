@@ -38,27 +38,38 @@ using v8::TryCatch;
 using v8::UnboundScript;
 using v8::Value;
 
-// HACK(jacobsa): Manually-declare CreateDefaultPlatform instead of including
-// libplatform.h because the intended use of the latter is crazy confusing.
+// HACK(jacobsa): Manually-declare CreateDefaultPlatform and PumpMessageLoop
+// instead of including libplatform.h because the intended use of the latter is
+// crazy confusing.
+//
 // Cf. https://groups.google.com/d/msg/v8-users/ru0NaeXUxMo/w_WixFs6JxYJ
 #include <v8-platform.h>
 namespace v8 {
 namespace platform {
 v8::Platform* CreateDefaultPlatform(int thread_pool_size = 0);
+bool PumpMessageLoop(v8::Platform*, v8::Isolate*);
 }  // namespace platform
 }  // namespace v8
 
 namespace gjstest {
 
-IsolateHandle CreateIsolate() {
-  // Initialize v8 once.
-  static const int g_dummy = []{
-    v8::V8::InitializePlatform(v8::platform::CreateDefaultPlatform());
+// The global platform that we initialized v8 with.
+static v8::Platform* platform_;
+
+// Ensure that v8 and platform_ have been initialized.
+static void InitOnce() {
+  static const int dummy = []{
+    platform_ = v8::platform::CreateDefaultPlatform();
+    v8::V8::InitializePlatform(platform_);
     v8::V8::Initialize();
     return 0;
   }();
 
-  (void)g_dummy;  // Silence "unused variable" errors.
+  (void)dummy;  // Silence "unused variable" errors.
+}
+
+IsolateHandle CreateIsolate() {
+  InitOnce();
 
   // Create an array buffer allocator.
   const std::shared_ptr<v8::ArrayBuffer::Allocator> allocator =
@@ -132,6 +143,8 @@ Local<Value> ExecuteJs(
     Isolate* const isolate,
     const std::string& js,
     const std::string& filename) {
+  InitOnce();
+
   // Attempt to compile the script.
   const Local<UnboundScript> script = Compile(isolate, js, filename);
 
@@ -140,7 +153,12 @@ Local<Value> ExecuteJs(
   }
 
   // Run the script.
-  return script->BindToCurrentContext()->Run();
+  auto result = script->BindToCurrentContext()->Run();
+
+  // Give v8 a chance to process any foreground tasks that are pending.
+  while (v8::platform::PumpMessageLoop(platform_, isolate)) {}
+
+  return result;
 }
 
 std::string DescribeError(const TryCatch& try_catch) {
