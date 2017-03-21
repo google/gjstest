@@ -32,7 +32,7 @@ bool GetBuiltinScripts(
 
 // Get absolute paths for the built-in scripts.
 bool GetBuiltinScriptPaths(
-    vector<string>* paths,
+    std::vector<string>* paths,
     string* error);
 
 // Get the path for the built-in CSS file.

@@ -45,7 +45,7 @@ bool GetBuiltinScripts(
     NamedScripts* scripts,
     string* error) {
   // Attempt to get absolute paths for each built-in script.
-  vector<string> paths;
+  std::vector<string> paths;
   if (!GetBuiltinScriptPaths(&paths, error)) {
     return false;
   }
@@ -63,7 +63,7 @@ bool GetBuiltinScripts(
 }
 
 bool GetBuiltinScriptPaths(
-    vector<string>* paths,
+    std::vector<string>* paths,
     string* error) {
   for (uint32 i = 0; i < arraysize(kBuiltinPaths); ++i) {
     paths->push_back(GetPath(kBuiltinPaths[i]));

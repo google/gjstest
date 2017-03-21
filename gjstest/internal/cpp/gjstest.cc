@@ -79,7 +79,7 @@ static bool GetScripts(
   }
 
   // Load the paths specified by the user.
-  vector<string> paths;
+  std::vector<string> paths;
   SplitStringUsing(FLAGS_js_files, ",", &paths);
 
   for (uint32 i = 0; i < paths.size(); ++i) {
@@ -100,7 +100,7 @@ static bool GenerateHtml() {
                 "  <meta charset=\"utf-8\">\n";
 
   // Pull in built-in scripts.
-  vector<string> builtin_paths;
+  std::vector<string> builtin_paths;
   string error;
   if (!GetBuiltinScriptPaths(&builtin_paths, &error)) {
     LOG(ERROR) << error;
@@ -116,7 +116,7 @@ static bool GenerateHtml() {
   }
 
   // Add a script tag for each user script.
-  vector<string> user_paths;
+  std::vector<string> user_paths;
   SplitStringUsing(FLAGS_js_files, ",", &user_paths);
 
   for (uint32 i = 0; i < user_paths.size(); ++i) {

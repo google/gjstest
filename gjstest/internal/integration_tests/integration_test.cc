@@ -91,7 +91,7 @@ static bool RunShellCommand(
 static bool RunTool(
     const string& gjstest_binary,
     const string& data_dir,
-    const vector<string>& js_files,
+    const std::vector<string>& js_files,
     const string& filter,
     bool* success,
     string* output,
@@ -138,7 +138,7 @@ class IntegrationTest : public ::testing::Test {
   bool RunBundleNamed(const string& name, string test_filter = "") {
     // Get a list of user scripts to load. Special case: the test
     // 'syntax_error' is meant to simulate a syntax error in a dependency.
-    vector<string> js_files;
+    std::vector<string> js_files;
 
     if (name == "syntax_error") {
       js_files.push_back(PathToDataFile("syntax_error.js"));

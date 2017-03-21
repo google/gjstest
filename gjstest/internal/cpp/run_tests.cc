@@ -78,7 +78,7 @@ static const char kCoverageExtractionJs[] =
 // failed test names to failure messages.
 static string MakeXml(
     uint32 duration_ms,
-    const vector<string>& tests_run,
+    const std::vector<string>& tests_run,
     const std::unordered_map<std::string, double>& test_durations,
     const std::unordered_map<std::string, string>& test_failure_messages) {
   webutil_xml::XmlWriter xml_writer("UTF-8", true);
@@ -177,7 +177,7 @@ static void ProcessTestSuite(
     const Handle<Object>& test_functions,
     bool* success,
     string* output,
-    vector<string>* tests_run,
+    std::vector<string>* tests_run,
     std::unordered_map<std::string, string>* test_failure_messages,
     std::unordered_map<std::string, double>* test_durations) {
   StringAppendF(output, "[----------]\n");
@@ -253,7 +253,7 @@ bool RunTests(
   // duration in seconds.
   std::unordered_map<std::string, string> test_failure_messages;
   std::unordered_map<std::string, double> test_durations;
-  vector<string> tests_run;
+  std::vector<string> tests_run;
 
   // Keep track of how long the whole process takes, and whether there are any
   // failures.
