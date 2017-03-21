@@ -150,7 +150,6 @@ gjstest.internal.createMockOfPrototype_ =
 
   // Mock each function in the prototype.
   for (var name in result) {
-    var obj = result[name];
     if (typeof(result[name]) != 'function') continue;
 
     result[name] = createMockFunction(baseName + '.' + name);
