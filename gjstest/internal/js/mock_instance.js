@@ -148,31 +148,44 @@ gjstest.internal.createMockOfPrototype_ =
   Tmp.prototype = prototype;
   var result = new Tmp;
 
-  // Object.getOwnPropertyNames does not include inherited methods. This method
-  // crawls up the inheritance chain and records all properties.
-  var inheritedPropertyNames = function(obj) {
-    var props = {};
-    while(obj) {
-      // We've reached the base Object - break.
-      if (obj.constructor.name == 'Object') {
-        break;
-      }
-      Object.getOwnPropertyNames(obj).forEach(function(p) {
-        props[p] = true;
-      });
-      obj = Object.getPrototypeOf(obj);
-    }
-    return Object.getOwnPropertyNames(props);
-  };
-
   // Mock each function in the prototype.
-  for (const name of inheritedPropertyNames(Tmp.prototype)) {
+  for (var name of gjstest.internal.getAllPrototypeProperties_(Tmp.prototype)) {
+    // Avoid mocking out the 'constructor' property.
     if (name == 'constructor' || typeof(result[name]) != 'function') continue;
 
     result[name] = createMockFunction(baseName + '.' + name);
   }
 
   return result;
+};
+
+/**
+ * Object.getOwnPropertyNames does not include inherited methods. This method
+ * crawls up the inheritance chain and records all properties.
+ *
+ * @param {?Object} obj
+ *
+ * @return {!Array<string>}
+ *
+ * @private
+ */
+gjstest.internal.getAllPrototypeProperties_ = function(obj) {
+  var props = {};
+
+  while(obj) {
+    // We've reached the base Object - break.
+    if (obj.constructor.name == 'Object') {
+      break;
+    }
+
+    Object.getOwnPropertyNames(obj).forEach(function(p) {
+      props[p] = true;
+    });
+
+    obj = Object.getPrototypeOf(obj);
+  }
+
+  return Object.getOwnPropertyNames(props);
 };
 
 /**
