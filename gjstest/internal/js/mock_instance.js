@@ -173,16 +173,16 @@ gjstest.internal.getAllPrototypeProperties_ = function(obj) {
   var props = {};
 
   while(obj) {
+    var nextObj = Object.getPrototypeOf(obj);
+    
     // We've reached the base Object - break.
-    if (obj.constructor.name == 'Object') {
-      break;
-    }
+    if (!nextObj) break;
 
     Object.getOwnPropertyNames(obj).forEach(function(p) {
       props[p] = true;
     });
 
-    obj = Object.getPrototypeOf(obj);
+    obj = nextObj;
   }
 
   return Object.getOwnPropertyNames(props);
