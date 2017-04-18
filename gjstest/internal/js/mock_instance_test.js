@@ -74,6 +74,43 @@ MockInstanceTest.prototype.AddsMockMethods = function() {
   MyClass.prototype.taco = function() {};
   MyClass.prototype.burrito = function() {};
 
+  // Existence and enumerability assertions
+  expectTrue(MyClass.prototype.hasOwnProperty('taco'));
+  expectTrue(MyClass.prototype.hasOwnProperty('burrito'));
+  expectTrue(MyClass.prototype.propertyIsEnumerable('taco'));
+  expectTrue(MyClass.prototype.propertyIsEnumerable('burrito'));
+
+  // Mock functions
+  var mockFn_0 = function() {};
+  var mockFn_1 = function() {};
+
+  expectCall(this.createMockFunction_)('MyClass.taco')
+    .willOnce(returnWith(mockFn_0));
+
+  expectCall(this.createMockFunction_)('MyClass.burrito')
+    .willOnce(returnWith(mockFn_1));
+
+  // Properties
+  var result = this.createMockInstance_(MyClass);
+
+  expectEq(mockFn_0, result.taco);
+  expectEq(mockFn_1, result.burrito);
+};
+
+MockInstanceTest.prototype.AddsMockMethodsToAnonymousClass = function() {
+  // Class
+  function MyClass() {}
+  MyClass.prototype = {
+    taco: function() {},
+    burrito: function() {},
+  };
+
+  // Existence and enumerability assertions
+  expectTrue(MyClass.prototype.hasOwnProperty('taco'));
+  expectTrue(MyClass.prototype.hasOwnProperty('burrito'));
+  expectTrue(MyClass.prototype.propertyIsEnumerable('taco'));
+  expectTrue(MyClass.prototype.propertyIsEnumerable('burrito'));
+
   // Mock functions
   var mockFn_0 = function() {};
   var mockFn_1 = function() {};
@@ -98,6 +135,15 @@ MockInstanceTest.prototype.ES6AddsMockMethods = function() {
     taco() {}
     burrito() {}
   };
+
+  // Existence and enumerability assertions
+  expectTrue(MyClass.prototype.hasOwnProperty('taco'));
+  expectTrue(MyClass.prototype.hasOwnProperty('burrito'));
+
+  // ES6 prototype properties are not enumerable (will not be iterated over in
+  // a for-in loop)
+  expectFalse(MyClass.prototype.propertyIsEnumerable('taco'));
+  expectFalse(MyClass.prototype.propertyIsEnumerable('burrito'));
 
   // Mock functions
   var mockFn_0 = function() {};
