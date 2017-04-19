@@ -174,7 +174,7 @@ gjstest.internal.getAllPrototypeProperties_ = function(obj) {
 
   while(obj) {
     var nextObj = Object.getPrototypeOf(obj);
-    
+
     // We've reached the base Object - break.
     if (!nextObj) break;
 
