@@ -149,13 +149,43 @@ gjstest.internal.createMockOfPrototype_ =
   var result = new Tmp;
 
   // Mock each function in the prototype.
-  for (var name in result) {
-    if (typeof(result[name]) != 'function') continue;
+  for (var name of gjstest.internal.getAllPrototypeProperties_(Tmp.prototype)) {
+    // Avoid mocking out the 'constructor' property.
+    if (name == 'constructor' || typeof(result[name]) != 'function') continue;
 
     result[name] = createMockFunction(baseName + '.' + name);
   }
 
   return result;
+};
+
+/**
+ * Object.getOwnPropertyNames does not include inherited methods. This method
+ * crawls up the inheritance chain and records all properties.
+ *
+ * @param {?Object} obj
+ *
+ * @return {!Array<string>}
+ *
+ * @private
+ */
+gjstest.internal.getAllPrototypeProperties_ = function(obj) {
+  var props = {};
+
+  while(obj) {
+    var nextObj = Object.getPrototypeOf(obj);
+
+    // We've reached the base Object - break.
+    if (!nextObj) break;
+
+    Object.getOwnPropertyNames(obj).forEach(function(p) {
+      props[p] = true;
+    });
+
+    obj = nextObj;
+  }
+
+  return Object.getOwnPropertyNames(props);
 };
 
 /**
