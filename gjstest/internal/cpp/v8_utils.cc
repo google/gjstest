@@ -15,6 +15,9 @@
 
 #include "gjstest/internal/cpp/v8_utils.h"
 
+#include <v8-platform.h>
+#include <libplatform/libplatform.h>
+
 #include "base/integral_types.h"
 #include "base/logging.h"
 #include "base/stringprintf.h"
@@ -37,19 +40,6 @@ using v8::String;
 using v8::TryCatch;
 using v8::UnboundScript;
 using v8::Value;
-
-// HACK(jacobsa): Manually-declare CreateDefaultPlatform and PumpMessageLoop
-// instead of including libplatform.h because the intended use of the latter is
-// crazy confusing.
-//
-// Cf. https://groups.google.com/d/msg/v8-users/ru0NaeXUxMo/w_WixFs6JxYJ
-#include <v8-platform.h>
-namespace v8 {
-namespace platform {
-v8::Platform* CreateDefaultPlatform(int thread_pool_size = 0);
-bool PumpMessageLoop(v8::Platform*, v8::Isolate*);
-}  // namespace platform
-}  // namespace v8
 
 namespace gjstest {
 
