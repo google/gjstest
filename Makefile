@@ -15,6 +15,7 @@ CPPFLAGS += -I./third_party/gmock/gtest/include
 CPPFLAGS += -I/usr/include/libxml2
 CPPFLAGS += -I/usr/local/opt/libxml2/include/libxml2
 CPPFLAGS += -I/usr/local/include
+CPPFLAGS += -I$(HOME)/.homebrew/include
 CPPFLAGS += -DDEFAULT_DATA_DIR=$(DEFAULT_DATA_DIR)
 
 # Compiler flags.
