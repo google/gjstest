@@ -25,6 +25,7 @@ CXXFLAGS += -std=c++11
 
 # Linker flags.
 LDFLAGS += -L/usr/local/lib
+LDFLAGS += -L$(HOME)/.homebrew/lib
 
 # Fix clock_gettime in timer.cc.
 UNAME := $(shell uname)
