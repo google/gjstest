@@ -15,6 +15,8 @@ CPPFLAGS += -I./third_party/gmock/gtest/include
 CPPFLAGS += -I/usr/include/libxml2
 CPPFLAGS += -I/usr/local/opt/libxml2/include/libxml2
 CPPFLAGS += -I/usr/local/include
+CPPFLAGS += -I$(HOME)/.homebrew/include
+CPPFLAGS += -I$(HOME)/.homebrew/opt/libxml2/include/libxml2
 CPPFLAGS += -DDEFAULT_DATA_DIR=$(DEFAULT_DATA_DIR)
 
 # Compiler flags.
@@ -23,6 +25,7 @@ CXXFLAGS += -std=c++11
 
 # Linker flags.
 LDFLAGS += -L/usr/local/lib
+LDFLAGS += -L$(HOME)/.homebrew/lib
 
 # Fix clock_gettime in timer.cc.
 UNAME := $(shell uname)
