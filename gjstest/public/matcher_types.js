@@ -70,13 +70,15 @@ gjstest.Matcher = function(description, negativeDescription, predicate) {
   if (description instanceof Function) {
     this.getDescription = description;
   } else {
-    this.getDescription = function() { return description; };
+    this.getDescription =
+        function() { return /** @type {string} */ (description); };
   }
 
   if (negativeDescription instanceof Function) {
     this.getNegativeDescription = negativeDescription;
   } else {
-    this.getNegativeDescription = function() { return negativeDescription; };
+    this.getNegativeDescription =
+        function() { return /** @type {string} */ (negativeDescription); };
   }
 };
 
