@@ -30,6 +30,7 @@ using v8::FunctionTemplate;
 using v8::Handle;
 using v8::Isolate;
 using v8::Local;
+using v8::MaybeLocal;
 using v8::Message;
 using v8::ObjectTemplate;
 using v8::ScriptCompiler;
@@ -109,24 +110,19 @@ void ConvertToStringVector(
   }
 }
 
-static Local<UnboundScript> Compile(
-    Isolate* const isolate,
-    const std::string& js,
-    const std::string& filename) {
+static MaybeLocal<UnboundScript> Compile(Isolate* const isolate,
+                                         const std::string& js,
+                                         const std::string& filename) {
   if (filename.empty()) {
     ScriptCompiler::Source source(ConvertString(isolate, js));
-    return ScriptCompiler::CompileUnbound(
-        isolate,
-        &source);
+    return ScriptCompiler::CompileUnboundScript(isolate, &source);
   }
 
   ScriptCompiler::Source source(
       ConvertString(isolate, js),
       ScriptOrigin(ConvertString(isolate, filename)));
 
-  return ScriptCompiler::CompileUnbound(
-      isolate,
-      &source);
+  return ScriptCompiler::CompileUnboundScript(isolate, &source);
 }
 
 Local<Value> ExecuteJs(
@@ -136,9 +132,9 @@ Local<Value> ExecuteJs(
   InitOnce();
 
   // Attempt to compile the script.
-  const Local<UnboundScript> script = Compile(isolate, js, filename);
+  Local<UnboundScript> script;
 
-  if (script.IsEmpty()) {
+  if (!Compile(isolate, js, filename).ToLocal(&script)) {
     return Local<Value>();
   }
 

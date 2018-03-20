@@ -115,13 +115,13 @@ void TestCase::Run() {
   // Create a test environment.
   Handle<Value> test_env_args[] = { log, report_failure, get_current_stack };
   const Local<Object> test_env =
-      test_env_constructor->NewInstance(
-          arraysize(test_env_args),
-          test_env_args);
-  CHECK(!test_env.IsEmpty());
+      test_env_constructor
+          ->NewInstance(isolate_->GetCurrentContext(), arraysize(test_env_args),
+                        test_env_args)
+          .ToLocalChecked();
 
   // Run the test.
-  TryCatch try_catch;
+  TryCatch try_catch(isolate_);
   Handle<Value> args[] = { test_function_, test_env };
   const Local<Value> result =
       run_test->Call(

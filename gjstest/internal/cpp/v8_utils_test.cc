@@ -223,7 +223,7 @@ typedef V8UtilsTest DescribeErrorTest;
 TEST_F(DescribeErrorTest, NoError) {
   HandleScope handle_owner(isolate_.get());
 
-  TryCatch try_catch;
+  TryCatch try_catch(isolate_.get());
   EXPECT_EQ("", DescribeError(try_catch));
 }
 
@@ -232,7 +232,7 @@ TEST_F(DescribeErrorTest, NoMessage) {
 
   const std::string js = "throw new Error();";
 
-  TryCatch try_catch;
+  TryCatch try_catch(isolate_.get());
   ASSERT_TRUE(ExecuteJs(js, "taco.js").IsEmpty());
 
   EXPECT_EQ("taco.js:1: Error", DescribeError(try_catch));
@@ -243,7 +243,7 @@ TEST_F(DescribeErrorTest, WithMessage) {
 
   const std::string js = "throw new Error('foo');";
 
-  TryCatch try_catch;
+  TryCatch try_catch(isolate_.get());
   ASSERT_TRUE(ExecuteJs(js, "taco.js").IsEmpty());
 
   EXPECT_EQ("taco.js:1: Error: foo", DescribeError(try_catch));
@@ -295,7 +295,7 @@ static Handle<Value> AddToCounter(
     uint32* counter,
     const v8::FunctionCallbackInfo<Value>& cb_info) {
   CHECK_EQ(1, cb_info.Length());
-  *counter += cb_info[0]->ToUint32()->Value();
+  *counter += cb_info[0]->Uint32Value(isolate->GetCurrentContext()).ToChecked();
   return v8::Undefined(isolate);
 }
 
