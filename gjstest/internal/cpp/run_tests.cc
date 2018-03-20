@@ -230,7 +230,7 @@ bool RunTests(
   for (uint32 i = 0; i < scripts.script_size(); ++i) {
     const NamedScript& script = scripts.script(i);
 
-    TryCatch try_catch;
+    TryCatch try_catch(isolate.get());
     const Local<Value> result =
         ExecuteJs(
             isolate.get(),
