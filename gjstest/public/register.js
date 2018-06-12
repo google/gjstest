@@ -15,17 +15,18 @@
 
 // Helper functions for registering gjstest test cases. Use it as follows:
 //
-//     /** @constructor */
-//     function MyTestFixture() {
+//     class MyTestFixture() {
 //       // This constructor will be called for each test. Do per-test setup
 //       // here.
-//       this.objectUnderTest_ = ...;
+//       constructor() {
+//         this.objectUnderTest_ = ...;
+//       }
 //     }
 //     registerTestSuite(MyTestFixture);
 //
-//     // Add a test case named ReturnsFalse to the fixture. The full name of
-//     // test, as reported in the test output, is MyTestFixture.ReturnsFalse.
-//     addTest(MyTestFixture, function ReturnsFalse() {
+//     // Add a test case named returnsFalse to the fixture. The full name of
+//     // test, as reported in the test output, is MyTestFixture.returnsFalse.
+//     addTest(MyTestFixture, function returnsFalse() {
 //       expectFalse(this.objectUnderTest_.bar());
 //     });
 //
