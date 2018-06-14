@@ -5,7 +5,7 @@
 
 Stack:
     exception_test.js:23
-    register.js:173
+    register.js:174
     run_test.js:37]]></failure>
  </testcase>
  <testcase name="ExceptionTest.NotAFunctionError" time="0.01">
@@ -13,7 +13,7 @@ Stack:
 
 Stack:
     exception_test.js:28
-    register.js:173
+    register.js:174
     run_test.js:37]]></failure>
  </testcase>
  <testcase name="ExceptionTest.ErrorInMatcherFactory" time="0.01">
@@ -40,7 +40,7 @@ Stack:
 
 Stack:
     exception_test.js:45
-    register.js:173
+    register.js:174
     run_test.js:37]]></failure>
  </testcase>
  <testcase name="ExceptionTest.ObjectLiteralException" time="0.01">
@@ -60,7 +60,7 @@ Stack:
 
 Stack:
     exception_test.js:63
-    register.js:173
+    register.js:174
     run_test.js:37]]></failure>
  </testcase>
  <testcase name="ExceptionTest.CustomExceptionClassWithToString" time="0.01">
@@ -75,7 +75,7 @@ Stack:
 
 Stack:
     exception_test.js:82
-    register.js:173
+    register.js:174
     run_test.js:37]]></failure>
  </testcase>
  <testcase name="ThrowingConstructorTest.SomeTest" time="0.01">
@@ -83,7 +83,7 @@ Stack:
 
 Stack:
     exception_test.js:87
-    register.js:172
+    register.js:173
     run_test.js:37]]></failure>
  </testcase>
 </testsuite>
