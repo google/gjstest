@@ -65,7 +65,7 @@ gjstest.internal.getErrorStack = function(error) {
     if (callSite.isNative()) continue;
 
     // Pull info out of the call site.
-    stackFrame.fileName = callSite.getFileName();
+    stackFrame.fileName = callSite.getFileName() || callSite.getEvalOrigin();
     stackFrame.lineNumber = callSite.getLineNumber();
   }
 
