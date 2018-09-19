@@ -18,7 +18,8 @@ registerTestSuite(ErrorUtilsTest);
 
 ErrorUtilsTest.prototype.FallsBackOnEvalOrigin = function() {
   var errorStack = gjstest.internal.getErrorStack(/** @type {!Error} */ ({
-    stack: [
+    stack: 'formatted stack',
+    structuredStack: [
       new FakeCallSite('', 'evalfoobar.js', 11),
       new FakeCallSite('foobar.js', 'evalfoobar.js', 11),
       new FakeCallSite('foobar.js', '', 11)
