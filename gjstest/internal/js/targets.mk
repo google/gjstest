@@ -97,6 +97,7 @@ $(eval $(call compiled_js_library, \
 ######################################################
 
 $(eval $(call js_test,gjstest/internal/js/call_expectation))
+$(eval $(call js_test,gjstest/internal/js/error_utils))
 $(eval $(call js_test,gjstest/internal/js/expect_that))
 $(eval $(call js_test,gjstest/internal/js/mock_function))
 $(eval $(call js_test,gjstest/internal/js/mock_instance))

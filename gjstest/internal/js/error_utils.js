@@ -26,7 +26,13 @@
 gjstest.internal.installPrepareStackTrace = function() {
   Error.prepareStackTrace =
       function(error, structuredStack) {
-        return structuredStack;
+        // Save the structured stack.
+        error.structuredStack = structuredStack;
+        // Prepare the usual v8 formatted stack trace, for compatibility.
+        return error.name + ': ' + error.message +
+            structuredStack.map(function(callSite) {
+              return '\n   at ' + callSite.toString();
+            }).join();
       };
 };
 
@@ -41,8 +47,8 @@ gjstest.internal.installPrepareStackTrace = function() {
  * @suppress {missingProperties}
  */
 gjstest.internal.getErrorStack = function(error) {
-  // Grab the structured stack.
-  var structuredStack = error.stack;
+  // Invoke prepareStackTrace to capture the structured stack.
+  var structuredStack = error.stack && error.structuredStack;
 
   // Some errors don't return a stack. (This was true of stack overflows in
   // earlier versions of v8, for example.) Some browsers always supply the stack
