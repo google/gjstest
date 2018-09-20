@@ -28,7 +28,9 @@ gjstest.internal.installPrepareStackTrace = function() {
       function(error, structuredStack) {
         // Save the structured stack.
         error.structuredStack = structuredStack;
-        // Prepare the usual v8 formatted stack trace, for compatibility.
+
+        // Prepare the usual v8 formatted stack trace, for compatibility with
+        // tools that parse stack traces (like jasmine).
         return error.name + ': ' + error.message +
             structuredStack.map(function(callSite) {
               return '\n   at ' + callSite.toString();
