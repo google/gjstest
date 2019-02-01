@@ -86,12 +86,13 @@ static Local<String> ConvertString(
   return String::NewFromUtf8(
       isolate,
       s.data(),
-      String::kNormalString,
-      s.size());
+      v8::NewStringType::kNormal,
+      s.size()).ToLocalChecked();
 }
 
-std::string ConvertToString(const Handle<Value>& value) {
-  const String::Utf8Value utf8_value(value);
+std::string ConvertToString(Isolate* const isolate,
+                            const Handle<Value>& value) {
+  const String::Utf8Value utf8_value(isolate, value);
   return std::string(*utf8_value, utf8_value.length());
 }
 
@@ -106,7 +107,7 @@ void ConvertToStringVector(
   const uint32 length = array->Length();
 
   for (uint32 i = 0; i < length; ++i) {
-    result->push_back(ConvertToString(array->Get(i)));
+    result->push_back(ConvertToString(isolate, array->Get(i)));
   }
 }
 
@@ -139,7 +140,11 @@ Local<Value> ExecuteJs(
   }
 
   // Run the script.
-  auto result = script->BindToCurrentContext()->Run();
+  Local<Value> result;
+  if (!script->BindToCurrentContext()->Run(isolate->GetCurrentContext())
+          .ToLocal(&result)) {
+    return Local<Value>();
+  }
 
   // Give v8 a chance to process any foreground tasks that are pending.
   while (v8::platform::PumpMessageLoop(platform_, isolate)) {}
@@ -148,8 +153,10 @@ Local<Value> ExecuteJs(
 }
 
 std::string DescribeError(const TryCatch& try_catch) {
-  const std::string exception = ConvertToString(try_catch.Exception());
   const Local<Message> message = try_catch.Message();
+  Isolate* const isolate = message->GetIsolate();
+  const std::string exception =
+      ConvertToString(isolate, try_catch.Exception());
 
   // If there's no message, just return the exception.
   if (message.IsEmpty()) return exception;
@@ -159,8 +166,9 @@ std::string DescribeError(const TryCatch& try_catch) {
   //     foo.js:7: ReferenceError: blah is not defined.
   //
   const std::string filename =
-      ConvertToString(message->GetScriptResourceName());
-  const int line = message->GetLineNumber();
+      ConvertToString(message->GetIsolate(), message->GetScriptResourceName());
+  const int line = message->GetLineNumber(isolate->GetCurrentContext())
+      .ToChecked();
 
   // Sometimes for multi-line errors there is no line number.
   if (!line) {
@@ -219,7 +227,7 @@ Local<Function> MakeFunction(
           isolate,
           RunAssociatedCallback,
           data)
-      ->GetFunction();
+      ->GetFunction(isolate->GetCurrentContext()).ToLocalChecked();
 
   result->SetName(ConvertString(isolate, name));
 

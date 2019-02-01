@@ -36,7 +36,8 @@ typedef std::shared_ptr<v8::Isolate> IsolateHandle;
 IsolateHandle CreateIsolate();
 
 // Convert the supplied value to a UTF-8 string.
-std::string ConvertToString(const v8::Handle<v8::Value>& value);
+std::string ConvertToString(v8::Isolate* const isolate,
+                            const v8::Handle<v8::Value>& value);
 
 // Convert the supplied value, which must be an array, into a vector of strings.
 void ConvertToStringVector(
