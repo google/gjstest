@@ -34,6 +34,7 @@ using v8::HandleScope;
 using v8::Integer;
 using v8::Isolate;
 using v8::Local;
+using v8::MaybeLocal;
 using v8::Number;
 using v8::ObjectTemplate;
 using v8::Persistent;
@@ -73,10 +74,9 @@ class V8UtilsTest : public ::testing::Test {
         s.size());
   }
 
-  v8::Local<v8::Value> ExecuteJs(
-      const std::string& js,
-      const std::string& filename) {
-    return ::gjstest::ExecuteJs(isolate_.get(), js, filename);
+  v8::MaybeLocal<v8::Value> ExecuteJs(const std::string& js,
+                                      const std::string& filename) {
+    return ::gjstest::ExecuteJs(isolate_.get(), context_, js, filename);
   }
 
   void RegisterFunction(
@@ -125,32 +125,28 @@ typedef V8UtilsTest ConvertToStringTest;
 
 TEST_F(ConvertToStringTest, Empty) {
   HandleScope handle_owner(isolate_.get());
-  EXPECT_EQ("", ConvertToString(Local<Value>()));
+  EXPECT_EQ("", ConvertToString(isolate_.get(), Local<Value>()));
 }
 
 TEST_F(ConvertToStringTest, Strings) {
   HandleScope handle_owner(isolate_.get());
 
-  EXPECT_EQ("", ConvertToString(MakeUtf8String("")));
-  EXPECT_EQ("taco", ConvertToString(MakeUtf8String("taco")));
+  EXPECT_EQ("", ConvertToString(isolate_.get(), MakeUtf8String("")));
+  EXPECT_EQ("taco", ConvertToString(isolate_.get(), MakeUtf8String("taco")));
 
   const uint16 kUtf16Chars[] = { 0xd0c0, 0xcf54 };
-  EXPECT_EQ(
-      "타코",
-      ConvertToString(
-          String::NewFromTwoByte(
-              isolate_.get(),
-              kUtf16Chars,
-              String::kNormalString,
-              2)));
+  EXPECT_EQ("타코",
+            ConvertToString(isolate_.get(),
+                            String::NewFromTwoByte(isolate_.get(), kUtf16Chars,
+                                                   String::kNormalString, 2)));
 }
 
 TEST_F(ConvertToStringTest, Numbers) {
   HandleScope handle_owner(isolate_.get());
 
-  EXPECT_EQ("-3", ConvertToString(MakeNumber(-3)));
-  EXPECT_EQ("4", ConvertToString(MakeNumber(4)));
-  EXPECT_EQ("3.14", ConvertToString(MakeNumber(3.14)));
+  EXPECT_EQ("-3", ConvertToString(isolate_.get(), MakeNumber(-3)));
+  EXPECT_EQ("4", ConvertToString(isolate_.get(), MakeNumber(4)));
+  EXPECT_EQ("3.14", ConvertToString(isolate_.get(), MakeNumber(3.14)));
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -162,7 +158,8 @@ class ExecuteJsTest : public V8UtilsTest {
   std::string GetResultAsString(
       const std::string& js,
       std::string filename = "") {
-    return ConvertToString(ExecuteJs(js, filename));
+    return ConvertToString(isolate_.get(),
+                           ExecuteJs(js, filename).ToLocalChecked());
   }
 };
 
@@ -174,7 +171,7 @@ TEST_F(ExecuteJsTest, EmptyString) {
 TEST_F(ExecuteJsTest, BadSyntax) {
   HandleScope handle_owner(isolate_.get());
 
-  const Local<Value> result = ExecuteJs("(2", "");
+  const MaybeLocal<Value> result = ExecuteJs("(2", "");
   EXPECT_TRUE(result.IsEmpty());
 }
 
@@ -224,7 +221,7 @@ TEST_F(DescribeErrorTest, NoError) {
   HandleScope handle_owner(isolate_.get());
 
   TryCatch try_catch(isolate_.get());
-  EXPECT_EQ("", DescribeError(try_catch));
+  EXPECT_EQ("", DescribeError(isolate_.get(), try_catch));
 }
 
 TEST_F(DescribeErrorTest, NoMessage) {
@@ -235,7 +232,7 @@ TEST_F(DescribeErrorTest, NoMessage) {
   TryCatch try_catch(isolate_.get());
   ASSERT_TRUE(ExecuteJs(js, "taco.js").IsEmpty());
 
-  EXPECT_EQ("taco.js:1: Error", DescribeError(try_catch));
+  EXPECT_EQ("taco.js:1: Error", DescribeError(isolate_.get(), try_catch));
 }
 
 TEST_F(DescribeErrorTest, WithMessage) {
@@ -246,7 +243,7 @@ TEST_F(DescribeErrorTest, WithMessage) {
   TryCatch try_catch(isolate_.get());
   ASSERT_TRUE(ExecuteJs(js, "taco.js").IsEmpty());
 
-  EXPECT_EQ("taco.js:1: Error: foo", DescribeError(try_catch));
+  EXPECT_EQ("taco.js:1: Error: foo", DescribeError(isolate_.get(), try_catch));
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -258,7 +255,7 @@ class ConvertToStringVectorTest : public V8UtilsTest {
   std::vector<std::string> EvaluateAndConvertToStringVector(
       const std::string& js) {
     std::vector<std::string> result;
-    ConvertToStringVector(ExecuteJs(js, ""), &result);
+    ConvertToStringVector(ExecuteJs(js, "").ToLocalChecked(), &result);
     return result;
   }
 };
@@ -370,7 +367,7 @@ class MakeFunctionTest : public V8UtilsTest {
 TEST_F(MakeFunctionTest, Name) {
   ASSERT_FALSE(func_.IsEmpty());
 
-  EXPECT_EQ("taco", ConvertToString(func_->GetName()));
+  EXPECT_EQ("taco", ConvertToString(isolate_.get(), func_->GetName()));
 }
 
 TEST_F(MakeFunctionTest, CallsCallback) {

@@ -33,7 +33,9 @@ namespace gjstest {
 
 // Get a reference to the function of the supplied name.
 Local<Function> TestCase::GetFunctionNamed(const string& name) const {
-  const Local<Value> result = ExecuteJs(isolate_, name, "");
+  const Local<Value> result =
+      ExecuteJs(isolate_, isolate_->GetCurrentContext(), name, "")
+          .ToLocalChecked();
   CHECK(result->IsFunction()) << "Error getting reference to " << name;
   return Local<Function>::Cast(result);
 }
@@ -42,7 +44,7 @@ Local<Function> TestCase::GetFunctionNamed(const string& name) const {
 v8::Handle<v8::Value> TestCase::LogString(
     const v8::FunctionCallbackInfo<v8::Value>& cb_info) {
   CHECK_EQ(1, cb_info.Length());
-  const string message = ConvertToString(cb_info[0]);
+  const string message = ConvertToString(isolate_, cb_info[0]);
   StringAppendF(&this->output, "%s\n", message.c_str());
 
   return v8::Undefined(isolate_);
@@ -53,7 +55,7 @@ v8::Handle<v8::Value> TestCase::LogString(
 v8::Handle<v8::Value> TestCase::RecordFailure(
     const v8::FunctionCallbackInfo<v8::Value>& cb_info) {
   CHECK_EQ(1, cb_info.Length());
-  const string message = ConvertToString(cb_info[0]);
+  const string message = ConvertToString(isolate_, cb_info[0]);
 
   this->succeeded = false;
   StringAppendF(&this->output, "%s\n\n", message.c_str());
@@ -133,7 +135,7 @@ void TestCase::Run() {
   if (result.IsEmpty()) {
     succeeded = false;
 
-    const string description = DescribeError(try_catch);
+    const string description = DescribeError(isolate_, try_catch);
     StringAppendF(&output, "%s\n", description.c_str());
     StringAppendF(&failure_output, "%s\n", description.c_str());
   }

@@ -24,6 +24,7 @@
 #include "gjstest/internal/cpp/typed_arrays.h"
 
 using v8::Array;
+using v8::Context;
 using v8::External;
 using v8::Function;
 using v8::FunctionTemplate;
@@ -90,8 +91,8 @@ static Local<String> ConvertString(
       s.size());
 }
 
-std::string ConvertToString(const Handle<Value>& value) {
-  const String::Utf8Value utf8_value(value);
+std::string ConvertToString(v8::Isolate* isolate, const Handle<Value>& value) {
+  const String::Utf8Value utf8_value(isolate, value);
   return std::string(*utf8_value, utf8_value.length());
 }
 
@@ -106,7 +107,7 @@ void ConvertToStringVector(
   const uint32 length = array->Length();
 
   for (uint32 i = 0; i < length; ++i) {
-    result->push_back(ConvertToString(array->Get(i)));
+    result->push_back(ConvertToString(isolate, array->Get(i)));
   }
 }
 
@@ -125,10 +126,9 @@ static MaybeLocal<UnboundScript> Compile(Isolate* const isolate,
   return ScriptCompiler::CompileUnboundScript(isolate, &source);
 }
 
-Local<Value> ExecuteJs(
-    Isolate* const isolate,
-    const std::string& js,
-    const std::string& filename) {
+MaybeLocal<Value> ExecuteJs(Isolate* const isolate, Local<Context> context,
+                            const std::string& js,
+                            const std::string& filename) {
   InitOnce();
 
   // Attempt to compile the script.
@@ -139,7 +139,7 @@ Local<Value> ExecuteJs(
   }
 
   // Run the script.
-  auto result = script->BindToCurrentContext()->Run();
+  auto result = script->BindToCurrentContext()->Run(context);
 
   // Give v8 a chance to process any foreground tasks that are pending.
   while (v8::platform::PumpMessageLoop(platform_, isolate)) {}
@@ -147,8 +147,8 @@ Local<Value> ExecuteJs(
   return result;
 }
 
-std::string DescribeError(const TryCatch& try_catch) {
-  const std::string exception = ConvertToString(try_catch.Exception());
+std::string DescribeError(Isolate* isolate, const TryCatch& try_catch) {
+  const std::string exception = ConvertToString(isolate, try_catch.Exception());
   const Local<Message> message = try_catch.Message();
 
   // If there's no message, just return the exception.
@@ -159,11 +159,11 @@ std::string DescribeError(const TryCatch& try_catch) {
   //     foo.js:7: ReferenceError: blah is not defined.
   //
   const std::string filename =
-      ConvertToString(message->GetScriptResourceName());
-  const int line = message->GetLineNumber();
+      ConvertToString(isolate, message->GetScriptResourceName());
 
+  int line;
   // Sometimes for multi-line errors there is no line number.
-  if (!line) {
+  if (!message->GetLineNumber(isolate->GetCurrentContext()).To(&line)) {
     return StringPrintf("%s: %s", filename.c_str(), exception.c_str());
   }
 

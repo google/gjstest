@@ -43,6 +43,7 @@ using v8::Handle;
 using v8::HandleScope;
 using v8::Isolate;
 using v8::Local;
+using v8::MaybeLocal;
 using v8::Object;
 using v8::ObjectTemplate;
 using v8::Persistent;
@@ -123,8 +124,9 @@ static string MakeXml(
 static Local<Function> GetFunctionNamed(
     v8::Isolate* const isolate,
     const string& name) {
-  const Local<Value> result = ExecuteJs(isolate, name, "");
-  CHECK(!result.IsEmpty());
+  const Local<Value> result =
+      ExecuteJs(isolate, isolate->GetCurrentContext(), name, "")
+          .ToLocalChecked();
   CHECK(result->IsFunction());
 
   return Local<Function>::Cast(result);
@@ -189,7 +191,7 @@ static void ProcessTestSuite(
     CHECK(test_function->IsFunction());
 
     // Skip this test if it doesn't match our filter.
-    const string string_name = ConvertToString(name);
+    const string string_name = ConvertToString(isolate, name);
     if (!RE2::FullMatch(string_name, test_filter)) continue;
 
     tests_run->push_back(string_name);
@@ -231,14 +233,11 @@ bool RunTests(
     const NamedScript& script = scripts.script(i);
 
     TryCatch try_catch(isolate.get());
-    const Local<Value> result =
-        ExecuteJs(
-            isolate.get(),
-            script.source(),
-            script.name());
+    const MaybeLocal<Value> result =
+        ExecuteJs(isolate.get(), context, script.source(), script.name());
 
     if (result.IsEmpty()) {
-      *output += DescribeError(try_catch) + "\n";
+      *output += DescribeError(isolate.get(), try_catch) + "\n";
       return false;
     }
   }
@@ -263,10 +262,8 @@ bool RunTests(
 
   // Iterate over all of the registered test suites.
   const Local<Value> test_suites_value =
-      ExecuteJs(
-          isolate.get(),
-          "gjstest.internal.testSuites",
-          "");
+      ExecuteJs(isolate.get(), context, "gjstest.internal.testSuites", "")
+          .ToLocalChecked();
 
   CHECK(test_suites_value->IsArray());
   const Local<Array> test_suites = Local<Array>::Cast(test_suites_value);
@@ -322,14 +319,12 @@ bool RunTests(
   // Extract coverage info if requested.
   if (coverage_info) {
     const Local<Value> coverage_result =
-        ExecuteJs(
-            isolate.get(),
-            kCoverageExtractionJs,
-            "");
+        ExecuteJs(isolate.get(), context, kCoverageExtractionJs, "")
+            .ToLocalChecked();
 
     CHECK(coverage_result->IsString());
 
-    *coverage_info += ConvertToString(coverage_result);
+    *coverage_info += ConvertToString(isolate.get(), coverage_result);
   }
 
   return success;
