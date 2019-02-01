@@ -25,6 +25,7 @@ using v8::Function;
 using v8::Handle;
 using v8::Isolate;
 using v8::Local;
+using v8::MaybeLocal;
 using v8::Object;
 using v8::TryCatch;
 using v8::Value;
@@ -42,7 +43,7 @@ Local<Function> TestCase::GetFunctionNamed(const string& name) const {
 v8::Handle<v8::Value> TestCase::LogString(
     const v8::FunctionCallbackInfo<v8::Value>& cb_info) {
   CHECK_EQ(1, cb_info.Length());
-  const string message = ConvertToString(cb_info[0]);
+  const string message = ConvertToString(isolate_, cb_info[0]);
   StringAppendF(&this->output, "%s\n", message.c_str());
 
   return v8::Undefined(isolate_);
@@ -53,7 +54,7 @@ v8::Handle<v8::Value> TestCase::LogString(
 v8::Handle<v8::Value> TestCase::RecordFailure(
     const v8::FunctionCallbackInfo<v8::Value>& cb_info) {
   CHECK_EQ(1, cb_info.Length());
-  const string message = ConvertToString(cb_info[0]);
+  const string message = ConvertToString(isolate_, cb_info[0]);
 
   this->succeeded = false;
   StringAppendF(&this->output, "%s\n\n", message.c_str());
@@ -123,14 +124,16 @@ void TestCase::Run() {
   // Run the test.
   TryCatch try_catch(isolate_);
   Handle<Value> args[] = { test_function_, test_env };
-  const Local<Value> result =
+  const MaybeLocal<Value> maybe_result =
       run_test->Call(
+          isolate_->GetCurrentContext(),
           isolate_->GetCurrentContext()->Global(),
           arraysize(args),
           args);
 
   // Was there an exception while running the test?
-  if (result.IsEmpty()) {
+  Local<Value> result;
+  if (!maybe_result.ToLocal(&result)) {
     succeeded = false;
 
     const string description = DescribeError(try_catch);

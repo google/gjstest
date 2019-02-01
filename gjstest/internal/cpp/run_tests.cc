@@ -182,14 +182,16 @@ static void ProcessTestSuite(
     std::unordered_map<std::string, double>* test_durations) {
   StringAppendF(output, "[----------]\n");
 
-  const Local<Array> test_names = test_functions->GetPropertyNames();
+  const Local<Array> test_names =
+      test_functions->GetPropertyNames(isolate->GetCurrentContext())
+          .ToLocalChecked();
   for (uint32 i = 0; i < test_names->Length(); ++i) {
     const Local<Value> name = test_names->Get(i);
     const Local<Value> test_function = test_functions->Get(name);
     CHECK(test_function->IsFunction());
 
     // Skip this test if it doesn't match our filter.
-    const string string_name = ConvertToString(name);
+    const string string_name = ConvertToString(isolate, name);
     if (!RE2::FullMatch(string_name, test_filter)) continue;
 
     tests_run->push_back(string_name);
@@ -279,9 +281,10 @@ bool RunTests(
     Handle<Value> args[] = { test_suite };
     const Local<Value> test_functions_value =
         get_test_functions->Call(
+            isolate.get()->GetCurrentContext(),
             context->Global(),
             arraysize(args),
-            args);
+            args).ToLocalChecked();
     CHECK(test_functions_value->IsObject());
     const Local<Object> test_functions =
         Local<Object>::Cast(test_functions_value);
@@ -329,7 +332,7 @@ bool RunTests(
 
     CHECK(coverage_result->IsString());
 
-    *coverage_info += ConvertToString(coverage_result);
+    *coverage_info += ConvertToString(isolate.get(), coverage_result);
   }
 
   return success;
