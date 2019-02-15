@@ -36,7 +36,8 @@ typedef std::shared_ptr<v8::Isolate> IsolateHandle;
 IsolateHandle CreateIsolate();
 
 // Convert the supplied value to a UTF-8 string.
-std::string ConvertToString(const v8::Handle<v8::Value>& value);
+std::string ConvertToString(v8::Isolate* isolate,
+                            const v8::Handle<v8::Value>& value);
 
 // Convert the supplied value, which must be an array, into a vector of strings.
 void ConvertToStringVector(
@@ -51,14 +52,14 @@ void ConvertToStringVector(
 //
 // If filename is non-empty, it will be given to v8 to improve stack traces for
 // errors.
-v8::Local<v8::Value> ExecuteJs(
-    v8::Isolate* isolate,
-    const std::string& js,
-    const std::string& filename);
+v8::MaybeLocal<v8::Value> ExecuteJs(v8::Isolate* isolate,
+                                    v8::Local<v8::Context> context,
+                                    const std::string& js,
+                                    const std::string& filename);
 
 // Return a human-readable string describing the error caught by the supplied
 // try-catch block.
-std::string DescribeError(const v8::TryCatch& try_catch);
+std::string DescribeError(v8::Isolate*, const v8::TryCatch& try_catch);
 
 // C++ functions exported by v8 must accept a FunctionCallbackInfo<Value> object
 // and return a handle to a Value.
