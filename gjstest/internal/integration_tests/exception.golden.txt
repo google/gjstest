@@ -4,7 +4,7 @@ ReferenceError: fooBar is not defined
 
 Stack:
     exception_test.js:23
-    register.js:174
+    register.js:176
     run_test.js:37
 
 [  FAILED  ] ExceptionTest.ReferenceError (1 ms)
@@ -13,7 +13,7 @@ TypeError: foo is not a function
 
 Stack:
     exception_test.js:28
-    register.js:174
+    register.js:176
     run_test.js:37
 
 [  FAILED  ] ExceptionTest.NotAFunctionError (1 ms)
@@ -43,7 +43,7 @@ TypeError: foo.bar is not a function
 
 Stack:
     exception_test.js:45
-    register.js:174
+    register.js:176
     run_test.js:37
 
 [  FAILED  ] ExceptionTest.UnknownPropertyOnLongFunction (1 ms)
@@ -66,7 +66,7 @@ Stack:
 
 Stack:
     exception_test.js:63
-    register.js:174
+    register.js:176
     run_test.js:37
 
 [  FAILED  ] ExceptionTest.CustomExceptionClassWithStack (1 ms)
@@ -84,7 +84,7 @@ TypeError: bar is not a function
 
 Stack:
     exception_test.js:82
-    register.js:174
+    register.js:176
     run_test.js:37
 
 [  FAILED  ] ExceptionTest.ExceptionWithUnsatisfiedMockExpectations (1 ms)
@@ -96,7 +96,7 @@ Error: taco
 
 Stack:
     exception_test.js:87
-    register.js:173
+    register.js:175
     run_test.js:37
 
 [  FAILED  ] ThrowingConstructorTest.SomeTest (1 ms)

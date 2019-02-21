@@ -89,12 +89,14 @@ gjstest.registerTestSuite = function(ctor) {
  *
  * will work as expected.
  *
- * @param {!Function} testSuite
+ * @param {function(new:THIS)} testSuite
  *     The test suite class, which must have previously been registered with
  *     registerTestSuite.
  *
- * @param {!Function} testFunc
+ * @param {function(this:THIS)} testFunc
  *     The test function.
+ *
+ * @template THIS
  */
 gjstest.addTest = function(testSuite, testFunc) {
   // Check types.

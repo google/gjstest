@@ -15,7 +15,7 @@ Tried expectation at mocks_test.js:67, but arg 0 didn't match:
 
 Stack:
     mocks_test.js:71
-    register.js:174
+    register.js:176
     run_test.js:37
 
 mocks_test.js:74: Call to bar matches no expectation.
@@ -23,7 +23,7 @@ mocks_test.js:74: Call to bar matches no expectation.
 
 Stack:
     mocks_test.js:74
-    register.js:174
+    register.js:176
     run_test.js:37]]></failure>
  </testcase>
  <testcase name="MocksTest.UnexpectedFunctionCall_RecursivelyEquals" time="0.01">
@@ -35,7 +35,7 @@ Tried expectation at mocks_test.js:81, but arg 0 (which is not an Array) didn't 
 
 Stack:
     mocks_test.js:85
-    register.js:174
+    register.js:176
     run_test.js:37
 
 mocks_test.js:88: Call to bar matches no expectation.
@@ -46,7 +46,7 @@ Tried expectation at mocks_test.js:82, but arg 0 (which is not an Array) didn't 
 
 Stack:
     mocks_test.js:88
-    register.js:174
+    register.js:176
     run_test.js:37]]></failure>
  </testcase>
  <testcase name="MocksTest.UnexpectedMethodCall" time="0.01">
@@ -55,7 +55,7 @@ Stack:
 
 Stack:
     mocks_test.js:96
-    register.js:174
+    register.js:176
     run_test.js:37]]></failure>
  </testcase>
  <testcase name="MocksTest.UnsatisfiedExpectations" time="0.01">
@@ -100,7 +100,7 @@ Tried expectation at mocks_test.js:170, but arg 0 didn't match:
 
 Stack:
     mocks_test.js:172
-    register.js:174
+    register.js:176
     run_test.js:37
 
 Unsatisfied expectation at mocks_test.js:170:
@@ -121,7 +121,7 @@ Tried expectation at mocks_test.js:183, but number of arguments didn't match:
 
 Stack:
     mocks_test.js:190
-    register.js:174
+    register.js:176
     run_test.js:37]]></failure>
  </testcase>
  <testcase name="MocksTest.TooManyArguments" time="0.01">
@@ -134,7 +134,7 @@ Tried expectation at mocks_test.js:197, but number of arguments didn't match:
 
 Stack:
     mocks_test.js:204
-    register.js:174
+    register.js:176
     run_test.js:37
 
 mocks_test.js:205: Call matches no expectation.
@@ -146,7 +146,7 @@ Tried expectation at mocks_test.js:197, but number of arguments didn't match:
 
 Stack:
     mocks_test.js:205
-    register.js:174
+    register.js:176
     run_test.js:37]]></failure>
  </testcase>
  <testcase name="MocksTest.OptionalArgument" time="0.01"/>
@@ -161,7 +161,7 @@ Tried expectation at mocks_test.js:225, but arg 1 didn't match:
 
 Stack:
     mocks_test.js:233
-    register.js:174
+    register.js:176
     run_test.js:37
 
 mocks_test.js:234: Call matches no expectation.
@@ -174,7 +174,7 @@ Tried expectation at mocks_test.js:225, but arg 1 didn't match:
 
 Stack:
     mocks_test.js:234
-    register.js:174
+    register.js:176
     run_test.js:37
 
 mocks_test.js:235: Call matches no expectation.
@@ -187,7 +187,7 @@ Tried expectation at mocks_test.js:225, but arg 1 didn't match:
 
 Stack:
     mocks_test.js:235
-    register.js:174
+    register.js:176
     run_test.js:37]]></failure>
  </testcase>
  <testcase name="MocksTest.SentinelMatcher" time="0.01">
@@ -199,7 +199,7 @@ Tried expectation at mocks_test.js:243, but number of arguments didn't match:
 
 Stack:
     mocks_test.js:250
-    register.js:174
+    register.js:176
     run_test.js:37]]></failure>
  </testcase>
 </testsuite>
