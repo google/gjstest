@@ -37,12 +37,12 @@ IsolateHandle CreateIsolate();
 
 // Convert the supplied value to a UTF-8 string.
 std::string ConvertToString(v8::Isolate* isolate,
-                            const v8::Handle<v8::Value>& value);
+                            const v8::Local<v8::Value>& value);
 
 // Convert the supplied value, which must be an array, into a vector of strings.
 void ConvertToStringVector(
     v8::Isolate* isolate,
-    const v8::Handle<v8::Value>& value,
+    const v8::Local<v8::Value>& value,
     std::vector<std::string>* result);
 
 // Execute the supplied string as JS in the current context, returning the
@@ -64,7 +64,7 @@ std::string DescribeError(v8::Isolate*, const v8::TryCatch& try_catch);
 // C++ functions exported by v8 must accept a FunctionCallbackInfo<Value> object
 // and return a handle to a Value.
 typedef std::function<
-    v8::Handle<v8::Value>(const v8::FunctionCallbackInfo<v8::Value>&)>
+    v8::Local<v8::Value>(const v8::FunctionCallbackInfo<v8::Value>&)>
         V8FunctionCallback;
 
 // Export a JS function with the given name in the supplied template, invoking
@@ -75,7 +75,7 @@ void RegisterFunction(
     v8::Isolate* isolate,
     const std::string& name,
     V8FunctionCallback* callback,
-    v8::Handle<v8::ObjectTemplate>* tmpl);
+    v8::Local<v8::ObjectTemplate>* tmpl);
 
 // Create a JS function with the supplied name that calls the given callback
 // when invoked. The callback must continue to exist for as long as the function

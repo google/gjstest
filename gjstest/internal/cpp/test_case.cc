@@ -22,7 +22,6 @@
 
 using v8::Context;
 using v8::Function;
-using v8::Handle;
 using v8::Isolate;
 using v8::Local;
 using v8::Object;
@@ -41,7 +40,7 @@ Local<Function> TestCase::GetFunctionNamed(const string& name) const {
 }
 
 // Log the supplied string to the test's output.
-v8::Handle<v8::Value> TestCase::LogString(
+v8::Local<v8::Value> TestCase::LogString(
     const v8::FunctionCallbackInfo<v8::Value>& cb_info) {
   CHECK_EQ(1, cb_info.Length());
   const string message = ConvertToString(isolate_, cb_info[0]);
@@ -52,7 +51,7 @@ v8::Handle<v8::Value> TestCase::LogString(
 
 // Record the test as having failed, and extract a failure message from the JS
 // arguments and append it to the existing messages, if any.
-v8::Handle<v8::Value> TestCase::RecordFailure(
+v8::Local<v8::Value> TestCase::RecordFailure(
     const v8::FunctionCallbackInfo<v8::Value>& cb_info) {
   CHECK_EQ(1, cb_info.Length());
   const string message = ConvertToString(isolate_, cb_info[0]);
@@ -66,7 +65,7 @@ v8::Handle<v8::Value> TestCase::RecordFailure(
 
 TestCase::TestCase(
     v8::Isolate* const isolate,
-    const Handle<Function>& test_function)
+    const Local<Function>& test_function)
     : isolate_(CHECK_NOTNULL(isolate)),
       test_function_(test_function) {
   CHECK(test_function_->IsFunction());
@@ -115,7 +114,7 @@ void TestCase::Run() {
           &report_failure_cb);
 
   // Create a test environment.
-  Handle<Value> test_env_args[] = { log, report_failure, get_current_stack };
+  Local<Value> test_env_args[] = { log, report_failure, get_current_stack };
   const Local<Object> test_env =
       test_env_constructor
           ->NewInstance(isolate_->GetCurrentContext(), arraysize(test_env_args),
@@ -124,7 +123,7 @@ void TestCase::Run() {
 
   // Run the test.
   TryCatch try_catch(isolate_);
-  Handle<Value> args[] = { test_function_, test_env };
+  Local<Value> args[] = { test_function_, test_env };
   const Local<Value> result =
       run_test->Call(
           isolate_->GetCurrentContext()->Global(),

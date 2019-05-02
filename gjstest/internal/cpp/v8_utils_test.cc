@@ -29,7 +29,6 @@ using testing::HasSubstr;
 
 using v8::Context;
 using v8::Function;
-using v8::Handle;
 using v8::HandleScope;
 using v8::Integer;
 using v8::Isolate;
@@ -50,7 +49,7 @@ namespace gjstest {
 class V8UtilsTest : public ::testing::Test {
  protected:
   void ConvertToStringVector(
-      const v8::Handle<v8::Value>& value,
+      const v8::Local<v8::Value>& value,
       std::vector<std::string>* const result) {
     return ::gjstest::ConvertToStringVector(
         isolate_.get(),
@@ -82,7 +81,7 @@ class V8UtilsTest : public ::testing::Test {
   void RegisterFunction(
       const std::string& name,
       V8FunctionCallback* const callback,
-      v8::Handle<v8::ObjectTemplate>* const tmpl) {
+      v8::Local<v8::ObjectTemplate>* const tmpl) {
     return ::gjstest::RegisterFunction(
         isolate_.get(),
         name,
@@ -103,11 +102,11 @@ class V8UtilsTest : public ::testing::Test {
   const v8::Isolate::Scope isolate_scope_{ isolate_.get() };
 
   const HandleScope handle_scope_{ isolate_.get() };
-  const Handle<ObjectTemplate> global_template_{
+  const Local<ObjectTemplate> global_template_{
     ObjectTemplate::New(isolate_.get()),
   };
 
-  const Handle<Context> context_{
+  const Local<Context> context_{
     Context::New(
         isolate_.get(),
         nullptr,  // No extensions
@@ -287,7 +286,7 @@ TEST_F(ConvertToStringVectorTest, NonEmptyArray) {
 // RegisterFunction
 ////////////////////////////////////////////////////////////////////////
 
-static Handle<Value> AddToCounter(
+static Local<Value> AddToCounter(
     Isolate* const isolate,
     uint32* counter,
     const v8::FunctionCallbackInfo<Value>& cb_info) {
@@ -317,7 +316,7 @@ TEST_F(RegisterFunctionTest, CallsAppropriateCallback) {
           std::placeholders::_1);
 
   // Create a template that exports two functions to add to the two counters.
-  Handle<ObjectTemplate> global_template = ObjectTemplate::New(isolate_.get());
+  Local<ObjectTemplate> global_template = ObjectTemplate::New(isolate_.get());
 
   RegisterFunction(
       "addToCounter1",
@@ -331,7 +330,7 @@ TEST_F(RegisterFunctionTest, CallsAppropriateCallback) {
 
   // Create a context in which to run scripts and ensure that it's used whenever
   // a context is needed below. Export the global functions configured above.
-  const Handle<Context> context(
+  const Local<Context> context(
       Context::New(
           CHECK_NOTNULL(isolate_.get()),
           NULL,  // No extensions
@@ -373,8 +372,8 @@ TEST_F(MakeFunctionTest, Name) {
 TEST_F(MakeFunctionTest, CallsCallback) {
   ASSERT_FALSE(func_.IsEmpty());
 
-  Handle<Value> one_args[] = { MakeInteger(1) };
-  Handle<Value> seventeen_args[] = { MakeInteger(17) };
+  Local<Value> one_args[] = { MakeInteger(1) };
+  Local<Value> seventeen_args[] = { MakeInteger(17) };
 
   func_->Call(
       isolate_.get()->GetCurrentContext()->Global(),

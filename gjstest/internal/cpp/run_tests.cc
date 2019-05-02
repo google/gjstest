@@ -39,7 +39,6 @@
 using v8::Array;
 using v8::Context;
 using v8::Function;
-using v8::Handle;
 using v8::HandleScope;
 using v8::Isolate;
 using v8::Local;
@@ -135,7 +134,7 @@ static Local<Function> GetFunctionNamed(
 static void ProcessTestCase(
     v8::Isolate* const isolate,
     const string& name,
-    const Handle<Function>& test_function,
+    const Local<Function>& test_function,
     bool* success,
     string* output,
     std::unordered_map<std::string, string>* test_failure_messages,
@@ -176,7 +175,7 @@ static void ProcessTestCase(
 static void ProcessTestSuite(
     v8::Isolate* const isolate,
     const RE2& test_filter,
-    const Handle<Object>& test_functions,
+    const Local<Object>& test_functions,
     bool* success,
     string* output,
     std::vector<string>* tests_run,
@@ -225,7 +224,7 @@ bool RunTests(
 
   // Create a context in which to run scripts and ensure that it's used whenever
   // a context is needed below.
-  const Handle<Context> context(Context::New(isolate.get()));
+  const Local<Context> context(Context::New(isolate.get()));
   const Context::Scope context_scope(context);
 
   // Run all of the scripts.
@@ -273,7 +272,7 @@ bool RunTests(
     CHECK(test_suite->IsObject());
 
     // Get the map of test functions registered for this test suite.
-    Handle<Value> args[] = { test_suite };
+    Local<Value> args[] = { test_suite };
     const Local<Value> test_functions_value =
         get_test_functions->Call(
             context->Global(),

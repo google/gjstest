@@ -28,7 +28,6 @@ using v8::Context;
 using v8::External;
 using v8::Function;
 using v8::FunctionTemplate;
-using v8::Handle;
 using v8::Isolate;
 using v8::Local;
 using v8::MaybeLocal;
@@ -91,14 +90,14 @@ static Local<String> ConvertString(
       s.size());
 }
 
-std::string ConvertToString(v8::Isolate* isolate, const Handle<Value>& value) {
+std::string ConvertToString(v8::Isolate* isolate, const Local<Value>& value) {
   const String::Utf8Value utf8_value(isolate, value);
   return std::string(*utf8_value, utf8_value.length());
 }
 
 void ConvertToStringVector(
     v8::Isolate* const isolate,
-    const v8::Handle<v8::Value>& value,
+    const v8::Local<v8::Value>& value,
     std::vector<std::string>* result) {
   CHECK(!value.IsEmpty()) << "value must be non-empty";
   CHECK(value->IsArray()) << "value must be an array";
@@ -188,7 +187,7 @@ void RegisterFunction(
     Isolate* const isolate,
     const std::string& name,
     V8FunctionCallback* callback,
-    Handle<ObjectTemplate>* tmpl) {
+    Local<ObjectTemplate>* tmpl) {
   // Wrap up the callback in an External that can be decoded later.
   const Local<Value> data = External::New(isolate, CHECK_NOTNULL(callback));
 

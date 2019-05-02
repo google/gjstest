@@ -34,7 +34,7 @@ class TestCase {
   // gjstest.registerTestCase.
   TestCase(
       v8::Isolate* isolate,
-      const v8::Handle<v8::Function>& test_function);
+      const v8::Local<v8::Function>& test_function);
 
   // Run the test case and fill in the properties below. It is assumed that a
   // context is currently active in which all of the test's dependencies have
@@ -57,7 +57,7 @@ class TestCase {
 
  private:
   v8::Isolate* const isolate_;
-  const v8::Handle<v8::Function> test_function_;
+  const v8::Local<v8::Function> test_function_;
 
   ///////////////////////////////////
   // Helpers
@@ -66,10 +66,10 @@ class TestCase {
   v8::Local<v8::Function> GetFunctionNamed(
       const string& name) const;
 
-  v8::Handle<v8::Value> LogString(
+  v8::Local<v8::Value> LogString(
       const v8::FunctionCallbackInfo<v8::Value>& cb_info);
 
-  v8::Handle<v8::Value> RecordFailure(
+  v8::Local<v8::Value> RecordFailure(
       const v8::FunctionCallbackInfo<v8::Value>& cb_info);
 
   DISALLOW_COPY_AND_ASSIGN(TestCase);
